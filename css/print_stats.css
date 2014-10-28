@@ -1,0 +1,10 @@
+#stats_box{
+	width:800px;
+	font-size:12px;
+	color:#000;
+	font-family:helvetica;
+	margin-top:35px;
+}
+.stats_left{
+	float:left;
+}

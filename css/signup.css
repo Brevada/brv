@@ -1,0 +1,38 @@
+#signup_box{
+	padding:10px;
+	margin: 0 auto;
+	margin-top:0px;
+}
+body{
+	
+}
+#black{
+	width:100%;
+	background:rgba(35,35,35,0.84);
+	border-radius:3px;
+}
+.white_text
+{
+font-weight:lighter;color:#FFFFFF;letter-spacing:1pt;word-spacing:2pt;font-size:28px;text-align:left;font-family:arial, helvetica, sans-serif;line-height:1;
+}
+.white_text2
+{
+font-weight:lighter;color:#f3f3f3;font-size:19px;text-align:left;font-family:tahoma;
+}
+.in{
+	width:90%;
+	background:rgba(227,227,227,0.15);
+	outline:none;
+	border:1px solid #dcdcdc;
+	padding:14px;
+	font-size:17px;
+	border-radius:2px;
+	margin-top:10px;
+
+}
+#submit{
+	width:95%;
+	padding:12px;
+	margin-top:10px;
+	
+}

@@ -1,0 +1,15 @@
+{
+	"name": "Brevada",
+	"version": "0.2",
+	"manifest_version":2,
+	"description":"The complete feedback platform that gives your customers a voice and does it all in style.",
+	"app":{
+		"urls":["http://www.brevada.com/"],
+		"launch":{
+			"web_url":"http://www.brevada.com/signup"
+		}
+	},
+	"icons":{
+		"128":"icon.png"
+	}
+}

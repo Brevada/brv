@@ -1,0 +1,32 @@
+	.option{
+		width:500px;
+		margin:0 auto;
+		margin-top:20px;
+		border-bottom:1px solid #dcdcdc;
+		padding-bottom:20px;
+	}
+	.option_left{
+		float:left;
+		width:200px;
+	}
+	.option_right{
+		float:right;
+		width:300px;
+	}
+	.option_image{
+		width:150px;
+		margin:0 auto;
+	}
+	.option_ta{
+		width:250px;
+		height:100px;	
+		border:1px solid #dcdcdc;
+		resize:none;
+		padding:5px;	
+		outline:none;
+	}
+	.option_title{
+		font-size:12px;
+		font-family:helvetica;
+		color:#333;	
+	}

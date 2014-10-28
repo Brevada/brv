@@ -1,0 +1,23 @@
+#outer{
+	width:1400px;		
+	min-width:1400px;
+}
+#holder{
+	float:left;
+	width:500px;
+	padding:5px;
+	margin-left:10px;
+}
+#financial_box{
+	width:500px;
+	margin:0 auto;
+	margin-top:10px;
+	font-size:13px;
+	padding:4px;
+	border:1px solid #dcdcdc;
+	background:#fff;
+}
+#left{
+	float:left;
+	width:250px;
+}

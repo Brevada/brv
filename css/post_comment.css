@@ -1,0 +1,17 @@
+.ta{
+	opacity:1;
+	background:#fff;
+	resize:none;
+	border:0px solid #dcdcdc;
+	border-left:none;
+	border-right:none;
+	color:#555;
+	width:100%;
+	padding:5px 0px 5px 0px;
+	outline:none;
+	margin-top:0px;
+	text-align:left;
+	font-family:helvetica;
+	font-size:13px;
+	height:60px;
+}

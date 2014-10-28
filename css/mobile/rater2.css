@@ -1,0 +1,23 @@
+.circle {
+	width: 11px;
+	height: 11px;
+	float:left;
+	-moz-border-radius: 0px;
+	-webkit-border-radius: 0px;
+	border-radius: 0px;
+	color:red;
+	font-family:tahoma;
+	font-size:0px;
+	cursor:pointer;
+	text-align:center;
+	border:0px;
+	
+background: #bc0101; /* Old browsers */
+
+}
+.circle:hover{
+	background: #fefefe;
+}
+.hidden{
+	display:none;
+}

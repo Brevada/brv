@@ -1,0 +1,45 @@
+#frame1{
+	outline:none;
+	border:0px;
+	min-height:400px; width: 320px; overflow-x:hidden; 
+}
+#api_frame{
+			width:200px;
+			height:100px;
+			margin-top:5px;
+			padding:5px;
+			resize:none;
+			outline:none;
+			border:1px solid #dcdcdc;
+			background:#f9f9f9;
+			
+		}
+		
+	.option{
+		width:500px;
+		margin:0 auto;
+		margin-top:20px;
+	}
+	.option_left{
+		float:left;
+		width:200px;
+	}
+	.option_right{
+		float:right;
+		width:300px;
+	}
+	.option_image{
+		width:120px;
+		margin:0 auto;
+	}
+	.option_ta{
+		width:250px;
+		height:100px;	
+		border:1px solid #dcdcdc;
+		resize:none;
+		padding:5px;	
+	}
+	.option_title{
+		font-size:12px;
+		font-family:tahoma;	
+	}

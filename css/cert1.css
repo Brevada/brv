@@ -1,0 +1,8 @@
+a:link {
+color: #ee2b2b;
+text-decoration: none;
+border-bottom: 0px solid #ee2b2b;
+}
+a:hover {
+opacity:0.6;
+}

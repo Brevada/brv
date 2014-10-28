@@ -1,0 +1,36 @@
+#promo_blur{
+	display:none;
+	height:100%;
+	width:100%;
+	position:fixed;
+	top:0px;
+	left:0px;  
+	background:rgba(0,0,0,0.7);
+	z-index:999999999999999999999999999999999999999999;
+}
+#promo_modal{
+  width:600px;
+  height:500px;
+  position:fixed;
+  top: 0%;
+  left: 50%;
+  padding:5px;
+
+  margin-left: -300px;
+  background:rgba(255,255,255,0.9);
+  overflow:scroll;
+}
+#promo_quit{
+	padding:5px;
+	cursor:pointer;
+	color:#555;
+	float:right;
+}
+.option_holder{
+	float:left;
+}
+#frame{
+	outline:none;
+	border:0px;
+	min-height:400px; width: 320px; overflow-x:hidden; 
+}

@@ -1,0 +1,45 @@
+#frame1{
+	outline:none;
+	border:0px;
+	min-height:400px; width: 320px; overflow-x:hidden; 
+}
+#api_frame{
+	width:200px;
+	height:100px;
+	margin-top:5px;
+	padding:5px;
+	resize:none;
+	outline:none;
+	border:1px solid #dcdcdc;
+	background:#f9f9f9;
+}
+
+#rad{
+	width:9px;
+}
+input[type=radio]:checked + span { 
+	opacity:0.7;
+}
+.overflow{
+	text-overflow: ellipsis;
+	width: 250px;
+	height:60px;
+	white-space: nowrap;
+	overflow: hidden;
+}
+
+#api_side_text{
+	width:200px;
+	float:left;
+	margin-left:10px;
+	margin-top:13px;
+	font-size:12px;
+	color:#444;
+	font-family:helvetica;
+}
+
+.frame {
+	outline:none;
+	border:0px;
+	min-height:400px; width: 320px; overflow-x:hidden; 
+}

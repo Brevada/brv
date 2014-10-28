@@ -1,0 +1,11 @@
+#reviewer_left {
+	padding:5px;
+}
+#a_reviewer {
+	border-bottom:1px solid #dcdcdc;
+}
+#reviewer_review_left {
+	padding:5px;
+	width:120px;
+	float:left;
+}

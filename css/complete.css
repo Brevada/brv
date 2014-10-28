@@ -1,0 +1,101 @@
+  #tab_bar_container{
+	width:100%;
+	text-align:center;  
+  }
+  #tab_bar{
+	border:1px solid #dcdcdc;
+	margin:0 auto;
+	background:#fff; 
+	padding:0px;
+	margin-top:20px; 
+	-webkit-border-radius: 3px;
+-moz-border-radius: 3px;
+border-radius: 3px;
+display: inline-block
+  }
+  #tab_button{
+	padding:20px;
+	border-right:1px solid #dcdcdc;
+	font-size:15px;
+	margin:0px;
+	color:#555;
+  }
+  .tabs li {
+    list-style-type: none;
+	padding:none;
+	float:left;
+	margin:0px;
+	}
+   .tabs{
+		padding:0px;
+		margin:0px;
+	}
+	.active{
+		opacity:0.4;	
+	}
+	.tabs a.active #tab_button{
+		background:#ee2b2b;
+		color:#fff;
+	}
+	.page{
+		width:900px;
+		margin:0 auto;
+		background:#fff;
+		padding:20px;
+		margin-top:30px;	
+	}
+	.tab_info{
+		width:800px;
+		margin:0 auto;
+		margin-top:10px;
+		text-align:center;
+		font-size:22px;
+		font-family:'Open Sans';
+		color:#555;
+	}
+	
+	.tab_features{
+		width:800px;
+		margin:0 auto;
+		margin-top:30px;
+		text-align:center;
+		font-size:15px;
+		font-family:'Open Sans';
+		color:#888;
+	}
+	
+	#tab_logo{
+		width:100px;
+		margin-top:20px;
+	}
+	#tab_description{
+		font-size:12px;
+		width:450px;
+		text-align:justify;
+		margin: 0 auto;
+		margin-top:15px;
+	}
+	
+	.tab_feature{
+		font-size:12px;
+		width:500px;
+		text-align:justify;
+		margin: 0 auto;
+		margin-top:25px;
+		color:#555;
+	}
+	#tab_feature_title{
+		font-size:13px;
+		font-weight:bold;	
+	}
+	#complete_title{
+		text-align:center;
+		width:700px;
+		margin:0 auto;	
+	}
+	
+	#feature_img{
+		width:500px;	
+		margin:0 auto;
+		margin-top:20px;
+	}

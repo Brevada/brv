@@ -1,0 +1,53 @@
+#inp{
+	float:left;
+	padding:6px;
+	font-family:tahoma;
+	font-size:15px;
+	color:#444;
+	margin:4px;
+	outline:none;
+	border: 1px solid #dcdcdc;
+}
+#red{
+	color:#dc0101;
+}
+
+::-webkit-input-placeholder { /* WebKit browsers */
+    color:    #999;
+}
+:-moz-placeholder { /* Mozilla Firefox 4 to 18 */
+    color:    #999;
+}
+::-moz-placeholder { /* Mozilla Firefox 19+ */
+    color:    #999;
+}
+:-ms-input-placeholder { /* Internet Explorer 10+ */
+    color:    #999;
+}
+
+#new_comp_text{
+	float:left;
+	height:30px;
+	line-height:30px;
+}
+
+.styled select {
+   background: transparent;
+   width: 40px;
+   padding: 5px;
+   font-size: 16px;
+   border: 1px solid #ccc;
+   height: 34px;
+    -webkit-appearance: none;
+    outline:none;
+
+} 
+
+.styled{
+   width: 40px;
+   height: 34px;
+   overflow: hidden;
+   background:#f9f9f9;
+   margin-left:10px;
+   
+}

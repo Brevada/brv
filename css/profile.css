@@ -1,0 +1,129 @@
+#loading {
+width:100%;
+height:100%;
+top:0;
+left:0;
+position:fixed;
+display:block;
+opacity:1;
+background-color:rgba(255,255,255,0.8);
+z-index:99;
+text-align:center;
+}
+
+#loading-image {
+position:absolute;
+top:100px;
+left:240px;
+z-index:100;
+}
+
+#left_data_holder {
+width:220px;
+}
+
+#banner_pic {
+margin-top:0;
+width:220px;
+}
+
+#top_right_link {
+font-size:11px;
+color:#555;
+width:88px;
+text-align:center;
+padding:5px;
+}
+
+#left_name {
+font-size:16px;
+color:#555;
+font-family:helvetica;
+padding:5px;
+}
+
+#left_description {
+font-size:13px;
+color:#888;
+font-family:helvetica;
+padding:5px;
+}
+
+#left_referral {
+font-size:11px;
+color:#555;
+font-family:helvetica;
+padding:5px;
+}
+
+#left_data_info {
+background:#f8f8f8;
+width:218px;
+margin-top:0;
+border:1px solid #dcdcdc;
+border-top:0;
+}
+
+#pod_buttons {
+margin:0 auto;
+}
+
+#side_box {
+background:#fff;
+border:1px solid #dcdcdc;
+margin-left:0;
+}
+
+#side_header {
+width:100%;
+height:25px;
+line-height:25px;
+border-bottom:1px solid #eee;
+font-size:12px;
+position:relative;
+z-index:9;
+background:#f8f8f8;
+}
+
+#side_head_text {
+float:left;
+color:#666;
+margin-left:8px;
+line-height:25px;
+}
+
+#header_left {
+float:left;
+border-right:1px solid #dcdcdc;
+font-size:11px;
+font-family:helvetica;
+font-weight:bold;
+color:#888;
+background:#f9f9f9;
+padding:0 8px;
+}
+
+.thanks_suggestion {
+display:none;
+font-size:12px;
+color:#4EAF0E;
+margin-top:3px;
+padding:5px;
+}
+
+#prizes {
+font-size:11px;
+font-family:'Open Sans';
+background:#4eaf0e;
+color:#fff;
+text-align:center;
+width:220px;
+box-sizing:border-box;
+padding:5px;
+}
+
+.fixedL {
+position:fixed;
+top:50px;
+margin-left:0;
+}

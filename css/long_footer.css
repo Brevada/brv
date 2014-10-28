@@ -1,0 +1,17 @@
+.bottom_link{
+	color:#FFAEA5; 
+	padding:4px;
+	font-size:13px; 
+	letter-spacing:1px;
+	font-family: 'Open Sans';
+	cursor:pointer;
+	text-decoration:none;
+}
+.bottom_link:hover{
+	color:#fff;
+}
+.bottom_link_big{
+padding-bottom:5px; color:#f9f9f9; 
+letter-spacing:1px;
+	font-family: 'Open Sans';
+}

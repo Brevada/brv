@@ -1,0 +1,49 @@
+#inp{
+	float:left;
+	padding:6px;
+	font-family:tahoma;
+	font-size:15px;
+	color:#444;
+	margin:4px;
+	outline:none;
+	border: 1px solid #dcdcdc;
+}
+#red{
+	color:#dc0101;
+}
+
+::-webkit-input-placeholder { /* WebKit browsers */
+    color:    #999;
+}
+:-moz-placeholder { /* Mozilla Firefox 4 to 18 */
+    color:    #999;
+}
+::-moz-placeholder { /* Mozilla Firefox 19+ */
+    color:    #999;
+}
+:-ms-input-placeholder { /* Internet Explorer 10+ */
+    color:    #999;
+}
+#aspectlist{
+	width:100%; color:#333; font-size:17px;
+	background:none;
+	padding-left:0px;
+	line-height:20px;
+
+}
+#list_aspect{
+	margin-right:10px;
+	background:#4EAF0E;
+	padding:10px;
+	color:#fff;	
+	font-size:13px;	
+	margin-top:5px;
+	
+	-webkit-border-radius: 2px;
+	-moz-border-radius: 2px;
+	border-radius: 2px;
+}
+
+#new_post{
+	display:none;	
+}

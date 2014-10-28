@@ -1,0 +1,19 @@
+#powered{
+	font-size:12px;
+	font-family:helvetica;
+	color:#555;
+	margin:0 auto;
+	text-align:center;
+	width:100%;
+	background:#f7f7f7;
+	margin-top:0px;
+	padding-top:5px;
+	padding-bottom:5px;
+	border-top:1px solid #dcdcdc;
+	
+}
+#bottom_cont{
+	width:150px;
+	margin:0 auto;
+	text-align:center;
+}

@@ -1,0 +1,30 @@
+	.styled-select select {
+   width: 118px;
+   padding: 5px;
+   font-size: 11px;
+   line-height: 1;
+   border: 0;
+   border-radius: 0;
+   height: 24px;
+   outline:none;
+   cursor:pointer;
+   margin-top:5px;
+   font-family:helvetica;
+   
+   -webkit-appearance: none;
+   border: 1px solid #dcdcdc;
+   background: rgb(255,48,25); /* Old browsers */
+color:#f9f9f9;
+   }
+   #letter{
+   font-family:tahoma;
+   background:#cd0000;
+   }
+   #numbers{
+   	background:#cd0000;
+   }
+   #small_link{
+	font-size:11px;
+	font-family:tahoma;
+	color:#666666;
+}

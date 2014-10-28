@@ -1,0 +1,39 @@
+#right_button {
+	height:34px;
+	background:#f7f7f7;
+	padding:5px;
+	margin-top:-4px;
+	padding-top:15px;
+	border-right:1px solid #dcdcdc;
+	border-left:1px solid #dcdcdc;
+	text-align:center;
+	width:55px;
+}
+#right_button:hover {
+	background:#ffffff;
+}
+#ref {
+	font-size:15px;
+	color:#666666;
+	text-decoration:none;
+	font-style:none;
+}
+
+#left_button{
+	float:left;
+	height:16px;
+	padding:5px;
+	margin-top:14px;
+	border-right:1px solid #f6f6f6;
+	text-align:center;
+	width:58px;
+}
+#left_button:hover {
+	background:#ffffff;
+}
+#ref_left {
+	font-size:13px;
+	color:#666666;
+	text-decoration:none;
+	font-style:none;
+}

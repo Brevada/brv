@@ -1,0 +1,2 @@
+<?php $upgrade_message = $this->getParameter('upgrade_message'); ?>
+<a href="/hub/payment/upgrade.php"><div class="top_bar_button2" style="width:400px; margin:0 auto;"><?php echo $upgrade_message; ?></div></a>
