@@ -31,8 +31,12 @@ font-weight:lighter;color:#f3f3f3;font-size:19px;text-align:left;font-family:tah
 
 }
 #submit{
-	width:95%;
+	width:96%;
 	padding:12px;
-	margin-top:10px;
-	
+	margin: 10px auto 0px auto;
+}
+#next{
+	width:96%;
+	padding:12px;
+	margin: 5px auto 0px auto;
 }

@@ -112,15 +112,17 @@ $(document).ready(function(){
 	});
 	
 	// check where the shoppingcart-div is  
-	var offset=$('#far_right').offset();  
-	$(window).scroll(function () {  
-		var scrollTop=$(window).scrollTop(); // check the visible top of the browser  
-		if (offset.top<scrollTop){
-			$('#far_right').addClass('fixed'); 
-		} else {
-			$('#far_right').removeClass('fixed'); 
-		}
-	});  
+	var offset=$('#far_right').offset();
+	if(typeof offset !== 'undefined'){
+		$(window).scroll(function () {  
+			var scrollTop=$(window).scrollTop(); // check the visible top of the browser  
+			if (offset.top<scrollTop){
+				$('#far_right').addClass('fixed'); 
+			} else {
+				$('#far_right').removeClass('fixed'); 
+			}
+		});
+	}
 	
 });
 

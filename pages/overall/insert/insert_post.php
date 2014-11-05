@@ -33,28 +33,8 @@ if (($_FILES["file"]["size"] < 10485760) && in_array($extension, $allowedExts)) 
 	//echo "Invalid file";
 	$extension = 'none';
 }
- 
-///MAKE QR CODE///   
-include_once '../framework/packages/phpqrcode/qrlib.php'; 
-include_once '../framework/packages/phpqrcode/qrconfig.php'; 
 
-// how to save PNG codes to server 
-$codeContents='http://brevada.com/mobile/mobile_single.php?id=' . $new_id;
- 
-// we need to generate filename somehow,  
-// with md5 or with database ID used to obtains $codeContents... 
-$fileName=$new_id . '.png'; 
-
-$pngAbsoluteFilePath="../user_data/qr_posts/".$fileName; 
-$urlRelativeFilePath="/user_data/qr_posts/". $fileName; 
- 
-// generating 
-if (!file_exists($pngAbsoluteFilePath)) { 
-    QRcode::png($codeContents, $pngAbsoluteFilePath, QR_ECLEVEL_L, 10, 1); 
-    //echo 'File generated!'; 
-} else { 
-    //echo 'File already generated! We can use this cached file to speed up site on common codes!'; 
-} 
+Brevada::GeneratePostQR(URL.'/mobile/mobile_single.php?id=' . $new_id);
   
 $sql ="UPDATE posts SET extension='{$extension}' WHERE id='{$new_id}'";
 Database::query($sql);

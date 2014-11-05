@@ -42,6 +42,8 @@ while($row = $query->fetch_assoc()){
 	$level = $row['level'];
 }
 
+$referral_credits = empty($referral_credits) ? 0 : intval($referral_credits);
+
 $this->setTitle("Brevada Hub - {$name}");
 	
 $logins++;
@@ -128,7 +130,7 @@ $message = $active == 'no' ? "You're Almost There!" : 'Membership Expired';
 	<div class="top_container">
 		<a class="open_modal" id="modal_changepic"><div class="section_bottom_button">Change Picture</div></a>
 		<a class="open_modal" id="modal_updateinfo"><div class="section_bottom_button">Update Info</div></a>
-		<div class="right_pad"> <div class="head3">Referral Code: <strong><?php echo $referral_code; ?></strong> Referral Credit: <strong><?php echo $referral_credits; ?></strong></div></div>
+		<div class="right_pad"> <div class="head3">Referral Code: <strong><?php echo $referral_code; ?></strong>&nbsp;&nbsp;Referral Credit: <strong><?php echo $referral_credits; ?></strong></div></div>
 		<br style="clear:both;" />
 	</div>
 </div>
@@ -290,8 +292,8 @@ $(document).ready(showSteps);
     <br />
     <span id="sub_title">View And Share Your Feedback</span>
 </div>
-<?php  if($level>1){ //ACTIVE ACCOUNT ?>
 <div id="expanderContentManage">
+<?php  if($level>1){ //ACTIVE ACCOUNT ?>
 <div style="width:100%; background:#fff; padding: 20px; margin-bottom:20px;">
 	<a class="open_modal" id="modal_certificates">
 	<div class="app">
@@ -374,7 +376,6 @@ $(document).ready(showSteps);
         </div>
       </div>
     </div>
-</div>  
 <?php } else { //FREE TRIAL ?>
 <img src="/images/hub_blur.png" style="width:100%; margin-top:10px; " />
 <div id="locked_bar">
@@ -385,20 +386,22 @@ $(document).ready(showSteps);
 		<div align="center">
 			<div style="color:#555;"><strong>Brevada Free Trial - Activate Account To View Your Feedback</strong></div>
 			<div style="margin-top:4px;"><span style="font-size:12px; color:#777;"> You need to activate your Brevada Services to view, analyze, and respond to feedback.<br /><br />
-          <?php $this->add(new View('../hub/includes/upgrade_button.php', array('upgrade_message' => "Upgrade Brevada"))); ?>
-          <div style="margin-top:10px;">Or</div>
-          <br />
-          <div style="margin-top:0px; font-size:12px;">Enter a promo code:
-            <form action="promo_validate.php" method="post">
-              <input type="text" name="promo"  style="width:80px; margin-top:10px; padding:10px; font-size:12px; outline:none; border:1px solid #f7f7f7;" />
-              <input type="submit" value="&rarr;" name="submit" style="padding:11px; cursor:pointer; background:#f9f9f9; border:1px solid #f3f3f3; font-weight:bold; width:30px; margin-left:5px; outline:none;">
-            </form>
-          </div>
-          </span></div>
+			<?php $this->add(new View('../hub/includes/upgrade_button.php', array('upgrade_message' => "Upgrade Brevada"))); ?>
+			<div style="margin-top:10px;">Or</div>
+			<br />
+			<div style="margin-top:0px; font-size:12px;">Enter a promo code:
+				<form action="promo_validate.php" method="post">
+				  <input type="text" name="promo"  style="width:80px; margin-top:10px; padding:10px; font-size:12px; outline:none; border:1px solid #f7f7f7;" />
+				  <input type="submit" value="&rarr;" name="submit" style="padding:11px; cursor:pointer; background:#f9f9f9; border:1px solid #f3f3f3; font-weight:bold; width:30px; margin-left:5px; outline:none;">
+				</form>
+			</div>
+			</span>
 			</div>
 		</div>
-<?php } ?>
 	</div>
+</div>
+<?php } ?>
+</div>  
 </div>
 <?php $this->add(new View('../pages/hub/includes/tour.php', array('url_name' => $url_name, 'logins' => $logins))); ?>
 <br style="clear:both;" />

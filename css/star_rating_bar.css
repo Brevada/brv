@@ -1,0 +1,32 @@
+.star {
+	width: 10%; /*40x40*/
+	margin: 3px;
+	display: inline-block;
+	border: 0px;
+	background: url('/images/star.png') no-repeat center center;
+	background-size: 100%;
+}
+
+div.star-1 { background-color: #EE2B2B; }
+div.star-2 { background-color: #EE872B; }
+div.star-3 { background-color: #EDC812; }
+div.star-4 { background-color: #D0EE2B; }
+div.star-5 { background-color: #4EAF0E; }
+
+.holder {
+	padding: 0px;
+}
+
+.holder a{
+	text-decoration: none;
+	margin: 4px 8px;
+}
+
+.appear{
+	background:#f8f8f8;
+	font-size:12px;
+	font-family:helvetica;
+	color:#666;
+	padding-top:3px;
+	padding-bottom:3px;
+}

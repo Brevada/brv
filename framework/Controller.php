@@ -2,6 +2,10 @@
 /**
 Controller
 //**/
+
+define('ROOT_PATH', '/');
+define('URL', 'http://brevadatesting.com/');
+
 session_start();
 //session_regenerate_id();
 

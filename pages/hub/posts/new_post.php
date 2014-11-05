@@ -36,7 +36,7 @@ Add another <span id="emphasis">product</span>, <span id="emphasis">service</spa
 			<input type="file" id="fileInput" name="file" />
 		</div>
 		<button type="button" id="but" class="button4" onclick="chooseFile(), clearButton();" style="float:left; outline:none; margin-top:4px; padding:8px; opacity:0.8;">Choose Image (optional)</button>
-		<img id="prev" onclick="chooseFile();" src="#" alt="your image" height="30px" width="30px" style="float:left; margin-top:4px; display:none; cursor:pointer;" />		
+		<img id="prev" onclick="chooseFile();" src="" alt="your image" height="30px" width="30px" style="float:left; margin-top:4px; display:none; cursor:pointer;" />		
 		<div class="left">
 		<input class="button4" name="submit" type="submit" value="Create" style="padding:8px; margin-top:4px; margin-left:5px;" />
 		</div>

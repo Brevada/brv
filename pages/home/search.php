@@ -69,7 +69,7 @@ while($row=$query->fetch_assoc()){
  			  <?php } ?>
  			  </div>
  			  <div style="float:right; width:100px;">
- 			  	<a href="http://brevada.com/<?php echo $post_url_name; ?>"><div class="button2">Visit Page</div></a>
+ 			  	<a href="<?php echo URL.$post_url_name; ?>"><div class="button2">Visit Page</div></a>
  			  </div>
    			<br style="clear:both;" />
    </div>

@@ -12,22 +12,21 @@ $reviewer = $this->getParameter('reviewer');
 $ip = $this->getParameter('ip');
 $user_id = $this->getParameter('id');
 $user_extension = $this->getParameter('user_extension');
+
+$isMobile = $this->getParameter('mobile');
+$isMobile = empty($isMobile) ? '' : '_mobile';
 ?>
 
-<div id="box_<?php echo $post_id; ?>" class='post_box_container'>	
-<div id="post_box" style="border-bottom-right-radius:0px;">
-<div  id="post_top" style="width:100%; background:#fff; border-bottom:1px solid #dcdcdc; height:50px; overflow:hidden;">
+<div id="box_<?php echo $post_id; ?>" class='post_box_container<?php echo $isMobile; ?>'>	
+<div class="post_box" style="border-bottom-right-radius:0px;">
+<div  class="post_top" style="width:100%; background:#fff; border-bottom:1px solid #dcdcdc; height:50px; overflow:hidden;">
 	<div style="padding:5px;">
 		<div style="float:left; width:50px; height:35px; overflow:hidden;">
 			<?php post_pic('50px','auto',$post_id, $user_id, $post_extension, $user_extension); ?>
 		</div>
-		<div style="float:left; margin-left:10px; width:430px;" title="<?php echo $post_description; ?>">
-			<div style="color:#555; font-size:17px;">
-			<?php echo $post_name; ?>
-			</div>
-			<div style="color:#888; font-size:12px;">
-			<?php echo substr($post_description,0,85); if(strlen($post_description)>85){echo '...';} ?>
-			</div>
+		<div style="display: inline-block; margin-left:10px;" title="<?php echo $post_description; ?>">
+			<div style="color:#555; font-size:17px;"><?php echo $post_name; ?></div>
+			<div style="color:#888; font-size:12px;"><?php echo substr($post_description,0,85); if(strlen($post_description)>85){echo '...';} ?></div>
 		</div>
 	</div>
 </div>
@@ -61,7 +60,7 @@ if($checkQuery->num_rows==0){
 </div>
 <?php } else { //Not Internet Explorer ?>		
 <div id="full_bar_<?php echo $post_id; ?>"  align="center" style="width:100%; border-top:0px solid #dcdcdc; background:rgb(0,255,0);">
-	<div style="padding:0px; background:green;"><?php $this->add(new View('../widgets/profile/new_rating_bar.php', array('row' => $r, 'country' => $this->getParameter('country'), 'ip' => $this->getParameter('ip'), 'id' => $this->getParameter('id'), 'reviewer' => $reviewer))); ?></div>
+	<div style="padding:0px; background:green;"><?php $this->add(new View('../widgets/profile/star_rating_bar.php', array('row' => $r, 'country' => $this->getParameter('country'), 'ip' => $this->getParameter('ip'), 'id' => $this->getParameter('id'), 'reviewer' => $reviewer))); ?></div>
 </div>
 <div class="appear" id="appear_bar_<?php echo $post_id; ?>"  align="center" style="display:none;width:100%; border-top:0px solid #dcdcdc;">Thanks for rating.</div>	
 <?php

@@ -15,10 +15,10 @@ function sql_real_escape_string($a) { return mysqli_real_escape_string($a); }
 
 class Database
 {
-	const DB_USERNAME = 'redreadu_robbie';
+	const DB_USERNAME = 'brevadat_dev';//'redreadu_robbie';
 	const DB_PASSWORD = '8327624';
 	const DB_HOST = 'localhost';
-	const DB_DATABASE = 'redreadu_brevada';
+	const DB_DATABASE = 'brevadat_brevada';//'redreadu_brevada';
 	
 	private static $Connection = NULL;
 	
