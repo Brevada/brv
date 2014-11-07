@@ -10,7 +10,7 @@ $user_id = $this->getParameter('id');
 $reviewer = $this->getParameter('reviewer');
 ?>
 
-<div id="holder<?php echo $post_id; ?>" class='holder' onclick="disappearRating('<?php echo $post_id; ?>')" style="width:100%; white-space:nowrap; overflow:hidden; background: white; text-align:center;">
+<div id="holder<?php echo $post_id; ?>" class='holder' onclick="disappearRating('<?php echo $post_id; ?>')" style="width:100%; white-space:nowrap; overflow:hidden; background: white; text-align:left;">
 
 	<a href="#" onclick="insertRating('1', '<?php echo $post_id; ?>', '<?php echo $ip; ?>', '<?php echo $country; ?>', '<?php echo $user_id; ?>', '<?php echo $reviewer; ?>'); return false;">
 		<div class='star star-1' squarenum='1'></div>
@@ -30,6 +30,6 @@ $reviewer = $this->getParameter('reviewer');
 	
 </div>
 
-<div class="appear" id="appear<?php echo $post_id; ?>"  align="center" style="display:none;width:100%; border-top:0px solid #dcdcdc;">
+<div class="appear" id="appear<?php echo $post_id; ?>"  align="center" style="display:none;width:100%; border-top:1px solid #dcdcdc;">
 		Thanks for rating.
 </div>

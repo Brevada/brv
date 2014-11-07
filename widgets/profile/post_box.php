@@ -19,9 +19,9 @@ $isMobile = empty($isMobile) ? '' : '_mobile';
 
 <div id="box_<?php echo $post_id; ?>" class='post_box_container<?php echo $isMobile; ?>'>	
 <div class="post_box" style="border-bottom-right-radius:0px;">
-<div  class="post_top" style="width:100%; background:#fff; border-bottom:1px solid #dcdcdc; height:50px; overflow:hidden;">
+<div  class="post_top" style="width:100%; background:#fff; height:50px; overflow:hidden;">
 	<div style="padding:5px;">
-		<div style="float:left; width:50px; height:35px; overflow:hidden;">
+		<div style="float:left; display:none; width:50px; height:35px; overflow:hidden;">
 			<?php post_pic('50px','auto',$post_id, $user_id, $post_extension, $user_extension); ?>
 		</div>
 		<div style="display: inline-block; margin-left:10px;" title="<?php echo $post_description; ?>">
@@ -37,9 +37,6 @@ $checkQuery = Database::query("SELECT * FROM feedback WHERE ip_address='{$ip}' A
 if($checkQuery->num_rows==0){
 ?>
   							 
-<div id="full_bar2_<?php echo $post_id; ?>" style="display:none; width:100%; border-top:0px solid #eee; background:#f8f8f8; font-size:11px; color:#333;">
-	<div style="padding:5px;">Rate it from 1-100 by clicking the rating bar:</div>
-</div>
 <?php if(Brevada::IsInternetExplorer()){ ?>
 <div  id="rating_<?php echo $post_id; ?>" style="color:#888; font-size:12px; width:100%;">
 	<form>
@@ -62,7 +59,7 @@ if($checkQuery->num_rows==0){
 <div id="full_bar_<?php echo $post_id; ?>"  align="center" style="width:100%; border-top:0px solid #dcdcdc; background:rgb(0,255,0);">
 	<div style="padding:0px; background:green;"><?php $this->add(new View('../widgets/profile/star_rating_bar.php', array('row' => $r, 'country' => $this->getParameter('country'), 'ip' => $this->getParameter('ip'), 'id' => $this->getParameter('id'), 'reviewer' => $reviewer))); ?></div>
 </div>
-<div class="appear" id="appear_bar_<?php echo $post_id; ?>"  align="center" style="display:none;width:100%; border-top:0px solid #dcdcdc;">Thanks for rating.</div>	
+<div class="appear" id="appear_bar_<?php echo $post_id; ?>"  align="center" style="display:none;width:100%; border-top:1px solid #dcdcdc;">Thanks for rating.</div>	
 <?php
 	}
 } else { ?>

@@ -205,12 +205,15 @@ box-shadow:         0px 0px 2px 0px rgba(50, 50, 50, 0.5);
 	width:50px;
 
 }
+
+
+
+
 body{
-	background:#e9eaec;	
+	background:#FFFFFF;	
 	font-family: "helvetica neue",arial,helvetica,freesans,"liberation sans","numbus sans l",sans-serif;
 }
 *{
-	
 	-webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
 -moz-box-sizing: border-box;    /* Firefox, other Gecko */
 box-sizing: border-box; 
@@ -316,12 +319,21 @@ box-sizing: border-box;
 #logo_banner{
 	width:100%;	
 	background:#fff;
-	padding-top:10px;
-	padding-bottom:10px;
+	padding:5px;
+	
+	background: #ffffff; /* Old browsers */
+	background: -moz-linear-gradient(top,  #ffffff 0%, #f6f6f6 47%, #ededed 100%); /* FF3.6+ */
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#ffffff), color-stop(47%,#f6f6f6), color-stop(100%,#ededed)); /* Chrome,Safari4+ */
+	background: -webkit-linear-gradient(top,  #ffffff 0%,#f6f6f6 47%,#ededed 100%); /* Chrome10+,Safari5.1+ */
+	background: -o-linear-gradient(top,  #ffffff 0%,#f6f6f6 47%,#ededed 100%); /* Opera 11.10+ */
+	background: -ms-linear-gradient(top,  #ffffff 0%,#f6f6f6 47%,#ededed 100%); /* IE10+ */
+	background: linear-gradient(to bottom,  #ffffff 0%,#f6f6f6 47%,#ededed 100%); /* W3C */
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#ededed',GradientType=0 ); /* IE6-9 */
+
 }
 #logo{
 	float:left;
-	height:30px;	
+	height:20px;	
 }
 
 .app{

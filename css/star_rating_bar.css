@@ -1,25 +1,41 @@
 .star {
-	width: 10%; /*40x40*/
-	margin: 3px;
+	width: 20%; /*40x40*/
+	height:40px;
+	max-height:40px;
+	margin: 0px;
 	display: inline-block;
 	border: 0px;
 	background: url('/images/star.png') no-repeat center center;
-	background-size: 100%;
+	box-sizing:border-box;
+	padding:5px;
+	float:left;
+	
+	-webkit-border-radius: 0px;
+	-moz-border-radius: 0px;
+	border-radius: 0px;
+
+	
 }
 
-div.star-1 { background-color: #EE2B2B; }
-div.star-2 { background-color: #EE872B; }
-div.star-3 { background-color: #EDC812; }
-div.star-4 { background-color: #D0EE2B; }
-div.star-5 { background-color: #4EAF0E; }
+.star:hover {
+	opacity:0.5;
+}
+
+div.star-1 { background-color: #EE2B2B; background-size: 10%;}
+div.star-2 { background-color: #EE872B; background-size: 15%;}
+div.star-3 { background-color: #EDC812; background-size: 20%;}
+div.star-4 { background-color: #D0EE2B; background-size: 25%;}
+div.star-5 { background-color: #4EAF0E; background-size: 30%;}
 
 .holder {
 	padding: 0px;
+	margin: 0px;
+	box-shadow: 0px 2px 8px rgba(50, 50, 50, 0.5), 0px -2px 8px rgba(50, 50, 50, 0.5);
 }
 
 .holder a{
 	text-decoration: none;
-	margin: 4px 8px;
+	margin: 0px 0px;
 }
 
 .appear{
@@ -29,4 +45,6 @@ div.star-5 { background-color: #4EAF0E; }
 	color:#666;
 	padding-top:3px;
 	padding-bottom:3px;
+	height:40px;
+	box-sizing:border-box;
 }

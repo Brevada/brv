@@ -41,10 +41,5 @@ animation-iteration-count:infinite;
 }
 
 .post_box_container:hover {
-	margin-top:0px;
-	border-top:5px solid #ee2b2b;
-	/*			animation: myfirst 1s;
-/* -webkit-animation: myfirst 1s; /* Safari and Chrome */
-/* animation-iteration-count:infinite;
-/* -webkit-animation-iteration-count:infinite; /*Safari and Chrome*/
+	background:#000;
 }

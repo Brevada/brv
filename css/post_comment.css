@@ -7,11 +7,31 @@
 	border-right:none;
 	color:#555;
 	width:100%;
-	padding:5px 0px 5px 0px;
+	padding:10px;
 	outline:none;
 	margin-top:0px;
 	text-align:left;
 	font-family:helvetica;
 	font-size:13px;
 	height:60px;
+	box-sizing:border-box;
+}
+.ta:focus{
+	background:#fff;
+}
+
+::-webkit-input-placeholder {
+   color: #AAA;
+}
+
+:-moz-placeholder { /* Firefox 18- */
+   color: #AAA; 
+}
+
+::-moz-placeholder {  /* Firefox 19+ */
+   color: #AAA; 
+}
+
+:-ms-input-placeholder {  
+   color: #AAA; 
 }

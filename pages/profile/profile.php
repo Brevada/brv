@@ -74,7 +74,7 @@ $this->addResource("<meta property='og:description' content='Give {$name} Feedba
 			if($querySession == false || $querySession->num_rows == 0){
 			?>	
             <a href="/home/prizes.php" target="_blank" style="text-decoration:none;">
-		    <div id="prizes">	
+		    <div id="prizes" style="display:none;">	
                     <img src="/images/brevada_prizes.png" style="width:70px; margin-bottom:5px;"/><br />
                    	<span style="font-size:10px; text-decoration:none;">Connect &darr; for a chance to win $200 </span>    
 			</div>

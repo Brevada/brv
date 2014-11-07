@@ -78,10 +78,12 @@ $message = $active == 'no' ? "You're Almost There!" : 'Membership Expired';
 		24/7 Customer Service and Feedback Consulting: <strong>1 (844) BREVADA</strong> or <strong>support@brevada.com</strong>
 	</div>
 </div>
+
 <div id="generic_modal" class="text_clean">
   <div class="closeModal" id="email_close">Close</div>
   <div id="generic_modal_content"></div>
 </div>
+
 <div class="modal_bg">
     <div class="modal">
     	<div class="close_modal">Close</div>
@@ -92,19 +94,19 @@ $message = $active == 'no' ? "You're Almost There!" : 'Membership Expired';
 <!-- Section 1: User Data -->
 <div id="logo_banner">
     <div class="container">
-    <img id="logo" src="/images/quote.png" />
-    	<?php if(isset($_SESSION['corporate']) && $_SESSION['corporate']=='active' && $_SESSION['corporate_id']==$_SESSION['user_id']){ ?>
+		<img id="logo" src="/images/quote.png" />
+		<?php if(isset($_SESSION['corporate']) && $_SESSION['corporate']=='active' && $_SESSION['corporate_id']==$_SESSION['user_id']){ ?>
 				<form action="/corporate/hub/corporate_login.php" method="POST">
 				<input type="hidden" name="user_id" value="<?php echo $_SESSION['corporate_id']; ?>" />
 				<input class="button4" value="Return To Corporate" type="submit" style="float:right;" />
 				</form>
 		<?php } ?>
-    <a href="/home/logout.php"><div class="button4" style="float:right;">Logout</div></a>
-    <div class="button4" id="takeTheTour" style="float:right;">Tour</div>
-    <?php if($logins>20){ ?>
-    <div class="button4" id="showsteps" style="float:right;">What Do I Do?</div>
-    <?php } ?>
-    <br style="clear:both;" />
+		<a href="/home/logout.php"><div class="button4" style="float:right;">Logout</div></a>
+		<div class="button4" id="takeTheTour" style="float:right;">Tour</div>
+		<?php if($logins>20){ ?>
+			<div class="button4" id="showsteps" style="float:right;">What Do I Do?</div>
+		<?php } ?>
+		<br style="clear:both;" />
     </div>
 </div>
 <div class="hub_top">
