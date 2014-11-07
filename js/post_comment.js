@@ -5,4 +5,3 @@ function PostComment(post_id, country, ip, user_id) {
 		$("#post_box_comment_" + post_id).hide();
 	}
 }
-

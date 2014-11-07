@@ -122,8 +122,6 @@ box-sizing:border-box;
 padding:5px;
 }
 
-.fixedL {
+div#far_left {
 position:fixed;
-top:50px;
-margin-left:0;
 }
