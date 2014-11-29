@@ -62,7 +62,7 @@ $this->addResource("<meta property='og:description' content='Give {$name} Feedba
 
 <div  style="width:1030px; margin: 0 auto; margin-top:0px;  padding-top:0px;">
 	<div id="sized_containerHub">	
-		<div  style="float:left; width:250px; margin-top:10px;">
+		<div  style="float:left; width:250px; margin-top:15px;">
 		<div id="far_left">	
 			<?php $this->add(new View('../widgets/profile/profile_info_pod.php', array('user_id' => $user_id, 'name' => $name, 'type' => $type, 'user_extension' => $user_extension))); ?>
 			<br style="clear:both;" />
@@ -97,7 +97,7 @@ $this->addResource("<meta property='og:description' content='Give {$name} Feedba
 	</div>
  	
  	<!-- RIGHT -->	
- 	<div style="float:left; width:520px; margin-top:5px; overflow:hidden;">
+ 	<div style="float:left; width:520px; overflow:hidden;">
 	<?php
 	$reviewer=Brevada::validate(empty($_GET['reviewer']) ? '' : $_GET['reviewer']);
 	$postQuery=Database::query("SELECT * FROM posts WHERE user_id = '{$id}' AND active='yes' ORDER BY id DESC");

@@ -36,23 +36,38 @@ if(isset($_GET['email']) && $_GET['email'] != 'false'){
 }
 ?>
 <div style="width:100%; margin-top:100px; height:370px;  background-repeat:repeat-y; background-repeat:repeat-x;">
-		<div id="signup_box" style="width:500px; margin:0 auto;">
+		<div id="signup_box" style="width:800px; margin:0 auto;">
 		<a href="/index.php" ><img src="/images/brevada.png" style="margin:0 auto; width:150px; outline:none;" /></a>
 			<form method="post" action="/overall/insert/insert_user.php">
 				<div id='part1'>
-					<p style='font-size: 18px;'>What do you want to get feedback on?</p>
-					<div>
+					<div class="signup_instruction">What do you want to get feedback on?</div>
+				
 						<input type="text" id="posts-token" name="posts-token" />
 						<script type="text/javascript">
 						$(document).ready(function() {
+						
 							$("#posts-token").tokenInput("/home/get_post_tokens.php", {
 								theme: "facebook",
+								hintText: 'Specify what you want to get feedback on...',
 								preventDuplicates: true
 							});
+							
+						});
+						$(document).ready(function() {
+							//Default Tokens
+							$("#posts-token").tokenInput("add", {id: 1, name: 'Customer Service'});
+							//$("#posts-token").tokenInput("add", {id: 2, name: 'Pricing'});
+							
+							//Focus on input
+							setTimeout(function() { $('#posts-token').focus(); }, 50);
+							
+							//Prevent early enter from going to next step
+							
 						});
 						</script>
-					</div>
-					<button id="next" class="button4">Next</button>
+				
+						<button id="next" class="button4">Next</button>
+						<br style="clear:both;" />
 				</div>
 				<div id='part2' style='display:none;'>
 					<input class="in" type="email" name="email" <?php if($existing_address){ ?> placeholder="<?php echo $_GET['email']; ?>"<?php } else { ?>  placeholder="Email" <?php } ?>  style="color:#555;" />

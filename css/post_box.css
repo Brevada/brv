@@ -1,20 +1,5 @@
-@keyframes myfirst
-{
-from {border-top: 7px solid #00FF00;}
-to {border-top:  7px solid #00DD00;}
-animation-iteration-count:infinite;
--webkit-animation-iteration-count:infinite; /*Safari and Chrome*/
-}
-
-@-webkit-keyframes myfirst /* Safari and Chrome */
-{
-from {border-top: 7px solid #00FF00;}
-to {border-top:  7px solid #00DD00;}
-animation-iteration-count:infinite;
--webkit-animation-iteration-count:infinite; /*Safari and Chrome*/
-}
-
 .post_box{
+	float:left;
 	border:1px solid #dcdcdc;
 	background:#fff;
 	width:100%;
@@ -38,8 +23,9 @@ animation-iteration-count:infinite;
 	width: 505px;
 	min-height:110px;
 	margin: 5px auto 13px auto;
+	margin-top:15px;
 }
 
 .post_box_container:hover {
-	background:#000;
+	background:#FF2b2b;
 }

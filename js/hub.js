@@ -152,3 +152,38 @@ function showSteps(){
 		});
 	});
 }
+
+
+
+$(document).ready( function(){
+    $('.hub_left_bar').hover( function() {
+        var toggleWidth;
+		if ($(".hub_left_bar").width() == 300) {
+			$('.hub_left_bar').animate({ width: '150px'}, 400);
+		} else {
+			$('.hub_left_bar').animate({ width: '300px'}, 400);
+		}
+		
+		
+    });
+    
+    
+
+});
+
+$( document ).ready(function() {
+
+$("#more_open").hover(function(){
+  $( ".more_list" ).toggle();
+});
+
+$(".more_list").hover(function(){
+  $( ".more_list" ).toggle();
+});
+
+$('#more_open').hover(function(){
+	this.style.opacity = this.style.opacity == 0.3 ? 1 : 0.3;
+});
+
+
+});

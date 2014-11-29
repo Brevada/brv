@@ -15,10 +15,11 @@ $user_extension = $this->getParameter('user_extension');
 
 $isMobile = $this->getParameter('mobile');
 $isMobile = empty($isMobile) ? '' : '_mobile';
+
 ?>
 
 <div id="box_<?php echo $post_id; ?>" class='post_box_container<?php echo $isMobile; ?>'>	
-<div class="post_box" style="border-bottom-right-radius:0px;">
+<div class="post_box">
 <div  class="post_top" style="width:100%; background:#fff; height:50px; overflow:hidden;">
 	<div style="padding:5px;">
 		<div style="float:left; display:none; width:50px; height:35px; overflow:hidden;">
@@ -66,7 +67,7 @@ if($checkQuery->num_rows==0){
 	<div class="appear" id="appear_bar_<?php echo $post_id; ?>"  align="center" style="width:100%; border-top:0px solid #dcdcdc;">Already rated.</div>	
 <?php } ?>
 </div>
-<div class="post_box" id="post_box_comment_<?php echo $post_id; ?>" style="margin-top:0px; border-top:0px; border-radius:0px; ">
+<div  id="post_box_comment_<?php echo $post_id; ?>" style="width:100%; border: 1px solid #dcdcdc; margin-top:0px; border-top:0px; border-radius:0px; ">
 	<div style="padding:0px;"><?php $this->add(new View('../widgets/profile/post_comment.php', array('row' => $r, 'country' => $this->getParameter('country'), 'ip' => $this->getParameter('ip'), 'id' => $this->getParameter('id')))); ?></div>
 </div>
 </div>

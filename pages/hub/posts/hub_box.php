@@ -1,3 +1,5 @@
+
+
 <?php
 $this->addResource('/css/hub_box.css');
 $this->addResource('/js/hub_box.js');
@@ -10,10 +12,25 @@ $post_name = $this->getParameter('post_name');
 $post_description = $this->getParameter('post_description');
 $active = $this->getParameter('active');
 ?>
+<script>
+
+$(document).ready( function(){
+    $('#toggle<?php echo $post_id; ?>').click( function() {
+        var toggleWidth = $(".hbox<?php echo $post_id; ?>").width() == 250 ? "543px" : "250px";
+        var toggleContent = $(".hbox<?php echo $post_id; ?>").width() == 250 ? "<" : ">";
+        $('#toggle<?php echo $post_id; ?>').html(toggleContent);
+        $('.hbox<?php echo $post_id; ?>').animate({ width: toggleWidth},80);
+        
+    });
+});
+
+</script>
+
+
 <?php if($active=='yes'){ ?>
-<div id="hbox">
+<div id="hbox" class="hbox<?php echo $post_id; ?>">
 <?php } else { ?>
-<div id="hbox" style="opacity:0.5;">
+<div id="hbox" class="hbox<?php echo $post_id; ?>" style="opacity:0.5;">
 <?php
 }
 //Calculate Average
@@ -36,45 +53,119 @@ if($count > 0){
 	$ok= ($ok/$count)*100;
 	$bad= ($bad/$count)*100;
 }
-?>
-	<div class="hbox_left" id="hbox_name" >
-		<div id="hbox_image"><?php post_pic('40px','auto',$post_id, $user_id, $post_extension, $extension); ?>
+?>	
+	
+	<style>
+	.hubbox_button_left{
+	background:#666;
+	padding:9px;
+	line-height:15px;
+	border-bottom:1px solid #ccc;
+	cursor:pointer;
+	}
+	.hubbox_button_img{
+		height:22px;
+	}
+	</style>
+		
+	<script type="text/javascript">
+	$(document).ready(function(){
+	$("#editHead_<?php print $post_id; ?>").click(function(){
+		toggle_visibility("editContent_<?php echo $post_id; ?>");
+	});
+	
+	
+	function toggle_visibility(id) {
+       var e = document.getElementById(id);
+       if(e.style.display == 'block'){
+          e.style.display = 'none';
+          $("#hbox_titles<?php echo $post_id; ?>").show(100);
+        }
+       else{
+          e.style.display = 'block';
+          $("#hbox_titles<?php echo $post_id; ?>").hide(100);
+        }
+    }
+	
+	});
+	</script>
+
+	<div class="hbox_left">
+		<a  id="editHead_<?php print $post_id; ?>" data-reveal-id="unlock">
+		<div class="hubbox_button_left">
+			<img class="hubbox_button_img" src="<?php echo p('HTML','path_hubicons','edit.png'); ?>" />
 		</div>
-		<div class="left" style="margin-left:5px;">
+		</a>
+		
+		<?php if($active=='yes'){ ?>
+		<a href="<?php echo f('HTML','path_hub_posts'); ?>post_activate.php?id=<?php print $post_id; ?>&yes=no">
+		<div class="hubbox_button_left">
+			<img class="hubbox_button_img" src="<?php echo p('HTML','path_hubicons','eye.png'); ?>" />
+		</div>
+		</a>
+		<?php } else{ ?>
+		<a href="<?php echo f('HTML','path_hub_posts'); ?>post_activate.php?id=<?php print $post_id; ?>&yes=yes">
+		<div class="hubbox_button_left">
+			<img class="hubbox_button_img" src="<?php echo p('HTML','path_hubicons','eye.png'); ?>" />
+		</div>
+		</a>
+		<?php } ?>
+		
+		<a href="/user_data/qr_posts/<?php echo $post_id; ?>.png" class="tooltip" target="_BLANK" style="text-decoration:none;">
+		<div class="hubbox_button_left">
+			<img class="hubbox_button_img" src="<?php echo p('HTML','path_hubicons','qr.png'); ?>" />
+		</div>
+		</a>
+		<a href="/overall/generic_delete.php?db=posts&id=<?php echo $post_id; ?>">
+		<div class="hubbox_button_left" style="background:#ff2b2b;">
+			<img class="hubbox_button_img" src="<?php echo p('HTML','path_hubicons','x.png'); ?>" />
+		</div>
+		</a>
+	</div>
+		
+	<div class="hbox_left" id="hbox_name" >
+		
+	
+	
+		<div id="hbox_titles<?php echo $post_id; ?>" class="left" style="margin-left:5px;">
 			<strong><?php echo substr($post_name,0,25); if(strlen($post_name)>25){echo '...';} ?></strong>
 			<br />	
-			<?php echo substr($post_description,0,25); if(strlen($post_description)>25){echo '...';} ?>
+			<font class="hbox_description"><?php echo substr($post_description,0,25); if(strlen($post_description)>25){echo '...';} ?></font>
 		</div>
+		
+		<!-- EDIT POST -->
+		<div id="editContent_<?php echo $post_id; ?>" style="display:none;">
+			<?php
+			$post_d = !empty($post_description);
+			?>
+			<form action="/hub/posts/post_edit.php" method="post">
+				<input id="in" type="text" name="name" value="<?php echo $post_name; ?>" style="width:150px; font-weight:bold;"></input>
+				<br />
+				<input id="in" class="hbox_description" type="text" name="description" value="<?php echo $post_description; ?>" <?php if($post_d){?> placeholder="Description" <?php } ?> style="width:150px;"></input>
+				<input type="hidden" name="post_id" value="<?php echo $post_id; ?>" />
+				<input class="button2" type="submit" value="Update" />
+			</form>
+		</div>
+		<!-- END EDIT POST -->
+		
 			<br style="clear:both;" />
 				<div id="hbox_average" class="left">
 					<?php
 						$color = "#EDC812";
 						if($average>75){$color="#4EAF0E";}else if($average<50){$color="#E22A12";}
 					?>
-					<span style="color:<?php echo $color; ?>;"><span style="font-weight:bold; font-size:30px;"><?php echo $average; ?></span> 
+					<span style="color:<?php echo $color; ?>;"><span style="font-weight:bold; font-size:50px;"><?php echo $average; ?></span> 
+					<br />
 					Average in <?php echo $count; ?> ratings.</span>
 					<br />
+					
 				</div>
 				<br style="clear:both;" />
-				<div id="box_button_holder">
-				<a  id="editHead_<?php echo $post_id; ?>" class='editHead' postid="<?php echo $post_id; ?>" data-reveal-id="unlock"><div id="box_button" class="box_button_left" style="width:35px;">Edit</div></a>	
-				<a href="/user_data/qr_posts/<?php echo $post_id; ?>.png" class="tooltip" target="_BLANK" style="text-decoration:none;">
-				<div id="box_button">Barcode</div>
-				<span>
-				<strong>Barcode for this aspect</strong><br />
-				This barcode will lead to a page where just this aspect of your business can be rated.<br />If you have products listed on Brevada, put the barcode on packaging to allow customers an easy way to give feedback on the item they have purchased.
-				</span>
-				</a>
-				<?php if($active=='yes'){ ?>
- 					<a href="/hub/posts/post_activate.php?id=<?php echo $post_id; ?>&yes=no"><div id="box_button" class="box_button" style="width:35px;">Hide</div></a>
- 					<?php } else{ ?>
- 					<a href="/hub/posts/post_activate.php?id=<?php echo $post_id; ?>&yes=yes"><div id="box_button" class="box_button" style="width:35px;">Show</div></a>
- 				<?php } ?>
-				<a href="/overall/generic_delete.php?db=posts&id=<?php echo $post_id; ?>"><div id="box_button" class="box_button_right">Delete</div></a>
-				<br style="clear:both;" />
-			</div>
 	</div>
-	<div class="hbox_left" style="height:150px; overflow:scroll;">
+	
+	<div class="toggle_width" id="toggle<?php echo $post_id; ?>">></div>
+	
+	<div class="hbox_news">
 		<div id="post_activity_main_left">
  					<?php
 					$queryDouble = Database::query("SELECT * FROM (SELECT date, value, comment, post_id, reviewer FROM feedback WHERE post_id='{$post_id}' UNION SELECT date, value, comment, post_id, reviewer FROM comments WHERE post_id='{$post_id}') AS a ORDER BY a.date DESC LIMIT 20;");
@@ -140,6 +231,9 @@ if($count > 0){
 		?>
 		</div>
 	</div>
+	
+	
+	
 	<div id="color_bar">
 		<a class="tooltip" return false>
 			<span style="background:#4EAF0E;">
@@ -163,20 +257,10 @@ if($count > 0){
 			<div  class="bar_color" style="width:100%; height:<?php echo $bad; ?>%; background:#E22A12;"></div>
 		</a>
  	</div>
- 	<div class="hbox_left" style="float:right;">
+ 	<div class="hbox_left" style="float:right; display:none;">
 		<?php $this->add(new View("../pages/hub/includes/new_chart.php", array('post_id' => $post_id))); ?>
 	</div>
 	<br style="clear:both;" />
 </div>
-<br style="clear:both;" />
-<div id="editContent_<?php echo $post_id; ?>" style="display:none;margin-top:1px; padding:4px;  ">
-	<?php
-	$post_d = !empty($post_description);
-	?>
-	<form action="/hub/posts/post_edit.php" method="post">
-		<input id="in" type="text" name="name" value="<?php echo $post_name; ?>" style="width:140px;"></input>
-		<input id="in" type="text" name="description" value="<?php echo $post_description; ?>" <?php if($post_d){?> placeholder="Description" <?php } ?> style="width:212px;"></input>
-		<input type="hidden" name="post_id" value="<?php echo $post_id; ?>" />
-		<input class="button2" type="submit" value="Update" />
-	</form>
-</div>
+
+

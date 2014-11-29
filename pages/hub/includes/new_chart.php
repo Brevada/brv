@@ -25,7 +25,7 @@ This has not received enough ratings to generate a graph.</span>
     // CSV or path to a CSV file.
     "Date,Rating\n" 
   <?php
-  $query9=Database::query("SELECT * FROM feedback WHERE post_id='{$post_id}' ORDER BY `id` DESC LIMIT 10");
+  $query9=Database::query("SELECT AVG(value) as value, date FROM feedback WHERE post_id='{$post_id}' GROUP BY date");
 
 while($row9=$query9->fetch_assoc()){
   	 $value=$row9['value'];
@@ -37,7 +37,7 @@ while($row9=$query9->fetch_assoc()){
     
    {
      width: 180,
-     height: 150,
+     height: 160,
      drawYGrid:false,
      drawXGrid:false,
      drawYAxis:false,

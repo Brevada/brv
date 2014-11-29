@@ -1,6 +1,6 @@
 .ta{
 	opacity:1;
-	background:#fff;
+	background:#FBFBFB;
 	resize:none;
 	border:0px solid #dcdcdc;
 	border-left:none;
@@ -13,10 +13,15 @@
 	text-align:left;
 	font-family:helvetica;
 	font-size:13px;
-	height:60px;
+	height:50px;
 	box-sizing:border-box;
+	
+	background-image:       linear-gradient(0deg, transparent 24%, rgba(0, 0, 0, .06) 25%, rgba(0, 0, 0, .06) 26%, transparent 27%, transparent 74%, rgba(0, 0, 0, .06) 75%, rgba(0, 0, 0, .06) 76%, transparent 77%, transparent), linear-gradient(90deg, transparent 24%, rgba(0, 0, 0, .06) 25%, rgba(0, 0, 0, .06) 26%, transparent 27%, transparent 74%, rgba(0, 0, 0, .06) 75%, rgba(0, 0, 0, .06) 76%, transparent 77%, transparent);
+  	background-size:30px 30px;
+ 	background-attachment: fixed;
 }
 .ta:focus{
+	height:80px;
 	background:#fff;
 }
 
