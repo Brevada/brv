@@ -42,31 +42,11 @@ if(isset($_GET['email']) && $_GET['email'] != 'false'){
 				<div id='part1'>
 					<div class="signup_instruction">What do you want to get feedback on?</div>
 				
-						<input type="text" id="posts-token" name="posts-token" />
-						<script type="text/javascript">
-						$(document).ready(function() {
-						
-							$("#posts-token").tokenInput("/home/get_post_tokens.php", {
-								theme: "facebook",
-								hintText: 'Specify what you want to get feedback on...',
-								preventDuplicates: true
-							});
-							
-						});
-						$(document).ready(function() {
-							//Default Tokens
-							$("#posts-token").tokenInput("add", {id: 1, name: 'Customer Service'});
-							//$("#posts-token").tokenInput("add", {id: 2, name: 'Pricing'});
-							
-							//Focus on input
-							setTimeout(function() { $('#posts-token').focus(); }, 50);
-							
-							//Prevent early enter from going to next step
-							
-						});
-						</script>
+						<div class='token-container'>
+							<input type="text" id="posts-token" name="posts-token" />
+							<div id="next" class="button4">Next</div>
+						</div>
 				
-						<button id="next" class="button4">Next</button>
 						<br style="clear:both;" />
 				</div>
 				<div id='part2' style='display:none;'>

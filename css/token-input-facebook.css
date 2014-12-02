@@ -1,27 +1,26 @@
 /* Example tokeninput style #2: Facebook style */
 ul.token-input-list-facebook {
-    float:left;
     overflow: hidden; 
     height: auto !important; 
     height: 1%;
     cursor: text;
-    font-size: 12px;
+    font-size: 14px;
     font-family: Verdana;
     min-height: 1px;
     z-index: 999;
     list-style-type: none;
     clear: left;
 	
-	width:90%;
+	width:83%;
 	background:#F5F5F5;
-	   background-image:       linear-gradient(0deg, transparent 24%, rgba(0, 0, 0, .04) 25%, rgba(0, 0, 0, .04) 26%, transparent 27%, transparent 74%, rgba(0, 0, 0, .04) 75%, rgba(0, 0, 0, .04) 76%, transparent 77%, transparent), linear-gradient(90deg, transparent 24%, rgba(0, 0, 0, .04) 25%, rgba(0, 0, 0, .04) 26%, transparent 27%, transparent 74%, rgba(0, 0, 0, .04) 75%, rgba(0, 0, 0, .04) 76%, transparent 77%, transparent);
-   background-size:30px 30px;
+	background-image: linear-gradient(0deg, transparent 24%, rgba(0, 0, 0, .04) 25%, rgba(0, 0, 0, .04) 26%, transparent 27%, transparent 74%, rgba(0, 0, 0, .04) 75%, rgba(0, 0, 0, .04) 76%, transparent 77%, transparent), linear-gradient(90deg, transparent 24%, rgba(0, 0, 0, .04) 25%, rgba(0, 0, 0, .04) 26%, transparent 27%, transparent 74%, rgba(0, 0, 0, .04) 75%, rgba(0, 0, 0, .04) 76%, transparent 77%, transparent);
+    background-size:30px 30px;
 	outline:none;
 	border:0px solid #dcdcdc;
-	padding:14px;
+	padding:2% 15% 2% 2%;
 	font-size:17px;
 	border-radius:2px;
-	margin-top:10px;
+	margin-top:0px;
 	
 -webkit-box-shadow: 0px 0px 8px 0px rgba(50, 50, 50, 0.5);
 -moz-box-shadow:    0px 0px 8px 0px rgba(50, 50, 50, 0.5);
@@ -33,10 +32,19 @@ ul.token-input-list-facebook li input {
     border: 0;
     width: 100px;
     padding: 3px 8px;
-    background-color: rgba(227,227,227,0.15);
+    /*background-color: rgba(227,227,227,0.15);*/
+	background-color: rgba(255, 255, 255, 0);
     margin: 2px 0;
     -webkit-appearance: caret;
 	font-size: 14px;
+}
+
+input#token-input-posts-token {
+	height: auto !important; 
+    height: 20px;
+    margin: 3px;
+    padding: 10px 15px;
+	clear: right;
 }
 
 li.token-input-token-facebook {
@@ -54,6 +62,7 @@ li.token-input-token-facebook {
     -webkit-border-radius: 5px;
     float: left;
     white-space: nowrap;
+	clear: right;
     
 -webkit-box-shadow: 0px 0px 5px 0px rgba(50, 50, 50, 0.75);
 -moz-box-shadow:    0px 0px 5px 0px rgba(50, 50, 50, 0.75);
@@ -94,7 +103,7 @@ div.token-input-dropdown-facebook {
     border-right: 1px solid #ccc;
     border-bottom: 1px solid #ccc;
     cursor: default;
-    font-size: 13px;
+    font-size: 14px;
     font-family: Verdana;
     z-index: 1;
     

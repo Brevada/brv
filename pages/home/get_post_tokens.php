@@ -4,7 +4,7 @@ $q = Brevada::validate($_GET['q'], VALIDATE_DATABASE);
 # Collect the results
 $arr = array();
 
-$query = Database::query("SELECT DISTINCT `name` FROM `posts` WHERE `name` IN (SELECT `name` FROM `posts` WHERE `name` LIKE '{$q}%' GROUP BY `name` HAVING COUNT(*) > 1) ORDER BY `name` ASC");
+$query = Database::query("SELECT DISTINCT `name` FROM `posts` WHERE `name` IN (SELECT `name` FROM `posts` WHERE `name` LIKE '{$q}%' GROUP BY `name` HAVING COUNT(*) > 1) ORDER BY `name` ASC LIMIT 10");
 
 $names = array();
 $names[] = $q;
