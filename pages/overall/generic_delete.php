@@ -1,6 +1,7 @@
 <?php
 $id = $_GET['id'];
 $db = Brevada::validate($_GET['db'], VALIDATE_DATABASE);
+$no_redirect = !empty($_GET['nr']);
 
 /*
 	This page shouldn't exist.
@@ -13,7 +14,15 @@ $db = Brevada::validate($_GET['db'], VALIDATE_DATABASE);
 	is the post made to a page which the user controls?
 */
 
-Database::query("DELETE FROM `{$db}` WHERE `id`='{$id}'");
+$res = Database::query("DELETE FROM `{$db}` WHERE `id`='{$id}'");
 
-Brevada::Redirect('/hub/hub.php');
+if(!$no_redirect){
+	Brevada::Redirect('/hub/hub.php');
+} else {
+	if($res === false){
+		exit('0');
+	} else {
+		exit('1');
+	}
+}
 ?>

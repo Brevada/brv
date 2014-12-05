@@ -1,7 +1,9 @@
 #signup_box{
 	padding:10px;
 	margin: 0 auto;
-	margin-top:0px;
+	width: 80%;
+	max-width: 800px;
+	min-width: 350px;
 }
 body{
 	
@@ -36,10 +38,12 @@ font-weight:lighter;color:#f3f3f3;font-size:19px;text-align:left;font-family:tah
 
 }
 #submit{
-	width:94%;
+	width:74%;
 	padding:12px;
 	margin: 10px auto 0px auto;
 }
+
+#back { width: 20%; padding: 12px; margin: 10px auto 0px auto; }
 
 div#part1 { position: relative; }
 div#part2 { text-align: center; }
@@ -50,7 +54,7 @@ div.token-container { width: 90%; position: relative; }
 	z-index:10;
 	width:10%;
 	height: 0.8em;
-	padding:10px;
+	padding:10px 10px 12px 10px;
 	right: 1em;
 	top: 0;
 	bottom: 0;
@@ -62,11 +66,12 @@ div.token-container { width: 90%; position: relative; }
 	border:0px;
 	background: #FF2b2b;
 
-	-moz-border-radius: 0px;
-	-webkit-border-radius: 0px;
-	border-radius: 0px;
+	-moz-border-radius: 4px;
+	-webkit-border-radius: 4px;
+	border-radius: 4px;
 	display: inline-block;
 	font-family: arial;
 	text-decoration: none;
 	cursor: pointer;
 }
+#next:hover { opacity: 0.9; filter: opacity(90); }

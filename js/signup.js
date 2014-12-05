@@ -1,8 +1,15 @@
 $(document).ready(function(){
 	$('#next').click(function(e){
 		e.preventDefault();
-		$('#part1').slideUp();
-		$('#part2').slideDown();
+		$('#part1').fadeOut();
+		$('#part2').fadeIn();
+		return false;
+	});
+	
+	$('#back').click(function(e){
+		e.preventDefault();
+		$('#part2').fadeOut();
+		$('#part1').fadeIn();
 		return false;
 	});
 					
@@ -13,8 +20,8 @@ $(document).ready(function(){
 	});
 
 	//Default Tokens
-	$("#posts-token").tokenInput("add", {id: 1, name: 'Customer Service'});
-	//$("#posts-token").tokenInput("add", {id: 2, name: 'Pricing'});
+	$("#posts-token").tokenInput("add", {id: 'Customer Service', name: 'Customer Service'});
+	//$("#posts-token").tokenInput("add", {id: 'Pricing', name: 'Pricing'});
 
 	//Focus on input
 	setTimeout(function() { $('#posts-token').focus(); }, 50);
@@ -22,16 +29,17 @@ $(document).ready(function(){
 });
 
 window.onload=function () {
- document.getElementById("password1").onchange=validatePassword;
- document.getElementById("password2").onchange=validatePassword;
+	$('#password1').change(validatePassword);
+	$('#password2').change(validatePassword);
 }
 
 function validatePassword(){
-var pass=document.getElementById("password2").value;
-var pass2=document.getElementById("password1").value;
-if(pass1==pass2)
-	document.getElementById("password2").setCustomValidity("Passwords Don't Match");
-else
-	document.getElementById("password2").setCustomValidity('');  
-//empty string means no validation error
+	var pass1=$("#password2").val();
+	var pass2=$("#password1").val();
+	if(pass1==pass2){
+		document.getElementById("password2").setCustomValidity("Passwords Don't Match");
+	} else {
+		document.getElementById("password2").setCustomValidity('');  
+		//empty string means no validation error
+	}
 }

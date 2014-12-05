@@ -1,5 +1,3 @@
-
-
 <?php
 $this->addResource('/css/hub_box.css');
 $this->addResource('/js/hub_box.js');
@@ -12,27 +10,8 @@ $post_name = $this->getParameter('post_name');
 $post_description = $this->getParameter('post_description');
 $active = $this->getParameter('active');
 ?>
-<script>
-
-$(document).ready( function(){
-    $('#toggle<?php echo $post_id; ?>').click( function() {
-        var toggleWidth = $(".hbox<?php echo $post_id; ?>").width() == 250 ? "543px" : "250px";
-        var toggleContent = $(".hbox<?php echo $post_id; ?>").width() == 250 ? "<" : ">";
-        $('#toggle<?php echo $post_id; ?>').html(toggleContent);
-        $('.hbox<?php echo $post_id; ?>').animate({ width: toggleWidth},80);
-        
-    });
-});
-
-</script>
-
-
-<?php if($active=='yes'){ ?>
-<div id="hbox" class="hbox<?php echo $post_id; ?>">
-<?php } else { ?>
-<div id="hbox" class="hbox<?php echo $post_id; ?>" style="opacity:0.5;">
+<div class="hbox<?php echo $active=='yes' ? '' : ' hbox-inactive'; ?>" id="hbox<?php echo $post_id; ?>">
 <?php
-}
 //Calculate Average
 $query2=Database::query("SELECT `post_id`, `value` FROM feedback WHERE post_id='{$post_id}'");
 
@@ -53,95 +32,47 @@ if($count > 0){
 	$ok= ($ok/$count)*100;
 	$bad= ($bad/$count)*100;
 }
-?>	
-	
-	<style>
-	.hubbox_button_left{
-	background:#666;
-	padding:9px;
-	line-height:15px;
-	border-bottom:1px solid #ccc;
-	cursor:pointer;
-	}
-	.hubbox_button_img{
-		height:22px;
-	}
-	</style>
-		
-	<script type="text/javascript">
-	$(document).ready(function(){
-	$("#editHead_<?php print $post_id; ?>").click(function(){
-		toggle_visibility("editContent_<?php echo $post_id; ?>");
-	});
-	
-	
-	function toggle_visibility(id) {
-       var e = document.getElementById(id);
-       if(e.style.display == 'block'){
-          e.style.display = 'none';
-          $("#hbox_titles<?php echo $post_id; ?>").show(100);
-        }
-       else{
-          e.style.display = 'block';
-          $("#hbox_titles<?php echo $post_id; ?>").hide(100);
-        }
-    }
-	
-	});
-	</script>
-
+?>
 	<div class="hbox_left">
-		<a  id="editHead_<?php print $post_id; ?>" data-reveal-id="unlock">
+		<a id="editHead" class='editHead' post-id='<?php print $post_id; ?>' data-reveal-id="unlock">
 		<div class="hubbox_button_left">
 			<img class="hubbox_button_img" src="<?php echo p('HTML','path_hubicons','edit.png'); ?>" />
 		</div>
 		</a>
 		
-		<?php if($active=='yes'){ ?>
-		<a href="<?php echo f('HTML','path_hub_posts'); ?>post_activate.php?id=<?php print $post_id; ?>&yes=no">
+		<a href="<?php echo f('HTML','path_hub_posts'); ?>post_activate.php?id=<?php print $post_id; ?>&yes=<?php echo $active=='yes' ? 'no' : 'yes'; ?>">
 		<div class="hubbox_button_left">
 			<img class="hubbox_button_img" src="<?php echo p('HTML','path_hubicons','eye.png'); ?>" />
 		</div>
 		</a>
-		<?php } else{ ?>
-		<a href="<?php echo f('HTML','path_hub_posts'); ?>post_activate.php?id=<?php print $post_id; ?>&yes=yes">
-		<div class="hubbox_button_left">
-			<img class="hubbox_button_img" src="<?php echo p('HTML','path_hubicons','eye.png'); ?>" />
-		</div>
-		</a>
-		<?php } ?>
 		
 		<a href="/user_data/qr_posts/<?php echo $post_id; ?>.png" class="tooltip" target="_BLANK" style="text-decoration:none;">
 		<div class="hubbox_button_left">
 			<img class="hubbox_button_img" src="<?php echo p('HTML','path_hubicons','qr.png'); ?>" />
 		</div>
 		</a>
-		<a href="/overall/generic_delete.php?db=posts&id=<?php echo $post_id; ?>">
-		<div class="hubbox_button_left" style="background:#ff2b2b;">
+		<div class="hubbox_button_left delete_post" post-id='<?php echo $post_id; ?>' style="background:#ff2b2b;">
 			<img class="hubbox_button_img" src="<?php echo p('HTML','path_hubicons','x.png'); ?>" />
 		</div>
-		</a>
 	</div>
 		
-	<div class="hbox_left" id="hbox_name" >
+	<div class="hbox_left hbox_name">
 		
-	
-	
-		<div id="hbox_titles<?php echo $post_id; ?>" class="left" style="margin-left:5px;">
+		<div id="hbox_titles<?php echo $post_id; ?>" class='hbox_titles' post-id='<?php echo $post_id; ?>' class="left" style="margin-left:5px;">
 			<strong><?php echo substr($post_name,0,25); if(strlen($post_name)>25){echo '...';} ?></strong>
 			<br />	
 			<font class="hbox_description"><?php echo substr($post_description,0,25); if(strlen($post_description)>25){echo '...';} ?></font>
 		</div>
 		
 		<!-- EDIT POST -->
-		<div id="editContent_<?php echo $post_id; ?>" style="display:none;">
+		<div id="editContent_<?php echo $post_id; ?>" post-id='<?php echo $post_id; ?>' style="display:none;">
 			<?php
 			$post_d = !empty($post_description);
 			?>
 			<form action="/hub/posts/post_edit.php" method="post">
-				<input id="in" type="text" name="name" value="<?php echo $post_name; ?>" style="width:150px; font-weight:bold;"></input>
+				<input class="in" type="text" name="name" value="<?php echo $post_name; ?>" style="width:150px; font-weight:bold;"></input>
 				<br />
-				<input id="in" class="hbox_description" type="text" name="description" value="<?php echo $post_description; ?>" <?php if($post_d){?> placeholder="Description" <?php } ?> style="width:150px;"></input>
+				<input class="in" class="hbox_description" type="text" name="description" value="<?php echo $post_description; ?>" <?php if($post_d){?> placeholder="Description" <?php } ?> style="width:150px;"></input>
 				<input type="hidden" name="post_id" value="<?php echo $post_id; ?>" />
 				<input class="button2" type="submit" value="Update" />
 			</form>
@@ -149,7 +80,7 @@ if($count > 0){
 		<!-- END EDIT POST -->
 		
 			<br style="clear:both;" />
-				<div id="hbox_average" class="left">
+				<div class="hbox_average" class="left">
 					<?php
 						$color = "#EDC812";
 						if($average>75){$color="#4EAF0E";}else if($average<50){$color="#E22A12";}
@@ -163,10 +94,10 @@ if($count > 0){
 				<br style="clear:both;" />
 	</div>
 	
-	<div class="toggle_width" id="toggle<?php echo $post_id; ?>">></div>
+	<div class="toggle_width" post-id='<?php echo $post_id; ?>'>&gt;</div>
 	
 	<div class="hbox_news">
-		<div id="post_activity_main_left">
+		<div class="post_activity_main_left">
  					<?php
 					$queryDouble = Database::query("SELECT * FROM (SELECT date, value, comment, post_id, reviewer FROM feedback WHERE post_id='{$post_id}' UNION SELECT date, value, comment, post_id, reviewer FROM comments WHERE post_id='{$post_id}') AS a ORDER BY a.date DESC LIMIT 20;");
 										
@@ -192,8 +123,8 @@ if($count > 0){
 						 
 						if($value == 200){ //its a comment
 						?>
-						<div id="post_activity_single">
-							<div id="activity_single_right" class="activity_comment">
+						<div class="post_activity_single">
+							<div class="activity_comment activity_single_right">
 								<strong><?php echo substr($comment,0,65); if(strlen($comment)>65){echo '...';} ?></strong>
 							</div>
 							<br style="clear:both;" />
@@ -202,8 +133,8 @@ if($count > 0){
 						} else{
 						//its a rating
 						?>
-						<div id="post_activity_single">
-							 <div id="activity_single_right">							
+						<div class="post_activity_single">
+							 <div class="activity_single_right">							
 								<?php
 								$color = "#EDC812";
 								if($value>75){$color="#4EAF0E";}else if($value<50){$color="#E22A12";}
@@ -232,9 +163,7 @@ if($count > 0){
 		</div>
 	</div>
 	
-	
-	
-	<div id="color_bar">
+	<div class="color_bar">
 		<a class="tooltip" return false>
 			<span style="background:#4EAF0E;">
 				<p class="resp_big"><?php echo round($good, 2); ?>%</p><br />

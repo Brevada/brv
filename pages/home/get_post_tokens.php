@@ -6,6 +6,9 @@ $arr = array();
 
 $query = Database::query("SELECT DISTINCT `name` FROM `posts` WHERE `name` IN (SELECT `name` FROM `posts` WHERE `name` LIKE '{$q}%' GROUP BY `name` HAVING COUNT(*) > 1) ORDER BY `name` ASC LIMIT 10");
 
+//If dedicated table (of table name 'post_tokens' and table column 'name') exists:
+// $query = Database::query("SELECT `name` FROM `post_tokens` WHERE `name` LIKE '{q}%' ORDER BY `name` ASC LIMIT 10");
+
 $names = array();
 $names[] = $q;
 
@@ -22,7 +25,7 @@ while($row = $query->fetch_assoc()){
 $json_response = json_encode($arr);
 
 # Optionally: Wrap the response in a callback function for JSONP cross-domain support
-if($_GET["callback"]) {
+if(!empty($_GET["callback"])) {
     $json_response = $_GET["callback"] . "(" . $json_response . ")";
 }
 

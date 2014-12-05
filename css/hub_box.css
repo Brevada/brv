@@ -2,16 +2,16 @@ a:visited div{
 	text-decoration:none;
 	outline:none;
 }
-#comment_box{
+.comment_box{
 	border-bottom:1px solid #f5f5f5;
 	padding-bottom:4px;
 }
 	
-#buttonGraph{
+.buttonGraph{
 	background: #f9f9f9;
 }
 
-#hub_box{
+.hub_box{
 	
 	display:none;
 
@@ -29,11 +29,13 @@ border-radius: 3px;
 	
 }
 
+.hbox-inactive { opacity: 0.5; filter: opacity(50); }
+
 a div.box_button{
 	text-decoration:none;
 }
 
-#hbox{
+.hbox{
 	/*width:86%;*/
 	width:250px;
 	height:171px;
@@ -47,15 +49,14 @@ a div.box_button{
 	background:#FFF;
 	
 	-webkit-border-radius: 6px;
--moz-border-radius: 6px;
-border-radius: 6px;
+	-moz-border-radius: 6px;
+	border-radius: 6px;
 
--webkit-box-shadow: 0px 0px 3px 0px rgba(50, 50, 50, 0.6);
--moz-box-shadow:    0px 0px 3px 0px rgba(50, 50, 50, 0.6);
-box-shadow:         0px 0px 3px 0px rgba(50, 50, 50, 0.6);
-
+	-webkit-box-shadow: 0px 0px 3px 0px rgba(50, 50, 50, 0.6);
+	-moz-box-shadow: 0px 0px 3px 0px rgba(50, 50, 50, 0.6);
+	box-shadow: 0px 0px 3px 0px rgba(50, 50, 50, 0.6);
 }
-#hbox_image{
+.hbox_image{
 	float:left;
 	width:40px;
 	height:30px;
@@ -63,7 +64,6 @@ box-shadow:         0px 0px 3px 0px rgba(50, 50, 50, 0.6);
 	line-height:50px;
 	text-align:center;
 	padding-right:10px;
-
 }
 .hbox_left{
 	float:left;
@@ -72,16 +72,16 @@ box-shadow:         0px 0px 3px 0px rgba(50, 50, 50, 0.6);
 	color:#555;
 	font-size:12px;
 }
-#color_bar{
+.color_bar{
 	float:right; height:160px; width:30px; margin-left:2px;
 	margin:5px;
 	overflow:hidden;
 	border:1px solid #dcdcdc;
-		   -moz-border-radius: 3px; 
-				   -webkit-border-radius: 3px; 
-				   border-radius: 3px;
+	-moz-border-radius: 3px; 
+	-webkit-border-radius: 3px; 
+	border-radius: 3px;
 }
-#hbox_name{
+.hbox_name{
 	padding:5px;
 	font-size:16px;
 	font-family:helvetica;
@@ -94,16 +94,16 @@ box-shadow:         0px 0px 3px 0px rgba(50, 50, 50, 0.6);
 	
 	
 }
-#hbox_average{
+.hbox_average{
 	padding:3px;
 	margin-top:10px;
 	font-size:11px;
 }
-#box_button_holder{
+.box_button_holder{
 	margin:3px;
 }
 
-#box_button{
+.box_button{
 	background: #f8f8f8;
 	width:48px;
 	height:17px;
@@ -117,7 +117,7 @@ box-shadow:         0px 0px 3px 0px rgba(50, 50, 50, 0.6);
 	text-align:center;
 	cursor:pointer;
 }
-#box_button:hover{
+.box_button:hover{
 	opacity:0.8;
 }
 
@@ -130,6 +130,17 @@ box-shadow:         0px 0px 3px 0px rgba(50, 50, 50, 0.6);
 	border-bottom-left-radius: 3px;
 }
 
+.hubbox_button_left{
+	background:#666;
+	padding:9px;
+	line-height:15px;
+	border-bottom:1px solid #ccc;
+	cursor:pointer;
+}
+.hubbox_button_img{
+	height:22px;
+}
+
 .box_button_right{
 	-webkit-border-top-right-radius: 3px;
 	-moz-border-top-right-radius: 3px;
@@ -139,18 +150,18 @@ box-shadow:         0px 0px 3px 0px rgba(50, 50, 50, 0.6);
 	border-bottom-right-radius: 3px;
 }
 
-#box_button_holder{
+.box_button_holder{
 	width:190px;
 	margin:0 auto;
 	margin-top:5px;
 }
 
-#post_activity_single{
+.post_activity_single{
 	width:200px;
 	min-height:30px;
 	overflow:visible;
 }
-#post_activity_single_date{
+.post_activity_single_date{
 	font-size:11px;
 	height:10px;
 	float:left;

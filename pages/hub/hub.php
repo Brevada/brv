@@ -276,8 +276,11 @@ $message = $active == 'no' ? "You're Almost There!" : 'Membership Expired';
 
 </div>
 
-
-
+<!-- Delete Dialog Box -->
+<?php $this->addResource('/css/jquery-ui.min.css'); ?>
+<div id='dialog-confirm-delete' title='Delete Post' post-id='' class='dialog-box'>
+	 <p><span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;"></span>Are you sure you would like to delete this post?</p>
+</div>
 
 <?php $this->add(new View('../pages/hub/includes/tour.php', array('url_name' => $url_name, 'logins' => $logins))); ?>
 <br style="clear:both;" />

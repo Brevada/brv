@@ -30,13 +30,10 @@ if(isset($_GET['l'])){
 	}
 }
 
-$existing_address=false;
-if(isset($_GET['email']) && $_GET['email'] != 'false'){
-	$existing_address=true;
-}
+$existing_address = isset($_GET['email']) && $_GET['email'] != 'false';
 ?>
 <div style="width:100%; margin-top:100px; height:370px;  background-repeat:repeat-y; background-repeat:repeat-x;">
-		<div id="signup_box" style="width:800px; margin:0 auto;">
+		<div id="signup_box">
 		<a href="/index.php" ><img src="/images/brevada.png" style="margin:0 auto; width:150px; outline:none;" /></a>
 			<form method="post" action="/overall/insert/insert_user.php">
 				<div id='part1'>
@@ -55,7 +52,7 @@ if(isset($_GET['email']) && $_GET['email'] != 'false'){
 					<input class="in" id="password2" type="password" name="password2" placeholder="Retype Password"  style="color:#555;" />
 					<input class="in" type="text" name="name" placeholder="Your Company Name"  style="background:#eee; opacity:1;">
 					<input type="hidden" name="level" value="<?php echo $level; ?>" />
-					<input id="submit" class="button4" type="submit" name="submit" value="Sign Up" />
+					<button id="back" class="button4">Back</button><input id="submit" class="button4" type="submit" name="submit" value="Sign Up" />
 				</div>
 			</form>
 			<br />

@@ -123,6 +123,54 @@ $(document).ready(function(){
 			}
 		});
 	}
+
+	
+    $('.hub_left_bar').hover( function() {
+        var toggleWidth;
+		if ($(".hub_left_bar").width() == 300) {
+			$('.hub_left_bar').animate({ width: '150px'}, 400);
+		} else {
+			$('.hub_left_bar').animate({ width: '300px'}, 400);
+		}
+    });
+	
+	$("#more_open").hover(function(){
+	  $( ".more_list" ).toggle();
+	});
+
+	$(".more_list").hover(function(){
+	  $( ".more_list" ).toggle();
+	});
+
+	$('#more_open').hover(function(){
+		this.style.opacity = this.style.opacity == 0.3 ? 1 : 0.3;
+	});
+	
+	$('#dialog-confirm-delete').dialog({
+		autoOpen: false,
+		resizable: false,
+		height: 230,
+		modal: true,
+		buttons: {
+			"Delete": function(){
+				var postid = $(this).attr('post-id');
+				if(typeof postid !== 'undefined' && postid.length > 0){
+					$.get('/overall/generic_delete.php?db=posts&nr=nr&id='+postid, function(data){
+						if(data == '1'){
+							//You can do an animation here.
+							$('#hbox'+postid).remove();
+						}
+					});
+				}
+				$(this).attr('post-id', '');
+				$(this).dialog('close');
+			},
+			Cancel: function(){
+				$(this).attr('post-id', '');
+				$(this).dialog('close');
+			}
+		}
+	});
 	
 });
 
@@ -152,38 +200,3 @@ function showSteps(){
 		});
 	});
 }
-
-
-
-$(document).ready( function(){
-    $('.hub_left_bar').hover( function() {
-        var toggleWidth;
-		if ($(".hub_left_bar").width() == 300) {
-			$('.hub_left_bar').animate({ width: '150px'}, 400);
-		} else {
-			$('.hub_left_bar').animate({ width: '300px'}, 400);
-		}
-		
-		
-    });
-    
-    
-
-});
-
-$( document ).ready(function() {
-
-$("#more_open").hover(function(){
-  $( ".more_list" ).toggle();
-});
-
-$(".more_list").hover(function(){
-  $( ".more_list" ).toggle();
-});
-
-$('#more_open').hover(function(){
-	this.style.opacity = this.style.opacity == 0.3 ? 1 : 0.3;
-});
-
-
-});
