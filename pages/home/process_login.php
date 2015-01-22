@@ -18,7 +18,7 @@ while($row=$query->fetch_assoc()){
 		if(Brevada::IsMobile()){
 			$dest = '/mobile/hub_mobile.php';
 		} else {
-			$dest = '/hub/hub.php';
+			$dest = '/hub/';
 		}
    }
 }

@@ -9,6 +9,7 @@ $extension = $this->getParameter('extension');
 $post_name = $this->getParameter('post_name');
 $post_description = $this->getParameter('post_description');
 $active = $this->getParameter('active');
+$level = $this->getParameter('level');
 ?>
 <div class="hbox<?php echo $active=='yes' ? '' : ' hbox-inactive'; ?>" id="hbox<?php echo $post_id; ?>">
 <?php
@@ -78,8 +79,9 @@ if($count > 0){
 			</form>
 		</div>
 		<!-- END EDIT POST -->
-		
 			<br style="clear:both;" />
+			<?php if($level>1){ ?>
+				<!-- ACTIVE ACCOUNT, DISPLAY RESULTS -->	
 				<div class="hbox_average" class="left">
 					<?php
 						$color = "#EDC812";
@@ -91,10 +93,23 @@ if($count > 0){
 					<br />
 					
 				</div>
-				<br style="clear:both;" />
+			<?php } else { ?>
+				<!-- INACTIVE ACCOUNT, HIDE RESULTS -->
+				<div class="hbox_average" class="left">
+					<strong>Upgrade account</strong> to view your results.
+				</div>
+			<?php } ?>
+			<br style="clear:both;" />
 	</div>
 	
-	<div class="toggle_width" post-id='<?php echo $post_id; ?>'>&gt;</div>
+	<?php if($level>1){ ?>
+			<!-- ACTIVE ACCOUNT, DISPLAY EXPAND -->	
+			<div class="toggle_width" post-id='<?php echo $post_id; ?>'>&gt;</div>
+	<?php } else { ?>
+			<!-- INACTIVE ACCOUNT, HIDE EXPAND -->
+			<div class="toggle_width" style="cursor:not-allowed;">&gt;</div>
+	<?php } ?>
+	
 	
 	<div class="hbox_news">
 		<div class="post_activity_main_left">

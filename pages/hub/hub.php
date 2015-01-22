@@ -50,8 +50,8 @@ $logins++;
 
 Database::query("UPDATE users SET logins='{$logins}' WHERE id='{$user_id}';");
 
-if($level == '0' && $level == '1' && $active == 'no'){
-	Brevada::Redirect('/hub/payment.php');
+if($level != '0' && $level != '1' && $active == 'no'){
+	Brevada::Redirect('/hub/payment/payment.php');
 }
 
 $query=Database::query("SELECT * FROM codes WHERE referral_user='{$user_id}' LIMIT 1");
@@ -69,6 +69,8 @@ if($corporate == '1'){
 if($expiry_date < date("Y-m-d")){
 	$active='no';
 }
+
+
 
 $message = $active == 'no' ? "You're Almost There!" : 'Membership Expired';
 ?>
@@ -101,20 +103,24 @@ $message = $active == 'no' ? "You're Almost There!" : 'Membership Expired';
 	<input class="list_button" value="Return To Corporate" type="submit" style="float:right;" />
 	</form>
 	<?php } ?>
+	<a href="http://brevada.com/<?php echo $url_name; ?>" target="_TOP"><div class="list_button">Your Brevada Page</div></a>
 	<a class="open_modal" id="modal_updateinfo"><div class="list_button">Update Info</div></a>
 	<a class="open_modal" id="modal_changepic"><div class="list_button">Change Picture</div></a>
 	
-	<a href="/home/logout.php"><div class="list_button" style="float:right;">Logout</div></a>
 	<div class="list_button" id="takeTheTour" style="float:right;">Tour</div>
+	<a href="/home/logout.php"><div class="list_button" style="float:right; background:#333; color:#fff;">Logout</div></a>
 	
+	<br style="clear:both; "/>
 	
-	<div class="right_pad"> 
+	<!--
+	<div style="margin-top:15px;"> 
 		<div class="head3">
 			Referral Code: <strong><?php echo $referral_code; ?></strong>
 			<br />
 			Referral Credit: <strong><?php echo $referral_credits; ?></strong>
 		</div>
 	</div>
+	-->
 	
 </div>
 
@@ -132,7 +138,9 @@ $message = $active == 'no' ? "You're Almost There!" : 'Membership Expired';
             <div class="head2"><?php echo $type; ?></div>
         </div>
         <div class="right_pad">
+            <a href="http://brevada.com/<?php echo $url_name; ?>" target="_TOP">
             <div class="head2">Your URL: brevada.com/<?php echo $url_name; ?></div>
+            </a>
             <div class="head2.06">
             	Your QR Code:
             	<a href="/user_data/qr/<?php echo $user_id; ?>.png" target="_TOP">View</a>
@@ -150,38 +158,44 @@ $message = $active == 'no' ? "You're Almost There!" : 'Membership Expired';
 <div class="hub_container"> 
 
 <!-- LEFT SIDE -->
-<div class="hub_left">
+<div  class="hub_left">
 
 <div class="hub_left_bar hub_left_bar_top">
 
-	<div style="height:50px; cursor:default; opacity:1; background:#333; border-bottom:1px solid #000; background:url('/user_data/user_images/<?php  echo $user_id; ?>.<?php echo $user_extension; ?>'); background-size:100%; background:#FF2B2B;
+	<div style="height:50px; cursor:default; opacity:1;  border-bottom:1px solid #000;  background-size:100%; background:#444;
 	background-image:       linear-gradient(0deg, transparent 24%, rgba(0, 0, 0, .1) 25%, rgba(0, 0, 0, .1) 26%, transparent 27%, transparent 74%, rgba(0, 0, 0, .1) 75%, rgba(0, 0, 0, .1) 76%, transparent 77%, transparent), linear-gradient(90deg, transparent 24%, rgba(0, 0, 0, .1) 25%, rgba(0, 0, 0, .1) 26%, transparent 27%, transparent 74%, rgba(0, 0, 0, .1) 75%, rgba(0, 0, 0, .1) 76%, transparent 77%, transparent);
   background-size:30px 30px;">
 		<!-- LEAVE EMPTY -->
 	</div>
 	
 		
-	<div style="padding:5px 5px; height:50px; cursor:default; opacity:1; background:rgba(0,0,0,0.3); margin-top:-50px;">
+	<div id="tourStart" style="padding:5px 5px; height:50px; cursor:default; opacity:1; background:rgba(0,0,0,0); margin-top:-50px;">
 		<div class="info_holder">
         	<div class="head1" style="height:20px; overflow:hidden;"><?php echo $name; ?></div>
         </div>
     	<br />
         <div class="info_holder">
-        	<div class="button2">brevada.com/<?php echo $url_name; ?></div>
+        	<a href="http://brevada.com/<?php echo $url_name; ?>" target="_TOP">
+        	<div class="button2" style="width:100%; color:#fff; margin-top:2px;
+
+        	">
+        	<font style="font-size:9px;">brevada.com/</font><strong><?php echo $url_name; ?></strong></div>
+        	</a>
         </div>
 		<br style="clear:both;" />
 	</div>
 
-	
-	<div class="leftside_button">
+	<a href="includes/marketing/promo_white.php" target="_BLANK">
+	<div id="print" class="leftside_button">
 			<img class="leftside_button_img" src="<?php echo p('HTML','path_hubicons','paper.png'); ?>" />
 			<br />
 			Share by Print
 	</div>
+	</a>
 	
 	
 	<a href="http://www.facebook.com/sharer/sharer.php?u=http%3A%2F%2Fwww.brevada.com%2F<?php echo $url_name; ?>" target="_blank">
-	<div class="leftside_button">
+	<div id="facebook" class="leftside_button">
 			<img class="leftside_button_img" src="<?php echo p('HTML','path_hubicons','facebook.png'); ?>" />
 			<br />
 			Share to Facebook
@@ -189,24 +203,56 @@ $message = $active == 'no' ? "You're Almost There!" : 'Membership Expired';
 	</a>
 	
 	<a href="http://twitter.com/share?text=Give us feedback!&url=http://brevada.com/<?php echo $url_name; ?>" title="Share on Twitter" rel="nofollow" target="_blank">
-	<div class="leftside_button">
+	<div id="twitter" class="leftside_button">
 			<img class="leftside_button_img" src="<?php echo p('HTML','path_hubicons','twitter.png'); ?>" />
 			<br />
 			Share to Twitter
 	</div>
 	</a>
 	
-	<div class="leftside_button">
+	<?php if($level>1){ ?>
+	<div id="advanced" class="leftside_button">
 			<img class="leftside_button_img" src="<?php echo p('HTML','path_hubicons','widgets.png'); ?>"/>
 			<br />
 			Advanced Tools
 	</div>
+	<?php }  else {?>
+	<div class="leftside_button" style="opacity:0.3; cursor:not-allowed;">
+			<img class="leftside_button_img" src="<?php echo p('HTML','path_hubicons','widgets.png'); ?>"/>
+			<br />
+			Advanced Tools
+	</div>
+	<?php } ?>
 	
-	<br />
+	<a class="open_modal" id="modal_widgets">
+	<div id="advancedIntegration" class="leftside_button hidden" >
+			<img class="leftside_button_img" src="<?php echo p('HTML','path_hubicons','share.png'); ?>"/>
+			<br />
+			Website Integration
+	</div>
+	</a>
 	
-	<div class="promo_img"><img  style="width:100%;" src="/images/promo_bounce.png" /></div>
+	<a class="open_modal" id="modal_email">
+	<div id="advancedEmail" class="leftside_button hidden">
+			<img class="leftside_button_img" src="<?php echo p('HTML','path_hubicons','email.png'); ?>"/>
+			<br />
+			Email Gathering
+	</div>
+	</a>
 	
-	<div class="promo_img"><img style="width:100%;" src="/user_data/qr/<?php echo $user_id; ?>.png" /></div>
+	<br style="clear:both;" />
+	
+	<a href="includes/marketing/promo_white.php" target="_BLANK">
+	<div class="promo_img">
+		<img  style="width:100%;" src="/images/promo_bounce.png" />
+	</div>
+	</a>
+	
+	<a href="/user_data/qr/<?php echo $user_id; ?>.png" target="_TOP">
+	<div class="promo_img">
+		<img style="width:100%;" src="/user_data/qr/<?php echo $user_id; ?>.png" />
+	</div>
+	</a>
 	
 	
 </div>
@@ -218,7 +264,6 @@ $message = $active == 'no' ? "You're Almost There!" : 'Membership Expired';
 
 <!-- RIGHT SIDE -->
 <div class="hub_right_section">
-
 	<div id="logo_banner">
 				<img id="logo" src="/images/quote.png" />
 				<div id="more_open">
@@ -226,6 +271,11 @@ $message = $active == 'no' ? "You're Almost There!" : 'Membership Expired';
 				</div>
 				<br style="clear:both;" />
 	 </div>
+	 
+	 <?php if($level<=1){ ?>
+	  <br />
+	  <?php $this->add(new View('../pages/hub/includes/upgrade_button.php', array('upgrade_message' => 'Upgrade Account'))); ?>
+		<?php } ?>	
 	 
 	 <div class="hub_right_toolbar">
 	 	
@@ -250,6 +300,10 @@ $message = $active == 'no' ? "You're Almost There!" : 'Membership Expired';
 	 
 	 
 	 <div id="box_holder">
+	 
+	 <?php  include'posts/new_post.php'; ?>
+	 <div id="showNew" class="add_new">+</div>
+	 
 	 <?php
 	$query=Database::query("SELECT * FROM posts WHERE user_id='{$user_id}' ORDER BY id DESC");
 	
@@ -264,11 +318,11 @@ $message = $active == 'no' ? "You're Almost There!" : 'Membership Expired';
 		$post_extension=$rows['extension'];
 		$post_description=$rows['description'];
 
-		$this->add(new View('../pages/hub/posts/hub_box.php', array('post_id' => $post_id, 'active' => $active, 'post_name' => $post_name, 'post_extension' => $post_extension, 'post_description' => $post_description, 'extension' => $extension)));
+		$this->add(new View('../pages/hub/posts/hub_box.php', array('post_id' => $post_id, 'active' => $active, 'post_name' => $post_name, 'post_extension' => $post_extension, 'post_description' => $post_description, 'extension' => $extension, 'level' => $level)));
 	}
 ?>
-	<div class="add_new">+</div>
-     <br style="clear:both;" />
+	
+    <br style="clear:both;" />
      </div>
 </div>
 

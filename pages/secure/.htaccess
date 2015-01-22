@@ -1,0 +1,4 @@
+AuthType Basic
+AuthName "secure"
+AuthUserFile "/home/brevadat/.htpasswds/public_html/pages/secure/passwd"
+require valid-user

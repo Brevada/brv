@@ -1,7 +1,9 @@
 $(document).ready(function(){
 	$(".editHead").click(function(){
 		var postid = $(this).attr('postid');
-		$("#editContent_" + postid).slideToggle();
+		$("#editContent_" + postid).slideToggle("fast", function() {
+   			 // Animation complete.
+  		});
 		if ($("#editSign_" + postid).text() == "+"){
 			$("#editSign_" + postid).text("-")
 		} else {
@@ -11,8 +13,8 @@ $(document).ready(function(){
 	
     $('.toggle_width').click( function() {
 		var postid = $(this).attr('post-id');
-        var toggleWidth = $("#hbox"+postid).width() == 250 ? "543px" : "250px";
-        var toggleContent = $("#hbox"+postid).width() == 250 ? "&lt;" : "&gt;";
+        var toggleWidth = $("#hbox"+postid).width() == 230 ? "503px" : "230px";
+        var toggleContent = $("#hbox"+postid).width() == 230 ? "&lt;" : "&gt;";
         $(this).html(toggleContent);
         $('#hbox'+postid).animate({ width: toggleWidth},80);
     });

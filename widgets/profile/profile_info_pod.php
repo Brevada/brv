@@ -15,7 +15,6 @@ $type = $this->getParameter('type');
 	</div>
 	<div id="left_data_info" style="float:left;">
 		<div id="left_name"><?php echo $name; ?></div>
-		<hr style="border:1px solid #efefef;" />
 		<div id="left_description"><?php echo $type; ?></div>
 	</div>
 	<br style="clear:both;" />

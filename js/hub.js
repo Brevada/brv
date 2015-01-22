@@ -2,7 +2,18 @@ $(document).ready(function(){
 	$("#showsteps").click( function() {
 		showSteps();
 	});
-
+	
+	$("#showNew").click(function() {
+		$("#showNew").fadeOut("fast");
+		$("#newPost").fadeIn("fast");
+	});
+	
+	$("#advanced").click(function() {
+		$("#advanced").fadeOut(0);
+		$("#advancedIntegration").fadeIn("fast");
+		$("#advancedEmail").fadeIn("fast");
+	});
+	
 	$(".openModal").click(function() {
 		$("#generic_modal").fadeIn("fast");
 	});
@@ -124,7 +135,8 @@ $(document).ready(function(){
 		});
 	}
 
-	
+	/*
+	EXPAND BAR ON HOVER
     $('.hub_left_bar').hover( function() {
         var toggleWidth;
 		if ($(".hub_left_bar").width() == 300) {
@@ -133,6 +145,7 @@ $(document).ready(function(){
 			$('.hub_left_bar').animate({ width: '300px'}, 400);
 		}
     });
+	*/
 	
 	$("#more_open").hover(function(){
 	  $( ".more_list" ).toggle();
