@@ -8,7 +8,7 @@ $url_name=Brevada::validate($_GET['name'], VALIDATE_DATABASE);
 
 //Test for mobile
 if(Brevada::IsMobile()){
-	Brevada::Redirect("/mobile/profile.php?name={$url_name}");
+	Brevada::Redirect("/mobile/profile/profile.php?name={$url_name}");
 }
 
 $geo = Brevada::GetGeo();
@@ -89,10 +89,12 @@ $this->addResource("<meta property='og:description' content='Give {$name} Feedba
 			</div>
 			</div>
 			<?php } ?>
+			<!--
 			<div id="side_box" style="width:220px; min-height:30px; max-height:350px;  overflow:scroll;overflow-x:hidden; ">
 				<div id="suggestion_box"><?php $this->add(new View('../widgets/profile/suggestion_box.php', array('id' => $id))); ?></div>
 				<div id="thanks_suggestion" class="thanks_suggestion">Submitted</div>
 			</div>
+			-->
 		</div>
 	</div>
  	

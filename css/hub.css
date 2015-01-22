@@ -21,7 +21,9 @@
 	width:100%;
 	margin: 0 auto;
 }
-
+.hidden{
+	display:none;
+}
 #hub_side{
 	background:#fff;
 	border: 1px solid #dcdcdc;
@@ -363,10 +365,8 @@ box-shadow:         0px 0px 5px 0px rgba(50, 50, 50, 0.6);
 	z-index:99;
 	right:5px;
 	top:50px;
-	padding:5px;
 	float:right;
-	width:190px;
-	height:200px;
+	width:290px;
 	background:#fff;
 	border: 0px solid #dcdcdc;
 	display:none;
@@ -378,17 +378,22 @@ box-shadow:         0px 0px 5px 0px rgba(50, 50, 50, 0.6);
 	border-bottom-right-radius: 3px;
 	border-bottom-left-radius: 3px;
 	
--webkit-box-shadow: 0px 0px 5px 0px rgba(50, 50, 50, 0.5);
--moz-box-shadow:    0px 0px 5px 0px rgba(50, 50, 50, 0.5);
-box-shadow:         0px 0px 5px 0px rgba(50, 50, 50, 0.5);
+-webkit-box-shadow: 0px 0px 2px 0px rgba(50, 50, 50, 0.5);
+-moz-box-shadow:    0px 0px 2px 0px rgba(50, 50, 50, 0.5);
+box-shadow:         0px 0px 2px 0px rgba(50, 50, 50, 0.5);
 	
 }
 .list_button{
 	padding:10px;
 	width:100%;
 	font-size:12px;
-	color:#555;
-	border-bottom:1px solid #dcdcdc;
+	background:#666;
+	color:#FFF;
+	cursor:pointer;
+	border-bottom:1px solid #555;
+}
+.list_button:hover{
+	opacity:0.75;
 }
 .app{
 	height:200px;
@@ -659,7 +664,9 @@ border-radius: 3px;
 -moz-box-shadow:    2px 0px 3px 0px rgba(50, 50, 50, 0.7);
 box-shadow:         2px 0px 3px 0px rgba(50, 50, 50, 0.7);
 
-	background: #333;
+	 background-size:100%; background:#444;
+	background-image:       linear-gradient(0deg, transparent 24%, rgba(0, 0, 0, .1) 25%, rgba(0, 0, 0, .1) 26%, transparent 27%, transparent 74%, rgba(0, 0, 0, .1) 75%, rgba(0, 0, 0, .1) 76%, transparent 77%, transparent), linear-gradient(90deg, transparent 24%, rgba(0, 0, 0, .1) 25%, rgba(0, 0, 0, .1) 26%, transparent 27%, transparent 74%, rgba(0, 0, 0, .1) 75%, rgba(0, 0, 0, .1) 76%, transparent 77%, transparent);
+  background-size:30px 30px;
 }
 .hub_left_bar_top{
 
@@ -667,9 +674,14 @@ box-shadow:         2px 0px 3px 0px rgba(50, 50, 50, 0.7);
 .promo_img{
 	width:90%;
 	margin:0 auto;
+	margin-top:15px;
+	opacity:0.85;
+	cursor:pointer;
+}
+.promo_img:hover{
+	opacity:1;
 }
 .leftside_button{
-	background:#333;
 	float:left;
 	padding:10px;
 	line-height:20px;
@@ -677,12 +689,18 @@ box-shadow:         2px 0px 3px 0px rgba(50, 50, 50, 0.7);
 	text-align:center;
 	color:#fff;
 	font-size:12px;
-	border-bottom:1px solid #000;
+	border-bottom:1px solid #333;
+	 
+	 background:#444;
+	/*
+	background-image:       linear-gradient(0deg, transparent 24%, rgba(0, 0, 0, .1) 25%, rgba(0, 0, 0, .1) 26%, transparent 27%, transparent 74%, rgba(0, 0, 0, .1) 75%, rgba(0, 0, 0, .1) 76%, transparent 77%, transparent), linear-gradient(90deg, transparent 24%, rgba(0, 0, 0, .1) 25%, rgba(0, 0, 0, .1) 26%, transparent 27%, transparent 74%, rgba(0, 0, 0, .1) 75%, rgba(0, 0, 0, .1) 76%, transparent 77%, transparent);
+  background-size:30px 30px;
+  */
 	
 }
 .leftside_button:hover{
 	opacity:0.8;
-	color:#333;
+	color:#ddd;
 }
 .leftside_button_left{
 
@@ -750,14 +768,14 @@ display:none;
 	background:#EEE;
 }
 .add_new{
-	width:250px;
+	width:230px;
 	height:171px;
 	line-height:151px;
 	float:left;
-	margin-left:4%;
+	margin-left:3%;
 	margin-top:20px;
 	overflow:hidden;
-	background:#333;
+	background:#666;
 	font-size:100px;
 	text-align:center;
 	color:#FFF;
@@ -772,7 +790,7 @@ border-radius: 6px;
 box-shadow:         0px 0px 3px 0px rgba(50, 50, 50, 0.6);
 }
 .add_new:hover{
-	background:#4EAF0E;
+	background:#FF2B2B;
 }
 
 

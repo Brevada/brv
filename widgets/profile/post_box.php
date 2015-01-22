@@ -64,7 +64,7 @@ if($checkQuery->num_rows==0){
 <?php
 	}
 } else { ?>
-	<div class="appear" id="appear_bar_<?php echo $post_id; ?>"  align="center" style="width:100%; border-top:0px solid #dcdcdc;">Already rated.</div>	
+	<div class="appear" id="appear_bar_<?php echo $post_id; ?>"  align="center" style="width:100%; font-size:12px; color:#dcdcdc; border-top:0px solid #dcdcdc;">Already rated.</div>	
 <?php } ?>
 </div>
 <div  id="post_box_comment_<?php echo $post_id; ?>" style="width:100%; border: 1px solid #dcdcdc; margin-top:0px; border-top:0px; border-radius:0px; ">

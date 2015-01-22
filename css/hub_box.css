@@ -37,11 +37,11 @@ a div.box_button{
 
 .hbox{
 	/*width:86%;*/
-	width:250px;
+	width:230px;
 	height:171px;
 	border:0px solid #dcdcdc;
 	float:left;
-	margin-left:4%;
+	margin-left:3%;
 	margin-top:20px;
 	background:none;
 	overflow:hidden;
@@ -87,7 +87,7 @@ a div.box_button{
 	font-family:helvetica;
 	color:#333;
 	background:#FFF;
-	width:190px;
+	width:170px;
 	height: 171px;
 	border-right:1px solid #EEE;
 	border-left:1px solid #666;
@@ -173,7 +173,7 @@ a div.box_button{
 	height:210px;
 	text-align:center;
 	padding:5px;
-	background:#FFF;
+	background:#DDD;
 	color:#CCC;
 	text-align:center;
 	cursor:pointer;

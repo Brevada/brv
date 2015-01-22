@@ -4,7 +4,7 @@ Controller
 //**/
 
 define('ROOT_PATH', '/');
-define('URL', 'http://brevadatesting.com/');
+define('URL', 'http://brevada.com/');
 
 session_start();
 //session_regenerate_id();
@@ -56,7 +56,7 @@ if(!file_exists($viewPath)){
 		$viewPath = "../pages/profile/scores/scores.php";
 	} else if(preg_match('#([a-z0-9_\-\s]+)/?#i', $page, $matches)){
 		$_GET['name'] = $matches[1];
-		$viewPath = "../pages/profile/profileloader.php";
+		$viewPath = "../pages/profile/profile.php";
 	} else {
 		$viewPath = '../pages/404.php';
 	}

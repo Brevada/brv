@@ -12,19 +12,19 @@ $reviewer = $this->getParameter('reviewer');
 
 <div id="holder<?php echo $post_id; ?>" class='holder' onclick="disappearRating('<?php echo $post_id; ?>')" style="width:100%; white-space:nowrap; overflow:hidden; background: white; text-align:left;">
 
-	<a href="#" onclick="insertRating('1', '<?php echo $post_id; ?>', '<?php echo $ip; ?>', '<?php echo $country; ?>', '<?php echo $user_id; ?>', '<?php echo $reviewer; ?>'); return false;">
+	<a href="#" onclick="insertRating('20', '<?php echo $post_id; ?>', '<?php echo $ip; ?>', '<?php echo $country; ?>', '<?php echo $user_id; ?>', '<?php echo $reviewer; ?>'); return false;">
 		<div class='star star-1' squarenum='1'></div>
 	</a>
-	<a href="#" onclick="insertRating('2', '<?php echo $post_id; ?>', '<?php echo $ip; ?>', '<?php echo $country; ?>', '<?php echo $user_id; ?>', '<?php echo $reviewer; ?>'); return false;">
+	<a href="#" onclick="insertRating('40', '<?php echo $post_id; ?>', '<?php echo $ip; ?>', '<?php echo $country; ?>', '<?php echo $user_id; ?>', '<?php echo $reviewer; ?>'); return false;">
 		<div class='star star-2' squarenum='2'></div>
 	</a>
-	<a href="#" onclick="insertRating('3', '<?php echo $post_id; ?>', '<?php echo $ip; ?>', '<?php echo $country; ?>', '<?php echo $user_id; ?>', '<?php echo $reviewer; ?>'); return false;">
+	<a href="#" onclick="insertRating('60', '<?php echo $post_id; ?>', '<?php echo $ip; ?>', '<?php echo $country; ?>', '<?php echo $user_id; ?>', '<?php echo $reviewer; ?>'); return false;">
 		<div class='star star-3' squarenum='3'></div>
 	</a>
-	<a href="#" onclick="insertRating('4', '<?php echo $post_id; ?>', '<?php echo $ip; ?>', '<?php echo $country; ?>', '<?php echo $user_id; ?>', '<?php echo $reviewer; ?>'); return false;">
+	<a href="#" onclick="insertRating('80', '<?php echo $post_id; ?>', '<?php echo $ip; ?>', '<?php echo $country; ?>', '<?php echo $user_id; ?>', '<?php echo $reviewer; ?>'); return false;">
 		<div class='star star-4' squarenum='4'></div>
 	</a>
-	<a href="#" onclick="insertRating('5', '<?php echo $post_id; ?>', '<?php echo $ip; ?>', '<?php echo $country; ?>', '<?php echo $user_id; ?>', '<?php echo $reviewer; ?>'); return false;">
+	<a href="#" onclick="insertRating('100', '<?php echo $post_id; ?>', '<?php echo $ip; ?>', '<?php echo $country; ?>', '<?php echo $user_id; ?>', '<?php echo $reviewer; ?>'); return false;">
 		<div class='star star-5' squarenum='5'></div>
 	</a>
 	

@@ -11,6 +11,7 @@ $user=user($user_id);
 				<span class="text_clean" style="color:#fff;">Generate this promo</span>
 			</div>
  		</a>
+      
         <a href="/hub/includes/marketing/promo_white.php" target="_BLANK">
  		<img id="promo_image" src="/images/promo_rectangleWhite.png" />		
  			<div id="promo_open" style="background:#333;">

@@ -1,15 +1,15 @@
 $(document).ready(function(){
 	$('#next').click(function(e){
 		e.preventDefault();
-		$('#part1').fadeOut();
-		$('#part2').fadeIn();
+		$('#part1').fadeOut(0);
+		$('#part2').fadeIn(0);
 		return false;
 	});
 	
 	$('#back').click(function(e){
 		e.preventDefault();
-		$('#part2').fadeOut();
-		$('#part1').fadeIn();
+		$('#part2').fadeOut(0);
+		$('#part1').fadeIn(0);
 		return false;
 	});
 					
@@ -36,7 +36,7 @@ window.onload=function () {
 function validatePassword(){
 	var pass1=$("#password2").val();
 	var pass2=$("#password1").val();
-	if(pass1==pass2){
+	if(pass1!=pass2){
 		document.getElementById("password2").setCustomValidity("Passwords Don't Match");
 	} else {
 		document.getElementById("password2").setCustomValidity('');  

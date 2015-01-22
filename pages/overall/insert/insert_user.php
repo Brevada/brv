@@ -113,7 +113,7 @@ if(empty($email) || empty($password) || empty($name) || $email == 'Email' || $pa
 		
 		//REDIRECTIONS:
 		if($level==1){
-			$dest = '/hub/hub.php';
+			$dest = '/hub/';
 		}
 		else{
 			$dest = '/hub/payment/payment.php';

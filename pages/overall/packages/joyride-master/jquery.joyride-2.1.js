@@ -14,7 +14,7 @@
   var defaults = {
       'version'              : '2.1',
       'tipLocation'          : 'bottom',  // 'top' or 'bottom' in relation to parent
-      'nubPosition'          : 'auto',    // override on a per tooltip bases
+      'nubPosition'          : 'top',    // override on a per tooltip bases
       'scroll'               : true,      // whether to scroll to tips
       'scrollSpeed'          : 300,       // Page scrolling speed in milliseconds
       'timer'                : 0,         // 0 = no timer , all other numbers = timer in milliseconds

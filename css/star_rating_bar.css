@@ -32,7 +32,7 @@ div.star-5 { background-color: #4EAF0E; background-size: 30%;}
 	margin: 0px;
 	position:relative;
 	z-index:10;
-	box-shadow: 0px 2px 5px #CCC, 0px -2px 5px #CCC;
+	/*box-shadow: 0px 2px 5px #CCC, 0px -2px 5px #CCC; */
 }
 
 .holder a{

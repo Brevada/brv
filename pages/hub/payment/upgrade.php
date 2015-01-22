@@ -75,7 +75,6 @@ $this->addResource('/css/upgrade.css');
 						<br />
 						Unlimited Aspects
 						<br />
-						1 Additional User
 					</div>
 					<div id="pricing_info" class="pricing_grey">
 						Brevada Page <span class="lighter">Desktop and Mobile</span> &nbsp;<a href="../../..#page" target="_BLANK"><i class="foundicon-plus"></i></a>
@@ -92,9 +91,6 @@ $this->addResource('/css/upgrade.css');
 						<br />
 						Website Integration &nbsp;<a href="../../..#widgets" target="_BLANK"><i class="foundicon-plus"></i></a>
 						<br />
-						Tablet Voting Station &nbsp;<a href="../../..#voting" target="_BLANK"><i class="foundicon-plus"></i></a>
-						<br />
-						Brevada Approved &nbsp;<a href="../../approved" target="_BLANK"><i class="foundicon-plus"></i></a>
 					</div>
 					<div id="pricing_info">
 						<span class="emphasis">24/7</span> Email and Phone Support
@@ -117,20 +113,18 @@ $this->addResource('/css/upgrade.css');
 						</div>
 					</div>
 					<div id="pricing_bottom">
-						<a href="process_upgrade.php?l=4"><div id="pricing_button">Choose</div></a>
+						Call <strong>1 (844) BREVADA</strong> To Activate
 					</div>
 					<div id="pricing_info">
 						<span class="emphasis">Unlimited</span> Responses
 						<br />
 						Unlimited Aspects
 						<br />
-						4 Additional Users
-						<br />
 						<span class="emphasis">Personal Brevada Consultant</span>
 						<ul style="font-size:10px; margin-left:20px;">
-							<li>Account Set Up</li>
+							<li>Account Set Up With Consultant</li>
 							<li>Custom Generated Marketing Material</li>
-							<li>Feedback Presence Consulting</li>
+							<li>Feedback Consulting</li>
 							<li>Monthly Phone Meetings</li>
 						</ul>
 					</div>
@@ -148,10 +142,6 @@ $this->addResource('/css/upgrade.css');
 						E-mail Feedback Acquisition &nbsp;<a href="../../..#email" target="_BLANK"><i class="foundicon-plus"></i></a>
 						<br />
 						Website Integration &nbsp;<a href="../../..#widgets" target="_BLANK"><i class="foundicon-plus"></i></a>
-						<br />
-						Tablet Voting Station &nbsp;<a href="../../..#voting" target="_BLANK"><i class="foundicon-plus"></i></a>
-						<br />
-						Brevada Approved &nbsp;<a href="../../approved" target="_BLANK"><i class="foundicon-plus"></i></a>
 					</div>
 					<div id="pricing_info">
 						<span class="emphasis">24/7</span> Email and Phone Support

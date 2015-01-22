@@ -10,7 +10,7 @@ $this->addResource('/css/financials.css');
 <strong>Users</strong><br />
 
 <?php
-$userQuery=Database::query("SELECT `name`, `id`, `trial`, `email`, `promo_code`, `expiry_date`, `sub_account`, `active` FROM users WHERE sample = ORDER by id DESC");
+$userQuery=Database::query("SELECT `name`, `id`, `trial`, `email`, `promo_code`, `expiry_date`, `sub_account`, `active` FROM users ORDER by id DESC");
 
 if($userQuery->num_rows == 0) {
 	echo "<br /><span style='font-size:12px; color:#777; font-family:helvetica;'><center>No Data.</center></span>";
@@ -27,6 +27,7 @@ if($userQuery->num_rows == 0) {
 		
 		$price=$promo_code == 'free' || $trial == 1 ? 0 : 199.99;
 		
+		/*
 		if($sub_account == 1){
 			$price='Sub-Account';
 		} else if(!empty($promo_code) && $promo_code != 'none'){
@@ -36,10 +37,12 @@ if($userQuery->num_rows == 0) {
 				$price=$codeRow['value'];
 			}
 		}
+		*/
 		
 		//Start Print HTML for Users
 		?>
 		
+
 		<div id="financial_box">
 			<div id="left">
 				<strong><?php echo $name; ?></strong><br />
@@ -75,7 +78,7 @@ if($userQuery->num_rows == 0) {
 			</div>
 			<br style="clear:both;" />
 		</div>
-		
+
 		<?php
 		//End Print HTML for Users
 	}
@@ -107,18 +110,18 @@ if($userQuery->num_rows == 0) {
 	<br style="clear:both;" />
 
 <?php
-	$codeQuery=Database::query("SELECT `id`, `code`, `value`, `uses`, `level`, `duration_months` FROM codes ORDER by id DESC");
+	$codeQuery=Database::query("SELECT `id`, `code`, `value`, `uses`, `level`, `duration_months` FROM codes ORDER BY id DESC");
 	
 	if($codeQuery->num_rows == 0){
 		echo "<br /><span style='font-size:12px; color:#777; font-family:helvetica;'>
 		<center>No Codes.</center></span>";
 	} else {
 		while($rows=$codeQuery->fetch_assoc()){
-			$code=Brevada::validate($row['code']);
-			$value=Brevada::validate($row['value']);
-			$uses=Brevada::validate($row['uses']);
-			$level=Brevada::validate($row['level']);
-			$duration=Brevada::validate($row['duration_months']);
+			$code=Brevada::validate($rows['code']);
+			$value=Brevada::validate($rows['value']);
+			$uses=Brevada::validate($rows['uses']);
+			$level=Brevada::validate($rows['level']);
+			$duration=Brevada::validate($rows['duration_months']);
 			
 			//Start Print HTML for codes
 			?>

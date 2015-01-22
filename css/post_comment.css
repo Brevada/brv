@@ -21,7 +21,6 @@
  	background-attachment: fixed;
 }
 .ta:focus{
-	height:80px;
 	background:#fff;
 }
 
