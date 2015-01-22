@@ -16,7 +16,6 @@ $user_id = Brevada::validate($_SESSION['user_id'], VALIDATE_DATABASE);
 
 $query=Database::query("SELECT * FROM users WHERE id='{$user_id}' LIMIT 1");
 
-
 if($query->num_rows==0){
 	Brevada::Redirect('/home/logout');
 }
@@ -70,8 +69,6 @@ if($expiry_date < date("Y-m-d")){
 	$active='no';
 }
 
-
-
 $message = $active == 'no' ? "You're Almost There!" : 'Membership Expired';
 ?>
 <!-- MODAL STUFF --> 
@@ -80,20 +77,6 @@ $message = $active == 'no' ? "You're Almost There!" : 'Membership Expired';
 		24/7 Customer Service and Feedback Consulting: <strong>1 (844) BREVADA</strong> or <strong>support@brevada.com</strong>
 	</div>
 </div>
-
-<div id="generic_modal" class="text_clean">
-  <div class="closeModal" id="email_close">Close</div>
-  <div id="generic_modal_content"></div>
-</div>
-
-<div class="modal_bg">
-    <div class="modal">
-    	<div class="close_modal">Close</div>
-        <div id="modal_content"></div>
-	</div>
-</div>
-
-
 
 <!-- DROP DOWN LIST -->
 <div class="more_list">
@@ -149,11 +132,6 @@ $message = $active == 'no' ? "You're Almost There!" : 'Membership Expired';
         <br style="clear:both;" />
   	 </div>
 </div>
-
-
-
-
-
 
 <div class="hub_container"> 
 
@@ -295,13 +273,12 @@ $message = $active == 'no' ? "You're Almost There!" : 'Membership Expired';
 	 		Expand View
 	 	</div>
 	 	
-	 	
 	 </div>
 	 
 	 
 	 <div id="box_holder">
 	 
-	 <?php  include'posts/new_post.php'; ?>
+	 <?php include 'posts/new_post.php'; ?>
 	 <div id="showNew" class="add_new">+</div>
 	 
 	 <?php
@@ -335,6 +312,8 @@ $message = $active == 'no' ? "You're Almost There!" : 'Membership Expired';
 <div id='dialog-confirm-delete' title='Delete Post' post-id='' class='dialog-box'>
 	 <p><span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;"></span>Are you sure you would like to delete this post?</p>
 </div>
+
+<div id='dialog-modal' title='Brevada' post-id='' class='dialog-box'><div id='dialog-modal-content'></div></div>
 
 <?php $this->add(new View('../pages/hub/includes/tour.php', array('url_name' => $url_name, 'logins' => $logins))); ?>
 <br style="clear:both;" />

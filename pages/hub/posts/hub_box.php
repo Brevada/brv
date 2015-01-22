@@ -202,9 +202,7 @@ if($count > 0){
 		</a>
  	</div>
  	<div class="hbox_left" style="float:right; display:none;">
-		<?php $this->add(new View("../pages/hub/includes/new_chart.php", array('post_id' => $post_id))); ?>
+		<?php /*$this->add(new View("../pages/hub/includes/new_chart.php", array('post_id' => $post_id)));*/ ?>
 	</div>
 	<br style="clear:both;" />
 </div>
-
-

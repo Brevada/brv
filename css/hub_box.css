@@ -12,7 +12,6 @@ a:visited div{
 }
 
 .hub_box{
-	
 	display:none;
 
 	padding:5px;
@@ -24,9 +23,8 @@ a:visited div{
 	width:90%;
 	
 	-webkit-border-radius: 3px;
--moz-border-radius: 3px;
-border-radius: 3px;
-	
+	-moz-border-radius: 3px;
+	border-radius: 3px;
 }
 
 .hbox-inactive { opacity: 0.5; filter: opacity(50); }
@@ -73,7 +71,7 @@ a div.box_button{
 	font-size:12px;
 }
 .color_bar{
-	float:right; height:160px; width:30px; margin-left:2px;
+	height:160px; width:30px; margin-left:2px;
 	margin:5px;
 	overflow:hidden;
 	border:1px solid #dcdcdc;

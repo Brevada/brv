@@ -2,8 +2,8 @@
 if(Brevada::IsLoggedIn()){ Brevada::Redirect('/hub'); }
 
 $this->add(new View('../template/home_header.php'));
-$this->addResource('css/index.css');
-$this->addResource('css/pricing.css');
+$this->addResource('/css/index.css');
+$this->addResource('/css/pricing.css');
 ?>
 
 <div id="second_bar">
@@ -56,7 +56,7 @@ $this->addResource('css/pricing.css');
 					<input class="inp" name="needle" id="home_search" placeholder="Search Brevada pages" />		
 				</div>
 				<div class="left" style="margin-left:-40px;">
-					<img style="height:28px; opacity:1;" src="http://www.iconsdb.com/icons/preview/color/4b4b4b/search-2-xxl.png" />
+					<img style="height:28px; opacity:1;" src="/images/search-2-xxl.png" />
 				</div>
 			</form>
 		</div>

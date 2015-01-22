@@ -26,8 +26,8 @@ $(document).ready(function(){
 	
 	$('.delete_post').click(function(){
 		var postid = $(this).attr('post-id');
-		$('#dialog-confirm-delete').attr('post-id', postid);
-		$('#dialog-confirm-delete').dialog('open');
+		confirmDeleteModal.attr('post-id', postid);
+		confirmDeleteModal.dialog('open');
 	});
 });
 

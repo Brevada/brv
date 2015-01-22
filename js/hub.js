@@ -1,3 +1,5 @@
+var dialogModal; var confirmDeleteModal;
+
 $(document).ready(function(){
 	$("#showsteps").click( function() {
 		showSteps();
@@ -70,57 +72,7 @@ $(document).ready(function(){
 	  });
 	});
 	
-	/* MODALS */
-	$("#email_modal").click(function() {
-		var user_id = $(this).attr('userid');
-		$('#generic_modal_content').html('<center>Loading...</center>');
-		$("#generic_modal_content").load("/hub/includes/email/email_feedback.php?user_id="+user_id);
-	});
-	
-	$("#modal_url").click(function() {	
-		$('#modal_content').html('<center>Loading...</center>');
-		$("#modal_content").load('/hub/includes/popups/url.php');
-	});
- 
-	$("#modal_qr" ).click(function() {	
-		$('#modal_content').html('<center>Loading...</center>');
-		$("#modal_content").load('/hub/includes/popups/qr.php');
-	});
- 
-	$("#modal_print").click(function() {	
-		$('#modal_content').html('<center>Loading...</center>');
-		$("#modal_content").load('/hub/includes/popups/promo.php');
-	});
- 
-	$("#modal_certificates").click(function() {	
-		$('#modal_content').html('<center>Loading...</center>');
-		$("#modal_content").load('/hub/includes/popups/certificates.php');
-	});
- 
-	$("#modal_email").click(function() {	
-		$('#modal_content').html('<center>Loading...</center>');
-		$("#modal_content").load('/hub/includes/popups/email.php');
-	});
-  
-	$("#modal_widgets").click(function() {	
-		$('#modal_content').html('<center>Loading...</center>');
-		$("#modal_content").load('/hub/includes/popups/widgets.php');
-	});
-  
-	$("#modal_approved").click(function() {	
-		$('#modal_content').html('<center>Loading...</center>');
-		$("#modal_content").load('/hub/includes/popups/approved.php');
-	});
 
-	$("#modal_changepic").click(function() {	
-		$('#modal_content').html('<center>Loading...</center>');
-		$("#modal_content").load('/hub/includes/popups/change_pic.php');
-	});
-
-	$("#modal_updateinfo").click(function() {	
-		$('#modal_content').html('<center>Loading...</center>');
-		$("#modal_content").load('/hub/includes/popups/update_info.php');
-	});
 	
 	// check where the shoppingcart-div is  
 	var offset=$('#far_right').offset();
@@ -159,7 +111,7 @@ $(document).ready(function(){
 		this.style.opacity = this.style.opacity == 0.3 ? 1 : 0.3;
 	});
 	
-	$('#dialog-confirm-delete').dialog({
+	confirmDeleteModal = $('#dialog-confirm-delete').dialog({
 		autoOpen: false,
 		resizable: false,
 		height: 230,
@@ -185,7 +137,73 @@ $(document).ready(function(){
 		}
 	});
 	
+	dialogModal = $('#dialog-modal').dialog({
+		autoOpen: false,
+		resizable: false,
+		width: 'auto',
+		modal: true
+	});
+	
+	bindModals();
+	
+	$(document).tooltip({ items : '[tooltip]', content: function(){
+		var el = $(this);
+		if(el.is("[tooltip]")){
+			return el.attr('tooltip');
+		}
+	}});
 });
+
+function bindModals(){
+	/* MODALS */
+	$("#email_modal").click(function() {
+		var user_id = $(this).attr('userid');
+		showModalDialog("/hub/includes/email/email_feedback.php?user_id="+user_id);
+	});
+	
+	$("#modal_url").click(function() {	
+		showModalDialog('/hub/includes/popups/url.php');
+	});
+ 
+	$("#modal_qr" ).click(function() {	
+		showModalDialog('/hub/includes/popups/qr.php');
+	});
+ 
+	$("#modal_print").click(function() {	
+		showModalDialog('/hub/includes/popups/promo.php');
+	});
+ 
+	$("#modal_certificates").click(function() {	
+		showModalDialog('/hub/includes/popups/certificates.php');
+	});
+ 
+	$("#modal_email").click(function() {	
+		showModalDialog('/hub/includes/popups/email.php');
+	});
+  
+	$("#modal_widgets").click(function() {	
+		showModalDialog('/hub/includes/popups/widgets.php');
+	});
+  
+	$("#modal_approved").click(function() {	
+		showModalDialog('/hub/includes/popups/approved.php');
+	});
+
+	$("#modal_changepic").click(function() {	
+		showModalDialog('/hub/includes/popups/change_pic.php');
+	});
+
+	$("#modal_updateinfo").click(function() {	
+		showModalDialog('/hub/includes/popups/update_info.php');
+	});
+}
+function showModalDialog(url){
+	$.get(url).success(function(data){
+		$('#dialog-modal-content').html(data);
+		dialogModal.dialog('open');
+		dialogModal.dialog('widget').position({my: 'center', at : 'center', of : window});
+	});
+}
 
 function openPopup() {
     $('#test').show();

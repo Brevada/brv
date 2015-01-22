@@ -1,4 +1,4 @@
-  /*
+/*
  * jQuery Foundation Joyride Plugin 2.1
  * http://foundation.zurb.com
  * Copyright 2013, ZURB
@@ -8,7 +8,7 @@
 
 /*jslint unparam: true, browser: true, indent: 2 */
 
-;(function ($, window, undefined) {
+(function ($, window, undefined) {
   'use strict';
 
   var defaults = {
