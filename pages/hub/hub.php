@@ -69,6 +69,8 @@ if($expiry_date < date("Y-m-d")){
 	$active='no';
 }
 
+
+
 $message = $active == 'no' ? "You're Almost There!" : 'Membership Expired';
 ?>
 <!-- MODAL STUFF --> 
@@ -201,6 +203,7 @@ $message = $active == 'no' ? "You're Almost There!" : 'Membership Expired';
 			Advanced Tools
 	</div>
 	<?php } ?>
+<<<<<<< HEAD
 	
 	<a class="open_modal" id="modal_widgets">
 	<div id="advancedIntegration" class="leftside_button hidden" >
@@ -226,6 +229,33 @@ $message = $active == 'no' ? "You're Almost There!" : 'Membership Expired';
 	</div>
 	</a>
 	
+=======
+	
+	<a class="open_modal" id="modal_widgets">
+	<div id="advancedIntegration" class="leftside_button hidden" >
+			<img class="leftside_button_img" src="<?php echo p('HTML','path_hubicons','share.png'); ?>"/>
+			<br />
+			Website Integration
+	</div>
+	</a>
+	
+	<a class="open_modal" id="modal_email">
+	<div id="advancedEmail" class="leftside_button hidden">
+			<img class="leftside_button_img" src="<?php echo p('HTML','path_hubicons','email.png'); ?>"/>
+			<br />
+			Email Gathering
+	</div>
+	</a>
+	
+	<br style="clear:both;" />
+	
+	<a href="includes/marketing/promo_white.php" target="_BLANK">
+	<div class="promo_img">
+		<img  style="width:100%;" src="/images/promo_bounce.png" />
+	</div>
+	</a>
+	
+>>>>>>> cb83afc1b6cfd1a7ec19f861e6c41c555a67299e
 	<a href="/user_data/qr/<?php echo $user_id; ?>.png" target="_TOP">
 	<div class="promo_img">
 		<img style="width:100%;" src="/user_data/qr/<?php echo $user_id; ?>.png" />
@@ -278,7 +308,11 @@ $message = $active == 'no' ? "You're Almost There!" : 'Membership Expired';
 	 
 	 <div id="box_holder">
 	 
+<<<<<<< HEAD
 	 <?php include 'posts/new_post.php'; ?>
+=======
+	 <?php  include'posts/new_post.php'; ?>
+>>>>>>> cb83afc1b6cfd1a7ec19f861e6c41c555a67299e
 	 <div id="showNew" class="add_new">+</div>
 	 
 	 <?php

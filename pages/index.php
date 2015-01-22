@@ -18,7 +18,7 @@ $this->addResource('/css/pricing.css');
     </div>
 </div>
 
-<div  style="width:100%; background:url('images/applause1.png'); height:500px; background-size:100%;"></div>
+<div  style="width:100%; background:url('images/applause1.png');"></div>
 
 <div style="width:100%; background:rgba(0,0,0,0.3); height:500px; margin-top:-500px;-webkit-box-shadow: 0px 0px 5px 0px rgba(50, 50, 50, 0.75);-moz-box-shadow: 0px 0px 5px 0px rgba(50, 50, 50, 0.75);box-shadow: 0px 0px 5px 0px rgba(50, 50, 50, 0.75);position:relative; z-index:9;">
 	<div class="slideshow" style="width:1000px; margin:0 auto; margin-top:-500px;">
