@@ -141,7 +141,10 @@ $(document).ready(function(){
 		autoOpen: false,
 		resizable: false,
 		width: 'auto',
-		modal: true
+		modal: true,
+		open: function(event, ui){
+			dialogModal.dialog('widget').position({my: 'center', at : 'center', of : window});
+		}
 	});
 	
 	bindModals();
@@ -201,7 +204,6 @@ function showModalDialog(url){
 	$.get(url).success(function(data){
 		$('#dialog-modal-content').html(data);
 		dialogModal.dialog('open');
-		dialogModal.dialog('widget').position({my: 'center', at : 'center', of : window});
 	});
 }
 
