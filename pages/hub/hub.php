@@ -222,7 +222,7 @@ $message = $active == 'no' ? "You're Almost There!" : 'Membership Expired';
 	
 	<br style="clear:both;" />
 	
-	<a href="includes/marketing/promo_white.php" target="_BLANK">
+	<a href="/hub/includes/marketing/promo_white.php" target="_BLANK">
 	<div class="promo_img">
 		<img  style="width:100%;" src="/images/promo_bounce.png" />
 	</div>
@@ -255,7 +255,9 @@ $message = $active == 'no' ? "You're Almost There!" : 'Membership Expired';
 	 <?php if($level<=1){ ?>
 	  <br />
 	  <?php $this->add(new View('../pages/hub/includes/upgrade_button.php', array('upgrade_message' => 'Upgrade Account'))); ?>
-		<?php } ?>	
+
+	 
+	 <?php } ?>	
 	 
 	 <div class="hub_right_toolbar">
 	 	
@@ -303,6 +305,19 @@ $message = $active == 'no' ? "You're Almost There!" : 'Membership Expired';
 ?>
 	
     <br style="clear:both;" />
+	<!-- PROMO CODE -->	
+		<?php if($level<=1){ ?>
+			  <br />
+			 <div style="width:200px; margin:0 auto;">
+			  <form action="/hub/promo_validate.php" method="post">
+				  <input type="text" name="promo" placeholder="Promo Code"  style="width:120px; margin-top:10px; padding:10px; font-size:12px; outline:none; border:1px solid #f7f7f7;" />
+				  <input type="submit" value="Go" name="submit" style="padding:11px; cursor:pointer; background:#f9f9f9; border:1px solid #f3f3f3; font-weight:bold; margin-left:5px; outline:none;">
+				  <br style="clear:both;" />
+				</form>
+			 </div>
+			 <br />
+			 <br />
+		<?php } ?>
      </div>
 </div>
 
@@ -320,3 +335,6 @@ $message = $active == 'no' ? "You're Almost There!" : 'Membership Expired';
 
 <?php $this->add(new View('../pages/hub/includes/tour.php', array('url_name' => $url_name, 'logins' => $logins))); ?>
 <br style="clear:both;" />
+
+
+ 
