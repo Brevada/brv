@@ -254,9 +254,7 @@ $message = $active == 'no' ? "You're Almost There!" : 'Membership Expired';
 	 
 	 <?php if($level<=1){ ?>
 	  <br />
-	  <?php $this->add(new View('../pages/hub/includes/upgrade_button.php', array('upgrade_message' => 'Upgrade Account'))); ?>
-
-	 
+	  <?php $this->add(new View('../pages/hub/includes/upgrade_button.php', array('upgrade_message' => 'Upgrade Account'))); ?>	 
 	 <?php } ?>	
 	 
 	 <div class="hub_right_toolbar">
