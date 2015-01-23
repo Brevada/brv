@@ -1,7 +1,7 @@
 <?php
 	$paypal_email='payments@brevada.com';
 	$id=@intval(empty($_GET['id']) ? 0 : $_GET['id']);
-	$query = Databse::query("SELECT * FROM payments WHERE user_id='{$id}' ORDER BY id DESC LIMIT 1");
+	$query = Database::query("SELECT * FROM payments WHERE user_id='{$id}' ORDER BY id DESC LIMIT 1");
 	//table, * means all info (all columns)
 	
 	if($query->num_rows==0){

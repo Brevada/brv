@@ -56,9 +56,15 @@ if(!file_exists($viewPath)){
 		$viewPath = "../pages/profile/scores/scores.php";
 	} else if(preg_match('#([a-z0-9_\-\s]+)/?#i', $page, $matches)){
 		$_GET['name'] = $matches[1];
-		$viewPath = "../pages/profile/profileloader.php";
+		$viewPath = "../pages/profile/profile.php";
 	} else {
 		$viewPath = '../pages/404.php';
+	}
+}
+
+if(isset($_GET['secure'])){
+	if (!isset($_SESSION['secure']) || time() - ((int)$_SESSION['secure']) > 3600) {
+		echo 'Authentication required. <a href="/login">Login</a>'; exit;
 	}
 }
 
