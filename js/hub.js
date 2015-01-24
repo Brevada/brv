@@ -114,7 +114,9 @@ $(document).ready(function(){
 	confirmDeleteModal = $('#dialog-confirm-delete').dialog({
 		autoOpen: false,
 		resizable: false,
-		height: 230,
+		width: 'auto',
+		minHeight: 0,
+		maxHeight: $(window).height(),
 		modal: true,
 		buttons: {
 			"Delete": function(){
@@ -132,7 +134,7 @@ $(document).ready(function(){
 			},
 			Cancel: function(){
 				$(this).attr('post-id', '');
-				$(this).dialog('close');
+				confirmDeleteModal.dialog('close');
 			}
 		}
 	});
@@ -141,9 +143,13 @@ $(document).ready(function(){
 		autoOpen: false,
 		resizable: false,
 		width: 'auto',
+		minHeight: 0,
+		maxHeight: $(window).height(),
 		modal: true,
 		open: function(event, ui){
+			dialogModal.dialog('option', 'maxHeight', $(window).height());
 			dialogModal.dialog('widget').position({my: 'center', at : 'center', of : window});
+			dialogModal.position({my: 'center', at : 'center', of : window});
 		}
 	});
 	
@@ -157,47 +163,25 @@ $(document).ready(function(){
 	}});
 });
 
-function bindModals(){
-	/* MODALS */
-	$("#email_modal").click(function() {
-		var user_id = $(this).attr('userid');
-		showModalDialog("/hub/includes/email/email_feedback.php?user_id="+user_id);
-	});
-	
-	$("#modal_url").click(function() {	
-		showModalDialog('/hub/includes/popups/url.php');
-	});
- 
+function bindModals(){	
 	$("#modal_qr" ).click(function() {	
-		showModalDialog('/hub/includes/popups/qr.php');
-	});
- 
-	$("#modal_print").click(function() {	
-		showModalDialog('/hub/includes/popups/promo.php');
-	});
- 
-	$("#modal_certificates").click(function() {	
-		showModalDialog('/hub/includes/popups/certificates.php');
+		showModalDialog('/widget/hub/qr.php');
 	});
  
 	$("#modal_email").click(function() {	
-		showModalDialog('/hub/includes/popups/email.php');
+		showModalDialog('/widget/hub/email.php');
 	});
   
 	$("#modal_widgets").click(function() {	
-		showModalDialog('/hub/includes/popups/widgets.php');
-	});
-  
-	$("#modal_approved").click(function() {	
-		showModalDialog('/hub/includes/popups/approved.php');
+		showModalDialog('/widget/hub/widgets.php');
 	});
 
 	$("#modal_changepic").click(function() {	
-		showModalDialog('/hub/includes/popups/change_pic.php');
+		showModalDialog('/widget/hub/change_pic.php');
 	});
 
 	$("#modal_updateinfo").click(function() {	
-		showModalDialog('/hub/includes/popups/update_info.php');
+		showModalDialog('/widget/hub/update_info.php');
 	});
 }
 function showModalDialog(url){

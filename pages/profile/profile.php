@@ -18,7 +18,7 @@ $ip = $geo['ip'];
 $query = Database::query("SELECT * FROM users WHERE url_name='{$url_name}' LIMIT 1");
 
 if($query->num_rows == 0) {
-	Brevada::Redirect('/profile/not_found.php');
+	Brevada::Redirect('/404');
 }
 
 $id='';

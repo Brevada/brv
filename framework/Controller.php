@@ -44,21 +44,29 @@ $viewPath = '';
 	}
 }*/
 
+$isWidget = false;
+
 $viewPath = "../pages/{$page}.php";
 if(!file_exists($viewPath)){
 	$viewPath = "../pages/{$page}/{$page}.php";
 }
 
 if(!file_exists($viewPath)){
-	//Check if scores/profile
-	if(preg_match('#scores/([a-z0-9_\-\s]+)/?#i', $page, $matches)){
-		$_GET['name'] = $matches[1];
-		$viewPath = "../pages/profile/scores/scores.php";
-	} else if(preg_match('#([a-z0-9_\-\s]+)/?#i', $page, $matches)){
-		$_GET['name'] = $matches[1];
-		$viewPath = "../pages/profile/profile.php";
+	if(preg_match('#widget/.*#i', $page, $matches)){
+		$page = substr($page, 7);
+		$viewPath = "../widgets/{$page}.php";
+		$isWidget = true;
 	} else {
-		$viewPath = '../pages/404.php';
+		//Check if scores/profile
+		if(preg_match('#scores/([a-z0-9_\-\s]+)/?#i', $page, $matches)){
+			$_GET['name'] = $matches[1];
+			$viewPath = "../pages/profile/scores/scores.php";
+		} else if(preg_match('#([a-z0-9_\-\s]+)/?#i', $page, $matches)){
+			$_GET['name'] = $matches[1];
+			$viewPath = "../pages/profile/profile.php";
+		} else {
+			$viewPath = '../pages/404.php';
+		}
 	}
 }
 
@@ -69,8 +77,14 @@ if(isset($_GET['secure'])){
 }
 
 $view = new View($viewPath);
-$view->addResource("../template/head.php", true);
-$view->RootPage = true;
-$view->DocType = true;
+if(!$isWidget){
+	$view->addResource("../template/head.php", true);
+	$view->RootPage = true;
+	$view->DocType = true;
+} else {
+	$view->RootPage = false;
+	$view->DocType = false;
+}
+
 $view->printView();
 ?>

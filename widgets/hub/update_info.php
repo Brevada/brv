@@ -1,6 +1,4 @@
 <?php
-$this->addResource('/css/layout.css'); 
-
 $user_id = $_SESSION['user_id'];
 
 $user = user($user_id);
@@ -48,8 +46,6 @@ $type = $user['type'];
     		document.getElementById("password2").setCustomValidity('');  
 		//empty string means no validation error
 		}
-	</script> 
-      <br style="clear:both;" />
+	</script>
     </div>
-    <br style="clear:both;" />
   </div>

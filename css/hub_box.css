@@ -156,9 +156,14 @@ a div.box_button{
 
 .post_activity_single{
 	width:200px;
-	min-height:30px;
+	min-height:1.5em;
+	padding:0.2em;
+	margin:0;
 	overflow:visible;
 }
+
+.post_activity_single .activity_single_right { padding: 0; margin: 0; border-bottom: 1px solid #e6e6e6; }
+
 .post_activity_single_date{
 	font-size:11px;
 	height:10px;
@@ -172,7 +177,7 @@ a div.box_button{
 	text-align:center;
 	padding:5px;
 	background:#DDD;
-	color:#CCC;
+	color:#BBB;
 	text-align:center;
 	cursor:pointer;
 	float:left;
@@ -184,6 +189,8 @@ a div.box_button{
 .hbox_news{
 	float:left;
 	height:160px;
-	overflow:scroll;
+	overflow-y:scroll;
 	padding:10px;
 }
+
+.no_feedback { width: 100%; text-align: center; margin-top: 1em; font-size: 1em; }

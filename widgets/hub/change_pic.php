@@ -1,6 +1,3 @@
-<?php
-$this->addResource('/css/layout.css'); 
-?>
 <div id="modal_title" class="text_clean">Change Picture</div>        
   <div  style="margin-top:30px; padding:4px; width:500px;">
   <br style="clear:both;" />

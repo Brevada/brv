@@ -1,6 +1,4 @@
-<?php 
-$this->addResource('/css/layout.css');
-$this->addResource('/css/email.css'); 
+<?php
 $user_id = $_SESSION['user_id'];
 
 $user = user($user_id);
@@ -140,6 +138,3 @@ input[type=checkbox] {
     </div>
   </form>
 </div>
-<br />
-<br />
-<br />

@@ -343,7 +343,7 @@ box-shadow:         0px 0px 5px 0px rgba(50, 50, 50, 0.6);
 	float:left;
 	margin-left:5%;
 	margin-top:8px;
-	height:30px;	
+	height:30px;
 }
 .more{
 	width:35px;
@@ -353,12 +353,13 @@ box-shadow:         0px 0px 5px 0px rgba(50, 50, 50, 0.6);
 	margin-right:0px;
 	text-align:center;
 	cursor:pointer;
-	padding:10px;
+	padding: 10px;
 	position: relative;
 	display: inline-block;
 }
 #more_open:hover{
 	opacity:0.7;
+	padding:10px 10px 10px 255px;
 }
 .more_list{
 	position: fixed;
@@ -793,4 +794,5 @@ box-shadow:         0px 0px 3px 0px rgba(50, 50, 50, 0.6);
 	background:#FF2B2B;
 }
 
-
+#dialog-modal-content { padding-top: 1em; }
+.ui-dialog .ui-dialog-content { margin-top: 1.2em; }

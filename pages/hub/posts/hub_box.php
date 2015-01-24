@@ -110,16 +110,14 @@ if($count > 0){
 			<div class="toggle_width" style="cursor:not-allowed;">&gt;</div>
 	<?php } ?>
 	
-	
+	<?php
+	$queryDouble = Database::query("SELECT * FROM (SELECT date, value, comment, post_id, reviewer FROM feedback WHERE post_id='{$post_id}' UNION SELECT date, value, comment, post_id, reviewer FROM comments WHERE post_id='{$post_id}') AS a ORDER BY a.date DESC LIMIT 20;");
+	if($queryDouble->num_rows==0){
+		echo '<div class="no_feedback" style="padding:5px;">No ratings or comments.</div>';
+	} else { ?>
 	<div class="hbox_news">
 		<div class="post_activity_main_left">
  					<?php
-					$queryDouble = Database::query("SELECT * FROM (SELECT date, value, comment, post_id, reviewer FROM feedback WHERE post_id='{$post_id}' UNION SELECT date, value, comment, post_id, reviewer FROM comments WHERE post_id='{$post_id}') AS a ORDER BY a.date DESC LIMIT 20;");
-										
-					if($queryDouble->num_rows==0){
-						echo '<div class="text_clean" style="padding:5px;">No ratings or comments.</div>';
-					}
-				
 					while($rowsDouble=$queryDouble->fetch_assoc()){
 						$value = $rowsDouble['value'];
 						$reviewer = $rowsDouble['reviewer'];
@@ -137,26 +135,26 @@ if($count > 0){
 						}
 						 
 						if($value == 200){ //its a comment
+						if(empty($comment)){continue;}
 						?>
 						<div class="post_activity_single">
 							<div class="activity_comment activity_single_right">
 								<strong><?php echo substr($comment,0,65); if(strlen($comment)>65){echo '...';} ?></strong>
 							</div>
-							<br style="clear:both;" />
 						</div>
 						<?php
 						} else{
-						//its a rating
+						if(empty($value)){continue;}
+						//it's a rating
 						?>
 						<div class="post_activity_single">
-							 <div class="activity_single_right">							
+							 <div class="activity_single_right">						
 								<?php
 								$color = "#EDC812";
 								if($value>75){$color="#4EAF0E";}else if($value<50){$color="#E22A12";}
 								?>
 								<span style="color:<?php echo $color; ?>">
 									<div class="left">rated <strong><?php echo $value; ?></span></strong> <span style="font-size:11px;">on <?php echo $date; ?></span></div>
-									<br style="clear:both;" />
 								</span><br />
 								<span style="color:#888; font-size:11px; display:none;">
 								<?php
@@ -169,7 +167,6 @@ if($count > 0){
 								?>
 								</span>
 							  </div>
-							  <br style="clear:both;" />
 						</div>
 						<?php
 						}
@@ -177,7 +174,8 @@ if($count > 0){
 		?>
 		</div>
 	</div>
-	
+	<?php } ?>
+	<?php if($count > 0){ ?>
 	<div class="color_bar">
 		<a class="tooltip" return false>
 			<span style="background:#4EAF0E;">
@@ -204,5 +202,5 @@ if($count > 0){
  	<div class="hbox_left" style="float:right; display:none;">
 		<?php /*$this->add(new View("../pages/hub/includes/new_chart.php", array('post_id' => $post_id)));*/ ?>
 	</div>
-	<br style="clear:both;" />
+	<?php } ?>
 </div>

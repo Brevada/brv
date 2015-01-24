@@ -4,6 +4,9 @@ $this->addResource('/css/hub.css');
 $this->addResource('/pages/overall/packages/dygraph-combined.js');
 $this->addResource('/js/hub.js');
 
+$this->addResource('/css/popup_style.css');
+$this->addResource('/css/email.css');
+
 if(Brevada::IsMobile()){
 	Brevada::Redirect('/mobile/hub_mobile.php');
 }
@@ -165,7 +168,7 @@ $message = $active == 'no' ? "You're Almost There!" : 'Membership Expired';
 		<br style="clear:both;" />
 	</div>
 
-	<a href="includes/marketing/promo_white.php" target="_BLANK">
+	<a href="hub/includes/marketing/promo_white.php" target="_BLANK">
 	<div id="print" class="leftside_button">
 			<img class="leftside_button_img" src="<?php echo p('HTML','path_hubicons','paper.png'); ?>" />
 			<br />
