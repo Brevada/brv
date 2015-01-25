@@ -17,11 +17,7 @@ while($row=$query->fetch_assoc()){
 	if($password==$real_password) {
 		$_SESSION['user_id'] = $user_id;
 
-		if(Brevada::IsMobile()){
-			$dest = '/mobile/hub_mobile.php';
-		} else {
-			$dest = '/hub/';
-		}
+		$dest = '/hub/';
    }
 }
 
