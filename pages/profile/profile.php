@@ -6,16 +6,13 @@ $this->addResource('/css/profile.css');
 $id = @intval(Brevada::validate($_POST['id']));
 $url_name=Brevada::validate($_GET['name'], VALIDATE_DATABASE);
 
-//Test for mobile
-if(Brevada::IsMobile()){
-	Brevada::Redirect("/mobile/profile/profile.php?name={$url_name}");
-}
-
 $geo = Brevada::GetGeo();
 $country = $geo['country'];
 $ip = $geo['ip'];
 
-$query = Database::query("SELECT * FROM users WHERE url_name='{$url_name}' LIMIT 1");
+$condition = empty($url_name) ? "ID = '".$_SESSION['user_id']."'" : "url_name='{$url_name}'";
+
+$query = Database::query("SELECT * FROM users WHERE {$condition} LIMIT 1");
 
 if($query->num_rows == 0) {
 	Brevada::Redirect('/404');
@@ -35,10 +32,16 @@ while($row=$query->fetch_assoc()){
    $type=Brevada::validate($row['type']);
    $user_extension=Brevada::validate($row['extension']);
    $corporate=Brevada::validate($row['corporate']);
+   $url_name=Brevada::validate($row['url_name']);
 }
 
 if($corporate == '1'){
 	Brevada::Redirect("/corporate/profile/corporate_profile.php?name={$url_name}");
+}
+
+//Test for mobile
+if(Brevada::IsMobile()){
+	Brevada::Redirect("/mobile/profile/profile.php?name={$url_name}");
 }
 
 $this->setTitle("Give {$name} Feedback");

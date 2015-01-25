@@ -8,7 +8,7 @@ if(!isset($_SESSION['user_id'])){
 }
 
 if(Brevada::IsMobile()){
-	$this->addResource("<meta name='viewport' content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=1'/>", true, true);
+	$this->addResource("<meta name='viewport' content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0'/>", true, true);
 }
 ?>
 

@@ -12,12 +12,13 @@ $query = Database::query("SELECT DISTINCT `name` FROM `posts` WHERE `name` LIKE 
 $names = array();
 $names[] = $q;
 
-$arr[] = array('id' => $q, 'name' => $q);
+$arr[] = array('id' => $q, 'name' => ucwords($q));
 
 while($row = $query->fetch_assoc()){
-	if(!in_array($row['name'], $names)){
-		$names[] = $row['name'];
-		$arr[] = array('id' => $row['name'], 'name' => $row['name']);
+	$nm = ucwords($row['name']);
+	if(!in_array($nm, $names)){
+		$names[] = $nm;
+		$arr[] = array('id' => $nm, 'name' => $nm);
 	}
 }
 

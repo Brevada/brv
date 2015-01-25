@@ -22,10 +22,22 @@ $(document).ready(function(){
 	//Default Tokens
 	$("#posts-token").tokenInput("add", {id: 'Customer Service', name: 'Customer Service'});
 	//$("#posts-token").tokenInput("add", {id: 'Pricing', name: 'Pricing'});
-
-	//Focus on input
-	setTimeout(function() { $('#posts-token').focus(); }, 50);
-
+    $('#logo').each(function(i) {
+        if (this.complete) {
+            $('#signup_box').fadeIn(2000, function(){
+				$('div.token-input-dropdown-facebook').css({'max-width' : $('div.token-container').width() + 'px'});
+				$('#posts-token').focus();
+			});
+        } else {
+            $(this).load(function() {
+				$('#signup_box').fadeIn(2000, function(){
+					$('div.token-input-dropdown-facebook').css({'max-width' : $('div.token-container').width() + 'px'});
+					$('#posts-token').focus();
+				});
+            });
+        }
+    });
+	
 });
 
 window.onload=function () {

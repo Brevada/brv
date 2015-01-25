@@ -8,7 +8,7 @@ $this->addResource('/css/popup_style.css');
 $this->addResource('/css/email.css');
 
 if(Brevada::IsMobile()){
-	Brevada::Redirect('/mobile/hub_mobile.php');
+	$this->addResource("<meta name='viewport' content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0'/>", true, true);
 }
 
 if(!Brevada::IsLoggedIn()){
@@ -78,9 +78,7 @@ $message = $active == 'no' ? "You're Almost There!" : 'Membership Expired';
 ?>
 <!-- MODAL STUFF --> 
 <div id="bottom_banner_pic">
-	<div id="bottom_right">
-		24/7 Customer Service and Feedback Consulting: <strong>1 (844) BREVADA</strong> or <strong>support@brevada.com</strong>
-	</div>
+	<div id="bottom_right">24/7 Customer Service and Feedback Consulting: <strong>1 (844) BREVADA</strong> or <strong>support@brevada.com</strong></div>
 </div>
 
 <!-- DROP DOWN LIST -->
@@ -92,10 +90,10 @@ $message = $active == 'no' ? "You're Almost There!" : 'Membership Expired';
 	</form>
 	<?php } ?>
 	<a href="http://brevada.com/<?php echo $url_name; ?>" target="_TOP"><div class="list_button">Your Brevada Page</div></a>
-	<a class="open_modal" id="modal_updateinfo"><div class="list_button">Update Info</div></a>
-	<a class="open_modal" id="modal_changepic"><div class="list_button">Change Picture</div></a>
+	<a class="open_modal hide_mobile" id="modal_updateinfo"><div class="list_button">Update Info</div></a>
+	<a class="open_modal hide_mobile" id="modal_changepic"><div class="list_button">Change Picture</div></a>
 	
-	<div class="list_button" id="takeTheTour" style="float:right;">Tour</div>
+	<div class="list_button hide_mobile" id="takeTheTour" style="float:right;">Tour</div>
 	<a href="/home/logout.php"><div class="list_button" style="float:right; background:#333; color:#fff;">Logout</div></a>
 	
 	<br style="clear:both; "/>
@@ -141,7 +139,7 @@ $message = $active == 'no' ? "You're Almost There!" : 'Membership Expired';
 <div class="hub_container"> 
 
 <!-- LEFT SIDE -->
-<div  class="hub_left">
+<div  class="hub_left hide_mobile">
 
 <div class="hub_left_bar hub_left_bar_top">
 
@@ -283,7 +281,7 @@ $message = $active == 'no' ? "You're Almost There!" : 'Membership Expired';
 	 
 	 <div id="box_holder">
 	 
-	 <?php  include'posts/new_post.php'; ?>
+	 <?php $this->add(new View('../pages/hub/posts/new_post.php')); ?>
 
 	 <div id="showNew" class="add_new">+</div>
 	 

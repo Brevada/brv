@@ -13,10 +13,17 @@ $(document).ready(function(){
 	
     $('.toggle_width').click( function() {
 		var postid = $(this).attr('post-id');
-        var toggleWidth = $("#hbox"+postid).width() == 230 ? "503px" : "230px";
-        var toggleContent = $("#hbox"+postid).width() == 230 ? "&lt;" : "&gt;";
+		var hbox = $("#hbox"+postid);
+		if(hbox.hasClass('hbox_open')){
+			hbox.removeClass('hbox_open').addClass('hbox_closed');
+			hbox.children('.hbox_left').removeClass('hide_mobile');
+		} else {
+			hbox.removeClass('hbox_closed').addClass('hbox_open');
+			hbox.children('.hbox_left').addClass('hide_mobile');
+		}
+		
+        var toggleContent = hbox.width() == 230 ? "&lt;" : "&gt;";
         $(this).html(toggleContent);
-        $('#hbox'+postid).animate({ width: toggleWidth},80);
     });
 	
 	$('.editHead').click(function(){

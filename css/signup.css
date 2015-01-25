@@ -1,67 +1,53 @@
 #signup_box{
-	padding:10px;
-	margin: 0 auto;
+	padding: 0.125em;
+	margin: 60px auto 0 auto;
 	width: 80%;
 	max-width: 800px;
-	min-width: 350px;
 }
-body{
-	
-}
-#black{
-	width:100%;
-	background:rgba(35,35,35,0.84);
-	border-radius:3px;
-}
-.white_text
-{
-font-weight:lighter;color:#FFFFFF;letter-spacing:1pt;word-spacing:2pt;font-size:28px;text-align:left;font-family:arial, helvetica, sans-serif;line-height:1;
-}
-.white_text2
-{
-font-weight:lighter;color:#f3f3f3;font-size:19px;text-align:left;font-family:tahoma;
-}
+@media (min-width:365px) { #signup_box { min-width: 365px; } }
+@media (max-width:365px) { #signup_box { min-width: 90%; } }
+
 .signup_instruction{
-	font-size:20px;
-	line-height:50px;
+	font-size:1.2em;
 	color:#666;
+	margin: 0.5em 0 0.825em 0;
 }
 .in{
 	width:90%;
 	background:rgba(227,227,227,0.15);
 	outline:none;
 	border:1px solid #dcdcdc;
-	padding:14px;
-	font-size:17px;
+	padding:0.875em;
+	font-size:1.063em;
 	border-radius:2px;
-	margin:10px auto 0 auto;
+	margin:0.625em auto 0 auto;
 
 }
 #submit{
-	width:74%;
-	padding:12px;
-	margin: 10px auto 0px auto;
+	width:70%;
+	padding: 0.75em 0 0.75em 0em;
+	margin: 0.625em auto 0px auto;
 }
 
-#back { width: 20%; padding: 12px; margin: 10px auto 0px auto; }
+#back { width: 20%; padding: 0.75em 0 0.75em 0em; margin: 0.625em 1em 0 auto; }
 
 div#part1 { position: relative; }
 div#part2 { text-align: center; }
-div.token-container { width: 90%; position: relative; }
+div.token-container { width: 100%; position: relative; }
 
 #next{
 	position:absolute;
 	z-index:10;
 	width:10%;
 	height: 0.8em;
-	padding:10px 10px 12px 10px;
+	padding:0.625em 0.625em 0.75em 0.625em;
 	right: 1em;
 	top: 0;
 	bottom: 0;
 	margin: auto;
 	text-align:center;
 	font-weight:bold;
-	font-size:12px;
+	font-size:0.75em;
 	color:#FEFEFE;
 	border:0px;
 	background: #FF2b2b;

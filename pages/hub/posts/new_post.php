@@ -5,8 +5,8 @@ $this->addResource('/js/new_post.js');
 ?>
 <div id="newPost" style="width:80%; color:#777; font-size:17px; margin:0 auto; margin-top:15px; display:none;">
 Add another <span id="emphasis">product</span>, <span id="emphasis">service</span> or <span id="emphasis">other aspect of your business</span> that you would like feedback on:<br />
-		<?php if(true){ //??? ?>
-		<form action="/overall/insert/insert_post.php" method="post" enctype="multipart/form-data" style="margin-top:15px;">
+	<?php if(true){ //??? ?>
+	<form action="/overall/insert/insert_post.php" method="post" enctype="multipart/form-data" style="margin-top:15px;">
 		<input id="inp" name="user_id" type="hidden" value="<?php echo $user_id; ?>" />
 		<div class="left"><input id="inp" name="name" placeholder="Title" style="width:150px;" /></div>
 		<div class="left"><input class="description_input" id="inp" name="description" placeholder="Description (optional)" style="width:300px; font-size:13px;" /></div>
@@ -28,6 +28,7 @@ Add another <span id="emphasis">product</span>, <span id="emphasis">service</spa
 	</div>
 	<?php } ?>
 	<br style="clear:both;" />
+	<div class='hide_mobile'>
 	<div style="float:left; margin-top:-15px; font-size:11px; margin-left:10px;">eg. "Customer Service"</div>	
 	<div style="float:left; margin-top:-15px; font-size:11px; margin-left:180px;">"How well did our staff team ensure your satisfaction."</div>
 	<br style="clear:both;" />
@@ -38,4 +39,5 @@ Add another <span id="emphasis">product</span>, <span id="emphasis">service</spa
 	<div style="float:left; margin-top:-15px; font-size:11px; margin-left:180px;">"Our spiciest pasta, let us know what you think."</div>
 	<br style="clear:both;" />
 	<div style="display:none; float:left; margin-top:-15px; font-size:11px; margin-left:10px; color:#444;">For more suggestions organized by industry, <a href="/suggestions.php">click here</a>.</div>
+	</div>
 </div>

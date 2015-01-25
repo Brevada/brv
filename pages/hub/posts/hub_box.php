@@ -11,7 +11,7 @@ $post_description = $this->getParameter('post_description');
 $active = $this->getParameter('active');
 $level = $this->getParameter('level');
 ?>
-<div class="hbox<?php echo $active=='yes' ? '' : ' hbox-inactive'; ?>" id="hbox<?php echo $post_id; ?>">
+<div class="hbox<?php echo $active=='yes' ? '' : ' hbox-inactive'; ?> hbox_closed" id="hbox<?php echo $post_id; ?>">
 <?php
 //Calculate Average
 $query2=Database::query("SELECT `post_id`, `value` FROM feedback WHERE post_id='{$post_id}'");
@@ -109,7 +109,7 @@ if($count > 0){
 			<!-- INACTIVE ACCOUNT, HIDE EXPAND -->
 			<div class="toggle_width" style="cursor:not-allowed;">&gt;</div>
 	<?php } ?>
-	
+	<div class='hbox_right'>
 	<?php
 	$queryDouble = Database::query("SELECT * FROM (SELECT date, value, comment, post_id, reviewer FROM feedback WHERE post_id='{$post_id}' UNION SELECT date, value, comment, post_id, reviewer FROM comments WHERE post_id='{$post_id}') AS a ORDER BY a.date DESC LIMIT 20;");
 	if($queryDouble->num_rows==0){
@@ -199,8 +199,9 @@ if($count > 0){
 			<div  class="bar_color" style="width:100%; height:<?php echo $bad; ?>%; background:#E22A12;"></div>
 		</a>
  	</div>
- 	<div class="hbox_left" style="float:right; display:none;">
+ 	<!--<div class="hbox_left" style="float:right; display:none;">
 		<?php /*$this->add(new View("../pages/hub/includes/new_chart.php", array('post_id' => $post_id)));*/ ?>
-	</div>
+	</div>-->
 	<?php } ?>
+	</div>
 </div>
