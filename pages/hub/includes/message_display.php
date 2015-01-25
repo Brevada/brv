@@ -17,7 +17,7 @@ while($row=$query->fetch_assoc()){
 ?>
 <div class="one_message">
 	<div id="inner_message">
-	<?php echo $message; ?><br /><a href="/overall/generic_delete.php?db=messages&id=<?php echo $message_id; ?>" style="text-decoration:none; color:#E22A12; font-weight:bold; font-size:11px; margin-top:-2px;">Delete</a> 
+	<?php echo $message; ?><br /><a href="/overall/delete_message.php?id=<?php echo $message_id; ?>" style="text-decoration:none; color:#E22A12; font-weight:bold; font-size:11px; margin-top:-2px;">Delete</a> 
 	<span style="font-size:9px; color:#E22A12;"><?php echo $date; ?></span>				
 	</div>
 </div>
