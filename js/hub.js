@@ -144,10 +144,10 @@ $(document).ready(function(){
 		resizable: false,
 		width: 'auto',
 		minHeight: 0,
-		maxHeight: $(window).height(),
+		maxHeight: ($(window).height() - (0.1*$(window).height())),
 		modal: true,
 		open: function(event, ui){
-			dialogModal.dialog('option', 'maxHeight', $(window).height());
+			dialogModal.dialog('option', 'maxHeight', ($(window).height() - (0.1*$(window).height())));
 			dialogModal.dialog('widget').position({my: 'center', at : 'center', of : window});
 			dialogModal.position({my: 'center', at : 'center', of : window});
 		}

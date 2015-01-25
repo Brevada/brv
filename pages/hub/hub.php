@@ -139,7 +139,7 @@ $message = $active == 'no' ? "You're Almost There!" : 'Membership Expired';
 <div class="hub_container"> 
 
 <!-- LEFT SIDE -->
-<div  class="hub_left hide_mobile">
+<div  class="hub_left hide_mobile noselect">
 
 <div class="hub_left_bar hub_left_bar_top">
 
@@ -198,7 +198,7 @@ $message = $active == 'no' ? "You're Almost There!" : 'Membership Expired';
 			Advanced Tools
 	</div>
 	<?php }  else {?>
-	<div class="leftside_button" style="opacity:0.3; cursor:not-allowed;">
+	<div class="leftside_button" style="opacity:0.3;">
 			<img class="leftside_button_img" src="<?php echo p('HTML','path_hubicons','widgets.png'); ?>"/>
 			<br />
 			Advanced Tools
