@@ -2,7 +2,7 @@
 /**
 Database
 Developed by Noah Negin-Ulster
-//**/
+**/
 
 //Temporary Database Fix
 function sql_query($a) { return mysqli_query(Database::getCon(), $a); }
