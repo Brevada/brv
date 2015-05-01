@@ -39,11 +39,6 @@ if($corporate == '1'){
 	Brevada::Redirect("/corporate/profile/corporate_profile.php?name={$url_name}");
 }
 
-//Test for mobile
-if(Brevada::IsMobile()){
-	Brevada::Redirect("/mobile/profile/profile.php?name={$url_name}");
-}
-
 $this->setTitle("Give {$name} Feedback");
 
 $this->addResource("<meta property='og:title' content='Give us feedback!'/>", true, true);
