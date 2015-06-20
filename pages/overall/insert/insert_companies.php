@@ -1,4 +1,6 @@
 <?php
+/* TODO: Errors on this page. This page does not function correctly. */
+
 $dest = '/corporate/hub/corporate.php';
 $continue = true;
 

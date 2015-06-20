@@ -6,7 +6,7 @@ $this->addResource('/js/mobile_profile.js');
 $id = @intval(Brevada::validate($_POST['id']));
 $url_name=Brevada::validate($_GET['name'], VALIDATE_DATABASE);
 
-$geo = Brevada::GetGeo();
+$geo = Geography::GetGeo();
 $country = $geo['country'];
 $ip = $geo['ip'];
 

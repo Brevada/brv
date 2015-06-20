@@ -1,7 +1,9 @@
 <?php
 /**
 Controller
-//**/
+
+Entry point for website.
+*/
 
 define('ROOT_PATH', '/');
 define('URL', 'http://brevada.com/');
@@ -12,10 +14,15 @@ session_start();
 //header("Cache-Control: no-cache, must-revalidate"); // HTTP/1.1
 //header("Expires: Sat, 26 Jul 1997 05:00:00 GMT"); // Date in the past
 
-require 'View.php';
-require 'Database.php';
-require 'Common.php';
+function __autoload($c){
+	if(file_exists("classes/{$c}.php")){
+		include_once "classes/{$c}.php";
+	}
+}
+
 require 'Brevada.php';
+require 'Common.php';
+require 'View.php';
 
 $page = empty($_GET['page']) ? '404' : trim($_GET['page']);
 
@@ -81,7 +88,8 @@ if(isset($_GET['secure'])){
 }
 
 $view = new View($viewPath);
-if(!$isWidget){
+if($isWidget){ $view->IsScript = true; } //temp; until $isWidget is phased out.
+if(!$isWidget && !$view->IsScript){
 	$view->addResource("../template/head.php", true);
 	$view->RootPage = true;
 	$view->DocType = true;

@@ -41,6 +41,6 @@ $(document).ready(function() {
 	<center>
 		<span class="text_clean">Don't have an account?</span>&nbsp;<a href="/home/signup.php"><span style="color:#bc0101;">Click Here</span></a>
 		<br /><br /><br />
-		<span style="font-size:11px;">Toll free: 1 (855) 484-7451 <br /> &copy; 2013 brevada.com</span>
+		<span style="font-size:11px;">Toll free: 1 (855) 484-7451 <br /> &copy; <?php echo date('Y'); ?> brevada.com</span>
 	</center>
 </div>

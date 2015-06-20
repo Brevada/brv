@@ -3,7 +3,7 @@ $this->addResource('/css/post_comment.css');
 //$this->addResource('/js/post_comment.js');
 
 $r = $this->getParameter('row');
-$post_id = $r['id'];
+$post_id = $r['ID'];
 $country = $this->getParameter('country');
 $ip = $this->getParameter('ip');
 $user_id = $this->getParameter('id');
