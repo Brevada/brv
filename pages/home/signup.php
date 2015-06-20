@@ -2,16 +2,12 @@
 $this->setTitle('Brevada - Sign Up');
 $this->addResource('/css/layout.css');
 $this->addResource('/css/signup.css');
-$this->addResource('/js/jquery.tokeninput.js');
 $this->addResource('/js/signup.js');
-$this->addResource('/css/token-input.css');
-$this->addResource('/css/token-input-facebook.css');
-$this->addResource('/css/token-input-mac.css');
 
 $this->addResource("<meta name='viewport' content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0'/>", true, true);
 
 if(Brevada::IsLoggedIn()){
-	Brevada::Redirect('/hub');
+	Brevada::Redirect('/dashboard');
 }
 
 $level = 1;
@@ -40,8 +36,17 @@ $existing_address = isset($_GET['email']) && $_GET['email'] != 'false';
 		<div id='part1'>
 			<div class="signup_instruction">What do you want to get feedback on?</div>
 				<div class='token-container'>
-					<input type="text" id="posts-token" name="posts-token" />
-					<div id="next" class="button4">Next</div>
+					<div class='tokens'>
+						<?php
+						if(($query = Database::query("SELECT aspect_type.Title, aspect_type.ID as AspectTypeID FROM aspect_type ORDER BY aspect_type.Title ASC")) !== false){
+							while($row = $query->fetch_assoc()){
+								echo "<div class='token noselect' data-tokenid='{$row['AspectTypeID']}'><span>{$row['Title']}</span></div>";
+							}
+						}
+						?>
+						<input type='hidden' name='posts-token' id='tokens' />
+					</div>
+					<div id="next" class="submit-next">Next</div>
 				</div>
 				<br style="clear:both;" />
 		</div>

@@ -6,7 +6,7 @@ $this->addResource('/css/profile.css');
 $id = @intval(Brevada::validate($_POST['id']));
 $url_name=Brevada::validate($_GET['name'], VALIDATE_DATABASE);
 
-$geo = Brevada::GetGeo();
+$geo = Geography::GetGeo();
 $country = $geo['country'];
 $ip = $geo['ip'];
 
@@ -100,7 +100,7 @@ $this->addResource("<meta property='og:description' content='Give {$name} Feedba
  	<div style="float:left; width:520px; overflow:hidden;">
 	<?php
 	$reviewer=Brevada::validate(empty($_GET['reviewer']) ? '' : $_GET['reviewer']);
-	$postQuery=Database::query("SELECT * FROM posts WHERE user_id = '{$id}' AND active='yes' ORDER BY id DESC");
+	$postQuery=Database::query("SELECT aspects.ID, aspect_type.Title, aspect_type.Description as Description FROM aspects LEFT JOIN aspect_type ON aspect_type.ID = aspects.AspectTypeID WHERE aspects.OwnerID = {$id} AND aspects.`Active` = 1 ORDER BY aspects.ID DESC");
 	if($postQuery !== false && $postQuery->num_rows > 0){
 		while($row=$postQuery->fetch_assoc()) {		
 			$this->add(new View('../widgets/profile/post_box.php', array('row' => $row, 'reviewer' => $reviewer, 'country' => $country, 'ip' => $ip, 'id' => $user_id, 'user_extension' => $user_extension)));

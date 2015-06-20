@@ -4,10 +4,10 @@ $this->addResource('/js/post_box.js');
 
 $r = $this->getParameter('row');
 
-$post_id = $r['id'];
-$post_name = $r['name'];
-$post_extension = $r['extension'];
-$post_description = $r['description'];
+$post_id = $r['ID'];
+$post_name = $r['Title'];
+$post_description = $r['Description'];
+
 $reviewer = $this->getParameter('reviewer');
 $ip = $this->getParameter('ip');
 $user_id = $this->getParameter('id');
@@ -23,7 +23,7 @@ $isMobile = empty($isMobile) ? '' : '_mobile';
 <div  class="post_top" style="width:100%; background:#fff; height:50px; overflow:hidden;">
 	<div style="padding:5px;">
 		<div style="float:left; display:none; width:50px; height:35px; overflow:hidden;">
-			<?php post_pic('50px','auto',$post_id, $user_id, $post_extension, $user_extension); ?>
+			<?php /*post_pic('50px','auto',$post_id, $user_id, $post_extension, $user_extension);*/ ?>
 		</div>
 		<div style="display: inline-block; margin-left:10px;" title="<?php echo $post_description; ?>">
 			<div style="color:#555; font-size:17px;"><?php echo $post_name; ?></div>
@@ -33,7 +33,7 @@ $isMobile = empty($isMobile) ? '' : '_mobile';
 </div>
 
 <?php				
-$checkQuery = Database::query("SELECT * FROM feedback WHERE ip_address='{$ip}' AND post_id='{$post_id}' ORDER BY `id` DESC");
+$checkQuery = Database::query("SELECT 1 FROM feedback WHERE IPAddress = '{$ip}' AND AspectID = {$post_id} ORDER BY feedback.id DESC");
 
 if($checkQuery->num_rows==0){
 ?>
@@ -66,8 +66,5 @@ if($checkQuery->num_rows==0){
 } else { ?>
 	<div class="appear" id="appear_bar_<?php echo $post_id; ?>"  align="center" style="width:100%; font-size:12px; color:#dcdcdc; border-top:0px solid #dcdcdc;">Already rated.</div>	
 <?php } ?>
-</div>
-<div  id="post_box_comment_<?php echo $post_id; ?>" style="width:100%; border: 1px solid #dcdcdc; margin-top:0px; border-top:0px; border-radius:0px; ">
-	<div style="padding:0px;"><?php $this->add(new View('../widgets/profile/post_comment.php', array('row' => $r, 'country' => $this->getParameter('country'), 'ip' => $this->getParameter('ip'), 'id' => $this->getParameter('id')))); ?></div>
 </div>
 </div>

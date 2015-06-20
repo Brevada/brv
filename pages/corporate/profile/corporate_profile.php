@@ -13,7 +13,7 @@ if($query !== false && $query->num_rows > 0){
 }
 
 //GET COUNTRY
-$geo = Brevada::GetGeo();
+$geo = Geography::GetGeo();
 $country = $geo['country'];
 $ip = $geo['ip'];
 

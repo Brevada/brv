@@ -14,6 +14,7 @@ class View
 	
 	public $DocType = false;
 	public $RootPage = false;
+	public $IsScript = false;
 	
 	public $Title = '';
 	

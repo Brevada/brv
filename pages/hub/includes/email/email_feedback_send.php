@@ -242,5 +242,5 @@ if(!$mail->Send()) {
 
 }
 
-Brevada::Redirect('/hub/hub.php');
+Brevada::Redirect('/dashboard');
 ?>

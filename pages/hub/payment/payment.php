@@ -20,7 +20,7 @@ while($rows = $query->fetch_assoc()){
 	$active = $rows['active'];
 }
 if($active=='yes'){
-	Brevada::Redirect('/hub/hub.php');
+	Brevada::Redirect('/dashboard');
 }
 ?>
 

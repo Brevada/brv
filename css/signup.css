@@ -33,31 +33,3 @@
 
 div#part1 { position: relative; }
 div#part2 { text-align: center; }
-div.token-container { width: 100%; position: relative; }
-
-#next{
-	position:absolute;
-	z-index:10;
-	width:10%;
-	height: 0.8em;
-	padding:0.625em 0.625em 0.75em 0.625em;
-	right: 1em;
-	top: 0;
-	bottom: 0;
-	margin: auto;
-	text-align:center;
-	font-weight:bold;
-	font-size:0.75em;
-	color:#FEFEFE;
-	border:0px;
-	background: #FF2b2b;
-
-	-moz-border-radius: 4px;
-	-webkit-border-radius: 4px;
-	border-radius: 4px;
-	display: inline-block;
-	font-family: arial;
-	text-decoration: none;
-	cursor: pointer;
-}
-#next:hover { opacity: 0.9; filter: opacity(90); }

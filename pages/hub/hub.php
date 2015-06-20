@@ -1,3 +1,4 @@
+<?php Brevada::Redirect('/dashboard'); /* Redirect old links. */ ?>
 <?php
 $this->addResource('/css/layout.css');
 $this->addResource('/css/hub.css');
@@ -50,7 +51,7 @@ $this->setTitle("Brevada Hub - {$name}");
 	
 $logins++;
 
-Database::query("UPDATE users SET logins='{$logins}' WHERE id='{$user_id}';");
+Database::query("UPDATE users SET logins='{$logins}' WHERE id='{$user_id}'");
 
 if($level != '0' && $level != '1' && $active == 'no'){
 	Brevada::Redirect('/hub/payment/payment.php');
