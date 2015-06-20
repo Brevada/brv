@@ -3,7 +3,7 @@
 Controller
 
 Entry point for website.
-//**/
+*/
 
 define('ROOT_PATH', '/');
 define('URL', 'http://brevada.com/');
