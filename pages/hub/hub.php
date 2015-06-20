@@ -57,7 +57,7 @@ if($level != '0' && $level != '1' && $active == 'no'){
 	Brevada::Redirect('/hub/payment/payment.php');
 }
 
-$query=Database::query("SELECT * FROM codes WHERE referral_user='{$user_id}' LIMIT 1");
+$query=Database::query("SELECT `code` FROM codes WHERE referral_user='{$user_id}' LIMIT 1");
 $referral_code = 'No Code';
 while($row = $query->fetch_assoc()){
 	$referral_code = $row['code'];
