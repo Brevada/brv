@@ -17,7 +17,7 @@ if($query->num_rows == 0){
 }
 
 if($user_id != Brevada::validate($_SESSION['corporate_id'])){
-	Brevada::Redirect('/hub');
+	Brevada::Redirect('/dashboard');
 }
 
 $name=""; $email=""; $url_name=""; $active=""; $logins=""; $extension=""; $type=""; $trial=""; $picture=""; $expiry_date=""; $user_extension="";

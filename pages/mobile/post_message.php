@@ -5,7 +5,7 @@ $user_id = $this->getParameter('user_id');
 $name = $this->getParameter('name');
 
 //GET COUNTRY
-$geo = Brevada::GetGeo();
+$geo = Geography::GetGeo();
 $country = $geo['country'];
 $ip = $geo['ip'];
 ?>

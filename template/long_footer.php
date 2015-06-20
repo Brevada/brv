@@ -63,7 +63,7 @@
 				<br style="clear:both;" />
 				<br style="clear:both;" />
 				<div style="width:100%; text-align:center; font-size:12px; color:#FFAEA5;">
-				&copy; 2014 brevada.com. All rights reserved. Questions? contact@brevada.com or <strong>1 (844) BREVADA</strong>
+				&copy; <?php echo date('Y'); ?> brevada.com. All rights reserved. Questions? contact@brevada.com or <strong>1 (844) BREVADA</strong>
 				</div>
 			</div>
 	</div>

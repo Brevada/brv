@@ -34,7 +34,7 @@ if (($_FILES["file"]["size"] < 10485760) && in_array($extension, $allowedExts)) 
 	$extension = 'none';
 }
 
-Brevada::GeneratePostQR(URL.'/mobile/mobile_single.php?id=' . $new_id);
+Barcode::GeneratePostQR(URL.'/mobile/mobile_single.php?id=' . $new_id);
   
 $sql ="UPDATE posts SET extension='{$extension}' WHERE id='{$new_id}'";
 Database::query($sql);

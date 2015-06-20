@@ -5,7 +5,7 @@ $this->addResource('/css/mobile/post_comment_mobile.css');
 $post_id = $this->getParameter('post_id');
 
 //GET COUNTRY
-$geo = Brevada::GetGeo();
+$geo = Geography::GetGeo();
 $ip = $geo['ip'];
 $country = $geo['country'];
 ?>

@@ -1,5 +1,5 @@
 <?php
-if(Brevada::IsLoggedIn()){ Brevada::Redirect('/hub'); }
+if(Brevada::IsLoggedIn()){ Brevada::Redirect('/dashboard'); }
 
 $this->add(new View('../template/home_header.php'));
 $this->addResource('/css/index.css');
