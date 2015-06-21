@@ -29,7 +29,7 @@
 	margin: 0.625em auto 0px auto;
 }
 
-#back { width: 20%; padding: 0.75em 0 0.75em 0em; margin: 0.625em 1em 0 auto; }
+#back { width: 20%; padding: 0.75em 0; margin: 0.625em 1em 0 0; }
 
 div#part1 { position: relative; }
 div#part2 { text-align: center; }

@@ -5,7 +5,6 @@ $this->addResource('/css/signup.css');
 $this->addResource('/js/signup.js');
 
 $this->addResource("<meta name='viewport' content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0'/>", true, true);
-
 if(Brevada::IsLoggedIn()){
 	Brevada::Redirect('/dashboard');
 }
@@ -26,8 +25,8 @@ if(isset($_GET['l'])){
 		$level=4;
 	}
 }
-
 $existing_address = isset($_GET['email']) && $_GET['email'] != 'false';
+
 ?>
 
 <div id="signup_box" style='display: none;'>
@@ -46,7 +45,7 @@ $existing_address = isset($_GET['email']) && $_GET['email'] != 'false';
 						?>
 						<input type='hidden' name='posts-token' id='tokens' />
 					</div>
-					<div id="next" class="submit-next">Next</div>
+					<div id="next" class="submit-next">Next <i class="fa fa-chevron-right"></i></div>
 				</div>
 				<br style="clear:both;" />
 		</div>

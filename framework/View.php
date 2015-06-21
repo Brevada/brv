@@ -2,7 +2,7 @@
 /**
 Framework
 Developed by Noah Negin-Ulster
-//**/
+*/
 
 define('DEFAULT_TITLE', 'Brevada Feedback Platform');
 
@@ -79,7 +79,7 @@ class View
 	
 	/**
 		Load external pages.
-	//**/
+	*/
 	
 	private function loadPage($page)
 	{
