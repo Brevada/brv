@@ -10,7 +10,7 @@ body{
 	background-attachment: fixed; 
 }
 
-div.top-banner { width: 100%; height: 50px; position: absolute; top: 0; left: 0; }
+div.top-banner { background: #FBFBFB; width: 100%; height: 50px; position: absolute; top: 0; left: 0; }
 div.top-banner img.logo-quote { float: left; margin: 0; height: 40px; padding: 10px; cursor: pointer; }
 
 div.spacer { width: 100%; height: 40px; padding: 0; margin: 0; }
@@ -18,17 +18,17 @@ div.spacer { width: 100%; height: 40px; padding: 0; margin: 0; }
 .positive { color: #2ECC0E; }
 .negative { color: #FF2B2B }
 
-span.aspect-title { background: #FF2B2B; border-radius: 0.3em; color: #FFFFFF; padding: 0.1em 0.6em; font-size: 0.95em; cursor: pointer;  }
+span.aspect-title { background: #FF2B2B; border-radius: 0.3em; color: #FFFFFF; padding: 0.1em 0.6em; font-size: 0.95em; cursor: pointer; padding: 5px;}
 span.aspect-title.placeholder { visibility: hidden; }
 
 div.top-area { width: 100%; min-height: 100px; height: auto; background: #E6E6E6; margin: 1em 0 0 0; padding: 1em 0; text-align: center; overflow: hidden; -webkit-transform-style: preserve-3d; -moz-transform-style: preserve-3d; transform-style: preserve-3d; }
-div.top-area .big-number { font-size: 6em; }
+div.top-area .big-number { font-size: 4em; }
 div.top-area .title { text-transform: uppercase; color: #1A1A1A; display: block; font-size: 0.9em; }
 div.top-area .subtitle { text-transform: uppercase; color: #9D9D9D; display: block; font-size: 0.75em; }
 div.top-area div.block { width: auto; display: inline-block; text-align: left; margin: 0 1em; }
 div.top-area div.attention-area { height: 100%; position: relative; }
 @media (min-width: 900px) {
-	div.top-area div.attention-area {top: 50%; transform: translateY(-22%);}
+	div.top-area div.attention-area {}
 }
 @media (max-width: 900px) {
 	div.top-area div.attention-area { transform: translateY(0); padding-top: 0.8em; }
@@ -41,9 +41,9 @@ div.top-area div.attention-area div.aspects span { margin: 0 0.2em 0 0; }
 
 div.aspect-area { width: 100%; height: auto; overflow: hidden; margin: 2em auto; }
 div.aspect-area div { padding: 0; margin: 0; }
-div.aspect-area div.row { width: 80%; max-width: 1000px; height: auto; overflow: hidden; margin: 0 auto; text-align: center; }
+div.aspect-area div.row { width: 100%; max-width: 2000px; height: auto; overflow: hidden; margin: 0 auto; text-align: center; }
 
-div.aspect-area div.row div.aspect-container { width: 155px; height: auto; margin: 0 0em 2em 4em; display: inline-block; position: relative; zoom: 1; }
+div.aspect-area div.row div.aspect-container { width: 205px; height: auto; margin: 0 0em 2em 4em; display: inline-block; position: relative; zoom: 1; }
 
 div.aspect-area div.row div.aspect-container.disabled::after { content : ''; width: 100%; height: 100%; display: block; position: absolute; top: 0; left: 0; background: repeating-linear-gradient(-55deg, #222, #222 6px, #333 6px, #333 12px ); opacity: 0.35; }
 
@@ -65,4 +65,4 @@ div.aspect-area div.row div.aspect-container div.graph-info div.right-block i { 
 div.aspect-area div.row div.aspect-container div.graph-info div.right-block i.fa-sort-asc { top: 0.35em; }
 div.aspect-area div.row div.aspect-container div.graph-info div.right-block i.fa-sort-desc { top: -0.1em; }
 div.aspect-area div.row div.aspect-container div.graph-info div.right-block span.duration { font-size: 0.7em; }
-div.aspect-area div.row div.aspect-container span.aspect-title { display: inline-block; margin: 0.5em 0 0 0; width: calc(100% - 1.2em); text-align: center; }
+div.aspect-area div.row div.aspect-container span.aspect-title { display: inline-block; margin: 0em 0 0 0; padding: 10px; width: calc(100% - 1.2em); text-align: center; }
