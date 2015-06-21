@@ -106,11 +106,13 @@ $areasOfLeastConcern = array_diff($areasOfLeastConcern, $areasOfFocus);
 	</div>
 </div>
 
-<div class='spacer'></div>
 
 <div class='top-area'>
 	<div class='overall-improvement block'>
-		<div class='big-number <?php echo $data_overall4W > 0 ?  'positive' : 'negative'; ?>'><?php echo abs($data_overall4W)."%"; ?></div>
+		<div class='big-number <?php echo $data_overall4W > 0 ?  'positive' : 'negative'; ?>'>
+		<i class='fa <?php echo $data_overall4W >= 0 ? 'fa-sort-asc' : 'fa-sort-desc'; ?>'></i>
+			<?php echo abs($data_overall4W)."%"; ?>
+		</div>
 		<span class='title'>Overall <?php echo $data_overall4W > 0 ? 'Improvement' : ($data_overall4W == 0 ? 'No Change' : 'Decrease'); ?></span>
 		<span class='subtitle'>Past 4 Weeks</span>
 	</div>
@@ -177,6 +179,7 @@ $query = Database::query("SELECT aspect_type.Title, aspects.Data_LastUpdate, asp
 		$order_denom = $query->num_rows;
 	?>
 		<div class='aspect-container'>
+			<span class='aspect-title'><?php echo $title; ?></span>
 			<div class='graphs'>
 				<div class='left-graph graph' data-percent='<?php echo $data_ratingPercent; ?>'>
 					<div class='percent'><?php echo "{$data_ratingPercent}%"; ?></div>
@@ -201,7 +204,7 @@ $query = Database::query("SELECT aspect_type.Title, aspects.Data_LastUpdate, asp
 					</div>
 				</div>
 			</div>
-			<span class='aspect-title'><?php echo $title; ?></span>
+			
 		</div>
 		<?php } $query->close(); ?>
 		<!-- numofFillers = numPerRow-1 -->
@@ -210,3 +213,5 @@ $query = Database::query("SELECT aspect_type.Title, aspects.Data_LastUpdate, asp
 		<div class='aspect-container aspect-filler'></div>
 	</div>
 </div>
+
+<div class="consultant"></div>
