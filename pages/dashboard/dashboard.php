@@ -93,69 +93,111 @@ if($query !== false){
 
 $areasOfLeastConcern = array_diff($areasOfLeastConcern, $areasOfFocus);
 ?>
-<div class='top-banner'>
-	<img class='logo-quote link' src='/images/quote.png' data-link='' />
-	<div class='dropdown-menu noselect'>
-		<div class='three-lines'>
-			<i class='fa fa-ellipsis-h'></i>
-		</div>
-		<ul>
-			<li class='link' data-link='account'>Account Settings</li>
-			<li class='link' data-link='logout'>Logout</li>
-		</ul>
-	</div>
-</div>
 
+<div class="top-fixed">
 
-<div class='top-area'>
-	<div class='overall-improvement block'>
-		<div class='big-number <?php echo $data_overall4W > 0 ?  'positive' : 'negative'; ?>'>
-		<i class='fa <?php echo $data_overall4W >= 0 ? 'fa-sort-asc' : 'fa-sort-desc'; ?>'></i>
-			<?php echo abs($data_overall4W)."%"; ?>
-		</div>
-		<span class='title'>Overall <?php echo $data_overall4W > 0 ? 'Improvement' : ($data_overall4W == 0 ? 'No Change' : 'Decrease'); ?></span>
-		<span class='subtitle'>Past 4 Weeks</span>
-	</div>
-	<div class='overall-decrease block'>
-		<div class='big-number <?php echo $data_overallAll >= 50 ?  'positive' : 'negative'; ?>'><?php echo abs($data_overallAll)."%"; ?></div>
-		<span class='title'><?php echo $data_overallAll >= 50 ?  'Doing Well' : 'Needs Improvement'; ?></span>
-		<span class='subtitle'>All Time</span>
-	</div>
-	<div class='below-benchmark block'>
-		<div class='big-number <?php echo numericalCSS($data_relativeBenchmark); ?>'><?php echo abs($data_relativeBenchmark)."%"; ?></div>
-		<span class='title'><?php echo $data_relativeBenchmark >= 0 ? 'Above' : 'Below'; ?> Benchmark</span>
-		<span class='subtitle'>Past 4 Weeks</span>
-	</div>
-	<div class='attention-area block'>
-		<div class=''>
-			<span class='title'>Suggested Areas of Focus</span>
-			<div class='aspects'>
-				<?php
-				foreach($areasOfFocus as $aspect){
-					echo "<span class='aspect-title'>{$aspect}</span>";
-				}
-				if(empty($areasOfFocus)){
-					echo "<span class='aspect-title placeholder'></span>";
-				}
-				?>
+	<div class='top-banner row'>
+		<div class='col-lg-12'>
+			<img class='logo-quote link pull-left' src='/images/quote-white.png' data-link='' />
+			<div class='dropdown pull-right'>
+				<div class='three-lines btn btn-default dropdown-toggle'  data-toggle='dropdown'>
+					<i class='fa fa-ellipsis-h'></i>
+				</div>
+				<ul class='dropdown-menu'>
+					<li class='link' data-link='account'>Account Settings</li>
+					<li class='link' data-link='logout'>Logout</li>
+				</ul>
 			</div>
 		</div>
 	</div>
-		<div class='attention-area block'>
-			<div class=''>
-				<span class='title'>Areas of Least Concern</span>
-				<div class='aspects'>
-					<?php
-					foreach($areasOfLeastConcern as $aspect){
-						echo "<span class='aspect-title'>{$aspect}</span>";
-					}
-					if(empty($areasOfLeastConcern)){
-						echo "<span class='aspect-title placeholder'></span>";
-					}
-					?>
+
+	<div class='top-area row'>
+		
+		<div class="col-sm-3">
+			<div class='overall-decrease block <?php echo $data_overallAll >= 50 ?  'positive' : 'negative'; ?>'>
+				<div class="block-left">
+					<i class='fa <?php if($data_overallAll == 0){ echo 'fa-minus-circle'; } else { echo $data_overallAll >= 0 ? 'fa-chevron-circle-up' : 'fa-chevron-circle-down'; } ?>'></i>
+				</div>
+				<div class="block-right">
+					<div class='big-number <?php echo $data_overallAll >= 50 ?  'positive' : 'negative'; ?>'>
+						<?php echo abs($data_overallAll)."%"; ?>
+					</div>
+				</div>
+				<div class="block-bottom">
+					All Time Progress
 				</div>
 			</div>
+		</div>
+
+		<div class="col-sm-3">
+			<div class='overall-improvement block <?php echo $data_overall4W >= 50 ?  'positive' : 'negative'; ?>'>
+				<div class="block-left">
+					<i class='fa <?php if($data_overall4W == 0){ echo 'fa-minus-circle'; } else { echo $data_overall4W >= 0 ? 'fa-chevron-circle-up' : 'fa-chevron-circle-down'; } ?>'></i>
+				</div>
+				<div class="block-right">
+					<div class='big-number <?php echo $data_overall4W >= 50 ?  'positive' : 'negative'; ?>'>
+						<?php echo abs($data_overall4W)."%"; ?>
+					</div>
+				</div>
+				<div class="block-bottom">
+					Past 4 Weeks
+				</div>
+			</div>
+		</div>
+
+		<div class="col-sm-3">
+			<div class='below-benchmark block <?php echo numericalCSS($data_relativeBenchmark); ?>'>
+				<div class="block-left">
+					<i class='fa <?php if($data_relativeBenchmark == 0){ echo 'fa-minus-circle'; } else { echo $data_relativeBenchmark >= 0 ? 'fa-chevron-circle-up' : 'fa-chevron-circle-down'; } ?>'></i>
+				</div>
+				<div class="block-right">
+					<div class='big-number <?php echo numericalCSS($data_relativeBenchmark); ?>'>
+						<?php echo abs($data_relativeBenchmark)."%"; ?>
+					</div>
+				</div>
+				<div class="block-bottom">
+					Versus Benchmark
+				</div>
+			</div>
+		</div>
+
+		<div class="col-sm-3">		
+			<div class='attention-area block'>
+					<div class=''>
+						<span class='title'>Areas of Least Concern</span>
+						<div class='aspects'>
+							<?php
+							foreach($areasOfLeastConcern as $aspect){
+								echo "<span class='aspect-title'>{$aspect}</span>";
+							}
+							if(empty($areasOfLeastConcern)){
+								echo "<span class='aspect-title placeholder'></span>";
+							}
+							?>
+						</div>
+					</div>
+
+					<div class=''>
+						<span class='title'>Areas Focus</span>
+						<div class='aspects'>
+							<?php
+							foreach($areasOfFocus as $aspect){
+								echo "<span class='aspect-title'>{$aspect}</span>";
+							}
+							if(empty($areasOfFocus)){
+								echo "<span class='aspect-title placeholder'></span>";
+							}
+							?>
+						</div>
+					</div>
+			</div>
+		</div>
 	</div>
+
+</div>
+
+<div class="spacer">
+
 </div>
 
 <?php
@@ -178,33 +220,34 @@ $query = Database::query("SELECT aspect_type.Title, aspects.Data_LastUpdate, asp
 		$order_num = ((int) $row['Position']) + 1;
 		$order_denom = $query->num_rows;
 	?>
-		<div class='aspect-container'>
-			<span class='aspect-title'><?php echo $title; ?></span>
-			<div class='graphs'>
-				<div class='left-graph graph' data-percent='<?php echo $data_ratingPercent; ?>'>
-					<div class='percent'><?php echo "{$data_ratingPercent}%"; ?></div>
-				</div>
-				<div class='right-graph graph' data-percent='<?php echo $data_ratingPercentOther; ?>' data-tooltip='Market Benchmark (<?php echo "{$data_ratingPercentOther}%"; ?>)'></div>
-			</div>
-			<div class='graph-info'>
-				<div class='left-block'>
-					<span class='fraction numerator'><?php echo $order_num; ?></span>
-					<span class='fraction denominator'>Out of <?php echo $order_denom; ?></span>
-				</div>
-				<div class='right-block'>
-					<div class='top'>
-						<i class='fa <?php echo $data_percent4W >= 0 ? 'fa-sort-asc' : 'fa-sort-desc'; ?> <?php echo numericalCSS($data_percent4W); ?>-text'></i>
-						<span class='percent'><?php echo abs($data_percent4W)."%"; ?></span>
-						<span class='duration'>(4w)</span>
+		<div class="col-sm-2">	
+			<div class='aspect-container'>
+				<span class='aspect-title'><?php echo $title; ?></span>
+				<div class='graphs'>
+					<div class='left-graph graph' data-percent='<?php echo $data_ratingPercent; ?>'>
+						<div class='percent'><?php echo "{$data_ratingPercent}%"; ?></div>
 					</div>
-					<div class='bottom'>
-						<i class='fa <?php echo $data_percent1Y >= 0 ? 'fa-sort-asc' : 'fa-sort-desc'; ?> <?php echo numericalCSS($data_percent1Y); ?>-text'></i>
-						<span class='percent'><?php echo abs($data_percent1Y)."%"; ?></span>
-						<span class='duration'>(1y)</span>
+					<div class='right-graph graph' data-percent='<?php echo $data_ratingPercentOther; ?>' data-tooltip='Market Benchmark (<?php echo "{$data_ratingPercentOther}%"; ?>)'></div>
+				</div>
+				<div class='graph-info'>
+					<div class='left-block'>
+						<span class='fraction numerator'><?php echo $order_num; ?></span>
+						<span class='fraction denominator'>Out of <?php echo $order_denom; ?></span>
+					</div>
+					<div class='right-block'>
+						<div class='top'>
+							<i class='fa <?php echo $data_percent4W >= 0 ? 'fa-sort-asc' : 'fa-sort-desc'; ?> <?php echo numericalCSS($data_percent4W); ?>-text'></i>
+							<span class='percent'><?php echo abs($data_percent4W)."%"; ?></span>
+							<span class='duration'>(4w)</span>
+						</div>
+						<div class='bottom'>
+							<i class='fa <?php echo $data_percent1Y >= 0 ? 'fa-sort-asc' : 'fa-sort-desc'; ?> <?php echo numericalCSS($data_percent1Y); ?>-text'></i>
+							<span class='percent'><?php echo abs($data_percent1Y)."%"; ?></span>
+							<span class='duration'>(1y)</span>
+						</div>
 					</div>
 				</div>
 			</div>
-			
 		</div>
 		<?php } $query->close(); ?>
 		<!-- numofFillers = numPerRow-1 -->
@@ -214,4 +257,6 @@ $query = Database::query("SELECT aspect_type.Title, aspects.Data_LastUpdate, asp
 	</div>
 </div>
 
-<div class="consultant"></div>
+<div class="bottom-bar">
+
+</div>
