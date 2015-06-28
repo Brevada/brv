@@ -9,8 +9,13 @@
 	font-family: "helvetica neue",arial,helvetica,freesans,"liberation sans","numbus sans l",sans-serif;
 }
 .appear{
-	height:30px;
-	line-height:30px;
+	font-size:12px;
+	font-family:helvetica;
+	color:#666;
+	padding-top:3px;
+	padding-bottom:3px;
+	height:40px;
+	box-sizing:border-box;
 }
 
 .post_box_container_mobile {

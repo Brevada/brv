@@ -39,14 +39,3 @@ div.star-5 { background-color: #4EAF0E; background-size: 30%;}
 	text-decoration: none;
 	margin: 0px 0px;
 }
-
-.appear{
-	background:#f8f8f8;
-	font-size:12px;
-	font-family:helvetica;
-	color:#666;
-	padding-top:3px;
-	padding-bottom:3px;
-	height:40px;
-	box-sizing:border-box;
-}

@@ -1,349 +1,409 @@
 <?php
 if(Brevada::IsLoggedIn()){ Brevada::Redirect('/dashboard'); }
 
+
+$this->addResource('/css/home/animate.css');
+$this->addResource('/css/home/bootstrap.css');
+$this->addResource('/css/home/eco.css');
+$this->addResource('/css/home/font-awesome-min.css');
+$this->addResource('/css/home/slick.css');
+
+$this->addResource('/js/home/jquery-1.11.1.min.js');
+$this->addResource('/js/home/bootstrap.min.js');
+$this->addResource('/js/home/slick.min.js');
+$this->addResource('/js/home/placeholdem.min.js');
+$this->addResource('/js/home/rs-plugin/js/jquery.themepunch.plugins.min.js');
+$this->addResource('/js/home/rs-plugin/js/jquery.themepunch.revolution.min.js');
+$this->addResource('/js/home/waypoints.min.js');
+$this->addResource('/js/home/scripts.js');
+
+
 $this->add(new View('../template/home_header.php'));
-$this->addResource('/css/index.css');
-$this->addResource('/css/pricing.css');
 ?>
 
-<div id="second_bar">
-	<div class="container">
-    	<a href="/home/pricing.php"><div id="second_bar_button" class="top_bar_button_red" style="margin-left:0px; padding-left:0px;">Pricing</div></a>
-        <a href="/home/approved.php"><div id="second_bar_button" class="top_bar_button_red">Approved</div></a>
-        <a href="/home/howitworks.php"><div id="second_bar_button" class="top_bar_button_red">How It Works</div></a>
-        <a href="/home/complete.php"><div id="second_bar_button" class="top_bar_button_red">Complete Systems</div></a>
-        <a href="brevada"><div id="second_bar_button" class="top_bar_button_red">Feedback</div></a>
-        <div id="second_bar_button" class="top_bar_button_red" style="float:right;"><span id="emphasis">Free</span> Customer Service Consulting: <strong>1 (844) BREVADA</strong></div>
-        <br style="clear:both;" />
+<body>
+
+
+    <div class="wrapper">
+
+        
+		<!-- How it works -->
+        <section id="about">
+            <div class="container">
+                
+                <div class="section-heading scrollpoint sp-effect3">
+                    <h1>How It Works</h1>
+                    <div class="divider"></div>
+                    <p>4 simple steps to bring your business to the next level.</p>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-3 col-sm-3 col-xs-6">
+                        <div class="about-item scrollpoint sp-effect2">
+                            <!-- <i class="fa fa-hand-o-up fa-2x"></i> -->
+                            <div class="icon-holder">1</div>
+                            <h3>Pick Your Plan</h3>
+                            <p>Choose the plan that's right for your business.</p>
+                        </div>
+                    </div>
+                    <div class="col-md-3 col-sm-3 col-xs-6" >
+                        <div class="about-item scrollpoint sp-effect5">
+                            <!-- <i class="fa fa-list fa-2x"></i> -->
+                            <div class="icon-holder">2</div>
+                            <h3>Customize</h3>
+                            <p>Specify the <i>products, services, or other aspects</i> of your business that you want to get feedback on.</p>
+                        </div>
+                    </div>
+                    <div class="col-md-3 col-sm-3 col-xs-6" >
+                        <div class="about-item scrollpoint sp-effect5">
+                            <!-- <i class="fa fa-users fa-2x"></i> -->
+                            <div class="icon-holder">3</div>
+                            <h3>Gather Results</h3>
+                            <p>Gather feedback on those aspects from your customers by sharing your <b>Brevada Page</b> URL and with <b>tablets</b> (included in every Brevada subscription!)</p>
+                        </div>
+                    </div>
+                    <div class="col-md-3 col-sm-3 col-xs-6" >
+                        <div class="about-item scrollpoint sp-effect1">
+                            <!-- <i class="fa fa-external-link-square fa-2x"></i> -->
+                            <div class="icon-holder">4</div>
+                            <h3>Analyze and Compare</h3>
+                            <p>Our revolutionary data reporting dashboard tells you what you need to know to take your business to the next level.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+		
+		<!-- Benefits -->
+        <section id="features">
+            <div class="container">
+                <div class="section-heading scrollpoint sp-effect3">
+                    <h1>Why Brevada?</h1>
+                    <div class="divider"></div>
+                    <p>Let us be the secret to your success.</p>
+                </div>
+                <!--
+                -tablets
+                -brevada page
+                -custom URL
+                -custom QR code
+                -marketing material
+                
+                
+                -local comparisons
+                -intra-company analysis
+                -track progress
+                -->
+                <div class="row">
+                    <div class="col-md-4 col-sm-4 scrollpoint sp-effect1">
+                        
+                        
+                        <div class="media feature ">
+                            <a class="pull-right" href="#">
+                                <i class="fa fa-cogs fa-2x"></i>
+                            </a>
+                            <div class="media-body">
+                                <h3 class="media-heading">Tablets</h3>
+                                Brevada feedback tablets are included with every plan.
+                            </div>
+                        </div>
+                        <div class="media feature">
+                            <a class="pull-right" href="#">
+                                <i class="fa fa-envelope fa-2x"></i>
+                            </a>
+                            <div class="media-body">
+                                <h3 class="media-heading">Brevada Page</h3>
+                                Forget surveys! We make giving feedback quick and easy.
+                            </div>
+                        </div>
+                        <div class="media eature">
+                            <a class="pull-right" href="#">
+                                <i class="fa fa-users fa-2x"></i>
+                            </a>
+                            <div class="media-body">
+                                <h3 class="media-heading">Custom URL</h3>
+                                Your Brevada Page lives at brevada.com/<i>yourcompany</i>
+                            </div>
+                        </div>
+                        <div class="media feature">
+                            <a class="pull-right" href="#">
+                                <i class="fa fa-comments fa-2x"></i>
+                            </a>
+                            <div class="media-body">
+                                <h3 class="media-heading">Custom QR Code</h3>
+                                Lorem ipsum dolor sit amet.
+                            </div>
+                        </div>
+                        <div class="media feature">
+                            <a class="pull-right" href="#">
+                                <i class="fa fa-calendar fa-2x"></i>
+                            </a>
+                            <div class="media-body">
+                                <h3 class="media-heading">Marketing Material</h3>
+                                Lorem ipsum dolor sit amet.
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4 col-sm-4" >
+                        <img src="/images/tablet.png" class="img-responsive scrollpoint sp-effect5" alt="">
+                    </div>
+
+
+                    <div class="col-md-4 col-sm-4 scrollpoint sp-effect2">
+                        
+                        <div class="media feature">
+                            <a class="pull-left" href="#">
+                                <i class="fa fa-map-marker fa-2x"></i>
+                            </a>
+                            <div class="media-body">
+                                <h3 class="media-heading">Local Comparisons</h3>
+                                Compare your feedback to local averages.
+                            </div>
+                        </div>
+                        <div class="media feature">
+                            <a class="pull-left" href="#">
+                                <i class="fa fa-film fa-2x"></i>
+                            </a>
+                            <div class="media-body">
+                                <h3 class="media-heading">Intra-Company Analysis</h3>
+                                Lorem ipsum dolor sit amet.
+                            </div>
+                        </div>
+                        <div class="media feature">
+                            <a class="pull-left" href="#">
+                                <i class="fa fa-compass fa-2x"></i>
+                            </a>
+                            <div class="media-body">
+                                <h3 class="media-heading">Track Progress</h3>
+                                Lorem ipsum dolor sit amet.
+                            </div>
+                        </div>
+                        <div class="media feature">
+                            <a class="pull-left" href="#">
+                                <i class="fa fa-picture-o fa-2x"></i>
+                            </a>
+                            <div class="media-body">
+                                <h3 class="media-heading">Weather on-the-go</h3>
+                                Lorem ipsum dolor sit amet.
+                            </div>
+                        </div>
+                        <div class="media active feature">
+                            <a class="pull-left" href="#">
+                                <i class="fa fa-plus fa-2x"></i>
+                            </a>
+                            <div class="media-body">
+                                <h3 class="media-heading">And much more!</h3>
+                                Lorem ipsum dolor sit amet.
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <section id="reviews">
+            <div class="container">
+                <div class="section-heading inverse scrollpoint sp-effect3">
+                    <h1>Reviews</h1>
+                    <div class="divider"></div>
+                    <p>See What People Are Saying About Brevada</p>
+                </div>
+                <div class="row">
+                    <div class="col-md-10 col-md-push-1 scrollpoint sp-effect3">
+                        <div class="review-filtering">
+                            <div class="review">
+                                <div class="row">
+                                    <div class="col-md-2">
+                                        <div class="review-person">
+                                            <img src="http://api.randomuser.me/portraits/women/94.jpg" alt="" class="img-responsive">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-10">
+                                        <div class="review-comment">
+                                            <h3>“Brevada offers incredible insight into my business and allows me to gather feedback in an attractive and classy fashion.”</h3>
+                                            <p>
+                                                - Krin Fox
+                                                <span>
+                                                    <i class="fa fa-star fa-lg"></i>
+                                                    <i class="fa fa-star fa-lg"></i>
+                                                    <i class="fa fa-star fa-lg"></i>
+                                                    <i class="fa fa-star fa-lg"></i>
+                                                    <i class="fa fa-star-half-o  fa-lg"></i>
+                                                </span>
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="review rollitin">
+                                <div class="row">
+                                    <div class="col-md-2">
+                                        <div class="review-person">
+                                            <img src="http://api.randomuser.me/portraits/men/70.jpg" alt="" class="img-responsive">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-10">
+                                        <div class="review-comment">
+                                            <h3>“Oleaose Is The Best Stable, Fast App I Have Ever Experienced”</h3>
+                                            <p>
+                                                - Theodore Willis
+                                                <span>
+                                                    <i class="fa fa-star fa-lg"></i>
+                                                    <i class="fa fa-star fa-lg"></i>
+                                                    <i class="fa fa-star fa-lg"></i>
+                                                    <i class="fa fa-star-half-o fa-lg"></i>
+                                                    <i class="fa fa-star-o fa-lg"></i>
+                                                </span>
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="review rollitin">
+                                <div class="row">
+                                    <div class="col-md-2">
+                                        <div class="review-person">
+                                            <img src="http://api.randomuser.me/portraits/men/93.jpg" alt="" class="img-responsive">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-10">
+                                        <div class="review-comment">
+                                            <h3>“Keep It Up Guys Your Work Rules, Cheers :)”</h3>
+                                            <p>
+                                                - Ricky Grant
+                                                <span>
+                                                    <i class="fa fa-star fa-lg"></i>
+                                                    <i class="fa fa-star fa-lg"></i>
+                                                    <i class="fa fa-star fa-lg"></i>
+                                                    <i class="fa fa-star-half-o fa-lg"></i>
+                                                    <i class="fa fa-star-o fa-lg"></i>
+                                                </span>
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+		
+		<!-- PRICING -->
+        <section id="screens">
+                <div class="container scrollpoint sp-effect3">
+					<div class="row">
+						<!-- Pricing Module 1 -->
+                        <div class="col-md-4">
+							<div class="panel panel-success panel-pricing">
+								<div class="panel-heading">
+									<h4 class="text-center title">Basic</h4>
+                                    <p class="lead text-center">
+                                        <span class="price"><span class="currency">$</span>50<span class="time">/month</span></span>
+                                        <br />
+                                        <span class="sub-price">Charged annualy at $600</span>
+                                    </p>
+								</div>
+								<ul class="list-group list-group-flush text-center">
+                                    <li class="list-group-item main-focus">
+                                        Custom Feedback Page, QR Code, and Marketing Materials
+                                    </li>
+									<li class="list-group-item">
+										2 <emp>Tablets</emp>
+									</li>
+									<li class="list-group-item">
+										1 Login
+									</li>
+									<li class="list-group-item">
+										Advanced <emp>Data Reporting</emp> and <emp>Competition Comparison</emp> Reports 
+									</li>
+									<li class="list-group-item">
+										24/7 Technical Support
+									</li>
+                                    <li class="list-group-item">
+                                        Weekly <emp>Email Reports</emp>
+                                    </li>
+								</ul>
+								<div class="panel-footer">
+									<a class="btn btn-lg btn-block btn-default">Get Started</a>
+								</div>
+							</div>
+						</div>
+
+                        <!-- Pricing Module 2 -->
+                        <div class="col-md-4">
+                            <div class="panel panel-success panel-pricing">
+                                <div class="panel-heading">
+                                    <h4 class="text-center title">Premium</h4>
+                                    <p class="lead text-center">
+                                        <span class="price"><span class="currency">$</span>90<span class="time">/month</span></span>
+                                        <br />
+                                        <span class="sub-price">Charged annualy at $1080</span>
+                                    </p>
+                                </div>
+                                <ul class="list-group list-group-flush text-center">
+                                    <li class="list-group-item main-focus">
+                                        Custom Feedback Page, QR Code, and Marketing Materials
+                                    </li>
+                                    <li class="list-group-item">
+                                        5 <emp>Tablets</emp>
+                                    </li>
+                                    <li class="list-group-item">
+                                        3 Logins
+                                    </li>
+                                    <li class="list-group-item">
+                                        Advanced <emp>Data Reporting</emp> and <emp>Competition Comparison</emp> Reports 
+                                    </li>
+                                    <li class="list-group-item">
+                                        24/7 Technical Support
+                                    </li>
+                                    <li class="list-group-item">
+                                        Weekly <emp>Email Reports</emp>
+                                    </li>
+                                </ul>
+                                <div class="panel-footer">
+                                    <a class="btn btn-lg btn-block btn-default">Get Started</a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Pricing Module 3 -->
+                        <div class="col-md-4">
+                            <div class="panel panel-success panel-pricing">
+                                <div class="panel-heading">
+                                    <h4 class="text-center title">Custom</h4>
+                                    <p class="lead text-center">
+                                        <span class="price" style="line-height: 10px;"><span class="time">Contact Us</span></span>
+                                        <br />
+                                        <span class="sub-price"></span>
+                                    </p>
+                                </div>
+                                <ul class="list-group list-group-flush text-center">
+                                    <li class="list-group-item">
+                                        Get a custom number of tablets, logins, and marketing materials. For one to many locations.
+                                    </li>
+                                </ul>
+                                <div class="panel-footer">
+                                    <a class="btn btn-lg btn-block btn-default">Contact Us</a>
+                                </div>
+                            </div>
+                        </div>
+					</div>
+				</div>
+        </section>
+
     </div>
-</div>
+    <script>
+        $(document).ready(function() {
+            appMaster.preLoader();
+        });
+    </script>
+</body>
 
-<div  style="width:100%; background:url('images/applause1.png');"></div>
+</html>
 
-<div style="width:100%; background:rgba(0,0,0,0.3); height:500px; margin-top:-500px;-webkit-box-shadow: 0px 0px 5px 0px rgba(50, 50, 50, 0.75);-moz-box-shadow: 0px 0px 5px 0px rgba(50, 50, 50, 0.75);box-shadow: 0px 0px 5px 0px rgba(50, 50, 50, 0.75);position:relative; z-index:9;">
-	<div class="slideshow" style="width:1000px; margin:0 auto; margin-top:-500px;">
-	  	<div class="a_slide">
-	  		<div class="slide_image" style="height:500px; overflow:hidden;"></div>
-	  		<div class="slide_overlay" >
-	  		 	<div class="container" style="width:1000px; margin:0 auto;">
-					<div class="text_left">
-						<strong>Complete</strong> customer feedback and communication.
-						<div style="margin-top:6px; font-size:15px;">
-							Revolutionary yet <span style="color:#ee2b2b;">affordable</span> feedback solutions to <strong>make your business succeed</strong>.
-						</div>
-						<br />
-						<a href="signup"><div class="top_bar_button2" style="margin-top:8px; margin-left:0px;">Get Started</div></a>
-						<a href="home/complete.php"><div class="top_bar_button3" style="margin-top:8px; margin-left:0px;">Learn More</div></a>
-					</div>
-					<div class="screen_video">
-						<img src="images/2014_page.png" style="width:550px; margin-right:0px;" />
-						<br />
-						<img src="images/screenvid.gif" style="width:419px; margin-right:65px; position: relative; top:-316px;" />
-					</div>
-					<br style="clear:both;" />
-	  			</div>
-	  		</div>
-	  		<br style="clear:both;" />
-	  	</div>
-	</div>
-</div>
 
-<div class="home_section" id="main_grey" style="padding-top:20px; padding-bottom:20px; position:relative; z-index:8;">
-	<div class="container">
-		<div class="left">
-			<form action="home/search.php" method="post">
-				<div class="left">
-					<input class="inp" name="needle" id="home_search" placeholder="Search Brevada pages" />		
-				</div>
-				<div class="left" style="margin-left:-40px;">
-					<img style="height:28px; opacity:1;" src="/images/search-2-xxl.png" />
-				</div>
-			</form>
-		</div>
-		<br style="clear:both;" />
-	</div>
-</div>
-
-<a id="works"></a>
-<div class="home_section" id="sec2"  style="border-top:1px solid #dcdcdc; height:550px; background:#f3f3f3; border-bottom:0px solid #dcdcdc; margin-top:0px; padding-bottom:50px;">
-	<div class="container">
-		<div id="t_title">
-			<br style="clear:both;"/>
-			<strong>The Brevada Complete Feedback System</strong>
-			 <br />
-			<span id="t_desc">The 3 components of a <span id="emphasis">complete feedback system</span> help you <strong>gather feedback, build your business, and win over your customers.</strong></span>
-			<br />
-		</div>
-		<br style="clear:both;" />
-		<a href="home/complete.php#tab1" id="t_href">
-		<div id="t_holder_top" style="margin-left:0px;">
-			<div id="t_bg">
-				<div id="t_image"></div>
-			</div>
-			<div id="t_text">
-				<img id="t_logo" src="images/logo_marketing.png" />
-				<br />
-				1. Feedback Marketing
-				<hr id="t_hr"/>
-				<span id="t_small">
-				Show your customers where to go <br /> to communicate with you.
-				</span>
-				<br />
-				<a href="home/complete.php#tab1"><div class="top_bar_button2" id="works_button">Learn More</div></a>
-			</div>
-			
-			<br style="clear:both;" />
-			<div id="t_triangle_top"></div>
-			
-			<br style="clear:both;" />
-			<br style="clear:both;" />
-			
-			<div id="t_circle"></div>
-		</div>
-		</a>
-		
-		<a href="home/complete.php#tab2" id="t_href">
-			<div id="t_holder_top" style="margin-left:40px;">
-				<div id="t_bg">
-					<div id="t_image"></div>
-				</div>
-				<div id="t_text">
-					<img id="t_logo" src="images/logo_page.png" /><br />2. Feedback Gathering
-					<hr id="t_hr" />
-					<span id="t_small">Listen to your customers using your <span id="emphasis">Brevada Page</span> <br /> and other gathering features.</span>
-					<br />
-					<a href="home/complete.php#tab2"><div class="top_bar_button2" id="works_button">Learn More</div></a>
-				</div>
-				<br style="clear:both;" />
-				<div id="t_triangle_top"></div>
-				<br style="clear:both;" />
-				<br style="clear:both;" />
-				<div id="t_circle"></div>
-			</div>
-		</a>
-		
-		<a href="home/complete.php#tab3" id="t_href">
-		<div id="t_holder_top" style="margin-left:50px;">
-			<div id="t_bg">
-			<div id="t_image"></div>
-			</div>
-			<div id="t_text">
-				<img id="t_logo" src="/images/logo_communicate.png" />
-				<br />3. Feedback Management
-				<hr id="t_hr"/>
-				<span id="t_small">View, analyze, respond, and learn from your feedback<br /> using Brevada's management features.</span>
-				<br />
-				<a href="home/complete.php#tab3"><div class="top_bar_button2" id="works_button">Learn More</div></a>
-			</div>
-			<br style="clear:both;" />
-			<div id="t_triangle_top"></div>
-			<br style="clear:both;" />
-			<br style="clear:both;" />
-			<div id="t_circle"></div>
-		</div>
-		</a>
-		<br style="clear:both;" />
-		<div id="timeline"></div>
-		<br style="clear:both;" />
-	</div>
-</div>
-    
-<ul id="tiles">
-	<li>
-		<a id="benefits"></a>
-		<div class="home_section" id="sec1">
-			<div class="container">
-				<div id="t_title">
-					The Benefits of Brevada <strong>#TheBOB</strong><br />
-					<span id="t_desc">How <span id="emphasis">Brevada's</span> complete feedback platform will help you <strong>Win Your Customers</strong></span><br />
-					<span id="t_mini">Feedback Marketing. Feedback Gathering. Feedback Management.</span>
-				</div>
-				<br style="clear:both;" />
-				<div id="b_left">
-					<img id="b_logo" src="images/logo_customer.png" /><br />
-					<div id="b_title">Customer Service</div>
-					<div id="b_subtitle">Have an ear for your customers. <strong>Without the hassle.</strong></div>
-					<div id="b_graphs">
-						<div id="b_graph">
-							<div id="stat_holder"> 
-								<div id="big_stat">24x</div>
-							</div>
-							<div class="text_clean" id="graph_label">
-								Retain up to <span id="emphasis">24x</span> more dissatisfied customers.
-							</div>
-							<br style="clear:both;" />
-						</div>
-						<div id="b_graph">
-							<div id="stat_holder"> 
-								<img class="piechart" src="/images/pie/81.png" />
-							</div>
-							<div class="text_clean" id="graph_label">
-								<span id="emphasis">81%</span> of customers are willing to pay more for Brevada levels of customer service.
-							</div>
-							<br style="clear:both;" />
-						</div>
-						 <div id="b_graph">
-							<div id="stat_holder"> 
-								<img class="piechart" src="/images/pie/71.png" />
-							</div>
-							<div class="text_clean" id="graph_label">
-								<span id="emphasis">71%</span> of customers first look for online outlets when experiencing issues.
-							</div>
-							<br style="clear:both;" />
-						</div>
-					</div>
-				</div>
-				<div id="b_left">
-					<img id="b_logo" src="images/logo_business.png" /><br />
-					<div id="b_title">Business Development</div>
-					<div id="b_subtitle">Learn from your customers and make <strong>the right moves.</strong></div>
-					<div id="b_graphs">
-						<div class="left" id="b_graph">
-							<div id="stat_holder"> 
-								<div id="big_stat">7x</div>
-							</div>
-							<div class="text_clean" id="graph_label">
-								<span id="emphasis">7x</span> less expensive to retain customers using Brevada than to aquire new ones altogether.
-							</div>
-						</div>
-						<div class="left" id="b_graph">
-							<div id="stat_holder"> 
-								<img class="piechart" src="/images/pie/25.png" />
-							</div>
-							<div class="text_clean" id="graph_label">Increase profitability up to <span id="emphasis">25%</span> through customer retention.</div>
-						</div>
-						<div id="b_graph">
-							<div id="stat_holder"> 
-								<div id="big_stat">10x</div>
-							</div>
-							<div class="text_clean" id="graph_label">Create a Brevada customer base - worth up to <span id="emphasis">10x</span> more than an un-engaged customer base.</div>
-							<br style="clear:both;" />
-						</div>
-						<br style="clear:both;" />
-					</div>
-				</div>
-				<div id="b_left">
-					<img id="b_logo" src="images/logo_pr.png" /><br />
-					<div id="b_title">Marketing and PR</div>
-					<div id="b_subtitle">Show off your strengths and get <strong>feedback in style.</strong></div>
-					<div id="b_graph">
-						<div id="stat_holder"> 
-							<div id="big_stat">&uarr;</div>
-						</div>
-						<div class="text_clean" id="graph_label">
-							<span id="emphasis">Increased</span> recognition and respect - our clients are considered: <br /><a href="/home/approved.php" style="font-weight:bold; text-decoration:underline;">Brevada Approved Business</a>.
-						</div>
-						<br style="clear:both;" />
-					</div>
-					<div id="b_graph">
-						<div id="stat_holder"> 
-							<div id="big_stat">&uarr;</div>
-						</div>
-						<div class="text_clean" id="graph_label"><span id="emphasis">Increased</span> web presence for SEO and online recognition.</div>
-						<br style="clear:both;" />
-					</div>
-					<div id="b_graph">
-						<div id="stat_holder"> 
-							<div id="big_stat">&uarr;</div>
-						</div>
-						<div class="text_clean" id="graph_label"><span id="emphasis">Increased</span> consumer loyalty by showing you <span id="emphasis">care for your customers</span>.</div>
-						<br style="clear:both;" />
-					</div>
-				</div>
-				<br style="clear:both;" />
-			</div>
-		</div>
-	</li>
-	<li>
-		<div class="home_section" id="sec2">
-			<div class="container" style="width:950px;">
-				<div id="pricing_holder">
-					<a href="/home/pricing.php">
-						<div id="pricing_box">
-							<div id="pricing_top" style="background:#888;">
-								<div class="pricing_title">
-									<div id="home_text" style="color:#fff;">FREE</div>
-								</div>
-								<div id="pricing_under">
-									<i>No credit card required</i><br />
-									<strong>Get set up for free</strong>
-								</div>
-							</div>
-						 </div>
-					</a>
-				</div> 
-				<a href="/home/pricing.php">         
-					<div id="pricing_box">
-						<div id="pricing_top" style="background:#12a5f4;">
-							<div class="pricing_title">
-								<div  id="home_text" style="color:#fff;">PERSONAL</div>
-								<div  id="pricing_price"><span id="price">$14</span>/month</div>
-							</div>
-							<div id="pricing_under">
-								<i>Billed at $168 for one year</i><br />
-								<strong>The basic package.</strong>
-							</div>
-						</div>
-					</div>
-				</a>
-				<a href="/home/pricing.php">
-					<div id="pricing_box">
-						<div id="pricing_top" style="background:#3369e8;">
-							<div class="pricing_title">
-								<div id="home_text" style="color:#fff;">
-								PROFESSIONAL
-								</div>
-								<div id="pricing_price"><span id="price">$30</span>/month</div>
-							</div>
-							<div id="pricing_under">
-								<i>Billed at $360 for one year</i>
-								<br />
-								<strong>The complete package.</strong>
-							</div>
-						</div>
-					</div>
-				</a>
-				<a href="/home/pricing.php">
-					<div id="pricing_box">
-						<div id="pricing_top" style="background:#3b5998;">
-							<div class="pricing_title">
-								<div id="home_text" style="color:#fff;">ENTERPRISE</div>
-								<div id="pricing_price"><span id="price">$90</span>/month</div>
-							</div>
-							<div id="pricing_under">
-								<i>Billed at $1080 for one year</i><br />
-								<strong>The ultimate package.</strong>
-							</div>
-						</div>
-					</div>
-				</a>
-				<br style="clear:both;" />
-				<a href="/home/howitworks.php">
-					<div class="top_bar_button2" style="width:200px; margin:0 auto; margin-top:35px;">See How It Works!</div>
-				</a>
-			</div>
-		</div>
-		</li>
-	<li>
-		<a id="examples"></a>
-		<div class="home_section" id="sec3">
-			<div id="t_title">
-				<strong>How Companies are using Brevada's <span id="emphasis">Feedback Gathering</span> Features</strong><br />
-				<span id="t_desc">Brevada's feedback gathering features ensure that you can listen to your customers</span>
-			</div>
-		</div>
-	</li>
-</ul>
-
-<script type='text/javascript'>
-tiles=$("ul#tiles li").fadeTo(0, 0);
-$(window).scroll(function(d,h) {
-    tiles.each(function(i) {
-        a=$(this).offset().top + ($(this).height()/4);
-        b=$(window).scrollTop() + $(window).height();
-        if (a < b) $(this).fadeTo(600,1);
-    });
-});
-</script>
 
 <?php $this->add(new View('../template/long_footer.php')); ?>

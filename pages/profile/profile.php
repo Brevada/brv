@@ -50,24 +50,29 @@ $this->addResource("<meta property='og:description' content='Give {$name} Feedba
 ?>
 
 	
-	<div class="topbar">
-		<div class="container">
-			<div class="title">
-				<i class="fa fa-cutlery"></i>   Give <?php echo $name; ?> Feedback 
-			</div>
-			<div class="icons"><img class="logo" src="iconWhite.png" /></div>
+<div class="topbar">
+	<div class="container">
+		<div class="title">
+			<i class="fa fa-cutlery"></i>   Give <?php echo $name; ?> Feedback 
 		</div>
+		<div class="icons"><img class="logo" src="iconWhite.png" /></div>
 	</div>
+</div>
 
-	<div  class="aspect-container container">
-		<?php
-		$reviewer=Brevada::validate(empty($_GET['reviewer']) ? '' : $_GET['reviewer']);
-		$postQuery=Database::query("SELECT aspects.ID, aspect_type.Title, aspect_type.Description as Description FROM aspects LEFT JOIN aspect_type ON aspect_type.ID = aspects.AspectTypeID WHERE aspects.OwnerID = {$id} AND aspects.`Active` = 1 ORDER BY aspects.ID DESC");
-		if($postQuery !== false && $postQuery->num_rows > 0){
-			while($row=$postQuery->fetch_assoc()) {		
-				$this->add(new View('../widgets/profile/post_box.php', array('row' => $row, 'reviewer' => $reviewer, 'country' => $country, 'ip' => $ip, 'id' => $user_id, 'user_extension' => $user_extension)));
-			}
+<div  class="aspect-container container">
+	<?php
+	$reviewer=Brevada::validate(empty($_GET['reviewer']) ? '' : $_GET['reviewer']);
+	$postQuery=Database::query("SELECT aspects.ID, aspect_type.Title, aspect_type.Description as Description FROM aspects LEFT JOIN aspect_type ON aspect_type.ID = aspects.AspectTypeID WHERE aspects.OwnerID = {$id} AND aspects.`Active` = 1 ORDER BY aspects.ID DESC");
+	if($postQuery !== false && $postQuery->num_rows > 0){
+		while($row=$postQuery->fetch_assoc()) {		
+			$this->add(new View('../widgets/profile/post_box.php', array('row' => $row, 'reviewer' => $reviewer, 'country' => $country, 'ip' => $ip, 'id' => $user_id, 'user_extension' => $user_extension)));
 		}
-		?>	
+	}
+	?>	
+</div>
+<div class="fixed-toolbar">
+	<div class="container">
+		<!-- <div class="help"><i class="fa fa-question-circle"></i> Help</div> -->
+		<div class="submit"><i class="fa fa-check"></i> I'm Done</div>
 	</div>
-<?php $this->add(new View('../template/footer.php')); ?>
+</div>

@@ -29,15 +29,16 @@ $isMobile = empty($isMobile) ? '' : '_mobile';
 			$checkQuery = Database::query("SELECT 1 FROM feedback WHERE IPAddress = '{$ip}' AND AspectID = {$post_id} ORDER BY feedback.id DESC");
 			if($checkQuery->num_rows==0){
 			?>
-			<div style="padding:0px; background:green;"><?php $this->add(new View('../widgets/profile/star_rating_bar.php', array('row' => $r, 'country' => $this->getParameter('country'), 'ip' => $this->getParameter('ip'), 'id' => $this->getParameter('id'), 'reviewer' => $reviewer))); ?></div>
-			<div class="appear" id="appear_bar_<?php echo $post_id; ?>"  align="center" style="display:none;width:100%; border-top:1px solid #dcdcdc;">Thanks for rating.</div>	
+			<div><?php $this->add(new View('../widgets/profile/star_rating_bar.php', array('row' => $r, 'country' => $this->getParameter('country'), 'ip' => $this->getParameter('ip'), 'id' => $this->getParameter('id'), 'reviewer' => $reviewer))); ?></div>
+			<div class="rate-description">
+				<div class="pull-left">Worst</div>
+				<div class="pull-right">Best</div>
+				<br class="clear" />
+			</div>
+			<div class="appear" id="appear_bar_<?php echo $post_id; ?>"  align="center" style="display:none;">Thanks for rating.</div>	
 			<?php } else { ?>
-			<div class="appear" id="appear_bar_<?php echo $post_id; ?>"  align="center" style="width:100%; font-size:12px; color:#dcdcdc; border-top:0px solid #dcdcdc;">Already rated.</div>	
+			<div class="appear" id="appear_bar_<?php echo $post_id; ?>"  align="center" style="width:100%;">Already rated.</div>	
 			<?php } ?>
 		</div>
-		<div class="rate-description">
-			<div class="pull-left">Worst</div>
-			<div class="pull-right">Best</div>
-			<br class="clear" />
-		</div>
+
 	</div>

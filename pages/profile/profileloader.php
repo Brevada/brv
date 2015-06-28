@@ -6,7 +6,8 @@ $query = Database::query("SELECT `id`, `name`, `type`, `extension`, `corporate` 
 $dest = '/404';
 if($query !== false && $query->num_rows > 0){
 	if(Brevada::IsMobile()){
-		$dest = "/mobile/profile/profile.php?name={$url_name}";
+		//$dest = "/mobile/profile/profile.php?name={$url_name}";
+		$dest = "/profile/profile.php?name={$url_name}";
 	} else {
 		$dest = "/profile/profile.php?name={$url_name}";
 	}

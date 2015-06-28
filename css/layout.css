@@ -737,8 +737,7 @@ div.dropdown-menu ul li:hover { background: #9F9F9F; }
 .submit-next{
 	float: right;
 	width:80px;
-	height: 1em;
-	padding:0.625em 0.625em 0.85em 0.625em;
+	padding:10px 5px;
 	margin: 2em 0 2em 0;
 	text-align:center;
 	font-weight:bold;

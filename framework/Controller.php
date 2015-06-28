@@ -71,7 +71,8 @@ if(!file_exists($viewPath)){
 		} else if(preg_match('#([a-z0-9_\-\s]+)/?#i', $page, $matches)){
 			$_GET['name'] = $matches[1];
 			if(Brevada::IsMobile()){
-				$viewPath = "../pages/mobile/profile/profile.php";
+				// $viewPath = "../pages/mobile/profile/profile.php";
+				$viewPath = "../pages/profile/profile.php";
 			} else {
 				$viewPath = "../pages/profile/profile.php";
 			}			
