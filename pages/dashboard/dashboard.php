@@ -108,6 +108,10 @@ $areasOfLeastConcern = array_diff($areasOfLeastConcern, $areasOfFocus);
 					<li class='link' data-link='logout'>Logout</li>
 				</ul>
 			</div>
+			<div class='pull-right icon-button'><i class='fa fa-external-link'></i></div>
+			<div class='pull-right icon-button'><i class='fa fa-print'></i></div>
+			<div class='pull-right icon-button'><i class='fa fa-qrcode'></i></div>
+
 		</div>
 	</div>
 
@@ -190,6 +194,9 @@ $areasOfLeastConcern = array_diff($areasOfLeastConcern, $areasOfFocus);
 							?>
 						</div>
 					</div>
+					<div class="block-bottom">
+						Versus Benchmark
+					</div>
 			</div>
 		</div>
 	</div>
@@ -230,7 +237,7 @@ $query = Database::query("SELECT aspect_type.Title, aspects.Data_LastUpdate, asp
 					<div class='right-graph graph' data-percent='<?php echo $data_ratingPercentOther; ?>' data-tooltip='Market Benchmark (<?php echo "{$data_ratingPercentOther}%"; ?>)'></div>
 				</div>
 				<div class='graph-info'>
-					<div class='left-block'>
+					<div class='left-block pull-left'>
 						<span class='fraction numerator'><?php echo $order_num; ?></span>
 						<span class='fraction denominator'>Out of <?php echo $order_denom; ?></span>
 					</div>
