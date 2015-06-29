@@ -51,8 +51,8 @@ if(empty($email) || empty($password) || empty($name) || $email == 'Email' || $pa
 		$trial = 1;
 
 		//$stmt = Database::prepare("INSERT INTO users (email, password, name, url_name, active, expiry_date, trial, level) VALUES (?, ?, ?, ?, 'no', (NOW() + INTERVAL 365 DAY), 0, ?)"));
-		if(($stmt = Database::prepare("INSERT INTO users (email, password, name, url_name, active, expiry_date, trial, level) VALUES (?, ?, ?, ?, ?, ?, ?, ?)")) !== false){
-			$stmt->bind_param('ssssssii', $email, $password, $name, $url_name, $active, $expiry_date, $trial, $level);
+		if(($stmt = Database::prepare("INSERT INTO users (email, password, name, url_name, active, expiry_date, trial, level) VALUES (?, ?, ?, ?, ?, ({$expiry_date}), ?, ?)")) !== false){
+			$stmt->bind_param('sssssii', $email, $password, $name, $url_name, $active, $expiry_date, $trial, $level);
 			echo $stmt->error;
 			if($stmt->execute()){
 				$_SESSION['user_id'] = $stmt->insert_id;
