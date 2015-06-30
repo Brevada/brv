@@ -179,15 +179,6 @@ $this->add(new View('../template/home_header.php'));
                                 Lorem ipsum dolor sit amet.
                             </div>
                         </div>
-                        <div class="media feature">
-                            <a class="pull-left" href="#">
-                                <i class="fa fa-picture-o fa-2x"></i>
-                            </a>
-                            <div class="media-body">
-                                <h3 class="media-heading">Weather on-the-go</h3>
-                                Lorem ipsum dolor sit amet.
-                            </div>
-                        </div>
                         <div class="media active feature">
                             <a class="pull-left" href="#">
                                 <i class="fa fa-plus fa-2x"></i>

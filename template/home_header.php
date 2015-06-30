@@ -71,7 +71,7 @@
                         </div>
 
                         <div class="tp-caption">
-                            <a href="#" class="btn btn-default btn-lg">Get Started</a>
+                            <a href="/signup/" class="btn btn-default btn-lg">Get Started</a>
                         </div>
 			   		</div>
 			   		

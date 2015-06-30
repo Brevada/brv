@@ -17,8 +17,7 @@
 						<a href="/home/logout.php"><div class="bottom_link">Logout</div></a>
 						<a href="/home/login.php"><div class="bottom_link">Login</div></a>
 						<a href="/home/signup.php"><div class="bottom_link">Signup</div></a>
-						<a href="/home/pricing.php"><div class="bottom_link">Pricing</div></a>
-						<a href="http://brevada.com/brevada"><div class="bottom_link">Feedback</div></a>
+						<a href="/brevada"><div class="bottom_link">Feedback</div></a>
 					</div>
 				</div>
 				<div class="left" style="float:left; padding-top:15px; margin-left:35px;">
