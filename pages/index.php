@@ -1,11 +1,10 @@
 <?php
 if(Brevada::IsLoggedIn()){ Brevada::Redirect('/dashboard'); }
 
-
 $this->addResource('/css/home/animate.css');
 $this->addResource('/css/home/bootstrap.css');
 $this->addResource('/css/home/eco.css');
-$this->addResource('/css/home/font-awesome-min.css');
+
 $this->addResource('/css/home/slick.css');
 
 $this->addResource('/js/home/jquery-1.11.1.min.js');
@@ -21,7 +20,7 @@ $this->addResource('/js/home/scripts.js');
 $this->add(new View('../template/home_header.php'));
 ?>
 
-<body>
+
 
 
     <div class="wrapper">
@@ -391,10 +390,5 @@ $this->add(new View('../template/home_header.php'));
             appMaster.preLoader();
         });
     </script>
-</body>
-
-</html>
-
-
 
 <?php $this->add(new View('../template/long_footer.php')); ?>
