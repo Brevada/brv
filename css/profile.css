@@ -28,6 +28,7 @@ body{
 
 .topbar{
 	position: fixed;
+	z-index: 999;
 	width: 100%;
 	top: 0px;
 	left: 0px;
@@ -45,7 +46,7 @@ body{
 	float:right;
 }
 .topbar .icons .logo{
-	opacity: 0.7;
+	opacity: 0.9;
 	height: 30px;
 }
 .container{
