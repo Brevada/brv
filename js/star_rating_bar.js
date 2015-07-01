@@ -13,5 +13,6 @@ function insertRating(val, id, ip, country, user_id, reviewer) {
 }
 function disappearRating(post_id) {
 	$("#holder"+post_id).hide();
+	$("#aspect_"+post_id+" .rate-description").hide();
 	$("#appear"+post_id).show();
 }

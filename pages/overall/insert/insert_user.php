@@ -17,7 +17,6 @@ function generateRandomString($length=6) {
 }
 
 $dest = '/hub';
-
 $email = Brevada::validate($_POST['email'], VALIDATE_DATABASE);
 $password = Brevada::validate($_POST['password'], VALIDATE_DATABASE);
 $password2 = Brevada::validate($_POST['password2'], VALIDATE_DATABASE);
@@ -33,7 +32,7 @@ if(empty($email) || empty($password) || empty($name) || $email == 'Email' || $pa
 	//CHECK IF EMAIL EXISTS
 	$query_name = Database::query("SELECT `email` FROM users WHERE email = '{$email}' LIMIT 1");
 	
-	if($query_name->num_rows > 0){
+	if($query_name->num_rows > 20){
 		$dest = '/home/signup.php?email=exists';
 	} else {
 		//CHECK FOR NAME
@@ -51,8 +50,10 @@ if(empty($email) || empty($password) || empty($name) || $email == 'Email' || $pa
 		$trial = 1;
 
 		//$stmt = Database::prepare("INSERT INTO users (email, password, name, url_name, active, expiry_date, trial, level) VALUES (?, ?, ?, ?, 'no', (NOW() + INTERVAL 365 DAY), 0, ?)"));
-		if(($stmt = Database::prepare("INSERT INTO users (email, password, name, url_name, active, expiry_date, trial, level) VALUES (?, ?, ?, ?, ?, ({$expiry_date}), ?, ?)")) !== false){
-			$stmt->bind_param('sssssii', $email, $password, $name, $url_name, $active, $trial, $level);
+		print('before');
+		if(($stmt = Database::prepare("INSERT INTO users (email, password, name, url_name, active, trial, level, expiry_date) VALUES (?, ?, ?, ?, ?, ?, ?, ?")) !== false){
+			print('inn');
+			$stmt->bind_param('sssssiis', $email, $password, $name, $url_name, $active, $trial, $level, $expiry_date);
 			echo $stmt->error;
 			if($stmt->execute()){
 				$_SESSION['user_id'] = $stmt->insert_id;
@@ -132,5 +133,5 @@ if(empty($email) || empty($password) || empty($name) || $email == 'Email' || $pa
 	}
 }
 
-$this->add(new View('../widgets/loader.php', array('destination' => $dest)));
+//$this->add(new View('../widgets/loader.php', array('destination' => $dest)));
 ?>

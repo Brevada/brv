@@ -30,6 +30,6 @@ $reviewer = $this->getParameter('reviewer');
 	
 </div>
 
-<div class="appear" id="appear<?php echo $post_id; ?>"  align="center" style="display:none;width:100%; border-top:1px solid #dcdcdc;">
+<div class="appear" id="appear<?php echo $post_id; ?>"  align="center" style="display:none;width:100%;">
 		Thanks for rating.
 </div>

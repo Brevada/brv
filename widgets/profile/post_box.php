@@ -18,7 +18,7 @@ $isMobile = empty($isMobile) ? '' : '_mobile';
 
 ?>
 
-<div class="aspect">
+<div id="aspect_<?php echo $post_id; ?>" class="aspect">
 		<div class="aspect-header">
 			<div class="title"><?php echo $post_name; ?></div>
 			<!-- <div class="subtitle"><?php echo substr($post_description,0,85); if(strlen($post_description)>85){echo '...';} ?></div> -->

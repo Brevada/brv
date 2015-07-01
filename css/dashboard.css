@@ -17,7 +17,8 @@ div.top-fixed { width: 100%; position: fixed; top: 0; left: 0; z-index: 9;}
 
 div.top-banner { background: #343434; padding: 0px 10px; line-height: 50px;}
 div.top-banner img.logo-quote { height: 20px; cursor: pointer; margin-top: 15px;}
-div.top-banner .dropdown { }
+div.top-banner .dropdown-menu li{ padding: 0px 5px; border-bottom: 1px solid #dcdcdc; cursor: pointer;}
+div.top-banner .dropdown-menu li:hover { background: #454545; color: #FFFFFF;}
 div.top-banner .icon-button { color: #DDD; cursor: pointer; font-size: 20px; margin: 0 10px; width:40px; height: 40px; text-align: center;}
 div.top-banner .three-lines { background: #333333; color: #FFFFFF;}
 
