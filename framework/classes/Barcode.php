@@ -1,7 +1,7 @@
 <?php
 class Barcode
 {
-	public static function GeneratePostQR($codeContents)
+	public static function GeneratePostQR($codeContents, $id)
 	{
 		if(empty($codeContents)){return;}
 		
@@ -11,7 +11,7 @@ class Barcode
 		 
 		// we need to generate filename somehow,  
 		// with md5 or with database ID used to obtains $codeContents... 
-		$fileName=$new_id . '.png'; 
+		$fileName=$id . '.png'; 
 
 		$pngAbsoluteFilePath="../user_data/qr_posts/".$fileName; 
 		$urlRelativeFilePath="/user_data/qr_posts/". $fileName; 
