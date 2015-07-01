@@ -3,8 +3,11 @@ $this->addResource('/css/layout.css');
 $this->addResource('/css/profile_header.css');
 $this->addResource('/css/profile.css');
 
-$id = @intval(Brevada::validate($_POST['id']));
-$url_name=Brevada::validate($_GET['name'], VALIDATE_DATABASE);
+$tablet_id = $this->getParameter("tablet_id");
+$tablet_url = $this->getParameter("tablet_url");
+
+$id = @intval(Brevada::validate(empty($tablet_id) ? Brevada::FromPOSTGET('id') : $tablet_id));
+$url_name=Brevada::validate(empty($tablet_url) ? Brevada::FromPOSTGET('name') : $tablet_url, VALIDATE_DATABASE);
 
 $geo = Geography::GetGeo();
 $country = $geo['country'];
@@ -61,11 +64,10 @@ $this->addResource("<meta property='og:description' content='Give {$name} Feedba
 
 <div  class="aspect-container container">
 	<?php
-	$reviewer=Brevada::validate(empty($_GET['reviewer']) ? '' : $_GET['reviewer']);
 	$postQuery=Database::query("SELECT aspects.ID, aspect_type.Title, aspect_type.Description as Description FROM aspects LEFT JOIN aspect_type ON aspect_type.ID = aspects.AspectTypeID WHERE aspects.OwnerID = {$id} AND aspects.`Active` = 1 ORDER BY aspects.ID DESC");
 	if($postQuery !== false && $postQuery->num_rows > 0){
 		while($row=$postQuery->fetch_assoc()) {		
-			$this->add(new View('../widgets/profile/post_box.php', array('row' => $row, 'reviewer' => $reviewer, 'country' => $country, 'ip' => $ip, 'id' => $user_id, 'user_extension' => $user_extension)));
+			$this->add(new View('../widgets/profile/post_box.php', array('row' => $row, 'country' => $country, 'ip' => $ip, 'id' => $user_id, 'user_extension' => $user_extension)));
 		}
 	}
 	?>	
