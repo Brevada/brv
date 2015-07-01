@@ -72,8 +72,6 @@ $this->addResource("<meta property='og:description' content='Give {$name} Feedba
 	<div class="bottom-spacer"></div>
 </div>
 
-
-
 <div class="fixed-toolbar">
 	<div class="container">
 		<!-- <div class="help"><i class="fa fa-question-circle"></i> Help</div> -->

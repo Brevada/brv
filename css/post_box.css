@@ -130,3 +130,8 @@
 	text-transform: uppercase;
 	padding-top: 10px;
 }
+
+div.aspect > div.rating-box .appear { display: none; width: 100%; text-align: center; margin: auto auto; }
+div.aspect.rated > div.rating-box .holder { display: none; }
+div.aspect.rated > div.rating-box .rate-description { display: none; }
+div.aspect.rated > div.rating-box .appear { display: block; }

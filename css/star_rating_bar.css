@@ -13,9 +13,9 @@
 	-webkit-border-radius: 0px;
 	-moz-border-radius: 0px;
 	border-radius: 0px;
-
-	
 }
+
+.holder > a:last-child > .star { float: right; }
 
 .star:hover {
 	opacity:0.5;
@@ -33,9 +33,14 @@ div.star-5 { background-color: #4EAF0E; background-size: 30%;}
 	position:relative;
 	z-index:10;
 	/*box-shadow: 0px 2px 5px #CCC, 0px -2px 5px #CCC; */
+	width:100%;
+	white-space:nowrap;
+	overflow:hidden;
+	text-align:left;
+	background: white;
 }
 
-.holder a{
+.holder a {
 	text-decoration: none;
 	margin: 0px 0px;
 }
