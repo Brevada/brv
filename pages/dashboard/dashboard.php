@@ -119,28 +119,52 @@ $areasOfLeastConcern = array_diff($areasOfLeastConcern, $areasOfFocus);
 	<div class='top-area row hidden-xs'>
 		
 		<div class="col-sm-3">
-			<div class='overall-decrease block <?php echo $data_overallAll >= 50 ?  'positive' : 'negative'; ?>'>
+			<?php 
+				if($data_overallAll>=50){
+					$change = 'positive';
+					$icon = 'fa-check-circle';
+				} else if ($data_overallAll==0){
+					$change = 'neutral';
+					$icon = 'fa-minus-circle';
+				} else {
+					$change = 'negative';
+					$icon = 'fa-times-circle';
+				}
+			?>
+			<div class='overall-decrease block <?php echo $change; ?>'>
 				<div class="block-left hidden-md hidden-sm">
-					<i class='fa <?php if($data_overallAll == 0){ echo 'fa-minus-circle'; } else { echo $data_overallAll >= 0 ? 'fa-chevron-circle-up' : 'fa-chevron-circle-down'; } ?>'></i>
+					<i class='fa <?php echo $icon; ?>'></i>
 				</div>
 				<div class="block-right">
-					<div class='big-number <?php echo $data_overallAll >= 50 ?  'positive' : 'negative'; ?>'>
+					<div class='big-number <?php echo $change; ?>'>
 						<?php echo abs($data_overallAll)."%"; ?>
 					</div>
 				</div>
 				<div class="block-bottom">
-					All Time Progress
+					All Time Average
 				</div>
 			</div>
 		</div>
 
 		<div class="col-sm-3">
-			<div class='overall-improvement block <?php echo $data_overall4W >= 50 ?  'positive' : 'negative'; ?>'>
+			<?php 
+				if($data_overall4W>=50){
+					$change = 'positive';
+					$icon = 'fa-chevron-circle-up';
+				} else if ($data_overall4W==0){
+					$change = 'neutral';
+					$icon = 'fa-minus-circle';
+				} else {
+					$change = 'negative';
+					$icon = 'fa-chevron-circle-down';
+				}
+			?>
+			<div class='overall-improvement block <?php echo $change; ?>'>
 				<div class="block-left hidden-md hidden-sm">
-					<i class='fa <?php if($data_overall4W == 0){ echo 'fa-minus-circle'; } else { echo $data_overall4W >= 0 ? 'fa-chevron-circle-up' : 'fa-chevron-circle-down'; } ?>'></i>
+					<i class='fa <?php echo $icon; ?>'></i>
 				</div>
 				<div class="block-right">
-					<div class='big-number <?php echo $data_overall4W >= 50 ?  'positive' : 'negative'; ?>'>
+					<div class='big-number <?php echo $change; ?>'>
 						<?php echo abs($data_overall4W)."%"; ?>
 					</div>
 				</div>
@@ -151,9 +175,21 @@ $areasOfLeastConcern = array_diff($areasOfLeastConcern, $areasOfFocus);
 		</div>
 
 		<div class="col-sm-3">
+			<?php 
+				if($data_relativeBenchmark>=1){
+					$icon = 'fa-chevron-circle-up';
+					$message = 'above the benchmark';
+				} else if ($data_relativeBenchmark==0){
+					$icon = 'fa-minus-circle';
+					$message = ', same as benchmark average';
+				} else {
+					$icon = 'fa-chevron-circle-down';
+					$message = 'below the benchmark';
+				}
+			?>
 			<div class='below-benchmark block <?php echo numericalCSS($data_relativeBenchmark); ?>'>
 				<div class="block-left hidden-md hidden-sm">
-					<i class='fa <?php if($data_relativeBenchmark == 0){ echo 'fa-minus-circle'; } else { echo $data_relativeBenchmark >= 0 ? 'fa-chevron-circle-up' : 'fa-chevron-circle-down'; } ?>'></i>
+					<i class='fa <?php echo $icon; ?>'></i>
 				</div>
 				<div class="block-right">
 					<div class='big-number <?php echo numericalCSS($data_relativeBenchmark); ?>'>
@@ -161,7 +197,10 @@ $areasOfLeastConcern = array_diff($areasOfLeastConcern, $areasOfFocus);
 					</div>
 				</div>
 				<div class="block-bottom">
-					Versus Benchmark
+					<?php 
+						$abs_relative = abs($data_relativeBenchmark);
+						echo "<span class='hidden-md hidden-sm'>Overall</span> $abs_relative% $message"; 
+					?>
 				</div>
 			</div>
 		</div>

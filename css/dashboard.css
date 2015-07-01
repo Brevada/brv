@@ -24,8 +24,10 @@ div.top-banner .three-lines { background: #333333; color: #FFFFFF;}
 
 .positive { background: #4eaf0e; }
 .negative { background: #FF2B2B; }
+.neutral { background: #EE872B; }
 .positive-text { color: #4eaf0e; }
 .negative-text { color: #FF2B2B; }
+.neutral-text { color: #EE872B; }
 
 span.aspect-title { background: #FF2B2B; padding: 10px; margin: 5px; border-radius: 0; color: #FFFFFF; font-size: 0.95em; cursor: pointer; text-overflow: ellipsis;}
 span.aspect-title.placeholder { visibility: hidden; }
