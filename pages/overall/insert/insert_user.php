@@ -50,11 +50,9 @@ if(empty($email) || empty($password) || empty($name) || $email == 'Email' || $pa
 		$trial = 1;
 
 		//$stmt = Database::prepare("INSERT INTO users (email, password, name, url_name, active, expiry_date, trial, level) VALUES (?, ?, ?, ?, 'no', (NOW() + INTERVAL 365 DAY), 0, ?)"));
-		print('before');
-		if(($stmt = Database::prepare("INSERT INTO users (email, password, name, url_name, active, trial, level, expiry_date) VALUES (?, ?, ?, ?, ?, ?, ?, ?")) !== false){
-			print('inn');
-			$stmt->bind_param('sssssiis', $email, $password, $name, $url_name, $active, $trial, $level, $expiry_date);
-			echo $stmt->error;
+		if(($stmt = Database::prepare("INSERT INTO users (email, password, name, url_name, active, expiry_date, trial, level) VALUES (?, ?, ?, ?, ?, ({$expiry_date}), ?, ?)")) !== false){
+			$stmt->bind_param('sssssii', $email, $password, $name, $url_name, $active, $trial, $level);
+			
 			if($stmt->execute()){
 				$_SESSION['user_id'] = $stmt->insert_id;
 				$user_id = $_SESSION['user_id'];
@@ -106,7 +104,7 @@ if(empty($email) || empty($password) || empty($name) || $email == 'Email' || $pa
 								$stmt->bind_param('ii', $token, $user_id);
 								if($stmt->execute()){
 									$new_id = $stmt->insert_id;
-									Barcode::GeneratePostQR(URL.'/mobile/mobile_single.php?id=' . $new_id);
+									Barcode::GeneratePostQR(URL.'/mobile/mobile_single.php?id=' . $new_id, $new_id);
 								}
 								$stmt->close();
 							}
@@ -124,7 +122,7 @@ if(empty($email) || empty($password) || empty($name) || $email == 'Email' || $pa
 				}
 				
 			} else {
-				echo $stmt->error;
+				
 				$stmt->close();
 				$dest = '/home/signup.php?error';
 			}
