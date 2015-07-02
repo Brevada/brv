@@ -20,7 +20,7 @@ $post_id = $r['ID'];
 	<a href="#" onclick="insertRating('80', '<?php echo $post_id; ?>'); return false;">
 		<div class='star star-4' data-squarenum='4'></div>
 	</a>
-	<a href="#" onclick="insertRating('80', '<?php echo $post_id; ?>'); return false;">
+	<a href="#" onclick="insertRating('100', '<?php echo $post_id; ?>'); return false;">
 		<div class='star star-5' data-squarenum='5'></div>
 	</a>
 	
