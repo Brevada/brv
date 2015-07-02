@@ -70,12 +70,7 @@ if(!file_exists($viewPath)){
 			$viewPath = "../pages/profile/scores/scores.php";
 		} else if(preg_match('#([a-z0-9_\-\s]+)/?#i', $page, $matches)){
 			$_GET['name'] = $matches[1];
-			if(Brevada::IsMobile()){
-				// $viewPath = "../pages/mobile/profile/profile.php";
-				$viewPath = "../pages/profile/profile.php";
-			} else {
-				$viewPath = "../pages/profile/profile.php";
-			}			
+			$viewPath = "../pages/profile/profileloader.php";		
 		} else {
 			$viewPath = '../pages/404.php';
 		}

@@ -14,5 +14,5 @@ if($query !== false && $query->num_rows > 0){
 }
 
 $this->addResource("<link ref='shortcut icon' type='image/x-icon' href='/images/quote.png' />", true, true);
-$this->add(new View('../widgets/loader.php', array('destination' => $dest)));
+$this->add(new View('../widgets/inlineloader.php', array('destination' => $dest)));
 ?>

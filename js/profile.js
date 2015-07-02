@@ -1,15 +1,12 @@
 $(document).ready(function(){
 	setTimeout(function(){ $(".dis").fadeOut(); }, 3000);
-	$("#needhelp").click(function() { 
-		$("#helper").fadeIn("slow");
+	$("#imdone").click(function() { 
+		location.reload(true);
 	});
 });
 
 function message_show() {
 	$("#message_box").css('display', 'block');
-}
-function help_show() {
-	$("#help_box").css('display', 'block');
 }
 
 $(window).load(function() {
