@@ -71,3 +71,14 @@ $existing_address = isset($_GET['email']) && $_GET['email'] != 'false';
 //This is an include
 $this->add(new View('../template/footer.php'));
 ?>
+
+<!-- Pre selected suggestions -->
+<script>
+$( document ).ready(function() {
+    $('div[data-tokenid="1"]').click();
+	$('div[data-tokenid="2"]').click();
+	$('div[data-tokenid="4"]').click();
+	$('div[data-tokenid="5"]').click();
+	$('div[data-tokenid="7"]').click();
+});
+</script>

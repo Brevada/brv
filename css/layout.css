@@ -716,8 +716,8 @@ input.search {
 
 div.token-container { width: 100%; position: relative; }
 div.tokens {}
-div.tokens div.token { background: #FF2B2B; border-radius: 0.2em; color: #FFFFFF; padding: 0.45em 2.2em; margin: 0 0.5em 0.3em 0; font-size: 0.95em; cursor: pointer; display: inline-block; border: 2px solid #EE2B2B; opacity: 0.75; }
-div.tokens div.token:not(.selected):hover { opacity: 1; }
+div.tokens div.token { background: #FF2B2B; border-radius: 0.2em; color: #FFFFFF; padding: 0.45em 2.2em; margin: 0 0.5em 0.3em 0; font-size: 0.95em; cursor: pointer; display: inline-block; border: 2px solid #EE2B2B; opacity: 0.5; }
+div.tokens div.token:not(.selected):hover { background: #2ECC0E; border: 2px solid #1EBB0E; opacity: 0.75; }
 div.tokens div.token.selected { background: #2ECC0E; border: 2px solid #1EBB0E; opacity: 1; }
 div.tokens div.token span {  }
 
