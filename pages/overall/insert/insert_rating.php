@@ -1,32 +1,56 @@
 <?php
-$value = Brevada::validate(Brevada::FromPOSTGET('value'), VALIDATE_DATABASE);
-$user_id = @intval(Brevada::FromPOSTGET('user_id'));
-$post_id = @intval(Brevada::FromPOSTGET('post_id'));
-$reviewer = Brevada::FromPOSTGET('reviewer');
-$session_id = session_id();
-$ipaddress = Brevada::FromPOSTGET('ipaddress');
-$country = Brevada::validate(Brevada::FromPOSTGET('country'), VALIDATE_DATABASE);
-$timezone = 'America/Detroit';
+$this->IsScript = true;
+date_default_timezone_set('America/New_York');
 
-if(!empty($value)){
-	date_default_timezone_set($timezone);
-	$date = date('Y-m-d H:i:s', time());
+/* TODO: Test insert_rating.php */
 
-	$query = Database::query("SELECT `email`, `user_id`, `id` FROM reviewers WHERE email='{$reviewer}' AND user_id='{$user_id}'");
-	
-	$reviewer_id = '';
+$rating = Brevada::validate(Brevada::FromPOSTGET('value'), VALIDATE_DATABASE);
+$aspectID = @intval(Brevada::FromPOSTGET('post_id'));
 
-	if(!empty($reviewer)){
-		if($query->num_rows==0){
-			Database::query("INSERT INTO reviewers(email, user_id) VALUES('{$reviewer}', '{$user_id}')");
-			$reviewer_id = Database::getCon()->insert_id;
-		} else {
-			while($rows=$query->fetch_assoc()){
-				$reviewer_id = $rows['id'];
+/*
+	Removed reviewers. - Not a good way to test for repeat users.
+*/
+
+$geo = Geography::GetGeo();
+
+$ipAddress = $geo['ip'];
+$country = $geo['country'];
+$province = $geo['province'];
+$city = $geo['city'];
+
+$userAgent = $_SERVER['HTTP_USER_AGENT'];
+
+/* Authorized tablet user agent. */
+$authUserAgent = TABLET_USERAGENT;
+
+if(($check = Database::prepare("SELECT `feedback`.id FROM `feedback` LEFT JOIN user_agents ON user_agents.ID = feedback.UserAgentID WHERE `feedback`.AspectID = ? AND `feedback`.IPAddress = ? AND (`feedback`.`Date` > NOW() - INTERVAL 1 HOUR) AND `user_agents`.UserAgent = ? AND `user_agents`.UserAgent <> ? LIMIT 1")) !== false){
+	$check->bind_param('isss', $aspectID, $ipAddress, $userAgent, $authUserAgent);
+	if($check->execute()){
+		$check->store_result();
+		if($check->num_rows == 0){
+			if(isset($rating)){
+				if(($stmt = Database::prepare("INSERT INTO `user_agents` (`UserAgent`) VALUES (?)")) !== false){
+					$userAgentID = -1;
+					$stmt->bind_param('s', $userAgent);
+					if($stmt->execute()){
+						$userAgentID = $stmt->insert_id;
+					}
+					$stmt->close();
+					
+					if($userAgentID > 0){
+					
+						if(($stmt = Database::prepare("INSERT INTO `feedback` (`AspectID`, `Date`, `Rating`, `IPAddress`, `UserAgentID`, `Country`, `Province`, `City`) SELECT aspects.ID, NOW(), ?, ?, ?, ?, ?, ? FROM aspects WHERE aspects.ID = ?")) !== false){
+							$stmt->bind_param('dsisssi', $rating, $ipAddress, $userAgentID, $country, $province, $city, $aspectID);
+							$stmt->execute();
+							$stmt->close();
+						}
+					}
+				}
 			}
 		}
 	}
-
-	Database::query("INSERT INTO feedback(post_id, value, ip_address, date, country, user_id, reviewer, session_id) VALUES('{$post_id}','{$value}','{$ipaddress}', '{$date}', '{$country}', '{$user_id}', '{$reviewer_id}', '{$session_id}')");
+	$check->close();
 }
+
+exit('OK');
 ?>

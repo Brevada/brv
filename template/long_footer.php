@@ -17,8 +17,7 @@
 						<a href="/home/logout.php"><div class="bottom_link">Logout</div></a>
 						<a href="/home/login.php"><div class="bottom_link">Login</div></a>
 						<a href="/home/signup.php"><div class="bottom_link">Signup</div></a>
-						<a href="/home/pricing.php"><div class="bottom_link">Pricing</div></a>
-						<a href="http://brevada.com/brevada"><div class="bottom_link">Feedback</div></a>
+						<a href="/brevada"><div class="bottom_link">Feedback</div></a>
 					</div>
 				</div>
 				<div class="left" style="float:left; padding-top:15px; margin-left:35px;">
@@ -45,7 +44,7 @@
 		</div>	
 					</div>
 				</div>
-				<div class="right" style="float:right; padding-top:15px; margin-left:35px;">
+<!-- 				<div class="right" style="float:right; padding-top:15px; margin-left:35px;">
 					<div class="bottom_link_big">
 					Search
 					</div>
@@ -59,11 +58,11 @@
 							</div>
 						</form>
 					</div>
-				</div>
+				</div> -->
 				<br style="clear:both;" />
 				<br style="clear:both;" />
 				<div style="width:100%; text-align:center; font-size:12px; color:#FFAEA5;">
-				&copy; 2014 brevada.com. All rights reserved. Questions? contact@brevada.com or <strong>1 (844) BREVADA</strong>
+				&copy; <?php echo date('Y'); ?> brevada.com. All rights reserved. Questions? contact@brevada.com or <strong>1 (844) BREVADA</strong>
 				</div>
 			</div>
 	</div>

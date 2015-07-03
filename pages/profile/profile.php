@@ -2,11 +2,15 @@
 $this->addResource('/css/layout.css');
 $this->addResource('/css/profile_header.css');
 $this->addResource('/css/profile.css');
+$this->addResource('/js/profile.js');
 
-$id = @intval(Brevada::validate($_POST['id']));
-$url_name=Brevada::validate($_GET['name'], VALIDATE_DATABASE);
+$tablet_id = $this->getParameter("tablet_id");
+$tablet_url = $this->getParameter("tablet_url");
 
-$geo = Brevada::GetGeo();
+$id = @intval(Brevada::validate(empty($tablet_id) ? Brevada::FromPOSTGET('id') : $tablet_id));
+$url_name=Brevada::validate(empty($tablet_url) ? Brevada::FromPOSTGET('name') : $tablet_url, VALIDATE_DATABASE);
+
+$geo = Geography::GetGeo();
 $country = $geo['country'];
 $ip = $geo['ip'];
 
@@ -49,65 +53,31 @@ $this->addResource("<meta property='og:site_name' content='Brevada'/>", true, tr
 $this->addResource("<meta property='og:description' content='Give {$name} Feedback on Brevada'/>", true, true);
 ?>
 
-<div id="banner_main">
-	<div id="banner_main_content">
-		<div id="banner_main_logo" style="outline:none;">
-		<a href="/index.php" style="outline:none;"><img src="/images/brevada.png" style="height:30px; margin-top:4px;" /></a>
+	
+<div class="topbar">
+	<div class="container">
+		<div class="title">
+			<!-- <i class="fa fa-cutlery"></i>  -->  Give <b><?php echo $name; ?></b> Feedback 
 		</div>
-		<br style="clear:both;" />
+		<div class="icons"><img class="logo" src="/images/quote-white.png" /></div>
 	</div>
 </div>
 
-<div  style="width:1030px; margin: 0 auto; margin-top:0px;  padding-top:0px;">
-	<div id="sized_containerHub">	
-		<div  style="float:left; width:250px; margin-top:15px;">
-		<div id="far_left">	
-			<?php $this->add(new View('../widgets/profile/profile_info_pod.php', array('user_id' => $user_id, 'name' => $name, 'type' => $type, 'user_extension' => $user_extension))); ?>
-			<br style="clear:both;" />
- 			<?php
-			$session_id=session_id(); 
-			
-			$querySession=Database::query("SELECT * FROM reviewers WHERE session_id='{$session_id}' AND user_id='{$user_id}'");
-		
-			if($querySession == false || $querySession->num_rows == 0){
-			?>	
-            <a href="/home/prizes.php" target="_blank" style="text-decoration:none;">
-		    <div id="prizes" style="display:none;">	
-                    <img src="/images/brevada_prizes.png" style="width:70px; margin-bottom:5px;"/><br />
-                   	<span style="font-size:10px; text-decoration:none;">Connect &darr; for a chance to win $200 </span>    
-			</div>
-            </a>
-			<div id="side_box" style="width:220px; min-height:30px; max-height:350px;  overflow:scroll; margin-top:5px; margin-bottom:10px;">
-				<?php $this->add(new View('../widgets/profile/communicate_pod.php', array('user_id' => $user_id))); ?>
-			</div>
-			<?php } else { ?>
-			<div id="side_box" style="width:220px; min-height:30px; max-height:350px;  overflow:scroll; margin-top:0px; margin-bottom:10px;">
-			<div class="thanks_suggestion" style="display:block;">
-				Email Connected!
-			</div>
-			</div>
-			<?php } ?>
-			<!--
-			<div id="side_box" style="width:220px; min-height:30px; max-height:350px;  overflow:scroll;overflow-x:hidden; ">
-				<div id="suggestion_box"><?php $this->add(new View('../widgets/profile/suggestion_box.php', array('id' => $id))); ?></div>
-				<div id="thanks_suggestion" class="thanks_suggestion">Submitted</div>
-			</div>
-			-->
-		</div>
-	</div>
- 	
- 	<!-- RIGHT -->	
- 	<div style="float:left; width:520px; overflow:hidden;">
+<div  class="aspect-container container">
 	<?php
-	$reviewer=Brevada::validate(empty($_GET['reviewer']) ? '' : $_GET['reviewer']);
-	$postQuery=Database::query("SELECT * FROM posts WHERE user_id = '{$id}' AND active='yes' ORDER BY id DESC");
+	$postQuery=Database::query("SELECT aspects.ID, aspect_type.Title, aspect_type.Description as Description FROM aspects LEFT JOIN aspect_type ON aspect_type.ID = aspects.AspectTypeID WHERE aspects.OwnerID = {$id} AND aspects.`Active` = 1 ORDER BY aspects.ID DESC");
 	if($postQuery !== false && $postQuery->num_rows > 0){
 		while($row=$postQuery->fetch_assoc()) {		
-			$this->add(new View('../widgets/profile/post_box.php', array('row' => $row, 'reviewer' => $reviewer, 'country' => $country, 'ip' => $ip, 'id' => $user_id, 'user_extension' => $user_extension)));
+			$this->add(new View('../widgets/profile/post_box.php', array('row' => $row, 'country' => $country, 'ip' => $ip, 'id' => $user_id, 'user_extension' => $user_extension)));
 		}
 	}
 	?>	
+	<div class="bottom-spacer"></div>
+</div>
+
+<div class="fixed-toolbar">
+	<div class="container">
+		<!-- <div class="help"><i class="fa fa-question-circle"></i> Help</div> -->
+		<div class="submit" id='imdone'><i class="fa fa-check"></i> I'm Done</div>
 	</div>
 </div>
-</div>
-<?php $this->add(new View('../template/footer.php')); ?>

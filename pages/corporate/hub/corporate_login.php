@@ -10,5 +10,5 @@ if($query->num_rows > 0){
 }
 
 $this->addResource('/css/layout.css');
-$this->add(new View('../widgets/loader.php', array('destination' => '/hub/hub.php')));
+$this->add(new View('../widgets/loader.php', array('destination' => '/dashboard')));
 ?>

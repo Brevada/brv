@@ -5,10 +5,16 @@
 */
 
 require_once 'packages/mobile_detect/Mobile_Detect.php';
+require_once 'classes/password.php';
 
 //VALIDATE constants
 define('VALIDATE_TRIM', 0);
 define('VALIDATE_DATABASE', 1);
+
+/* LOGIN_TIMEOUT = 0; to disable timeout. */
+define('LOGIN_TIMEOUT', 2*3600);
+
+define('TABLET_USERAGENT', 'BrevadaTablet');
 
 class Brevada
 {
@@ -35,11 +41,6 @@ class Brevada
 		exit;
 	}
 	
-	public static function IsLoggedIn()
-	{
-		return isset($_SESSION['user_id']) && $_SESSION['user_id'] != 'none';
-	}
-	
 	public static function IsMobile()
 	{
 		if(!isset(Brevada::$mobileDetector))
@@ -55,44 +56,6 @@ class Brevada
 		return Brevada::$mobileDetector->isMobile();
 	}
 	
-	public static function GetGeo($cache = true)
-	{
-		if($cache)
-		{
-			if(!empty($_SESSION['geo_ip']) && !empty($_SESSION['geo_country'])){
-				return array('ip' => $_SESSION['geo_ip'], 'country' => $_SESSION['geo_country']);
-			}
-		}
-		
-		$result = array('ip' => '', 'country' => '');
-		
-		$client  = empty($_SERVER['HTTP_CLIENT_IP']) ? '' : $_SERVER['HTTP_CLIENT_IP'];
-		$forward = empty($_SERVER['HTTP_X_FORWARDED_FOR']) ? '' : $_SERVER['HTTP_X_FORWARDED_FOR'];
-		$ip  = empty($_SERVER['REMOTE_ADDR']) ? '' : $_SERVER['REMOTE_ADDR'];
-		
-		if(filter_var($client, FILTER_VALIDATE_IP))
-		{
-			$ip = $client;
-		}
-		else if(filter_var($forward, FILTER_VALIDATE_IP))
-		{
-			$ip = $forward;
-		}
-		
-		$ip_data = @json_decode(file_get_contents("http://www.geoplugin.net/json.gp?ip=".$ip));
-
-		if($ip_data && $ip_data->geoplugin_countryName != null)
-		{
-			$result['country'] = $ip_data->geoplugin_countryName;
-			$_SESSION['geo_country'] = $result['country'];
-		}
-		
-		$result['ip'] = $ip;
-		$_SESSION['geo_ip'] = $result['ip'];
-		
-		return $result;
-	}
-	
 	public static function IsInternetExplorer()
 	{
 		return preg_match('/(?i)msie [1-9]/', $_SERVER['HTTP_USER_AGENT']);
@@ -103,28 +66,68 @@ class Brevada
 		return empty($_POST[$v]) ? (empty($_GET[$v]) ? '' : $_GET[$v]) : $_POST[$v];
 	}
 	
-	public static function GeneratePostQR($codeContents)
+	/* Account Connection */
+	
+	public static function IsLoggedIn()
 	{
-		if(empty($codeContents)){return;}
-		
-		///MAKE QR CODE///   
-		include_once '../framework/packages/phpqrcode/qrlib.php'; 
-		include_once '../framework/packages/phpqrcode/qrconfig.php'; 
-		 
-		// we need to generate filename somehow,  
-		// with md5 or with database ID used to obtains $codeContents... 
-		$fileName=$new_id . '.png'; 
-
-		$pngAbsoluteFilePath="../user_data/qr_posts/".$fileName; 
-		$urlRelativeFilePath="/user_data/qr_posts/". $fileName; 
-		 
-		// generating 
-		if (!file_exists($pngAbsoluteFilePath)) { 
-			QRcode::png($codeContents, $pngAbsoluteFilePath, QR_ECLEVEL_L, 10, 1); 
-			//echo 'File generated!'; 
-		} else { 
-			//echo 'File already generated! We can use this cached file to speed up site on common codes!'; 
+		if(!empty($_SESSION['time']) && (LOGIN_TIMEOUT == 0 || time() - intval($_SESSION['time']) < LOGIN_TIMEOUT) && !empty($_SESSION['user_id'] && $_SESSION['user_id'] != 'none') && !empty($_SESSION['ip']) && $_SESSION['ip'] == $_SERVER['REMOTE_ADDR']){
+			$_SESSION['time'] = time();
+			return true;
+		} else {
+			self::Logout();
+			return false;
 		}
+	}
+	
+	public static function Logout()
+	{
+		$_SESSION['user_id'] = "none";
+		$_SESSION['corporate'] = "";
+		$_SESSION['corporate_id'] = "none";
+		unset($_SESSION['time']);
+		unset($_SESSION['ip']);
+	}
+	
+	
+	/*
+		If password length == 60, assume it is a hashed password;
+		otherwise assume it is an old plaintext.
+	*/
+	public static function LogIn($email, $password)
+	{
+		$email = Database::escape_string(strtolower(trim($email)));
+		if(($query = Database::query("SELECT id, email, password FROM `users` WHERE `email` = '{$email}' LIMIT 1")) !== false){
+			if($query !== false){
+				if($query->num_rows > 0){
+					while($row = $query->fetch_assoc()){
+						if(strlen($row['password']) == 60){
+							//Treat like hashed.
+							if(!password_verify($password, $row['password'])){
+								return false;
+							}
+						} else {
+							//Treat as raw.
+							if($password != $row['password']){
+								return false;
+							}
+						}
+						$_SESSION['user_id'] = $row['id'];
+					}
+					$_SESSION['ip'] = $_SERVER['REMOTE_ADDR'];
+					$_SESSION['time'] = time();
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+	
+	public static function HashPassword($password)
+	{
+		//Return a *60* character hashed password.
+		//cost is the CPU cost (4 - 31). The higher the number, the better.
+		
+		return password_hash($password, PASSWORD_BCRYPT, array('cost' => 10));
 	}
 	
 }

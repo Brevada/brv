@@ -6,7 +6,7 @@ $this->addResource('/js/voting.js');
 $this->addResource('<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=1" />', true, true);
 
 //GET COUNTRY
-$geo = Brevada::GetGeo();
+$geo = Geography::GetGeo();
 $country = $geo['country'];
 $ip = $geo['ip'];
 

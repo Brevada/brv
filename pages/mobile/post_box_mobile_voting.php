@@ -1,7 +1,7 @@
 <?php
 $this->addResource('/css/mobile/post_box_mobile_voting.css');
 //GET COUNTRY
-$geo = Brevada::GetGeo();
+$geo = Geography::GetGeo();
 $ip = $geo['ip'];
 $country = $geo['country'];
 

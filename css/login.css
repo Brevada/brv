@@ -19,7 +19,7 @@
 }
 
 .in{
-	width:90%;
+	width:100%;
 	background:rgba(227,227,227,0.15);
 	outline:none;
 	border:1px solid #dcdcdc;
@@ -37,7 +37,7 @@
 }
 
 .sub{
-	width:280px;
+	width:100%;
 	color:#666;
 	padding:0.75em;
 	margin-top:0.625em;

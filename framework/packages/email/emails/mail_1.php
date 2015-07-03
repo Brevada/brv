@@ -81,7 +81,7 @@ robbie@brevada.com<br />
 
 <br /><br />
 <span style='color:#333; font-family:helvetica; font-size:10px;'>
-Visit <a href='http://brevada.com/hub' style='color:#cd0000;'>your profile</a> to get started! <br /> Feel free to contact us at any point at contact@brevada.com.
+Visit <a href='http://brevada.com/dashboard' style='color:#cd0000;'>your profile</a> to get started! <br /> Feel free to contact us at any point at contact@brevada.com.
 </font
 </span>
 ";

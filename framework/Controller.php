@@ -1,7 +1,9 @@
 <?php
 /**
 Controller
-//**/
+
+Entry point for website.
+*/
 
 define('ROOT_PATH', '/');
 define('URL', 'http://brevada.com/');
@@ -12,10 +14,15 @@ session_start();
 //header("Cache-Control: no-cache, must-revalidate"); // HTTP/1.1
 //header("Expires: Sat, 26 Jul 1997 05:00:00 GMT"); // Date in the past
 
-require 'View.php';
-require 'Database.php';
-require 'Common.php';
+function __autoload($c){
+	if(file_exists("classes/{$c}.php")){
+		include_once "classes/{$c}.php";
+	}
+}
+
 require 'Brevada.php';
+require 'Common.php';
+require 'View.php';
 
 $page = empty($_GET['page']) ? '404' : trim($_GET['page']);
 
@@ -63,11 +70,7 @@ if(!file_exists($viewPath)){
 			$viewPath = "../pages/profile/scores/scores.php";
 		} else if(preg_match('#([a-z0-9_\-\s]+)/?#i', $page, $matches)){
 			$_GET['name'] = $matches[1];
-			if(Brevada::IsMobile()){
-				$viewPath = "../pages/mobile/profile/profile.php";
-			} else {
-				$viewPath = "../pages/profile/profile.php";
-			}			
+			$viewPath = "../pages/profile/profileloader.php";		
 		} else {
 			$viewPath = '../pages/404.php';
 		}
@@ -81,7 +84,8 @@ if(isset($_GET['secure'])){
 }
 
 $view = new View($viewPath);
-if(!$isWidget){
+if($isWidget){ $view->IsScript = true; } //temp; until $isWidget is phased out.
+if(!$isWidget && !$view->IsScript){
 	$view->addResource("../template/head.php", true);
 	$view->RootPage = true;
 	$view->DocType = true;

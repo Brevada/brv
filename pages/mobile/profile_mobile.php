@@ -7,7 +7,7 @@ $this->addResource("<meta name='viewport' content='width=device-width, initial-s
 $url_name = Brevada::validate($_GET['name'], VALIDATE_DATABASE);
 
 //GET COUNTRY
-$geo = Brevada::GetGeo();
+$geo = Geography::GetGeo();
 $ip = $geo['ip'];
 $country = $geo['country'];
 

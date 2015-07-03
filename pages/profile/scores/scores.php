@@ -6,7 +6,7 @@ $id = Brevada::validate($_POST['id']);
 $url_name = Brevada::validate($_GET['name']);
 
 //GET COUNTRY
-$geo = Brevada::GetGeo();
+$geo = Geography::GetGeo();
 $ip = $geo['ip'];
 $country = $geo['country'];
 
