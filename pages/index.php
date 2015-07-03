@@ -77,7 +77,7 @@ $this->add(new View('../template/home_header.php'));
         <section id="features">
             <div class="container">
                 <div class="section-heading scrollpoint sp-effect3">
-                    <h1>Recieve Feedback</h1>
+                    <h1>Receive Feedback</h1>
                     <div class="divider"></div>
                     <p>We believe in <b>one-click feedback</b>.</p>
                 </div>
