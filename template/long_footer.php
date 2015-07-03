@@ -44,7 +44,7 @@
 		</div>	
 					</div>
 				</div>
-				<div class="right" style="float:right; padding-top:15px; margin-left:35px;">
+<!-- 				<div class="right" style="float:right; padding-top:15px; margin-left:35px;">
 					<div class="bottom_link_big">
 					Search
 					</div>
@@ -58,7 +58,7 @@
 							</div>
 						</form>
 					</div>
-				</div>
+				</div> -->
 				<br style="clear:both;" />
 				<br style="clear:both;" />
 				<div style="width:100%; text-align:center; font-size:12px; color:#FFAEA5;">

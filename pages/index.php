@@ -77,9 +77,9 @@ $this->add(new View('../template/home_header.php'));
         <section id="features">
             <div class="container">
                 <div class="section-heading scrollpoint sp-effect3">
-                    <h1>Why Brevada?</h1>
+                    <h1>Recieve Feedback</h1>
                     <div class="divider"></div>
-                    <p>Let us be the secret to your success.</p>
+                    <p>We believe in <b>one-click feedback</b>.</p>
                 </div>
                 <!--
                 -tablets
@@ -94,8 +94,17 @@ $this->add(new View('../template/home_header.php'));
                 -track progress
                 -->
                 <div class="row">
-                    <div class="col-md-4 col-sm-4 scrollpoint sp-effect1">
+                    <div class="side col-md-4 col-sm-4 scrollpoint sp-effect1">
                         
+                        <div class="media feature">
+                            <a class="pull-right" href="#">
+                                <i class="fa fa-envelope fa-2x"></i>
+                            </a>
+                            <div class="media-body">
+                                <h3 class="media-heading">Brevada Page</h3>
+                                Forget surveys! We make giving feedback quick and easy.
+                            </div>
+                        </div>
                         
                         <div class="media feature ">
                             <a class="pull-right" href="#">
@@ -106,40 +115,13 @@ $this->add(new View('../template/home_header.php'));
                                 Brevada feedback tablets are included with every plan.
                             </div>
                         </div>
-                        <div class="media feature">
-                            <a class="pull-right" href="#">
-                                <i class="fa fa-envelope fa-2x"></i>
-                            </a>
-                            <div class="media-body">
-                                <h3 class="media-heading">Brevada Page</h3>
-                                Forget surveys! We make giving feedback quick and easy.
-                            </div>
-                        </div>
                         <div class="media eature">
                             <a class="pull-right" href="#">
                                 <i class="fa fa-users fa-2x"></i>
                             </a>
                             <div class="media-body">
                                 <h3 class="media-heading">Custom URL</h3>
-                                Your Brevada Page lives at brevada.com/<i>yourcompany</i>
-                            </div>
-                        </div>
-                        <div class="media feature">
-                            <a class="pull-right" href="#">
-                                <i class="fa fa-comments fa-2x"></i>
-                            </a>
-                            <div class="media-body">
-                                <h3 class="media-heading">Custom QR Code</h3>
-                                Lorem ipsum dolor sit amet.
-                            </div>
-                        </div>
-                        <div class="media feature">
-                            <a class="pull-right" href="#">
-                                <i class="fa fa-calendar fa-2x"></i>
-                            </a>
-                            <div class="media-body">
-                                <h3 class="media-heading">Marketing Material</h3>
-                                Lorem ipsum dolor sit amet.
+                                Recieve feedback through brevada.com/<i>yourcompany</i>
                             </div>
                         </div>
                     </div>
@@ -149,15 +131,15 @@ $this->add(new View('../template/home_header.php'));
                     </div>
 
 
-                    <div class="col-md-4 col-sm-4 scrollpoint sp-effect2">
+                    <div class="side col-md-4 col-sm-4 scrollpoint sp-effect2">
                         
-                        <div class="media feature">
+<!--                         <div class="media feature">
                             <a class="pull-left" href="#">
                                 <i class="fa fa-map-marker fa-2x"></i>
                             </a>
                             <div class="media-body">
                                 <h3 class="media-heading">Local Comparisons</h3>
-                                Compare your feedback to local averages.
+                                View comparisons to local averages.
                             </div>
                         </div>
                         <div class="media feature">
@@ -166,7 +148,7 @@ $this->add(new View('../template/home_header.php'));
                             </a>
                             <div class="media-body">
                                 <h3 class="media-heading">Intra-Company Analysis</h3>
-                                Lorem ipsum dolor sit amet.
+                                View comparisons between the different aspects internally.
                             </div>
                         </div>
                         <div class="media feature">
@@ -175,6 +157,24 @@ $this->add(new View('../template/home_header.php'));
                             </a>
                             <div class="media-body">
                                 <h3 class="media-heading">Track Progress</h3>
+                                Monitor improvement over time.
+                            </div>
+                        </div> -->
+                        <div class="media feature">
+                            <a class="pull-left" href="#">
+                                <i class="fa fa-comments fa-2x"></i>
+                            </a>
+                            <div class="media-body">
+                                <h3 class="media-heading">Custom QR Code</h3>
+                                Lorem ipsum dolor sit amet.
+                            </div>
+                        </div>
+                        <div class="media feature">
+                            <a class="pull-left" href="#">
+                                <i class="fa fa-calendar fa-2x"></i>
+                            </a>
+                            <div class="media-body">
+                                <h3 class="media-heading">Marketing Material</h3>
                                 Lorem ipsum dolor sit amet.
                             </div>
                         </div>
@@ -184,7 +184,7 @@ $this->add(new View('../template/home_header.php'));
                             </a>
                             <div class="media-body">
                                 <h3 class="media-heading">And much more!</h3>
-                                Lorem ipsum dolor sit amet.
+                                New features released monthly.
                             </div>
                         </div>
                     </div>
@@ -196,12 +196,13 @@ $this->add(new View('../template/home_header.php'));
         <section id="reviews">
             <div class="container">
                 <div class="section-heading inverse scrollpoint sp-effect3">
-                    <h1>Reviews</h1>
+                    <h1>Get Results</h1>
                     <div class="divider"></div>
-                    <p>See What People Are Saying About Brevada</p>
+                    <p>We believe in <b>actionable data</b>.</p>
+                    <img class="focus-image" src="/images/macbook.png" alt="">
                 </div>
                 <div class="row">
-                    <div class="col-md-10 col-md-push-1 scrollpoint sp-effect3">
+     <!--                <div class="col-md-10 col-md-push-1 scrollpoint sp-effect3">
                         <div class="review-filtering">
                             <div class="review">
                                 <div class="row">
@@ -276,7 +277,34 @@ $this->add(new View('../template/home_header.php'));
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </div> -->
+                     <div class="feature col-md-4">
+                            <a class="icon" href="#">
+                                <i class="fa fa-map-marker fa-2x"></i>
+                            </a>
+                            <div class="media-body">
+                                <h3 class="media-heading">Local Comparisons</h3>
+                                View comparisons to local averages.
+                            </div>
+                        </div>
+                        <div class="feature col-md-4">
+                            <a class="icon" href="#">
+                                <i class="fa fa-film fa-2x"></i>
+                            </a>
+                            <div class="media-body">
+                                <h3 class="media-heading">Intra-Company Analysis</h3>
+                                View comparisons between the different aspects internally.
+                            </div>
+                        </div>
+                        <div class="feature col-md-4">
+                            <a class="icon" href="#">
+                                <i class="fa fa-compass fa-2x"></i>
+                            </a>
+                            <div class="media-body">
+                                <h3 class="media-heading">Track Progress</h3>
+                                Monitor improvement over time.
+                            </div>
+                        </div>
                 </div>
             </div>
         </section>

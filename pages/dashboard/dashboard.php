@@ -207,9 +207,6 @@ $areasOfLeastConcern = array_diff($areasOfLeastConcern, $areasOfFocus);
 
 		<div class="col-sm-3 hidden-xs">		
 			<div class='block'>
-				<div class="block-left hidden-md hidden-sm">
-					<i class='fa fa-play'></i>
-				</div>
 				<div class="block-right">
 						<div class=''>
 							<?php
@@ -261,10 +258,19 @@ $areasOfLeastConcern = array_diff($areasOfLeastConcern, $areasOfFocus);
 		
 		$order_num = ((int) $row['Position']) + 1;
 		$order_denom = $query->num_rows;
+
+		if($data_ratingPercent>=75) {
+			$colour = 'positive';
+		} else if ($data_ratingPercent<75 && $data_ratingPercent>=50) {
+			$colour = 'neutral';
+		} else {
+			$colour = 'negative';
+		}
+
 	?>
-		<div class="col-sm-2">	
+		<div class="col-sm-4 col-md-3">	
 			<div class='aspect-container'>
-				<span class='aspect-title'><?php echo $title; ?></span>
+				<span class='aspect-title <?php echo $colour; ?>'><?php echo $title; ?></span>
 				<div class='graphs'>
 					<div class='left-graph graph' data-percent='<?php echo $data_ratingPercent; ?>'>
 						<div class='percent'><?php echo "{$data_ratingPercent}%"; ?></div>
@@ -275,9 +281,9 @@ $areasOfLeastConcern = array_diff($areasOfLeastConcern, $areasOfFocus);
 					<div class='left-block pull-left'>
 						<!-- SWITCH TO NUM RATINGS -->
 						<span class='fraction numerator'><?php echo $order_num; ?></span>
-						<span class='fraction denominator'>Out of <?php echo $order_denom; ?></span>
+						<span class='fraction denominator'>Ratings<!-- Out of <?php echo $order_denom; ?> --></span>
 					</div>
-					<div class='right-block'>
+					<div class='right-block pull-right'>
 						<div class='top'>
 							<i class='fa <?php echo $data_percent4W >= 0 ? 'fa-sort-asc' : 'fa-sort-desc'; ?> <?php echo numericalCSS($data_percent4W); ?>-text'></i>
 							<span class='percent'><?php echo abs($data_percent4W)."%"; ?></span>
