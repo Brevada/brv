@@ -2,6 +2,7 @@
 $this->addResource('/css/layout.css');
 $this->addResource('/css/profile_header.css');
 $this->addResource('/css/profile.css');
+$this->addResource('/js/profile.js');
 
 $tablet_id = $this->getParameter("tablet_id");
 $tablet_url = $this->getParameter("tablet_url");
