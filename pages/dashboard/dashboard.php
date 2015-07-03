@@ -169,7 +169,7 @@ $areasOfLeastConcern = array_diff($areasOfLeastConcern, $areasOfFocus);
 					</div>
 				</div>
 				<div class="block-bottom">
-					Past 4 Weeks
+					Change in the Past 4 Weeks
 				</div>
 			</div>
 		</div>
@@ -199,7 +199,7 @@ $areasOfLeastConcern = array_diff($areasOfLeastConcern, $areasOfFocus);
 				<div class="block-bottom">
 					<?php 
 						$abs_relative = abs($data_relativeBenchmark);
-						echo "<span class='hidden-md hidden-sm'>Overall</span> $abs_relative% $message"; 
+						echo "$message"; 
 					?>
 				</div>
 			</div>
@@ -268,7 +268,7 @@ $areasOfLeastConcern = array_diff($areasOfLeastConcern, $areasOfFocus);
 		}
 
 	?>
-		<div class="col-sm-4 col-md-3">	
+		<div class="col-sm-4 col-md-2">	
 			<div class='aspect-container'>
 				<span class='aspect-title <?php echo $colour; ?>'><?php echo $title; ?></span>
 				<div class='graphs'>
@@ -307,7 +307,7 @@ $areasOfLeastConcern = array_diff($areasOfLeastConcern, $areasOfFocus);
 </div>
 
 <div class="bottom-bar">
-
+	&copy; 2015 Brevada Inc. &nbsp;
 </div>
 
 <script>

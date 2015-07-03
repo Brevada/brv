@@ -804,20 +804,28 @@ section#reviews .feature {
 section#reviews .feature .icon {
   color: #FFFFFF;
   line-height: 50px;
+
 }
 section#reviews header h1:after {
   background: #FF2B2C;
 }
-section#reviews .media i.fa {
+section#reviews i.fa {
+  color: #FF2B2B;
+  background: #FFFFFF;
+  border: 2px solid #FFFFFF;
+  height: 60px;
+  width: 60px;
+  border-radius: 60px;
+  line-height: 55px;
+  text-align: center;
+  margin-bottom: 10px;
+  margin-top: 20px;
+}
+section#reviews .active i.fa {
   color: #ffffff;
   background: #FF2B2C;
-  border: 2px solid #FF2B2B;
 }
-section#reviews .media.active i.fa {
-  color: #ffffff;
-  background: #FF2B2C;
-}
-section#reviews .media.active .media-heading {
+section#reviews .active .media-heading {
   color: #FF2B2C;
 }
 
@@ -1128,7 +1136,9 @@ form .form-control:focus {
 	width:250px;
 }
 .jumbotron h1{
-  line-height: 90px;
+  line-height: 65px;
+  font-size: 55px;
+  text-transform: uppercase;
 }
 .grid{
 	  background:#F5F5F5 !important;

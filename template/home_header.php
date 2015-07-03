@@ -75,7 +75,7 @@
                         </div>
 			   		</div>
 			   		
-			   		<div class="col-md-4 hidden-xs img-holder">
+			   		<div class="col-md-4 hidden-xs hidden-sm img-holder">
 			   			 <img src="/images/tablet.png" alt="">
 			   		</div>
 		

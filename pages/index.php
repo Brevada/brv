@@ -166,7 +166,7 @@ $this->add(new View('../template/home_header.php'));
                             </a>
                             <div class="media-body">
                                 <h3 class="media-heading">Custom QR Code</h3>
-                                Lorem ipsum dolor sit amet.
+                                Making it extremely easy to share your URL.
                             </div>
                         </div>
                         <div class="media feature">
@@ -175,7 +175,7 @@ $this->add(new View('../template/home_header.php'));
                             </a>
                             <div class="media-body">
                                 <h3 class="media-heading">Marketing Material</h3>
-                                Lorem ipsum dolor sit amet.
+                                We auto create custom printables for you to share.
                             </div>
                         </div>
                         <div class="media active feature">
@@ -345,7 +345,7 @@ $this->add(new View('../template/home_header.php'));
                                     </li>
 								</ul>
 								<div class="panel-footer">
-									<a class="btn btn-lg btn-block btn-default">Get Started</a>
+									<a href="/signup" class="btn btn-lg btn-block btn-default">Get Started</a>
 								</div>
 							</div>
 						</div>
@@ -382,7 +382,7 @@ $this->add(new View('../template/home_header.php'));
                                     </li>
                                 </ul>
                                 <div class="panel-footer">
-                                    <a class="btn btn-lg btn-block btn-default">Get Started</a>
+                                    <a href="/signup" class="btn btn-lg btn-block btn-default">Get Started</a>
                                 </div>
                             </div>
                         </div>
@@ -404,7 +404,7 @@ $this->add(new View('../template/home_header.php'));
                                     </li>
                                 </ul>
                                 <div class="panel-footer">
-                                    <a class="btn btn-lg btn-block btn-default">Contact Us</a>
+                                    <a href="/signup" class="btn btn-lg btn-block btn-default">Contact Us</a>
                                 </div>
                             </div>
                         </div>

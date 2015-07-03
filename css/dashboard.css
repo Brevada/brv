@@ -3,14 +3,7 @@
 }
 body{
 	font-family: "helvetica neue", arial, helvetica, freesans, "liberation sans","numbus sans l", sans-serif;
-	background-color: #FFFFFF;
-	background-image:linear-gradient(#EEEEEE, #CCCCCC);
-	background-color: #FFFFFF;
-    
-	background-image: linear-gradient(0deg, transparent 24%, rgba(0, 0, 0, .04) 25%, rgba(0, 0, 0, .04) 26%, transparent 27%, transparent 74%, rgba(0, 0, 0, .04) 75%, rgba(0, 0, 0, .04) 76%, transparent 77%, transparent), linear-gradient(90deg, transparent 24%, rgba(0, 0, 0, .04) 25%, rgba(0, 0, 0, .04) 26%, transparent 27%, transparent 74%, rgba(0, 0, 0, .04) 75%, rgba(0, 0, 0, .04) 76%, transparent 77%, transparent);
-	height:100%;
-	background-size:30px 30px;
-	background-attachment: fixed; 
+	background-color: #FBFBFB;
 }
 
 div.top-fixed { width: 100%; position: fixed; top: 0; left: 0; z-index: 9;}
@@ -61,7 +54,9 @@ div.aspect-area div.row div.aspect-container { width: 100%; padding: 0px 10px; h
 
 div.aspect-area div.row div.aspect-container.disabled::after { content : ''; width: 100%; height: 100%; display: block; position: absolute; top: 0; left: 0; background: repeating-linear-gradient(-55deg, #222, #222 6px, #333 6px, #333 12px ); opacity: 0.35; }
 
-div.aspect-area div.row div.aspect-container div.graphs { height: 200px; position: relative; background: rgba(0,0,0,0.15);}
+div.aspect-area div.row div.aspect-container div.graphs { height: 200px; margin-top: -3px; position: relative; background: #EEE; background-image:linear-gradient(#EEEEEE, #CCCCCC); background-image: linear-gradient(0deg, transparent 24%, rgba(0, 0, 0, .04) 25%, rgba(0, 0, 0, .04) 26%, transparent 27%, transparent 74%, rgba(0, 0, 0, .04) 75%, rgba(0, 0, 0, .04) 76%, transparent 77%, transparent), linear-gradient(90deg, transparent 24%, rgba(0, 0, 0, .04) 25%, rgba(0, 0, 0, .04) 26%, transparent 27%, transparent 74%, rgba(0, 0, 0, .04) 75%, rgba(0, 0, 0, .04) 76%, transparent 77%, transparent);
+	background-size:30px 30px;
+	}
 div.aspect-area div.row div.aspect-container div.graphs div.graph { float: left; position: absolute; bottom: 0; }
 div.aspect-area div.row div.aspect-container div.graphs div.graph:hover { opacity: 0.9; }
 div.aspect-area div.row div.aspect-container div.graphs::before { content : ''; display: block; width: 100%; height: 100%; background: #434343; opacity: 0.04; left: 0; border-top-left-radius: 0.2em; border-top-right-radius: 0.2em; }
@@ -81,5 +76,5 @@ div.aspect-area div.row div.aspect-container div.graph-info div.right-block i.fa
 div.aspect-area div.row div.aspect-container div.graph-info div.right-block span.duration { font-size: 0.7em; }
 div.aspect-area div.row div.aspect-container span.aspect-title { background: #999; display: inline-block; margin: 0em 0 0 0; padding: 10px; width: 100%; text-align: center; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;}
 
-div.bottom-bar { background: #434343; position: fixed; width:100%; left: 0px; bottom: 0px; height: 20px;}
+div.bottom-bar { background: #434343; position: fixed; width:100%; left: 0px; bottom: 0px; height: 20px; font-size: 12px; text-align: center; color: #DDD; text-align: right;}
 
