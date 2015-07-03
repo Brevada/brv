@@ -2,7 +2,7 @@
 /**
 Framework
 Developed by Noah Negin-Ulster
-//**/
+*/
 
 define('DEFAULT_TITLE', 'Brevada Feedback Platform');
 
@@ -48,7 +48,7 @@ class View
 	public function printView()
 	{
 		if($this->DocType){
-			echo '<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">' . "\n";
+			echo '<!DOCTYPE html PUBLIC "-//WAPFORUM//DTD XHTML Mobile 1.2//EN" "http://www.openmobilealliance.org/tech/DTD/xhtml-mobile12.dtd">' . "\n";
 		}
 		
 		if($this->RootPage){
@@ -79,7 +79,7 @@ class View
 	
 	/**
 		Load external pages.
-	//**/
+	*/
 	
 	private function loadPage($page)
 	{

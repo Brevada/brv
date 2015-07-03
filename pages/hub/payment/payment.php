@@ -38,10 +38,10 @@ if($active=='yes'){
 			<div id="pricing_holder">
 				<?php if($level==4){ ?>
 				<div id="pricing_box">
-					<div id="pricing_top" style="background:#3b5998;">
+					<div id="pricing_top" style="background:#FF2B2B;">
 						<div class="pricing_title">
 							<div  id="home_text" style="color:#fff;">
-							ENTERPRISE
+							PREMIUM
 							</div>
 							<div  id="pricing_price">
 							<span id="price">$90</span>/month
@@ -50,7 +50,7 @@ if($active=='yes'){
 						<div id="pricing_under">
 							<i>Billed at $1080 for one year</i>
 							<br />
-							<strong>The basic package.</strong>
+							<strong>The premium package.</strong>
 						</div>
 					</div>
 					<div id="pricing_bottom">
@@ -58,7 +58,7 @@ if($active=='yes'){
 								 <input type="hidden" name="cmd" value="_xclick">
 								 <input type="hidden" name="business" value="payments@brevada.com">
 								 <input type="hidden" name="currency_code" value="CAD">
-								 <input type="hidden" name="item_name" value="Brevada Enterprise Package (1 Year)">
+								 <input type="hidden" name="item_name" value="Brevada Premium Package (1 Year)">
 								 <input type="hidden" name="amount" value="1080.00">
 								 <input type="hidden" name="return" value="http://www.brevada.com/thanks">
 								 <input type="hidden" name="notify_url" value="http://www.brevada.com/ipn.php?id=<?php echo $user_id; ?>">
@@ -68,7 +68,7 @@ if($active=='yes'){
 				</div>
 				<?php } else if($level==2) { ?>
 				<div id="pricing_box">
-					<div id="pricing_top" style="background:#12a5f4;">
+					<div id="pricing_top" style="background:#FF2B2B;">
 						<div class="pricing_title">
 							<div  id="home_text" style="color:#fff;">
 							PERSONAL
@@ -80,7 +80,7 @@ if($active=='yes'){
 						<div id="pricing_under">
 							<i>Billed at $168 for one year</i>
 							<br />
-							<strong>The basic package.</strong>
+							<strong>The personal package.</strong>
 						</div>
 					</div>
 					<div id="pricing_bottom">
@@ -98,17 +98,17 @@ if($active=='yes'){
 				</div>		
 				<?php } else { ?>
 				<div id="pricing_box">
-					<div id="pricing_top" style="background:#3369e8;">
+					<div id="pricing_top" style="background:#FF2B2B;">
 						<div class="pricing_title">
 							<div  id="home_text" style="color:#fff;">
-							PROFESSIONAL
+							BASIC
 							</div>
 							<div  id="pricing_price">
-							<span id="price">$30</span>/month
+							<span id="price">$50</span>/month
 							</div>
 						</div>
 						<div id="pricing_under">
-							<i>Billed at $360 for one year</i>
+							<i>Billed at $600 for one year</i>
 							<br />
 							<strong>The basic package.</strong>
 						</div>
@@ -118,8 +118,8 @@ if($active=='yes'){
 							 <input type="hidden" name="cmd" value="_xclick">
 							 <input type="hidden" name="business" value="payments@brevada.com">
 							 <input type="hidden" name="currency_code" value="CAD">
-							 <input type="hidden" name="item_name" value="Brevada Professional Package (1 Year)">
-							 <input type="hidden" name="amount" value="360.00">
+							 <input type="hidden" name="item_name" value="Brevada Basic Package (1 Year)">
+							 <input type="hidden" name="amount" value="600.00">
 							 <input type="hidden" name="return" value="http://www.brevada.com/thanks">
 							 <input type="hidden" name="notify_url" value="http://www.brevada.com/ipn.php?id=<?php echo $user_id; ?>">
 							 <input type="submit" id="pricing_button"  name="submit" value="Pay Now" style="border:none; color:#f9f9f9; padding:5px; width:200px;">

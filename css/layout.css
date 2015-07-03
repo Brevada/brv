@@ -9,7 +9,7 @@ body {
 	max-width:100%;
 	font-family: tahoma;
 	background:#EEEEEE;
-	font-family: "helvetica neue",arial,helvetica,freesans,"liberation sans","numbus sans l",sans-serif;
+	font-family: 'Source Sans Pro', sans-serif; font-weight: 300;
 }
 
 a {
@@ -716,9 +716,9 @@ input.search {
 
 div.token-container { width: 100%; position: relative; }
 div.tokens {}
-div.tokens div.token { background: #FF2B2B; border-radius: 0.3em; color: #FFFFFF; padding: 0.85em 2.2em; margin: 0 0.5em 0.3em 0; font-size: 0.95em; cursor: pointer; display: inline-block; border: 2px solid #FF2B2B; opacity: 0.5; }
-div.tokens div.token:not(.selected):hover { opacity: 0.8; }
-div.tokens div.token.selected { border: 0; opacity: 1; }
+div.tokens div.token { background: #FF2B2B; border-radius: 0.2em; color: #FFFFFF; padding: 0.45em 2.2em; margin: 0 0.5em 0.3em 0; font-size: 0.95em; cursor: pointer; display: inline-block; border: 2px solid #EE2B2B; opacity: 0.5; }
+div.tokens div.token:not(.selected):hover { background: #2ECC0E; border: 2px solid #1EBB0E; opacity: 0.75; }
+div.tokens div.token.selected { background: #2ECC0E; border: 2px solid #1EBB0E; opacity: 1; }
 div.tokens div.token span {  }
 
 div.dropdown-menu div.three-lines { margin: 0; padding: 0; cursor: pointer; display: block; width: 100%; text-align: center; height: 55px; }
@@ -737,8 +737,7 @@ div.dropdown-menu ul li:hover { background: #9F9F9F; }
 .submit-next{
 	float: right;
 	width:80px;
-	height: 1em;
-	padding:0.625em 0.625em 0.85em 0.625em;
+	padding:10px 5px;
 	margin: 2em 0 2em 0;
 	text-align:center;
 	font-weight:bold;

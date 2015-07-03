@@ -23,11 +23,7 @@ $(document).ready(function(){
 </script>
 <img src="/images/promo_square.png"  style="width:400px;"/>
 <div style="width:400px; text-align:center; margin-top:-425px; color:#ee2b2b; font-family:tahoma; font-size:50px;">
-	<?php  if($user_extension=="none"){ ?>
 	<img id="company_pic" src="/user_data/user_images/default.png"  />
-	<?php  } else { ?>
-	<img id="company_pic" src="/user_data/user_images/<?php  echo $user_id; ?>.<?php  echo $user_extension; ?>"  />
-    <?php  } ?>
 </div>
 <div style="width:400px; text-align:center; margin-top:80px; color:#ee2b2b; font-family:tahoma; font-size:50px;">
 	<img src="/user_data/qr/<?php echo $user_id; ?>.png" height="120px" />

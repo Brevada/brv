@@ -14,7 +14,7 @@
 		var defaults = {
 			className : 'brevada-tooltip',
 			subClassName : '',
-			fadeInDuration : 500,
+			fadeInDuration : 10,
 			fadeOutDuration : 500,
 			duration : 1250,
 			offset : 15,

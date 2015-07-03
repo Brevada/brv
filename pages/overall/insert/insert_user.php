@@ -17,14 +17,16 @@ function generateRandomString($length=6) {
 }
 
 $dest = '/hub';
-
 $email = Brevada::validate($_POST['email'], VALIDATE_DATABASE);
 $password = Brevada::validate($_POST['password'], VALIDATE_DATABASE);
 $password2 = Brevada::validate($_POST['password2'], VALIDATE_DATABASE);
 $name = Brevada::validate($_POST['name'], VALIDATE_DATABASE);
 
-/* TODO: Verify level. At the moment, this can easily be modified by end-user. */
+
+
 $level = @intval(Brevada::validate($_POST['level']));
+
+if($level < 0 || $level > 4){ $level = 1; }
 
 if(empty($email) || empty($password) || empty($name) || $email == 'Email' || $password == 'Password' || $name == 'Your Company Name'){
 	$dest = '/home/signup.php';
@@ -32,25 +34,32 @@ if(empty($email) || empty($password) || empty($name) || $email == 'Email' || $pa
 	//CHECK IF EMAIL EXISTS
 	$query_name = Database::query("SELECT `email` FROM users WHERE email = '{$email}' LIMIT 1");
 	
-	if($query_name->num_rows > 0){
+	$url_name = strtolower(preg_replace("/[^a-zA-Z]+/", "", $name));
+	
+	if($query_name->num_rows > 20){
 		$dest = '/home/signup.php?email=exists';
-	} else {
+	} else if(!empty($url_name)) {
 		//CHECK FOR NAME
 		
-		$url_name = strtolower(preg_replace("/[^a-zA-Z]+/", "", $name));
-		$url_name_root = $url_name;
+		$reserved_names = array('index', '404', 'approved', 'complete', 'corporate', 'dashboard', 'home', 'ipn', 'ipnlistener', 'login', 'logout', 'payment', 'pricing', 'signup', 'tablet', 'thanks', 'upgrade', 'voting', 'about', 'account', 'secure', 'images', 'user_data', 'overall');
+		
+		$url_name_root = trim($url_name);
 		$url_name_mod = 1;
 		
-		while(Database::query("SELECT `url_name` FROM users WHERE url_name='{$url_name}'")->num_rows > 0) {
+		while(Database::query("SELECT `url_name` FROM users WHERE url_name='{$url_name}'")->num_rows > 0 || in_array($url_name, $reserved_names)) {
 			$url_name = $url_name_root . $url_name_mod++;
 		}
-		
-		$password = Brevada::HashPassword($password);
-		
-		if(($stmt = Database::prepare("INSERT INTO users (email, password, name, url_name, active, expiry_date, trial, level) VALUES (?, ?, ?, ?, 'no', (NOW() + INTERVAL 365 DAY), 0, ?)")) !== false){
-			$stmt->bind_param('sssssi', $email, $password, $name, $url_name, $level);
+		$active = 'no';
+		$expiry_date = "NOW() + INTERVAL 365 DAY";
+
+		$password_hashed = Brevada::HashPassword($password);
+		$trial = 0;
+
+		//$stmt = Database::prepare("INSERT INTO users (email, password, name, url_name, active, expiry_date, trial, level) VALUES (?, ?, ?, ?, 'no', (NOW() + INTERVAL 365 DAY), 0, ?)"));
+		if(($stmt = Database::prepare("INSERT INTO users (email, password, name, url_name, active, expiry_date, trial, level) VALUES (?, ?, ?, ?, ?, ({$expiry_date}), ?, ?)")) !== false){
+			$stmt->bind_param('sssssii', $email, $password_hashed, $name, $url_name, $active, $trial, $level);
+			
 			if($stmt->execute()){
-				
 				$_SESSION['user_id'] = $stmt->insert_id;
 				$user_id = $_SESSION['user_id'];
 				
@@ -101,28 +110,33 @@ if(empty($email) || empty($password) || empty($name) || $email == 'Email' || $pa
 								$stmt->bind_param('ii', $token, $user_id);
 								if($stmt->execute()){
 									$new_id = $stmt->insert_id;
-									Barcode::GeneratePostQR(URL.'/mobile/mobile_single.php?id=' . $new_id);
+									Barcode::GeneratePostQR(URL.'/mobile/mobile_single.php?id=' . $new_id, $new_id);
 								}
 								$stmt->close();
 							}
 						}
 					}
 				}
+
+				
+				Brevada::Login($email, $password);
 				
 				//REDIRECTIONS:
 				if($level==1){
-					$dest = '/dashboard/';
-				}
-				else{
+					$dest = '/dashboard';
+				} else {
 					$dest = '/hub/payment/payment.php';
 				}
 				
 			} else {
+				
 				$stmt->close();
-				$dest = '/home/signup.php?error';
+				$dest = '/home/signup.php?error=1';
 			}
 		}
 
+	} else {
+		$dest = '/home/signup.php?badname=1';
 	}
 }
 
