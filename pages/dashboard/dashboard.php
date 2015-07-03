@@ -118,7 +118,7 @@ $areasOfLeastConcern = array_diff($areasOfLeastConcern, $areasOfFocus);
 
 	<div class='top-area row hidden-xs'>
 		
-		<div class="col-sm-3">
+		<div class="col-sm-4">
 			<?php 
 				if($data_overallAll>=50){
 					$change = 'positive';
@@ -146,7 +146,7 @@ $areasOfLeastConcern = array_diff($areasOfLeastConcern, $areasOfFocus);
 			</div>
 		</div>
 
-		<div class="col-sm-3">
+		<div class="col-sm-4">
 			<?php 
 				if($data_overall4W>=50){
 					$change = 'positive';
@@ -174,7 +174,7 @@ $areasOfLeastConcern = array_diff($areasOfLeastConcern, $areasOfFocus);
 			</div>
 		</div>
 
-		<div class="col-sm-3">
+		<div class="col-sm-4">
 			<?php 
 				if($data_relativeBenchmark>=1){
 					$icon = 'fa-chevron-circle-up';
@@ -204,28 +204,6 @@ $areasOfLeastConcern = array_diff($areasOfLeastConcern, $areasOfFocus);
 				</div>
 			</div>
 		</div>
-
-		<div class="col-sm-3 hidden-xs">		
-			<div class='block'>
-				<div class="block-right">
-						<div class=''>
-							<?php
-							foreach($areasOfFocus as $aspect){
-								echo "<span class='aspect-title'>{$aspect}</span>";
-							}
-							if(empty($areasOfFocus)){
-								echo "<span class='aspect-title placeholder'></span>";
-							}
-							?>
-						</div>
-						<br class="clear: both;" />
-				</div>
-
-				<div class="block-bottom">
-					<span class='title'>Areas of Focus</span>
-				</div>
-			</div>
-		</div>
 	</div>
 
 </div>
@@ -243,8 +221,50 @@ $areasOfLeastConcern = array_diff($areasOfLeastConcern, $areasOfFocus);
 	$query = Database::query("SELECT aspect_type.Title, aspects.Data_LastUpdate, aspects.Data_RatingPercent, aspects.Data_RatingPercentOther, aspects.Data_Percent4W, aspects.Data_Percent6M, aspects.Data_Percent1Y, (SELECT COUNT(*) FROM aspects as subaspects WHERE subaspects.Data_RatingPercent > aspects.Data_RatingPercent AND subaspects.`Active` = 1 AND subaspects.`OwnerID` = {$user_id} AND aspect_type.Title <> '') as Position FROM aspects LEFT JOIN aspect_type ON aspect_type.ID = aspects.AspectTypeID WHERE aspects.OwnerID = {$user_id} AND `Active` = 1 AND aspect_type.Title <> ''");
 ?>
 
-<div class='aspect-area'>
+<!-- Left side -->
+<div class='aspect-area hidden-xs hidden-sm col-md-3 right-bar'>
 	<div class='row'>
+		<div class='col-sm-12 area-title'><i class='fa fa-area-chart'></i> Consultant</div>
+		<div class="col-sm-12 hidden-xs">		
+			
+			<div class='col-sm-12 block consultant negative'>
+			<span class='title'>Where to Focus</span>
+			<div class=''>
+				<?php
+				foreach($areasOfFocus as $aspect){
+					echo "<span class='aspect-title pull-left'>{$aspect}</span>";
+				}
+				if(empty($areasOfFocus)){
+					echo "<span class='aspect-title placeholder'></span>";
+				}
+				?>
+			</div>
+			<br class="clear: both;" />
+			</div>
+
+
+			<div class='col-sm-12 block consultant positive'>
+				<span class='title'>Areas of Least Concern</span>
+				<div class=''>
+					<?php
+					foreach($areasOfLeastConcern as $aspect){
+						echo "<span class='aspect-title pull-left'>{$aspect}</span>";
+					}
+					if(empty($areasOfLeastConcern)){
+						echo "<span class='aspect-title placeholder'></span>";
+					}
+					?>
+				</div>
+				<br class="clear: both;" />
+			</div>
+		</div>
+	</div>
+</div>
+
+<!-- Right Side -->
+<div class='aspect-area col-md-9'>
+	<div class='row'>
+	<div class='col-sm-12 area-title'><i class='fa fa-comments'></i> Feedback</div>
 	<?php
 	while($query !== false && $row = $query->fetch_assoc()){
 		$title = $row['Title'];
@@ -268,7 +288,7 @@ $areasOfLeastConcern = array_diff($areasOfLeastConcern, $areasOfFocus);
 		}
 
 	?>
-		<div class="col-sm-4 col-md-2">	
+		<div class="col-sm-3 col-md-3 col-lg-2">	
 			<div class='aspect-container'>
 				<span class='aspect-title <?php echo $colour; ?>'><?php echo $title; ?></span>
 				<div class='graphs'>
@@ -305,6 +325,8 @@ $areasOfLeastConcern = array_diff($areasOfLeastConcern, $areasOfFocus);
 		<div class='aspect-container aspect-filler'></div>
 	</div>
 </div>
+
+
 
 <div class="bottom-bar">
 	&copy; 2015 Brevada Inc. &nbsp;
