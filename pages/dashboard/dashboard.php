@@ -219,7 +219,7 @@ $areasOfLeastConcern = array_diff($areasOfLeastConcern, $areasOfFocus);
 </div>
 
 <?php
-	$query = Database::query("SELECT aspect_type.Title, aspects.Data_LastUpdate, aspects.Data_RatingPercent, aspects.Data_RatingPercentOther, aspects.Data_Percent4W, aspects.Data_Percent6M, aspects.Data_Percent1Y, (SELECT COUNT(*) FROM aspects as subaspects WHERE subaspects.Data_RatingPercent > aspects.Data_RatingPercent AND subaspects.`Active` = 1 AND subaspects.`OwnerID` = {$user_id} AND aspect_type.Title <> '') as Position FROM aspects LEFT JOIN aspect_type ON aspect_type.ID = aspects.AspectTypeID WHERE aspects.OwnerID = {$user_id} AND `Active` = 1 AND aspect_type.Title <> ''");
+	$query = Database::query("SELECT aspect_type.Title, aspects.Data_LastUpdate, aspects.Data_RatingPercent, aspects.Data_RatingPercentOther, aspects.Data_Percent4W, aspects.Data_Percent6M, aspects.Data_Percent1Y, (SELECT COUNT(*) FROM feedback WHERE feedback.Rating > -1 AND feedback.AspectID = aspects.ID) as Total FROM aspects LEFT JOIN aspect_type ON aspect_type.ID = aspects.AspectTypeID WHERE aspects.OwnerID = {$user_id} AND `Active` = 1 AND aspect_type.Title <> ''");
 ?>
 
 <!-- Left side -->
@@ -288,8 +288,7 @@ $areasOfLeastConcern = array_diff($areasOfLeastConcern, $areasOfFocus);
 		$data_percent4W = round((float) $row['Data_Percent4W'] + 0, 1);
 		$data_percent1Y = round((float) $row['Data_Percent1Y'] + 0, 1);
 		
-		$order_num = ((int) $row['Position']) + 1;
-		$order_denom = $query->num_rows;
+		$total_responses = ((int) $row['Total']);
 
 		if($data_ratingPercent>=75) {
 			$colour = 'positive';
@@ -311,8 +310,8 @@ $areasOfLeastConcern = array_diff($areasOfLeastConcern, $areasOfFocus);
 				<div class='graph-info'>
 					<div class='left-block pull-left'>
 						<!-- SWITCH TO NUM RATINGS -->
-						<span class='fraction numerator'><?php echo $order_num; ?></span>
-						<span class='fraction denominator'>Ratings<!-- Out of <?php echo $order_denom; ?> --></span>
+						<span class='fraction numerator'><?php echo $total_responses; ?></span>
+						<span class='fraction denominator'>Responses</span>
 					</div>
 					<div class='right-block pull-right'>
 						<div class='top'>
@@ -329,9 +328,7 @@ $areasOfLeastConcern = array_diff($areasOfLeastConcern, $areasOfFocus);
 				</div>
 			</div>
 		</div>
-		<?php } $query->close(); 
-	}
-	?>
+		<?php } $query->close(); } ?>
 	</div>
 </div>
 
