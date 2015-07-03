@@ -39,13 +39,18 @@ div.top-banner {
 		 }
 
 	div.top-banner .icon-button {
-		color: #DDD;
+		color: #FFF;
 		cursor: pointer;
 		font-size: 20px;
 		margin: 0 10px;
 		width: 40px;
 		height: 40px;
 		text-align: center;
+		opacity: 0.5;
+	 }
+
+	 div.top-banner .icon-button:hover {
+	 	opacity: 1;
 	 }
 
 	div.top-banner .three-lines {
@@ -179,6 +184,22 @@ div.aspect-area {
 		padding: 0;
 		margin: 0;
 	 }
+	 	div.aspect-area div.upgrade {
+			padding: 30px;
+			background: #EEE;
+			color: #454545;
+			font-size: 25px;
+			line-height: 45px;
+		 }
+
+		 div.aspect-area div.upgrade .btn-pay {
+		 	background: #4eaf0e;
+		 	border-color: #4eaf0e;
+		 }
+
+		 div.aspect-area div.upgrade div.sub-message {
+		 	font-size: 15px;
+		 }
 
 		div.aspect-area div.row {
 			width: 100%;
@@ -343,20 +364,20 @@ div.aspect-area {
 
 		div.aspect-area.right-bar div.consultant {
 			margin-bottom: 15px;
-			background: #555555;
+			background: #454545;
 			padding: 10px;
 		 }
 
 			div.aspect-area.right-bar div.consultant .title {
-				color: #BBB;
+				color: #EEE;
 				text-align: left;
 				text-transform: uppercase;
 			 }
 
 			div.aspect-area.right-bar div.consultant .aspect-title {
-				padding: 8px 8px 8px 0px;
+				padding: 10px;
 				margin: 5px 5px 0px 0px;
-				border-radius: 0;
+				border-radius: 5px;
 				color: #FFFFFF;
 				font-size: 1em;
 				text-overflow: ellipsis;

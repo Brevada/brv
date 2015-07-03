@@ -25,6 +25,7 @@ $name = Brevada::validate($_POST['name'], VALIDATE_DATABASE);
 /* TODO: Verify level. At the moment, this can easily be modified by end-user. */
 
 $level = @intval(Brevada::validate($_POST['level']));
+$level = 1;
 
 if(empty($email) || empty($password) || empty($name) || $email == 'Email' || $password == 'Password' || $name == 'Your Company Name'){
 	$dest = '/home/signup.php';
@@ -47,7 +48,7 @@ if(empty($email) || empty($password) || empty($name) || $email == 'Email' || $pa
 		$active = 'no';
 		$expiry_date = "NOW() + INTERVAL 365 DAY";
 		$password = Brevada::HashPassword($password);
-		$trial = 1;
+		$trial = 0;
 
 		//$stmt = Database::prepare("INSERT INTO users (email, password, name, url_name, active, expiry_date, trial, level) VALUES (?, ?, ?, ?, 'no', (NOW() + INTERVAL 365 DAY), 0, ?)"));
 		if(($stmt = Database::prepare("INSERT INTO users (email, password, name, url_name, active, expiry_date, trial, level) VALUES (?, ?, ?, ?, ?, ({$expiry_date}), ?, ?)")) !== false){
@@ -131,5 +132,5 @@ if(empty($email) || empty($password) || empty($name) || $email == 'Email' || $pa
 	}
 }
 
-//$this->add(new View('../widgets/loader.php', array('destination' => $dest)));
+$this->add(new View('../widgets/loader.php', array('destination' => $dest)));
 ?>

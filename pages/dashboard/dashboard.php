@@ -30,7 +30,8 @@ while($row = $query->fetch_assoc()){
 	
 	/* Does this make sense? What level is a paid member at? Member who hasn't paid? */
 	$level = $row['level'];
-	if($level != '0' && $level != '1'){
+	$trial = $row['trial'];
+	if($level != '0' && $level != '1' && $trial != '1'){
 		Brevada::Redirect('/hub/payment/payment.php');
 	}
 	
@@ -232,7 +233,7 @@ $areasOfLeastConcern = array_diff($areasOfLeastConcern, $areasOfFocus);
 			<div class=''>
 				<?php
 				foreach($areasOfFocus as $aspect){
-					echo "<span class='aspect-title pull-left'>{$aspect}</span>";
+					echo "<span class='aspect-title pull-left negative'>{$aspect}</span>";
 				}
 				if(empty($areasOfFocus)){
 					echo "<span class='aspect-title placeholder'></span>";
@@ -248,10 +249,10 @@ $areasOfLeastConcern = array_diff($areasOfLeastConcern, $areasOfFocus);
 				<div class=''>
 					<?php
 					foreach($areasOfLeastConcern as $aspect){
-						echo "<span class='aspect-title pull-left'>{$aspect}</span>";
+						echo "<span class='aspect-title pull-left positive'>{$aspect}</span>";
 					}
 					if(empty($areasOfLeastConcern)){
-						echo "<span class='aspect-title placeholder'></span>";
+						echo "<span style='color: #BBB;'>None yet.</span>";
 					}
 					?>
 				</div>
@@ -265,7 +266,18 @@ $areasOfLeastConcern = array_diff($areasOfLeastConcern, $areasOfFocus);
 <div class='aspect-area col-md-9'>
 	<div class='row'>
 	<div class='col-sm-12 area-title'><i class='fa fa-comments'></i> Feedback</div>
+	
+	<?php if ($level < 2) { ?>
+	<br style="clear:both;" />
+	<div class="upgrade">
+		<div class="message">Welcome to Brevada! Please <b>upgrade your account</b> to view your feedback.</div>
+		<a class="btn btn-primary btn-pay" href="upgrade.php">Upgrade</a>
+		<a class="btn btn-default" target="_TOP" href="<?php echo $url_name; ?>">Checkout Your Page</a>
+		<div class="sub-message">Or feel free to contact us at customercare@brevada.com for any help.</div>
+	</div>
+
 	<?php
+	} else {
 	while($query !== false && $row = $query->fetch_assoc()){
 		$title = $row['Title'];
 		
@@ -286,9 +298,8 @@ $areasOfLeastConcern = array_diff($areasOfLeastConcern, $areasOfFocus);
 		} else {
 			$colour = 'negative';
 		}
-
 	?>
-		<div class="col-sm-3 col-md-3 col-lg-2">	
+		<div class="col-sm-3 col-md-3 col-lg-3">	
 			<div class='aspect-container'>
 				<span class='aspect-title <?php echo $colour; ?>'><?php echo $title; ?></span>
 				<div class='graphs'>
@@ -318,11 +329,9 @@ $areasOfLeastConcern = array_diff($areasOfLeastConcern, $areasOfFocus);
 				</div>
 			</div>
 		</div>
-		<?php } $query->close(); ?>
-		<!-- numofFillers = numPerRow-1 -->
-		<div class='aspect-container aspect-filler'></div>
-		<div class='aspect-container aspect-filler'></div>
-		<div class='aspect-container aspect-filler'></div>
+		<?php } $query->close(); 
+	}
+	?>
 	</div>
 </div>
 

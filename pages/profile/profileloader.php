@@ -1,7 +1,7 @@
 <?php
 $url_name = Brevada::validate($_GET['name'], VALIDATE_DATABASE);
 
-$query = Database::query("SELECT `id`, `name`, `type`, `extension`, `corporate` FROM users WHERE url_name='{$url_name}' AND active='yes' LIMIT 1");
+$query = Database::query("SELECT `id`, `name`, `type`, `extension`, `corporate` FROM users WHERE url_name='{$url_name}' LIMIT 1");
 
 $dest = '/404';
 if($query !== false && $query->num_rows > 0){

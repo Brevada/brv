@@ -1,7 +1,8 @@
 <?php 
 $this->addResource('/css/layout.css');
-$this->addResource('/css/upgrade.css'); 
-?>
+$this->addResource('/css/home_header.css'); 
+$this->addResource('/css/home/eco.css'); 
+?>					
 <div class="home_section" style="background:#fff; margin-top:0px; padding-bottom:100px;">
 	<div class="container">
 		<div style="width:100%; text-align:center;">
@@ -14,139 +15,101 @@ $this->addResource('/css/upgrade.css');
 			</div>
 			<br />
 			<div id="pricing_holder">
-				<div id="pricing_box">
-					<div id="pricing_top" style="background:#12a5f4;">
-						<div class="pricing_title">
-							<div id="home_text" style="color:#fff;">
-							PERSONAL
-							</div>
-							<div id="pricing_price">
-							<span id="price">$14</span>/month
-							</div>
-						</div>
-						<div id="pricing_under">
-							<i>Billed at $168 for one year</i>
-							<br />
-							<strong>The basic package.</strong>
-						</div>
-					</div>
-					<div id="pricing_bottom">
-						<a href="process_upgrade.php?l=2"><div id="pricing_button">Choose</div></a>
-					</div>
-					<div id="pricing_info">
-						Up to <span class="emphasis">100 responses</span>/month
-						<br />
-						Unlimited Aspects
-					</div>
-					<div id="pricing_info" class="pricing_grey">
-						Brevada Page <span class="lighter">Desktop and Mobile</span> &nbsp;<a href="../../..#page" target="_BLANK"><i class="foundicon-plus"></i></a>
-						<br />
-						Custom URL and Barcode
-						<br />
-						Marketing Material &nbsp;<a href="../../..#marketing" target="_BLANK"><i class="foundicon-plus"></i></a>
-						<br />
-						Charts and Data Analysis
-					</div>
-					<div id="pricing_info">
-						Email Support
-					</div>
-				</div>
-				<div id="pricing_box" style="width:260px;margin-top:-15px;-webkit-box-shadow: 0px 0px 20px 0px rgba(50, 50, 50, 0.75);-moz-box-shadow: 0px 0px 20px 0px rgba(50, 50, 50, 0.75);box-shadow: 0px 0px 20px 0px rgba(50, 50, 50, 0.75);">
-					<div id="pricing_top" style="background:#3369e8;">
-						<div class="pricing_title">
-							<div  id="home_text" style="color:#fff;">
-							PROFESSIONAL
-							</div>
-							<div  id="pricing_price">
-							<span id="price">$30</span>/month
+										<!-- Pricing Module 1 -->
+                        <div class="col-md-4">
+							<div class="panel panel-success panel-pricing">
+								<div class="panel-heading">
+									<h4 class="text-center title">Basic</h4>
+                                    <p class="lead text-center">
+                                        <span class="price"><span class="currency">$</span>50<span class="time">/month</span></span>
+                                        <br />
+                                        <span class="sub-price">Charged annualy at $600</span>
+                                    </p>
+								</div>
+								<ul class="list-group list-group-flush text-center">
+                                    <li class="list-group-item main-focus">
+                                        Custom Feedback Page, QR Code, and Marketing Materials
+                                    </li>
+									<li class="list-group-item">
+										2 <emp>Tablets</emp>
+									</li>
+									<li class="list-group-item">
+										1 Login
+									</li>
+									<li class="list-group-item">
+										Advanced <emp>Data Reporting</emp> and <emp>Competition Comparison</emp> Reports 
+									</li>
+									<li class="list-group-item">
+										24/7 Technical Support
+									</li>
+                                    <li class="list-group-item">
+                                        Weekly <emp>Email Reports</emp>
+                                    </li>
+								</ul>
+								<div class="panel-footer">
+									<a href="process_upgrade.php?l=3" class="btn btn-lg btn-block btn-default">Get Started</a>
+								</div>
 							</div>
 						</div>
-						<div id="pricing_under">
-							<i>Billed at $360 for one year</i>
-							<br />
-							<strong>The complete package.</strong>
-						</div>
-					</div>
-						<div id="pricing_bottom">
-							<a href="process_upgrade.php?l=3"><div id="pricing_button">Choose</div></a>
-						</div>
-					<div id="pricing_info">
-						<span class="emphasis">Unlimited</span> Responses
-						<br />
-						Unlimited Aspects
-						<br />
-					</div>
-					<div id="pricing_info" class="pricing_grey">
-						Brevada Page <span class="lighter">Desktop and Mobile</span> &nbsp;<a href="../../..#page" target="_BLANK"><i class="foundicon-plus"></i></a>
-						<br />
-						Custom URL and Barcode 
-						<br />
-						Marketing Material &nbsp;<a href="../../..#marketing" target="_BLANK"><i class="foundicon-plus"></i></a>
-						<br />
-						Charts and Data Analysis 
-						<br />
-						2-Way Communication &nbsp;<a href="../../..#communicate" target="_BLANK"><i class="foundicon-plus"></i></a>
-						<br />
-						E-mail Feedback Acquisition &nbsp;<a href="../../..#email" target="_BLANK"><i class="foundicon-plus"></i></a>
-						<br />
-						Website Integration &nbsp;<a href="../../..#widgets" target="_BLANK"><i class="foundicon-plus"></i></a>
-						<br />
-					</div>
-					<div id="pricing_info">
-						<span class="emphasis">24/7</span> Email and Phone Support
-					</div>
-				</div>
-				<div id="pricing_box">
-					<div id="pricing_top" style="background:#3b5998;">
-						<div class="pricing_title">
-							<div  id="home_text" style="color:#fff;">
-							ENTERPRISE
-							</div>
-							<div  id="pricing_price">
-							<span id="price">$90</span>/month
-							</div>
-						</div>
-						<div id="pricing_under">
-							<i>Billed at $1080 for one year</i>
-							<br />
-							<strong>The ultimate package.</strong>
-						</div>
-					</div>
-					<div id="pricing_bottom">
-						Call <strong>1 (844) BREVADA</strong> To Activate
-					</div>
-					<div id="pricing_info">
-						<span class="emphasis">Unlimited</span> Responses
-						<br />
-						Unlimited Aspects
-						<br />
-						<span class="emphasis">Personal Brevada Consultant</span>
-						<ul style="font-size:10px; margin-left:20px;">
-							<li>Account Set Up With Consultant</li>
-							<li>Custom Generated Marketing Material</li>
-							<li>Feedback Consulting</li>
-							<li>Monthly Phone Meetings</li>
-						</ul>
-					</div>
-					<div id="pricing_info" class="pricing_grey">
-						Brevada Page <span class="lighter">Desktop and Mobile</span> &nbsp;<a href="../../..#page" target="_BLANK"><i class="foundicon-plus"></i></a>
-						<br />
-						Custom URL and Barcode 
-						<br />
-						Marketing Material &nbsp;<a href="../../..#marketing" target="_BLANK"><i class="foundicon-plus"></i></a>
-						<br />
-						Charts and Data Analysis 
-						<br />
-						2-Way Communication &nbsp;<a href="../../..#communicate" target="_BLANK"><i class="foundicon-plus"></i></a>
-						<br />
-						E-mail Feedback Acquisition &nbsp;<a href="../../..#email" target="_BLANK"><i class="foundicon-plus"></i></a>
-						<br />
-						Website Integration &nbsp;<a href="../../..#widgets" target="_BLANK"><i class="foundicon-plus"></i></a>
-					</div>
-					<div id="pricing_info">
-						<span class="emphasis">24/7</span> Email and Phone Support
-					</div>
-				</div>
+
+                        <!-- Pricing Module 2 -->
+                        <div class="col-md-4">
+                            <div class="panel panel-success panel-pricing">
+                                <div class="panel-heading">
+                                    <h4 class="text-center title">Premium</h4>
+                                    <p class="lead text-center">
+                                        <span class="price"><span class="currency">$</span>90<span class="time">/month</span></span>
+                                        <br />
+                                        <span class="sub-price">Charged annualy at $1080</span>
+                                    </p>
+                                </div>
+                                <ul class="list-group list-group-flush text-center">
+                                    <li class="list-group-item main-focus">
+                                        Custom Feedback Page, QR Code, and Marketing Materials
+                                    </li>
+                                    <li class="list-group-item">
+                                        5 <emp>Tablets</emp>
+                                    </li>
+                                    <li class="list-group-item">
+                                        3 Logins
+                                    </li>
+                                    <li class="list-group-item">
+                                        Advanced <emp>Data Reporting</emp> and <emp>Competition Comparison</emp> Reports 
+                                    </li>
+                                    <li class="list-group-item">
+                                        24/7 Technical Support
+                                    </li>
+                                    <li class="list-group-item">
+                                        Weekly <emp>Email Reports</emp>
+                                    </li>
+                                </ul>
+                                <div class="panel-footer">
+                                    <a href="process_upgrade.php?l=4" class="btn btn-lg btn-block btn-default">Get Started</a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Pricing Module 3 -->
+                        <div class="col-md-4">
+                            <div class="panel panel-success panel-pricing">
+                                <div class="panel-heading">
+                                    <h4 class="text-center title">Custom</h4>
+                                    <p class="lead text-center">
+                                        <span class="price" style="line-height: 10px;"><span class="time">Contact Us</span></span>
+                                        <br />
+                                        <span class="sub-price"></span>
+                                    </p>
+                                </div>
+                                <ul class="list-group list-group-flush text-center">
+                                    <li class="list-group-item">
+                                        Get a custom number of tablets, logins, and marketing materials. For one to many locations.
+                                    </li>
+                                </ul>
+                                <div class="panel-footer">
+                                    <a href="/signup" class="btn btn-lg btn-block btn-default">Contact Us</a>
+                                </div>
+                            </div>
+                        </div>
 				<br style="clear:both;" />
 			</div>
 		</div>

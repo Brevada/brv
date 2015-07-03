@@ -345,7 +345,7 @@ $this->add(new View('../template/home_header.php'));
                                     </li>
 								</ul>
 								<div class="panel-footer">
-									<a href="/signup" class="btn btn-lg btn-block btn-default">Get Started</a>
+									<a href="/signup?l=professional" class="btn btn-lg btn-block btn-default">Get Started</a>
 								</div>
 							</div>
 						</div>
@@ -382,7 +382,7 @@ $this->add(new View('../template/home_header.php'));
                                     </li>
                                 </ul>
                                 <div class="panel-footer">
-                                    <a href="/signup" class="btn btn-lg btn-block btn-default">Get Started</a>
+                                    <a href="/signup?l=premium" class="btn btn-lg btn-block btn-default">Get Started</a>
                                 </div>
                             </div>
                         </div>

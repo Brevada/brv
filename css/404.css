@@ -1,6 +1,18 @@
 div.container { height: 600px; width: 100%; text-align: center; }
-div.section1 { width:800px; text-align: center; font-size: 20px; font-weight: bold; padding: 40px; margin: 100px auto 0px auto; }
-
+div.section1 { text-align: center; font-size: 20px; padding: 40px; margin: 100px auto 0px auto; }
 div.section1 p {
 	margin: auto auto;
+}
+div.section1 div.bigger {
+	font-size: 80px;
+	color: #454545;
+	font-weight: bold;
+} 
+div.section1 .logo{
+	width: 100px;
+	margin-top:10px;
+}
+div.section1 a {
+	padding: 10px;
+	text-transform: uppercase;
 }
