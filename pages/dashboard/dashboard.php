@@ -21,7 +21,7 @@ if(!Brevada::IsLoggedIn()){
 
 $user_id = Brevada::validate($_SESSION['user_id'], VALIDATE_DATABASE);
 
-$query = Database::query("SELECT users.`name`, users.`url_name`, users.`corporate`, users.`level`, users.`trial`, UNIX_TIMESTAMP(users.`expiry_date`) as `Expiry`, codes.`code` as `ReferralCode` FROM users LEFT JOIN `codes` ON `codes`.referral_user = {$user_id} WHERE users.id = {$user_id} LIMIT 1");
+$query = Database::query("SELECT users.`name`, users.`url_name`, users.`corporate`, users.`level`, users.`active`, users.`trial`, UNIX_TIMESTAMP(users.`expiry_date`) as `Expiry`, codes.`code` as `ReferralCode` FROM users LEFT JOIN `codes` ON `codes`.referral_user = {$user_id} WHERE users.id = {$user_id} LIMIT 1");
 
 while($row = $query->fetch_assoc()){
 	if(!isset($row['Expiry']) || $row['Expiry'] < time()){
@@ -31,7 +31,8 @@ while($row = $query->fetch_assoc()){
 	/* Does this make sense? What level is a paid member at? Member who hasn't paid? */
 	$level = $row['level'];
 	$trial = $row['trial'];
-	if($level != '0' && $level != '1' && $trial != '1'){
+	$active = $row['active'];
+	if($level != '0' && $level != '1' && $trial != '1' && $active != 'yes'){
 		Brevada::Redirect('/hub/payment/payment.php');
 	}
 	
