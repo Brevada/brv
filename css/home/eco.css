@@ -1120,8 +1120,8 @@ form .form-control:focus {
 	width: auto;
 }
 .highlighted{
-	  background: #FF2B2B;
-  color: #FFF;
+	  background: #FFF;
+  color: #FF2B2B;
   -webkit-box-shadow: 3px 3px 5px 0px rgba(50, 50, 50, 0.75);
   -moz-box-shadow: 3px 3px 5px 0px rgba(50, 50, 50, 0.75);
   box-shadow: 3px 3px 5px 0px rgba(50, 50, 50, 0.75);
@@ -1131,20 +1131,19 @@ form .form-control:focus {
 	padding-top:150px;
 	padding-bottom:100px;
 	background:none;
+  color: #FFF;
 }
 .jumbotron img{
 	width:250px;
 }
 .jumbotron h1{
+  color: #FFF;
   line-height: 65px;
   font-size: 55px;
   text-transform: uppercase;
 }
-.grid{
-	  background:#F5F5F5 !important;
-  background-image:       linear-gradient(0deg, transparent 24%, rgba(0, 0, 0, .05) 25%, rgba(0, 0, 0, .05) 26%, transparent 27%, transparent 74%, rgba(0, 0, 0, .05) 75%, rgba(0, 0, 0, .05) 76%, transparent 77%, transparent), linear-gradient(90deg, transparent 24%, rgba(0, 0, 0, .05) 25%, rgba(0, 0, 0, .05) 26%, transparent 27%, transparent 74%, rgba(0, 0, 0, .05) 75%, rgba(0, 0, 0, .05) 76%, transparent 77%, transparent) !important;
-  background-size:30px 30px !important;
-
+.j-bg{
+     background: linear-gradient( rgba(255, 0, 0, 0.3), rgba(255, 0, 0, 0.3) ), url('../../../../images/applause1.png');
 }
 .getApp {
   color: #FFF !important;

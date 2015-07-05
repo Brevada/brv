@@ -17,7 +17,7 @@
         </div>
     </div>
    
-    <header class="grid">
+    <header class="j-bg">
         
         <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
                 <div class="container">
@@ -35,13 +35,13 @@
                     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 
                         <ul class="nav navbar-nav navbar-right">
-                            <li><a href="#about">how it works</a>
+                            <li><a class="hidden-sm" href="#about">how it works</a>
                             </li>
-                            <li><a href="#features">features</a>
+                            <li><a class="hidden-sm" href="#features">features</a>
                             </li>
-                            <li><a href="#reviews">reviews</a>
+                            <li><a class="hidden-sm" href="#reviews">reviews</a>
                             </li>
-                            <li><a href="#screens">pricing</a>
+                            <li><a class="hidden-sm" href="#screens">pricing</a>
                             </li>
                             <li><a class="getApp" href="/signup">Get Started</a>
                             </li>
