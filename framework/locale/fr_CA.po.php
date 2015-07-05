@@ -1,0 +1,1 @@
+{"":"","Give %s Feedback":"Donnez %s Commentaires","I'm Done":"J'ai fini","Worst":"Pire","Best":"Meilleur","Already rated.":"Cela est d\u00e9j\u00e0 \u00e9valu\u00e9e.","Thanks for rating.":"Nous vous remercions pour l'\u00e9valuation."}
