@@ -10,7 +10,7 @@ $(document).ready(function(){
 	$(window).resize();
 	*/
 	
-	$('div.aspect-container > .graphs > .graph').each(function(){
+	$('.pod .graph').each(function(){
 		var percent = $(this).data('percent');
 		var original = $(this).height();
 		var target = (parseFloat(percent)/100)*($(this).parent().height() - original);
