@@ -48,8 +48,8 @@ if(isset($_POST) && isset($_POST['posts-token'])){
 			<i class='fa fa-ellipsis-h'></i>
 		</div>
 		<ul>
-			<li class='link' data-link='dashboard'>Dashboard</li>
-			<li class='link' data-link='logout'>Logout</li>
+			<li class='link' data-link='dashboard'><?php _e('Dashboard'); ?></li>
+			<li class='link' data-link='logout'><?php _e('Logout'); ?></li>
 		</ul>
 	</div>
 </div>
@@ -58,20 +58,19 @@ if(isset($_POST) && isset($_POST['posts-token'])){
 
 <form id='frmAccount' action='account' method='post'>
 <div class='form-account'>
-	<span class="form-header">What do you want to get feedback on?</span>
+	<span class="form-header"><?php _e('What do you want to get feedback on?'); ?></span>
 	<div class='token-container'>
 		<div class='tokens'>
 			<?php
 			if(($query = Database::query("SELECT aspect_type.Title, aspect_type.ID as AspectTypeID, (SELECT aspects.id FROM `aspects` WHERE `aspects`.AspectTypeID = aspect_type.ID AND `aspects`.Active = 1 AND  `aspects`.OwnerID = {$user_id}) as `Selected` FROM aspect_type ORDER BY aspect_type.Title ASC")) !== false){
 				while($row = $query->fetch_assoc()){
-					echo "<div class='token".(empty($row['Selected']) ? ' noselect' : ' selected')."' data-tokenid='{$row['AspectTypeID']}'><span>{$row['Title']}</span></div>";
+					echo "<div class='token".(empty($row['Selected']) ? ' noselect' : ' selected')."' data-tokenid='{$row['AspectTypeID']}'><span>".__($row['Title'])."</span></div>";
 				}
 			}
 			?>
 			<input type='hidden' name='posts-token' id='tokens' />
 		</div>
 	</div>
-	<div id="submit" class="submit-next">Save</div>
-	
+	<div id="submit" class="submit-next"><?php _e('Save'); ?></div>
 </div>
 </form>

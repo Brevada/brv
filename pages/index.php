@@ -81,18 +81,6 @@ $this->add(new View('../template/home_header.php'));
                     <div class="divider"></div>
                     <p>We believe in <b>one-click feedback</b>.</p>
                 </div>
-                <!--
-                -tablets
-                -brevada page
-                -custom URL
-                -custom QR code
-                -marketing material
-                
-                
-                -local comparisons
-                -intra-company analysis
-                -track progress
-                -->
                 <div class="row">
                     <div class="side col-md-4 col-sm-4 scrollpoint sp-effect1">
                         
@@ -133,33 +121,6 @@ $this->add(new View('../template/home_header.php'));
 
                     <div class="side col-md-4 col-sm-4 scrollpoint sp-effect2">
                         
-<!--                         <div class="media feature">
-                            <a class="pull-left" href="#">
-                                <i class="fa fa-map-marker fa-2x"></i>
-                            </a>
-                            <div class="media-body">
-                                <h3 class="media-heading">Local Comparisons</h3>
-                                View comparisons to local averages.
-                            </div>
-                        </div>
-                        <div class="media feature">
-                            <a class="pull-left" href="#">
-                                <i class="fa fa-film fa-2x"></i>
-                            </a>
-                            <div class="media-body">
-                                <h3 class="media-heading">Intra-Company Analysis</h3>
-                                View comparisons between the different aspects internally.
-                            </div>
-                        </div>
-                        <div class="media feature">
-                            <a class="pull-left" href="#">
-                                <i class="fa fa-compass fa-2x"></i>
-                            </a>
-                            <div class="media-body">
-                                <h3 class="media-heading">Track Progress</h3>
-                                Monitor improvement over time.
-                            </div>
-                        </div> -->
                         <div class="media feature">
                             <a class="pull-left" href="#">
                                 <i class="fa fa-comments fa-2x"></i>
@@ -283,13 +244,13 @@ $this->add(new View('../template/home_header.php'));
                                 <i class="fa fa-map-marker fa-2x"></i>
                             </a>
                             <div class="media-body">
-                                <h3 class="media-heading">Local Comparisons</h3>
-                                View comparisons to local averages.
+                                <h3 class="media-heading">Industry Comparisons</h3>
+                                View comparisons to industry averages.
                             </div>
                         </div>
                         <div class="feature col-md-4">
                             <a class="icon" href="#">
-                                <i class="fa fa-film fa-2x"></i>
+                                <i class="fa fa-compress fa-2x"></i>
                             </a>
                             <div class="media-body">
                                 <h3 class="media-heading">Intra-Company Analysis</h3>

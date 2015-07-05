@@ -12,10 +12,7 @@ if(!Brevada::IsLoggedIn()){
 
 /*
 	TODO:
-	- If trial account.
 	- Referral credits / credits.
-	- Payment redirect.
-	- Voting pages / feedback page.
 	- Corporate.
 */
 
@@ -101,54 +98,90 @@ $areasOfLeastConcern = array_diff($areasOfLeastConcern, $areasOfFocus);
 
 	<div class='top-banner row'>
 		<div class='col-lg-12'>
-			<img class='logo-quote link pull-left' src='/images/quote-white.png' data-link='' />
+			<img class='logo-quote link pull-left' src='/images/brevada.png' data-link='' />
 			<div class='dropdown pull-right'>
 				<div class='three-lines btn btn-default dropdown-toggle'  data-toggle='dropdown'>
 					<i class='fa fa-ellipsis-h'></i>
 				</div>
 				<ul class='dropdown-menu'>
-					<li class='link' data-link='account'>Account Settings</li>
-					<li class='link' data-link='logout'>Logout</li>
+					<li class='link' data-link='account'><?php _e('Account Settings'); ?></li>
+					<li class='link' data-link='logout' style="border-bottom: none;"><?php _e('Logout'); ?></li>
 				</ul>
 			</div>
-			<a href="/<?php echo $url_name; ?>" target="_TOP"><div class='pull-right icon-button'><i class='fa fa-external-link'></i></div></a>
-			<a href="hub/includes/marketing/promo_white.php" target="_BLANK"><div class='pull-right icon-button'><i class='fa fa-print'></i></div></a>
-			<a href="/user_data/qr/<?php echo $user_id; ?>.png" target="_TOP"><div class='pull-right icon-button'><i class='fa fa-qrcode'></i></div></a>
-
+			<div class='name pull-right'>
+				<?php _e('Current User'); ?>: <span class="variable"><?php echo $name; ?></span>
+			</div>
 		</div>
 	</div>
 
-	<div class='top-area row hidden-xs'>
-		
-		<div class="col-sm-4">
+	<div class="mid-banner row">
+			<a href="/<?php echo $url_name; ?>" target="_TOP">
+				<div class='pull-left icon-button'>
+					<i class='fa fa-external-link'></i>
+					<div class='icon-subtext'><?php _e('Your Page'); ?></div>
+				</div>
+			</a>
+			<a href="hub/includes/marketing/promo_white.php" target="_TOP">
+				<div class='pull-left icon-button'>
+					<i class='fa fa-print'></i>
+					<div class='icon-subtext'><?php _e('Printables'); ?></div>
+				</div>
+			</a>
+			<a href="/user_data/qr/<?php echo $user_id; ?>.png" target="_TOP">
+				<div class='pull-left icon-button'>
+					<i class='fa fa-qrcode'></i>
+					<div class='icon-subtext'><?php _e('QR Code'); ?></div>
+				</div>
+			</a>
+	</div>
+
+</div>
+
+<div class="spacer">
+
+</div>
+
+<?php
+	$query = Database::query("SELECT aspect_type.Title, aspects.Data_LastUpdate, aspects.Data_RatingPercent, aspects.Data_RatingPercentOther, aspects.Data_Percent4W, aspects.Data_Percent6M, aspects.Data_Percent1Y, (SELECT COUNT(*) FROM feedback WHERE feedback.Rating > -1 AND feedback.AspectID = aspects.ID) as Total FROM aspects LEFT JOIN aspect_type ON aspect_type.ID = aspects.AspectTypeID WHERE aspects.OwnerID = {$user_id} AND `Active` = 1 AND aspect_type.Title <> ''");
+?>
+
+<!-- Left side -->
+<div class='aspect-area hidden-xs hidden-sm col-md-3 right-bar'>
+	<div class='row'>
+		<div class='col-sm-12 area-title'><i class='fa fa-area-chart'></i> <?php _e('Consultant'); ?></div>
+		<div class="col-sm-12 hidden-xs">		
+
+			<div class='col-sm-12 area-title'><i class='fa fa-area-chart'></i> <?php _e('Consultant'); ?></div>
+
+			<!-- Overall Average -->
 			<?php 
 				if($data_overallAll>=50){
 					$change = 'positive';
-					$icon = 'fa-check-circle';
+					$icon = 'fa-thumbs-up';
 				} else if ($data_overallAll==0){
 					$change = 'neutral';
 					$icon = 'fa-minus-circle';
 				} else {
 					$change = 'negative';
-					$icon = 'fa-times-circle';
+					$icon = 'fa-thumbs-down';
 				}
 			?>
-			<div class='overall-decrease block <?php echo $change; ?>'>
-				<div class="block-left hidden-md hidden-sm">
+			<div class='col-sm-12 overall-decrease block <?php echo $change; ?>-text'>
+				<div class="block-left hidden-sm">
 					<i class='fa <?php echo $icon; ?>'></i>
 				</div>
 				<div class="block-right">
-					<div class='big-number <?php echo $change; ?>'>
+					<div class='big-number <?php echo $change; ?>-text'>
 						<?php echo abs($data_overallAll)."%"; ?>
 					</div>
 				</div>
 				<div class="block-bottom">
-					All Time Average
+					<?php _e('Overall Score'); ?>
 				</div>
 			</div>
-		</div>
 
-		<div class="col-sm-4">
+
+			<!-- Past 4 weeks -->
 			<?php 
 				if($data_overall4W>=50){
 					$change = 'positive';
@@ -161,104 +194,84 @@ $areasOfLeastConcern = array_diff($areasOfLeastConcern, $areasOfFocus);
 					$icon = 'fa-chevron-circle-down';
 				}
 			?>
-			<div class='overall-improvement block <?php echo $change; ?>'>
-				<div class="block-left hidden-md hidden-sm">
+			<div class='col-sm-12 overall-improvement block <?php echo $change; ?>-text'>
+				<div class="block-left hidden-sm">
 					<i class='fa <?php echo $icon; ?>'></i>
 				</div>
 				<div class="block-right">
-					<div class='big-number <?php echo $change; ?>'>
+					<div class='big-number <?php echo $change; ?>-text'>
 						<?php echo abs($data_overall4W)."%"; ?>
 					</div>
 				</div>
 				<div class="block-bottom">
-					Change in the Past 4 Weeks
+					<?php _e('Change in the Past 4 Weeks'); ?>
 				</div>
 			</div>
-		</div>
 
-		<div class="col-sm-4">
+			<!-- vs benchmark -->
 			<?php 
 				if($data_relativeBenchmark>=1){
 					$icon = 'fa-chevron-circle-up';
-					$message = 'above the benchmark';
+					$message = 'above the industry average';
 				} else if ($data_relativeBenchmark==0){
 					$icon = 'fa-minus-circle';
-					$message = ', same as benchmark average';
+					$message = 'same as industry average';
 				} else {
 					$icon = 'fa-chevron-circle-down';
-					$message = 'below the benchmark';
+					$message = 'below the industry average';
 				}
 			?>
-			<div class='below-benchmark block <?php echo numericalCSS($data_relativeBenchmark); ?>'>
-				<div class="block-left hidden-md hidden-sm">
+			<div class='col-sm-12 below-benchmark block <?php echo numericalCSS($data_relativeBenchmark); ?>-text'>
+				<div class="block-left hidden-sm">
 					<i class='fa <?php echo $icon; ?>'></i>
 				</div>
 				<div class="block-right">
-					<div class='big-number <?php echo numericalCSS($data_relativeBenchmark); ?>'>
+					<div class='big-number <?php echo numericalCSS($data_relativeBenchmark); ?>-text'>
 						<?php echo abs($data_relativeBenchmark)."%"; ?>
 					</div>
 				</div>
 				<div class="block-bottom">
 					<?php 
 						$abs_relative = abs($data_relativeBenchmark);
-						echo "$message"; 
+						_e($message); 
 					?>
 				</div>
 			</div>
-		</div>
-	</div>
 
-</div>
-
-<div class="spacer hidden-xs">
-
-</div>
-
-
-<div class="spacer spacer-thin visible-xs">
-
-</div>
-
-<?php
-	$query = Database::query("SELECT aspect_type.Title, aspects.Data_LastUpdate, aspects.Data_RatingPercent, aspects.Data_RatingPercentOther, aspects.Data_Percent4W, aspects.Data_Percent6M, aspects.Data_Percent1Y, (SELECT COUNT(*) FROM feedback WHERE feedback.Rating > -1 AND feedback.AspectID = aspects.ID) as Total FROM aspects LEFT JOIN aspect_type ON aspect_type.ID = aspects.AspectTypeID WHERE aspects.OwnerID = {$user_id} AND `Active` = 1 AND aspect_type.Title <> ''");
-?>
-
-<!-- Left side -->
-<div class='aspect-area hidden-xs hidden-sm col-md-3 right-bar'>
-	<div class='row'>
-		<div class='col-sm-12 area-title'><i class='fa fa-area-chart'></i> Consultant</div>
-		<div class="col-sm-12 hidden-xs">		
-			
-			<div class='col-sm-12 block consultant negative'>
-			<span class='title'>Where to Focus</span>
-			<div class=''>
-				<?php
-				foreach($areasOfFocus as $aspect){
-					echo "<span class='aspect-title pull-left negative'>{$aspect}</span>";
-				}
-				if(empty($areasOfFocus)){
-					echo "<span class='aspect-title placeholder'></span>";
-				}
-				?>
-			</div>
-			<br class="clear: both;" />
+			<div class='col-sm-12 block consultant'>
+				<div class='title'><?php _e('Areas For Improvement'); ?></div>
+					<div class='body'>
+						<?php
+						foreach($areasOfFocus as $aspect){
+							echo "<span class='aspect-title pull-left negative'>".__($aspect)."</span>";
+						}
+						if(empty($areasOfFocus)){
+							echo "<span class='aspect-title placeholder'></span>";
+						}
+						?>
+						<br class="clear: both;" />
+					</div>
+				<br class="clear: both;" />
 			</div>
 
 
-			<div class='col-sm-12 block consultant positive'>
-				<span class='title'>Areas of Least Concern</span>
-				<div class=''>
+			<div class='col-sm-12 block consultant'>
+				<div class='title'><?php _e('Strengths'); ?></div>
+				<div class='body'>
 					<?php
 					foreach($areasOfLeastConcern as $aspect){
-						echo "<span class='aspect-title pull-left positive'>{$aspect}</span>";
+						echo "<span class='aspect-title pull-left positive'>".__($aspect)."</span>";
 					}
 					if(empty($areasOfLeastConcern)){
 						echo "<span style='color: #BBB;'>None yet.</span>";
 					}
 					?>
+					<br class="clear: both;" />
 				</div>
 				<br class="clear: both;" />
 			</div>
+
+
 		</div>
 	</div>
 </div>
@@ -266,15 +279,14 @@ $areasOfLeastConcern = array_diff($areasOfLeastConcern, $areasOfFocus);
 <!-- Right Side -->
 <div class='aspect-area col-md-9'>
 	<div class='row'>
-	<div class='col-sm-12 area-title'><i class='fa fa-comments'></i> Feedback</div>
+	<div class='col-sm-12 area-title'><i class='fa fa-comments'></i> <?php _e('Feedback'); ?></div>
 	
 	<?php if ($level < 2) { ?>
-	<br style="clear:both;" />
 	<div class="upgrade">
-		<div class="message">Welcome to Brevada! Please <b>upgrade your account</b> to view your feedback.</div>
-		<a class="btn btn-primary btn-pay" href="upgrade.php">Upgrade</a>
-		<a class="btn btn-default" target="_TOP" href="<?php echo $url_name; ?>">Checkout Your Page</a>
-		<div class="sub-message">Or feel free to contact us at customercare@brevada.com for any help.</div>
+		<div class="message"><?php _e('Welcome to Brevada! Please <b>upgrade your account</b> to view your feedback.'); ?></div>
+		<a class="btn btn-primary btn-pay" href="upgrade.php"><?php _e('Upgrade'); ?></a>
+		<a class="btn btn-default" target="_TOP" href="<?php echo $url_name; ?>"><?php _e('Checkout Your Page'); ?></a>
+		<div class="sub-message"><?php echo sprintf(__('Or feel free to contact us at %s for any help.'), __('customercare@brevada.com')); ?></div>
 	</div>
 
 	<?php
@@ -286,44 +298,87 @@ $areasOfLeastConcern = array_diff($areasOfLeastConcern, $areasOfFocus);
 		
 		$data_ratingPercent = round((float) $row['Data_RatingPercent'] + 0, 1);
 		$data_ratingPercentOther = round((float) $row['Data_RatingPercentOther'] + 0);
-		$data_percent4W = round((float) $row['Data_Percent4W'] + 0, 1);
-		$data_percent1Y = round((float) $row['Data_Percent1Y'] + 0, 1);
+		$data_percent4W = round((float) $row['Data_Percent4W'] + 0, 0);
+		$data_percent1Y = round((float) $row['Data_Percent1Y'] + 0, 0);
 		
 		$total_responses = ((int) $row['Total']);
 
-		if($data_ratingPercent>=75) {
+		if($data_ratingPercent>=80) {
 			$colour = 'positive';
-		} else if ($data_ratingPercent<75 && $data_ratingPercent>=50) {
+		} else if ($data_ratingPercent<80 && $data_ratingPercent>=60) {
+			$colour = 'great';
+		} else if ($data_ratingPercent<60 && $data_ratingPercent>=40) {
 			$colour = 'neutral';
+		} else if ($data_ratingPercent<40 && $data_ratingPercent>=20) {
+			$colour = 'bad';
 		} else {
 			$colour = 'negative';
 		}
 	?>
-		<div class="col-sm-3 col-md-3 col-lg-3">	
+		<div class="col-sm-6 col-md-6 col-lg-4 pod-holder">
+			<div class="pod">
+				<div class="header">
+					<span class='aspect-title <?php echo $colour; ?>'><?php _e($title); ?></span>
+				</div>
+				<div class="body">
+					<div class="pull-left col-md-6 pod-body-left">
+						<div class='top'>
+							<i class='pull-left fa <?php echo $data_percent4W >= 0 ? 'fa-arrow-circle-up' : 'fa-arrow-circle-down'; ?>'></i>
+							<span class='pull-left percent'><?php echo abs($data_percent4W)."%"; ?></span>
+							<span class='duration'><?php _e('4 weeks'); ?></span>
+						</div>
+						<div class='top'>
+							<i class='pull-left fa <?php echo $data_percent1Y >= 0 ? 'fa-arrow-circle-up' : 'fa-arrow-circle-down'; ?>'></i>
+							<span class='pull-left percent'><?php echo abs($data_percent1Y)."%"; ?></span>
+							<span class='duration'><?php _e('1 year'); ?></span>
+						</div>
+					</div>
+					<div class="pull-right col-md-6 pod-body-right">
+						<div class='pod-body-rating <?php echo $colour; ?>-text'><?php echo "{$data_ratingPercent}%"; ?></div>
+						<div class="rating-text"><?php _e('in'); ?> <?php echo $total_responses; ?> <?php _e('responses'); ?>.</div>
+						<div class='pod-body-rating external'><?php echo "{$data_ratingPercentOther}%"; ?></div>
+						<div class="rating-text external"><?php _e('industry average'); ?>.</div>
+					</div>
+					<div class="col-md-12 pod-body-bottom">
+						<div class='graphs'>
+						<div class='left-graph graph <?php echo $colour; ?>' data-percent='<?php echo $data_ratingPercent; ?>'>
+							<div class='percent'><?php echo "{$data_ratingPercent}%"; ?></div>
+						</div>
+						<div class='right-graph graph' data-percent='<?php echo $data_ratingPercentOther; ?>' data-tooltip='<?php _e('Market Benchmark'); ?> (<?php echo "{$data_ratingPercentOther}%"; ?>)'></div>
+						</div>
+					</div>
+					<br style="clear: both;" />
+				</div>
+			</div>
+		</div>
+
+
+
+		<div class="col-sm-3 col-md-3 col-lg-3" style="display: none;">	
 			<div class='aspect-container'>
-				<span class='aspect-title <?php echo $colour; ?>'><?php echo $title; ?></span>
+				<span class='aspect-title <?php echo $colour; ?>'><?php _e($title); ?></span>
 				<div class='graphs'>
 					<div class='left-graph graph' data-percent='<?php echo $data_ratingPercent; ?>'>
 						<div class='percent'><?php echo "{$data_ratingPercent}%"; ?></div>
 					</div>
-					<div class='right-graph graph' data-percent='<?php echo $data_ratingPercentOther; ?>' data-tooltip='Market Benchmark (<?php echo "{$data_ratingPercentOther}%"; ?>)'></div>
+					<div class='right-graph graph' data-percent='<?php echo $data_ratingPercentOther; ?>' data-tooltip='<?php _e('Market Benchmark'); ?> (<?php echo "{$data_ratingPercentOther}%"; ?>)'></div>
 				</div>
 				<div class='graph-info'>
 					<div class='left-block pull-left'>
 						<!-- SWITCH TO NUM RATINGS -->
 						<span class='fraction numerator'><?php echo $total_responses; ?></span>
-						<span class='fraction denominator'>Responses</span>
+						<span class='fraction denominator'><?php _e('Responses'); ?></span>
 					</div>
 					<div class='right-block pull-right'>
 						<div class='top'>
 							<i class='fa <?php echo $data_percent4W >= 0 ? 'fa-sort-asc' : 'fa-sort-desc'; ?> <?php echo numericalCSS($data_percent4W); ?>-text'></i>
 							<span class='percent'><?php echo abs($data_percent4W)."%"; ?></span>
-							<span class='duration'>(4w)</span>
+							<span class='duration'>(<?php _e('4w'); ?>)</span>
 						</div>
 						<div class='bottom'>
 							<i class='fa <?php echo $data_percent1Y >= 0 ? 'fa-sort-asc' : 'fa-sort-desc'; ?> <?php echo numericalCSS($data_percent1Y); ?>-text'></i>
 							<span class='percent'><?php echo abs($data_percent1Y)."%"; ?></span>
-							<span class='duration'>(1y)</span>
+							<span class='duration'>(<?php _e('1y'); ?>)</span>
 						</div>
 					</div>
 				</div>
@@ -338,16 +393,4 @@ $areasOfLeastConcern = array_diff($areasOfLeastConcern, $areasOfFocus);
 <div class="bottom-bar">
 	&copy; 2015 Brevada Inc. &nbsp;
 </div>
-
-<script>
-$(window).on('scroll',function(){
-	var scroll = $(window).scrollTop();
-	if(scroll<=20){
-		$('.top-fixed').removeClass('scrolled');
-	} else {
-		$('.top-fixed').addClass('scrolled');
-	}
-});
-</script>
-
 

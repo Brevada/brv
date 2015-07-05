@@ -1,0 +1,255 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Brevada\n"
+"POT-Creation-Date: 2015-07-05 15:35-0400\n"
+"PO-Revision-Date: 2015-07-05 15:35-0400\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: fr_CA\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 1.8.2\n"
+"X-Poedit-Basepath: ../..\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"X-Poedit-KeywordsList: __;_e;_\n"
+"X-Poedit-SearchPath-0: pages\n"
+"X-Poedit-SearchPath-1: template\n"
+"X-Poedit-SearchPath-2: widgets\n"
+"X-Poedit-SearchPathExcluded-0: *.js\n"
+
+#: pages/account/account.php:51
+msgid "Dashboard"
+msgstr ""
+
+#: pages/account/account.php:52 pages/dashboard/dashboard.php:108
+#: template/long_footer.php:17
+msgid "Logout"
+msgstr ""
+
+#: pages/account/account.php:61 pages/home/signup.php:36
+msgid "What do you want to get feedback on?"
+msgstr ""
+
+#: pages/account/account.php:74
+msgid "Save"
+msgstr ""
+
+#: pages/dashboard/dashboard.php:107
+msgid "Account Settings"
+msgstr ""
+
+#: pages/dashboard/dashboard.php:112
+msgid "Current User"
+msgstr ""
+
+#: pages/dashboard/dashboard.php:121
+msgid "Your Page"
+msgstr ""
+
+#: pages/dashboard/dashboard.php:127
+msgid "Printables"
+msgstr ""
+
+#: pages/dashboard/dashboard.php:133
+msgid "QR Code"
+msgstr ""
+
+#: pages/dashboard/dashboard.php:151 pages/dashboard/dashboard.php:154
+msgid "Consultant"
+msgstr ""
+
+#: pages/dashboard/dashboard.php:179
+msgid "Overall Score"
+msgstr ""
+
+#: pages/dashboard/dashboard.php:207
+msgid "Change in the Past 4 Weeks"
+msgstr ""
+
+#: pages/dashboard/dashboard.php:242
+msgid "Areas For Improvement"
+msgstr ""
+
+#: pages/dashboard/dashboard.php:259
+msgid "Strengths"
+msgstr ""
+
+#: pages/dashboard/dashboard.php:282 template/long_footer.php:20
+msgid "Feedback"
+msgstr ""
+
+#: pages/dashboard/dashboard.php:286
+msgid "Welcome to Brevada! Please <b>upgrade your account</b> to view your feedback."
+msgstr ""
+
+#: pages/dashboard/dashboard.php:287
+msgid "Upgrade"
+msgstr ""
+
+#: pages/dashboard/dashboard.php:288
+msgid "Checkout Your Page"
+msgstr ""
+
+#: pages/dashboard/dashboard.php:289
+#, php-format
+msgid "Or feel free to contact us at %s for any help."
+msgstr ""
+
+#: pages/dashboard/dashboard.php:289
+msgid "customercare@brevada.com"
+msgstr ""
+
+#: pages/dashboard/dashboard.php:328
+msgid "4 weeks"
+msgstr ""
+
+#: pages/dashboard/dashboard.php:333
+msgid "1 year"
+msgstr ""
+
+#: pages/dashboard/dashboard.php:338
+msgid "in"
+msgstr ""
+
+#: pages/dashboard/dashboard.php:338
+msgid "responses"
+msgstr ""
+
+#: pages/dashboard/dashboard.php:340
+msgid "industry average"
+msgstr ""
+
+#: pages/dashboard/dashboard.php:347 pages/dashboard/dashboard.php:364
+msgid "Market Benchmark"
+msgstr ""
+
+#: pages/dashboard/dashboard.php:370
+msgid "Responses"
+msgstr ""
+
+#: pages/dashboard/dashboard.php:376
+msgid "4w"
+msgstr ""
+
+#: pages/dashboard/dashboard.php:381
+msgid "1y"
+msgstr ""
+
+#: pages/home/login.php:35 pages/home/signup.php:53
+#: template/long_footer.php:28
+msgid "Email"
+msgstr ""
+
+#: pages/home/login.php:36 pages/home/signup.php:54
+msgid "Password"
+msgstr ""
+
+#: pages/home/login.php:37 template/long_footer.php:18
+msgid "Login"
+msgstr ""
+
+#: pages/home/login.php:44
+msgid "Don't have an account?"
+msgstr ""
+
+#: pages/home/login.php:44 pages/home/signup.php:65
+msgid "Click Here"
+msgstr ""
+
+#: pages/home/login.php:46
+msgid "Toll free"
+msgstr ""
+
+#: pages/home/signup.php:48
+msgid "Next"
+msgstr ""
+
+#: pages/home/signup.php:55
+msgid "Retype Password"
+msgstr ""
+
+#: pages/home/signup.php:56
+msgid "Your Company Name"
+msgstr ""
+
+#: pages/home/signup.php:58
+msgid "Back"
+msgstr ""
+
+#: pages/home/signup.php:58
+msgid "Sign Up"
+msgstr ""
+
+#: pages/home/signup.php:63
+msgid "We'll help you get signed up"
+msgstr ""
+
+#: pages/home/signup.php:65
+msgid "Have an account?"
+msgstr ""
+
+#: pages/profile/profile.php:60
+#, php-format
+msgid "Give %s Feedback"
+msgstr "Donnez %s Commentaires"
+
+#: pages/profile/profile.php:81
+msgid "I'm Done"
+msgstr "J'ai fini"
+
+#: template/footer.php:5 template/long_footer.php:65
+msgid "Questions?"
+msgstr ""
+
+#: template/footer.php:5 template/long_footer.php:65
+msgid "contact@brevada.com"
+msgstr ""
+
+#: template/long_footer.php:13
+msgid "Resources"
+msgstr ""
+
+#: template/long_footer.php:16
+msgid "Home"
+msgstr ""
+
+#: template/long_footer.php:19
+msgid "Signup"
+msgstr ""
+
+#: template/long_footer.php:25
+msgid "Contact"
+msgstr ""
+
+#: template/long_footer.php:35
+msgid "Social"
+msgstr ""
+
+#: template/long_footer.php:42
+msgid "Follow"
+msgstr ""
+
+#: template/long_footer.php:65
+msgid "All rights reserved."
+msgstr ""
+
+#: template/long_footer.php:65
+msgid "or"
+msgstr ""
+
+#: widgets/profile/post_box.php:51
+msgid "Worst"
+msgstr "Pire"
+
+#: widgets/profile/post_box.php:52
+msgid "Best"
+msgstr "Meilleur"
+
+#: widgets/profile/post_box.php:56
+msgid "Already rated."
+msgstr "Cela est déjà évaluée."
+
+#: widgets/profile/star_rating_bar.php:30
+msgid "Thanks for rating."
+msgstr "Nous vous remercions pour l'évaluation."

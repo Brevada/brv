@@ -15,6 +15,8 @@ $(document).ready(function(){
 	$('#submit').click(function(){
 		$('#frmAccount').submit();
 	});
+	
+	updateTokens();
 });
 
 function updateTokens(){
