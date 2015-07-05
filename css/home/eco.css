@@ -1140,7 +1140,6 @@ form .form-control:focus {
   color: #FFF;
   line-height: 65px;
   font-size: 55px;
-  text-transform: uppercase;
 }
 .j-bg{
      background: linear-gradient( rgba(255, 0, 0, 0.5), rgba(255, 0, 0, 0.5) ), url('../../../../images/applause1.png');
