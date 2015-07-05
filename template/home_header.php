@@ -64,7 +64,7 @@
 					
 					<div class="col-md-8">
 						<div class="large_white_bold">
-                           <h1>Transform your business with  <span class="highlighted">VALUABLE FEEDBACK</span></h1>
+                           <h1>Transform your business with <span class="highlighted">valuable feedback</span></h1>
                         </div>
                         <div class="large_white_light">
                            <p>Providing businesses with actionable data and their customers with an integrated and seamless feedback giving experience.</p>
