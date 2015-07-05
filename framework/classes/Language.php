@@ -41,8 +41,8 @@ class Language
 	
 	public static function get($text)
 	{
-		if(isset(self::$dictionary[$text])){
-			return self::$dictionary[$text];
+		if(isset(self::$dictionary[strtolower($text)])){
+			return self::$dictionary[strtolower($text)];
 		} else {
 			return $text;
 		}
@@ -73,12 +73,20 @@ class Language
 		$po = file($path);
 		$key = '';
 		foreach($po as $line){
-			if($line == 'msgid ""' || $line == 'msgstr ""'){ continue; }
+			if($line == 'msgid ""' || empty($line)){ continue; }
 			if (substr($line,0,5) == 'msgid') {
 				$key = trim(substr(trim(substr($line,5)),1,-1));
 			}
-			if (substr($line,0,6) == 'msgstr') {
-				$output[$key] = trim(substr(trim(substr($line,6)),1,-1));
+			if($line == 'msgstr ""'){
+				$key = '';
+			} else {
+				if (substr($line,0,6) == 'msgstr' && !empty($key)) {
+					$value = trim(substr(trim(substr($line,6)),1,-1));
+					if(!empty($value)){
+						$output[strtolower($key)] = $value;
+					}
+					$key = '';
+				}
 			}
 		}
 		
