@@ -1143,7 +1143,7 @@ form .form-control:focus {
   text-transform: uppercase;
 }
 .j-bg{
-     background: linear-gradient( rgba(255, 0, 0, 0.3), rgba(255, 0, 0, 0.3) ), url('../../../../images/applause1.png');
+     background: linear-gradient( rgba(255, 0, 0, 0.5), rgba(255, 0, 0, 0.5) ), url('../../../../images/applause1.png');
 }
 .getApp {
   color: #FFF !important;
