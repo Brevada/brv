@@ -51,6 +51,7 @@ header .navbar-default {
   -ms-transition: all 0.25s ease-in-out;
   -o-transition: all 0.25s ease-in-out;
   transition: all 0.25s ease-in-out;
+
 }
 header .navbar-default ul.navbar-nav {
   padding-top: 10px;
@@ -644,7 +645,7 @@ form textarea.form-control {
     margin-top: 20px;
   }
   header .navbar-default {
-    padding: 20px;
+
   }
   header .navbar-default .navbar-toggle {
     margin-top: 0px;
@@ -1140,9 +1141,12 @@ form .form-control:focus {
   color: #FFF;
   line-height: 65px;
   font-size: 55px;
+  text-transform: uppercase;
 }
 .j-bg{
      background: linear-gradient( rgba(255, 0, 0, 0.5), rgba(255, 0, 0, 0.5) ), url('../../../../images/applause1.png');
+     background-size: cover; 
+     background-repeat: no-repeat;
 }
 .getApp {
   color: #FFF !important;

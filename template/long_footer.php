@@ -1,13 +1,13 @@
 <?php $this->addResource('/css/long_footer.css'); ?>
 <div id="holder" style="height:300px; color:#f9f9f9; background:#ee2b2b; border-top:1px solid #dcdcdc;">
 	<div class="container">
-			<div style="width:1000px; margin:0 auto;  border-bottom: 0px solid #FFAEA5; padding:20px 5px 5px 5px;">
+			<div style="margin:0 auto;  border-bottom: 0px solid #FFAEA5; padding:20px 5px 5px 5px;">
 				<div class="left" >
 					<img src="/images/quote.png" style="height:30px;"/>
 				</div>
 				<br style="clear:both;" />
 			</div>
-			<div style="width:1000px; margin:0 auto; padding:5px;">
+			<div style="margin:0 auto; padding:5px;">
 				<div class="left" style="float:left; padding-top:15px;">
 					<div class="bottom_link_big">
 					<?php _e('Resources'); ?>
