@@ -1,398 +1,389 @@
-
-
-* {box-sizing: border-box;}
-
+* {
+    box-sizing: border-box;
+}
 body {
-	font-family: "helvetica neue", arial, helvetica, freesans, "liberation sans","numbus sans l", sans-serif;
-	background-color: #DDD;
- }
-
+    font-family: "helvetica neue", arial, helvetica, freesans, "liberation sans", "numbus sans l", sans-serif;
+    background-color: #BBB;
+}
 div.top-fixed {
-	width: 100%;
-	position: fixed;
-	top: 0;
-	left: 0;
-	z-index: 9;
- }
-
+    width: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 9;
+}
 div.top-banner {
-	background: #343434;
-	padding: 0px 10px;
-	line-height: 50px;
- }
-
-	div.top-banner img.logo-quote {
-		height: 20px;
-		cursor: pointer;
-		margin-top: 15px;
-	 }
-
-	div.top-banner .dropdown-menu li {
-		padding: 0px 5px;
-		border-bottom: 1px solid #dcdcdc;
-		cursor: pointer;
-	 }
-
-		div.top-banner .dropdown-menu li:hover {
-			background: #454545;
-			color: #FFFFFF;
-		 }
-
-	div.top-banner .icon-button {
-		color: #FFF;
-		cursor: pointer;
-		font-size: 20px;
-		margin: 0 10px;
-		width: 40px;
-		height: 40px;
-		text-align: center;
-		opacity: 0.5;
-	 }
-
-	 div.top-banner .icon-button:hover {
-	 	opacity: 1;
-	 }
-
-	div.top-banner .three-lines {
-		background: #333333;
-		color: #FFFFFF;
-	 }
-
-.positive {background: #4eaf0e;}
-
-.negative {background: #FF2B2B;}
-
-.neutral {background: #EE872B;}
-
-.positive-text {color: #4eaf0e;}
-
-.negative-text {color: #FF2B2B;}
-
-.neutral-text {color: #EE872B;}
-
-span.aspect-title {}
-
-	span.aspect-title.placeholder {visibility: hidden;}
-
-div.top-area {
+    background: #FFF;
+    padding: 0px 10px;
+    line-height: 50px;
+}
+div.top-banner img.logo-quote {
+    height: 20px;
+    cursor: pointer;
+    margin-top: 15px;
+}
+div.top-banner div.name {
+    margin: 0px 5px;
+    opacity: 0.5;
+}
+div.top-banner div.name .variable {
+	text-transform: uppercase;
+	font-weight: bold;
+}
+div.top-banner .dropdown-menu {
+	border-radius: 3px;
+	margin-top: -2px;
+}
+div.top-banner .dropdown-menu li {
+    padding: 0px 5px;
+    border-bottom: 1px solid #dcdcdc;
+    cursor: pointer;
+}
+div.top-banner .dropdown-menu li:hover {
+    background: #999;
+    color: #FFFFFF;
+}
+div.top-banner .three-lines {
+    background: none;
+    color: #454545;
+    border: none;
+    font-size: 30px;
+}
+.positive {
+    background: #2ecc0e;
+}
+.great {
+    background: #82cc0e;
+}
+.neutral {
+    background: #afcc0e;
+}
+.bad {
+    background: #ccc10e;
+}
+.negative {
+    background: #cc750e;
+}
+.positive-text {
+    color: #2ecc0e;
+}
+.great-text {
+    color: #82cc0e;
+}
+.neutral-text {
+    color: #afcc0e;
+}
+.bad-text {
+    color: #ccc10e;
+}
+.negative-text {
+    color: #cc750e;
+}
+.positive-border {
+    border: 2px solid #2ecc0e;
+}
+.great-border {
+    border: 2px solid #82cc0e;
+}
+.neutral-border {
+    border: 2px solid #afcc0e;
+}
+.bad-border {
+    border: 2px solid #ccc10e;
+}
+.negative-border {
+    border: 2px solid #cc750e;
+}
+span.aspect-title {} span.aspect-title.placeholder {
+    visibility: hidden;
+}
+div.mid-banner {
+    width: 100%;
+    min-height: 50px;
+    height: auto;
+    background: #454545;
+    margin: 0;
+    padding: 1em 1em;
+    overflow: hidden;
+    -webkit-transform-style: preserve-3d;
+    -moz-transform-style: preserve-3d;
+    transform-style: preserve-3d;
+    -webkit-box-shadow: 0px 0px 9px 0px rgba(50, 50, 50, 0.75);
+    -moz-box-shadow: 0px 0px 9px 0px rgba(50, 50, 50, 0.75);
+    box-shadow: 0px 0px 9px 0px rgba(50, 50, 50, 0.75);
+}
+div.mid-banner .icon-button {
+    cursor: pointer;
+    margin: 0 20px;
+    text-align: center;
+    font-size: 30px;
+}
+div.mid-banner .icon-button:hover {
+    opacity: 1;
+}
+div.mid-banner .icon-button i {
+	color: #EEE;
+}
+div.mid-banner .icon-button .icon-subtext {
 	width: 100%;
-	min-height: 50px;
-	height: auto;
-	background: #434343;
-	margin: 0;
-	padding: 1em 0;
-	overflow: hidden;
-	-webkit-transform-style: preserve-3d;
-	-moz-transform-style: preserve-3d;
-	transform-style: preserve-3d;
-	border-top: 1px solid #464646;
-	-webkit-box-shadow: 0px 0px 5px 0px rgba(50, 50, 50, 0.75);
-	-moz-box-shadow: 0px 0px 5px 0px rgba(50, 50, 50, 0.75);
-	box-shadow: 0px 0px 5px 0px rgba(50, 50, 50, 0.75);
- }
-
-	div.top-area .big-number {
-		font-size: 4em;
-		width: 100%;
-		color: #EEE;
-		padding: 5px;
-	 }
-
-	div.top-area .title {
-		text-transform: uppercase;
-		color: #FFFFFF;
-		display: block;
-		font-size: 0.9em;
-	 }
-
-	div.top-area .subtitle {
-		text-transform: uppercase;
-		color: #9D9D9D;
-		display: block;
-		font-size: 0.75em;
-	 }
-
-	div.top-area div.block {margin: 0px 5px;}
-
-		div.top-area div.block div.block-left {
-			color: #EEE;
-			float: left;
-			font-size: 75px;
-			padding: 0px 15px;
-		 }
-
-		div.top-area div.block div.block-right {
-			float: left;
-			min-width: 150px;
-			text-align: center;
-		 }
-
-		div.top-area div.block div.block-bottom {
-			clear: both;
-			background: rgba(0,0,0,0.2);
-			color: #FFF;
-			padding: 3px;
-			font-size: 12px;
-			text-transform: uppercase;
-		 }
-
-	div.top-area div.attention-area {background: #666666;}
-
-		div.top-area div.attention-area span.title {
-			text-transform: uppercase;
-			color: #1A1A1A;
-			line-height: 225%;
-		 }
-
-		div.top-area div.attention-area div.aspects {}
-
-			div.top-area div.attention-area div.aspects span {margin: 0 0.2em 0 0;}
-
-.scrolled div.top-area {
-	height: 80px;
-	margin: 0;
-	padding: 1em 0;
-	overflow: hidden;
-	-webkit-transform-style: preserve-3d;
-	-moz-transform-style: preserve-3d;
-	transform-style: preserve-3d;
- }
-
-	.scrolled div.top-area .big-number {font-size: 1em;}
-
-	.scrolled div.top-area div.block div.block-left {
-		font-size: 25px;
-		padding: 0px 15px;
-	 }
-
-div.spacer {
-	width: 100%;
-	height: 190px;
-	padding: 0;
-	margin: 0;
- }
-
-div.spacer-thin {height: 40px;}
-
-div.aspect-area {
-	height: auto;
-	overflow: hidden;
-	margin: 2em auto;
- }
-
-	div.aspect-area div {
-		padding: 0;
-		margin: 0;
-	 }
-	 	div.aspect-area div.upgrade {
-			padding: 30px;
-			background: #EEE;
-			color: #454545;
-			font-size: 25px;
-			line-height: 45px;
-		 }
-
-		 div.aspect-area div.upgrade .btn-pay {
-		 	background: #4eaf0e;
-		 	border-color: #4eaf0e;
-		 }
-
-		 div.aspect-area div.upgrade div.sub-message {
-		 	font-size: 15px;
-		 }
-
-		div.aspect-area div.row {
-			width: 100%;
-			max-width: 2000px;
-			height: auto;
-			overflow: hidden;
-			margin: 0 auto;
-		 }
-
-			div.aspect-area div.row div.aspect-container {
-				width: 100%;
-				padding: 0px 10px;
-				height: auto;
-				margin: 0 3em 2em 0;
-				display: inline-block;
-				position: relative;
-				zoom: 1;
-			 }
-
-				div.aspect-area div.row div.aspect-container.disabled::after {
-					content: '';
-					width: 100%;
-					height: 100%;
-					display: block;
-					position: absolute;
-					top: 0;
-					left: 0;
-					background: repeating-linear-gradient(-55deg, #222, #222 6px, #333 6px, #333 12px );
-					opacity: 0.35;
-				 }
-
-				div.aspect-area div.row div.aspect-container div.graphs {
-					height: 200px;
-					margin-top: -3px;
-					position: relative;
-					background: #EEE;
-					background-image: linear-gradient(#EEEEEE, #CCCCCC);
-					background-image: linear-gradient(0deg, transparent 24%, rgba(0, 0, 0, .04) 25%, rgba(0, 0, 0, .04) 26%, transparent 27%, transparent 74%, rgba(0, 0, 0, .04) 75%, rgba(0, 0, 0, .04) 76%, transparent 77%, transparent), linear-gradient(90deg, transparent 24%, rgba(0, 0, 0, .04) 25%, rgba(0, 0, 0, .04) 26%, transparent 27%, transparent 74%, rgba(0, 0, 0, .04) 75%, rgba(0, 0, 0, .04) 76%, transparent 77%, transparent);
-					background-size: 30px 30px;
-				 }
-
-					div.aspect-area div.row div.aspect-container div.graphs div.graph {
-						float: left;
-						position: absolute;
-						bottom: 0;
-					 }
-
-						div.aspect-area div.row div.aspect-container div.graphs div.graph:hover {opacity: 0.9;}
-
-					div.aspect-area div.row div.aspect-container div.graphs::before {
-						content: '';
-						display: block;
-						width: 100%;
-						height: 100%;
-						background: #434343;
-						opacity: 0.04;
-						left: 0;
-						border-top-left-radius: 0.2em;
-						border-top-right-radius: 0.2em;
-					 }
-
-					div.aspect-area div.row div.aspect-container div.graphs div.left-graph {
-						background: #666666;
-						height: 15%;
-						width: 80%;
-						left: 0;
-					 }
-
-						div.aspect-area div.row div.aspect-container div.graphs div.left-graph div.percent {
-							color: #FFFFFF;
-							font-size: 1.2em;
-							font-weight: bold;
-							position: absolute;
-							bottom: 0.4em;
-							left: 0.4em;
-						 }
-
-					div.aspect-area div.row div.aspect-container div.graphs div.right-graph {
-						background: #9F9F9F;
-						width: 20%;
-						height: 15%;
-						right: 0;
-					 }
-
-			div.aspect-area div.row div.area-title {
-				color: #BBB;
-				text-align: left;
-				padding: 10px;
-				font-size: 20px;
-				text-transform: uppercase;
-				margin-bottom: 10px;
-			 }
-
-			div.aspect-area div.row div.aspect-container div.graph-info {
-				background: #343434;
-				overflow: hidden;
-				width: 100%;
-				height: auto;
-				margin: 0em 0 0 0;
-				text-transform: uppercase;
-				color: #9F9F9F;
-				text-align: center;
-			 }
-
-				div.aspect-area div.row div.aspect-container div.graph-info div.left-block {
-					display: inline-block;
-					padding: 0px 10px;
-				 }
-
-					div.aspect-area div.row div.aspect-container div.graph-info div.left-block span.fraction.numerator {
-						font-size: 2.5em;
-						display: block;
-					 }
-
-					div.aspect-area div.row div.aspect-container div.graph-info div.left-block span.fraction.denominator {
-						font-size: 0.7em;
-						display: block;
-						position: relative;
-						top: -0.6em;
-					 }
-
-				div.aspect-area div.row div.aspect-container div.graph-info div.right-block {
-					overflow: hidden;
-					height: 100%;
-					display: inline-block;
-					margin-top: 10px;
-					padding: 0px 10px;
-					text-align: left;
-				 }
-
-					div.aspect-area div.row div.aspect-container div.graph-info div.right-block > div {
-						font-size: 0.9em;
-						overflow: hidden;
-					 }
-
-					div.aspect-area div.row div.aspect-container div.graph-info div.right-block i {
-						margin: 0;
-						font-size: 1.5em;
-						position: relative;
-					 }
-
-						div.aspect-area div.row div.aspect-container div.graph-info div.right-block i.fa-sort-asc {top: 0.35em;}
-
-						div.aspect-area div.row div.aspect-container div.graph-info div.right-block i.fa-sort-desc {top: -0.1em;}
-
-					div.aspect-area div.row div.aspect-container div.graph-info div.right-block span.duration {font-size: 0.7em;}
-
-			div.aspect-area div.row div.aspect-container span.aspect-title {
-				background: #555555;
-				color: #FFFFFF;
-				display: inline-block;
-				margin: 0em 0 0 0;
-				padding: 5px;
-				width: 100%;
-				text-align: center;
-				overflow: hidden;
-				text-overflow: ellipsis;
-				white-space: nowrap;
-			 }
-
-	div.aspect-area.right-bar {}
-
-		div.aspect-area.right-bar div.consultant {
-			margin-bottom: 15px;
-			background: #454545;
-			padding: 10px;
-		 }
-
-			div.aspect-area.right-bar div.consultant .title {
-				color: #EEE;
-				text-align: left;
-				text-transform: uppercase;
-			 }
-
-			div.aspect-area.right-bar div.consultant .aspect-title {
-				padding: 10px;
-				margin: 5px 5px 0px 0px;
-				border-radius: 5px;
-				color: #FFFFFF;
-				font-size: 1em;
-				text-overflow: ellipsis;
-			 }
-
-div.bottom-bar {
-	background: #434343;
-	position: fixed;
-	width: 100%;
-	left: 0px;
-	bottom: 0px;
-	height: 20px;
 	font-size: 12px;
+	color: #EEE;
 	text-align: center;
-	color: #DDD;
-	text-align: right;
- }
-
+	text-transform: uppercase;
+}
+div.block {
+    margin-bottom: 25px;
+    background: #EEE;
+    padding: 0px;
+}
+div.block div.block-left {
+    float: left;
+    font-size: 75px;
+    padding: 0px 15px;
+}
+div.block div.block-right {
+    float: left;
+    font-size: 50px;
+    font-weight: bold;
+    text-align: center;
+    line-height: 110px;
+}
+div.block div.block-bottom {
+    clear: both;
+    background: #FFFFFF;
+    color: #454545;
+    padding: 3px;
+    font-size: 12px;
+    text-transform: uppercase;
+}
+div.spacer {
+    width: 100%;
+    height: 135px;
+    padding: 0;
+    margin: 0;
+}
+div.aspect-area {
+    height: auto;
+    overflow: hidden;
+    margin: 2em auto;
+}
+div.aspect-area div {} div.aspect-area div.upgrade {
+    padding: 30px;
+    background: #EEE;
+    color: #454545;
+    font-size: 25px;
+    line-height: 45px;
+}
+div.aspect-area div.upgrade .btn-pay {
+    background: #4eaf0e;
+    border-color: #4eaf0e;
+}
+div.aspect-area div.upgrade div.sub-message {
+    font-size: 15px;
+}
+div.aspect-area div.row {
+    width: 100%;
+    max-width: 2000px;
+    height: auto;
+    overflow: hidden;
+    margin: 0 auto;
+}
+div.aspect-area div.row div.aspect-container {
+    width: 100%;
+    padding: 0px 10px;
+    height: auto;
+    margin: 0 3em 2em 0;
+    display: inline-block;
+    position: relative;
+    zoom: 1;
+}
+div.aspect-area div.row div.aspect-container.disabled::after {
+    content: '';
+    width: 100%;
+    height: 100%;
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    background: repeating-linear-gradient(-55deg, #222, #222 6px, #333 6px, #333 12px);
+    opacity: 0.35;
+}
+div.aspect-area div.row div.area-title {
+    display: none;
+    color: #BBB;
+    text-align: left;
+    padding: 10px;
+    font-size: 20px;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+}
+div.aspect-area div.row div.aspect-container div.graph-info div.left-block {
+    display: inline-block;
+    padding: 0px 10px;
+}
+div.aspect-area div.row div.aspect-container div.graph-info div.right-block {
+    overflow: hidden;
+    height: 100%;
+    display: inline-block;
+    margin-top: 10px;
+    padding: 0px 10px;
+    text-align: left;
+}
+div.aspect-area div.row div.aspect-container div.graph-info div.right-block > div {
+    font-size: 0.9em;
+    overflow: hidden;
+}
+div.aspect-area div.row div.aspect-container span.aspect-title {
+    background: #555555;
+    color: #FFFFFF;
+    display: inline-block;
+    margin: 0em 0 0 0;
+    padding: 5px;
+    width: 100%;
+    text-align: center;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+div.aspect-area.right-bar div.consultant {
+    margin-bottom: 15px;
+    background: #EAEAEA;
+    padding: 0px;
+}
+div.aspect-area.right-bar div.consultant .title {
+    background: #FFF;
+    color: #454545;
+    text-align: left;
+    text-transform: uppercase;
+    padding: 10px;
+}
+div.aspect-area.right-bar div.consultant .body {
+    padding: 10px 5px;
+}
+div.aspect-area.right-bar div.consultant .aspect-title {
+    padding: 10px;
+    margin: 0px 5px 0px 0px;
+    border-radius: 5px;
+    color: #FFFFFF;
+    font-size: 1em;
+    text-overflow: ellipsis;
+}
+div.bottom-bar {
+    background: #434343;
+    position: fixed;
+    width: 100%;
+    left: 0px;
+    bottom: 0px;
+    height: 20px;
+    font-size: 12px;
+    text-align: center;
+    color: #DDD;
+    text-align: right;
+}
+.pod-holder {
+    padding: 0px 10px 20px 10px;
+}
+.pod {
+    overflow: hidden;
+    background: #FFF;
+    -webkit-box-shadow: 0px 0px 5px 0px rgba(50, 50, 50, 0.75);
+    -moz-box-shadow: 0px 0px 5px 0px rgba(50, 50, 50, 0.75);
+    box-shadow: 0px 0px 5px 0px rgba(50, 50, 50, 0.75);
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+}
+.pod .header {
+    padding: 10px;
+}
+.pod .body {
+    background: #eaeaea;
+}
+.pod .body .pod-body-right {
+    text-align: right;
+}
+.pod .body .pod-body-right .rating-text {
+    color: #999;
+}
+.pod .body .pod-body-right .rating-text.external {
+    font-size: 10px;
+}
+.pod .body .pod-body-left {
+    padding: 15px;
+}
+.pod .body .pod-body-left .top {
+    font-size: 20px;
+    clear: both;
+}
+.pod .body .pod-body-left .top .percent {
+    font-weight: bold;
+    color: #999;
+}
+.pod .body .pod-body-left .top .duration {
+    margin-left: 5px;
+    font-size: 8px;
+    color: #999;
+    text-transform: uppercase;
+}
+.pod .body .pod-body-left i {
+    font-size: 25px;
+    color: #999;
+}
+.pod .body .pod-body-rating {
+    margin-top: 10px;
+    font-size: 35px;
+    line-height: 40px;
+    font-weight: bold;
+}
+.pod .body .pod-body-rating.external {
+    font-size: 25px;
+    line-height: 30px;
+    color: #999;
+}
+.pod .body .pod-body-bottom {
+    clear: both;
+    margin-top: -35px;
+}
+.pod .aspect-title {
+    text-transform: uppercase;
+    font-size: 18px;
+    background: none;
+}
+.pod .pod-footer {
+    font-size: 20px;
+    color: #999;
+}
+.pod .body .pod-body-bottom div.graphs {
+    height: 200px;
+}
+.pod .body .pod-body-bottom div.graphs div.graph {
+    float: left;
+    position: absolute;
+    bottom: 0;
+}
+.pod .body .pod-body-bottom div.graphs div.graph:hover {
+    opacity: 0.9;
+}
+.pod .body .pod-body-bottom div.graph:hover {
+    opacity: 0.9;
+}
+.pod .body .pod-body-bottom div.left-graph {
+    height: 15%;
+    width: 30%;
+    left: 0;
+}
+.pod .body .pod-body-bottom div.left-graph div.percent {
+    color: #FFFFFF;
+    font-size: 1.2em;
+    font-weight: bold;
+    position: absolute;
+    bottom: 0.4em;
+    left: 0.4em;
+    opacity: 0.5;
+}
+.pod .body .pod-body-bottom div.right-graph {
+    background: #999;
+    width: 15%;
+    height: 15%;
+    left: 30%;
+}
