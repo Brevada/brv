@@ -57,7 +57,7 @@ $this->addResource("<meta property='og:description' content='Give {$name} Feedba
 <div class="topbar">
 	<div class="container">
 		<div class="title">
-			<!-- <i class="fa fa-cutlery"></i>  -->  Give <?php echo $name; ?> Feedback 
+			<!-- <i class="fa fa-cutlery"></i>  -->  <?php echo sprintf(__('Give %s Feedback'), "<b>{$name}</b>"); ?>
 		</div>
 		<div class="icons"><img class="logo" src="/images/quote.png" /></div>
 	</div>
@@ -78,6 +78,6 @@ $this->addResource("<meta property='og:description' content='Give {$name} Feedba
 <div class="fixed-toolbar">
 	<div class="container">
 		<!-- <div class="help"><i class="fa fa-question-circle"></i> Help</div> -->
-		<div class="submit" id='imdone'><i class="fa fa-check"></i> I'm Done</div>
+		<div class="submit" id='imdone'><i class="fa fa-check"></i> <?php _e("I'm Done"); ?></div>
 	</div>
 </div>

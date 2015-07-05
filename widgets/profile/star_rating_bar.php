@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 $this->addResource('/css/star_rating_bar.css');
 $this->addResource('/js/star_rating_bar.js');
 
@@ -27,5 +27,5 @@ $post_id = $r['ID'];
 </div>
 
 <div class="appear" id="appear<?php echo $post_id; ?>">
-		Thanks for rating.
+		<?php _e('Thanks for rating.'); ?>
 </div>

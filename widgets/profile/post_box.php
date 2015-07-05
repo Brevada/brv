@@ -37,8 +37,8 @@ if(($check = Database::prepare("SELECT `feedback`.id FROM `feedback` LEFT JOIN u
 
 <div id="aspect_<?php echo $post_id; ?>" class="aspect<?php echo $alreadyRated ? ' rated' : ''; ?>">
 		<div class="aspect-header">
-			<div class="title"><?php echo $post_name; ?></div>
-			<!-- <div class="subtitle"><?php echo substr($post_description,0,85); if(strlen($post_description)>85){echo '...';} ?></div> -->
+			<div class="title"><?php _e($post_name); ?></div>
+			<!-- <div class="subtitle"><?php echo substr(__($post_description),0,85); if(strlen(__($post_description))>85){echo '...';} ?></div> -->
 		</div>
 
 		<div class="rating-box">
@@ -48,12 +48,12 @@ if(($check = Database::prepare("SELECT `feedback`.id FROM `feedback` LEFT JOIN u
 			<div><?php $this->add(new View('../widgets/profile/star_rating_bar.php', array('row' => $r, 'id' => $this->getParameter('id')))); ?></div>
 			<br style="clear: both;" />
 			<div class="rate-description">
-				<div class="pull-left">Worst</div>
-				<div class="pull-right">Best</div>
+				<div class="pull-left"><?php _e('Worst'); ?></div>
+				<div class="pull-right"><?php _e('Best'); ?></div>
 				<br class="clear" />
 			</div>
 			<?php } else { ?>
-			<div class="appear" id="appear_bar_<?php echo $post_id; ?>"  align="center" style="width:100%;">Already rated.</div>	
+			<div class="appear" id="appear_bar_<?php echo $post_id; ?>"  align="center" style="width:100%;"><?php _e('Already rated.'); ?></div>	
 			<?php } ?>
 		</div>
 

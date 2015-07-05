@@ -104,12 +104,12 @@ $areasOfLeastConcern = array_diff($areasOfLeastConcern, $areasOfFocus);
 					<i class='fa fa-ellipsis-h'></i>
 				</div>
 				<ul class='dropdown-menu'>
-					<li class='link' data-link='account'>Account Settings</li>
-					<li class='link' data-link='logout' style="border-bottom: none;">Logout</li>
+					<li class='link' data-link='account'><?php _e('Account Settings'); ?></li>
+					<li class='link' data-link='logout' style="border-bottom: none;"><?php _e('Logout'); ?></li>
 				</ul>
 			</div>
 			<div class='name pull-right'>
-				Current User: <span class="variable"><?php echo $name; ?></span>
+				<?php _e('Current User'); ?>: <span class="variable"><?php echo $name; ?></span>
 			</div>
 		</div>
 	</div>
@@ -118,19 +118,19 @@ $areasOfLeastConcern = array_diff($areasOfLeastConcern, $areasOfFocus);
 			<a href="/<?php echo $url_name; ?>" target="_TOP">
 				<div class='pull-left icon-button'>
 					<i class='fa fa-external-link'></i>
-					<div class='icon-subtext'>Your Page</div>
+					<div class='icon-subtext'><?php _e('Your Page'); ?></div>
 				</div>
 			</a>
 			<a href="hub/includes/marketing/promo_white.php" target="_TOP">
 				<div class='pull-left icon-button'>
 					<i class='fa fa-print'></i>
-					<div class='icon-subtext'>Printables</div>
+					<div class='icon-subtext'><?php _e('Printables'); ?></div>
 				</div>
 			</a>
 			<a href="/user_data/qr/<?php echo $user_id; ?>.png" target="_TOP">
 				<div class='pull-left icon-button'>
 					<i class='fa fa-qrcode'></i>
-					<div class='icon-subtext'>QR Code</div>
+					<div class='icon-subtext'><?php _e('QR Code'); ?></div>
 				</div>
 			</a>
 	</div>
@@ -148,10 +148,10 @@ $areasOfLeastConcern = array_diff($areasOfLeastConcern, $areasOfFocus);
 <!-- Left side -->
 <div class='aspect-area hidden-xs hidden-sm col-md-3 right-bar'>
 	<div class='row'>
-		<div class='col-sm-12 area-title'><i class='fa fa-area-chart'></i> Consultant</div>
+		<div class='col-sm-12 area-title'><i class='fa fa-area-chart'></i> <?php _e('Consultant'); ?></div>
 		<div class="col-sm-12 hidden-xs">		
 
-			<div class='col-sm-12 area-title'><i class='fa fa-area-chart'></i> Consultant</div>
+			<div class='col-sm-12 area-title'><i class='fa fa-area-chart'></i> <?php _e('Consultant'); ?></div>
 
 			<!-- Overall Average -->
 			<?php 
@@ -176,7 +176,7 @@ $areasOfLeastConcern = array_diff($areasOfLeastConcern, $areasOfFocus);
 					</div>
 				</div>
 				<div class="block-bottom">
-					Overall Score
+					<?php _e('Overall Score'); ?>
 				</div>
 			</div>
 
@@ -204,7 +204,7 @@ $areasOfLeastConcern = array_diff($areasOfLeastConcern, $areasOfFocus);
 					</div>
 				</div>
 				<div class="block-bottom">
-					Change in the Past 4 Weeks
+					<?php _e('Change in the Past 4 Weeks'); ?>
 				</div>
 			</div>
 
@@ -233,17 +233,17 @@ $areasOfLeastConcern = array_diff($areasOfLeastConcern, $areasOfFocus);
 				<div class="block-bottom">
 					<?php 
 						$abs_relative = abs($data_relativeBenchmark);
-						echo "$message"; 
+						_e($message); 
 					?>
 				</div>
 			</div>
 
 			<div class='col-sm-12 block consultant'>
-				<div class='title'>Areas For Improvement</div>
+				<div class='title'><?php _e('Areas For Improvement'); ?></div>
 					<div class='body'>
 						<?php
 						foreach($areasOfFocus as $aspect){
-							echo "<span class='aspect-title pull-left negative'>{$aspect}</span>";
+							echo "<span class='aspect-title pull-left negative'>".__($aspect)."</span>";
 						}
 						if(empty($areasOfFocus)){
 							echo "<span class='aspect-title placeholder'></span>";
@@ -256,11 +256,11 @@ $areasOfLeastConcern = array_diff($areasOfLeastConcern, $areasOfFocus);
 
 
 			<div class='col-sm-12 block consultant'>
-				<div class='title'>Strengths</div>
+				<div class='title'><?php _e('Strengths'); ?></div>
 				<div class='body'>
 					<?php
 					foreach($areasOfLeastConcern as $aspect){
-						echo "<span class='aspect-title pull-left positive'>{$aspect}</span>";
+						echo "<span class='aspect-title pull-left positive'>".__($aspect)."</span>";
 					}
 					if(empty($areasOfLeastConcern)){
 						echo "<span style='color: #BBB;'>None yet.</span>";
@@ -279,14 +279,14 @@ $areasOfLeastConcern = array_diff($areasOfLeastConcern, $areasOfFocus);
 <!-- Right Side -->
 <div class='aspect-area col-md-9'>
 	<div class='row'>
-	<div class='col-sm-12 area-title'><i class='fa fa-comments'></i> Feedback</div>
+	<div class='col-sm-12 area-title'><i class='fa fa-comments'></i> <?php _e('Feedback'); ?></div>
 	
 	<?php if ($level < 2) { ?>
 	<div class="upgrade">
-		<div class="message">Welcome to Brevada! Please <b>upgrade your account</b> to view your feedback.</div>
-		<a class="btn btn-primary btn-pay" href="upgrade.php">Upgrade</a>
-		<a class="btn btn-default" target="_TOP" href="<?php echo $url_name; ?>">Checkout Your Page</a>
-		<div class="sub-message">Or feel free to contact us at customercare@brevada.com for any help.</div>
+		<div class="message"><?php _e('Welcome to Brevada! Please <b>upgrade your account</b> to view your feedback.'); ?></div>
+		<a class="btn btn-primary btn-pay" href="upgrade.php"><?php _e('Upgrade'); ?></a>
+		<a class="btn btn-default" target="_TOP" href="<?php echo $url_name; ?>"><?php _e('Checkout Your Page'); ?></a>
+		<div class="sub-message"><?php echo sprintf(__('Or feel free to contact us at %s for any help.'), __('customercare@brevada.com')); ?></div>
 	</div>
 
 	<?php
@@ -318,33 +318,33 @@ $areasOfLeastConcern = array_diff($areasOfLeastConcern, $areasOfFocus);
 		<div class="col-sm-6 col-md-6 col-lg-4 pod-holder">
 			<div class="pod">
 				<div class="header">
-					<span class='aspect-title <?php echo $colour; ?>'><?php echo $title; ?></span>
+					<span class='aspect-title <?php echo $colour; ?>'><?php _e($title); ?></span>
 				</div>
 				<div class="body">
 					<div class="pull-left col-md-6 pod-body-left">
 						<div class='top'>
 							<i class='pull-left fa <?php echo $data_percent4W >= 0 ? 'fa-arrow-circle-up' : 'fa-arrow-circle-down'; ?>'></i>
 							<span class='pull-left percent'><?php echo abs($data_percent4W)."%"; ?></span>
-							<span class='duration'>4 weeks</span>
+							<span class='duration'><?php _e('4 weeks'); ?></span>
 						</div>
 						<div class='top'>
 							<i class='pull-left fa <?php echo $data_percent1Y >= 0 ? 'fa-arrow-circle-up' : 'fa-arrow-circle-down'; ?>'></i>
 							<span class='pull-left percent'><?php echo abs($data_percent1Y)."%"; ?></span>
-							<span class='duration'>1 year</span>
+							<span class='duration'><?php _e('1 year'); ?></span>
 						</div>
 					</div>
 					<div class="pull-right col-md-6 pod-body-right">
 						<div class='pod-body-rating <?php echo $colour; ?>-text'><?php echo "{$data_ratingPercent}%"; ?></div>
-						<div class="rating-text">in <?php echo $total_responses; ?> responses.</div>
+						<div class="rating-text"><?php _e('in'); ?> <?php echo $total_responses; ?> <?php _e('responses'); ?>.</div>
 						<div class='pod-body-rating external'><?php echo "{$data_ratingPercentOther}%"; ?></div>
-						<div class="rating-text external">industry average.</div>
+						<div class="rating-text external"><?php _e('industry average'); ?>.</div>
 					</div>
 					<div class="col-md-12 pod-body-bottom">
 						<div class='graphs'>
 						<div class='left-graph graph <?php echo $colour; ?>' data-percent='<?php echo $data_ratingPercent; ?>'>
 							<div class='percent'><?php echo "{$data_ratingPercent}%"; ?></div>
 						</div>
-						<div class='right-graph graph' data-percent='<?php echo $data_ratingPercentOther; ?>' data-tooltip='Market Benchmark (<?php echo "{$data_ratingPercentOther}%"; ?>)'></div>
+						<div class='right-graph graph' data-percent='<?php echo $data_ratingPercentOther; ?>' data-tooltip='<?php _e('Market Benchmark'); ?> (<?php echo "{$data_ratingPercentOther}%"; ?>)'></div>
 						</div>
 					</div>
 					<br style="clear: both;" />
@@ -356,29 +356,29 @@ $areasOfLeastConcern = array_diff($areasOfLeastConcern, $areasOfFocus);
 
 		<div class="col-sm-3 col-md-3 col-lg-3" style="display: none;">	
 			<div class='aspect-container'>
-				<span class='aspect-title <?php echo $colour; ?>'><?php echo $title; ?></span>
+				<span class='aspect-title <?php echo $colour; ?>'><?php _e($title); ?></span>
 				<div class='graphs'>
 					<div class='left-graph graph' data-percent='<?php echo $data_ratingPercent; ?>'>
 						<div class='percent'><?php echo "{$data_ratingPercent}%"; ?></div>
 					</div>
-					<div class='right-graph graph' data-percent='<?php echo $data_ratingPercentOther; ?>' data-tooltip='Market Benchmark (<?php echo "{$data_ratingPercentOther}%"; ?>)'></div>
+					<div class='right-graph graph' data-percent='<?php echo $data_ratingPercentOther; ?>' data-tooltip='<?php _e('Market Benchmark'); ?> (<?php echo "{$data_ratingPercentOther}%"; ?>)'></div>
 				</div>
 				<div class='graph-info'>
 					<div class='left-block pull-left'>
 						<!-- SWITCH TO NUM RATINGS -->
 						<span class='fraction numerator'><?php echo $total_responses; ?></span>
-						<span class='fraction denominator'>Responses</span>
+						<span class='fraction denominator'><?php _e('Responses'); ?></span>
 					</div>
 					<div class='right-block pull-right'>
 						<div class='top'>
 							<i class='fa <?php echo $data_percent4W >= 0 ? 'fa-sort-asc' : 'fa-sort-desc'; ?> <?php echo numericalCSS($data_percent4W); ?>-text'></i>
 							<span class='percent'><?php echo abs($data_percent4W)."%"; ?></span>
-							<span class='duration'>(4w)</span>
+							<span class='duration'>(<?php _e('4w'); ?>)</span>
 						</div>
 						<div class='bottom'>
 							<i class='fa <?php echo $data_percent1Y >= 0 ? 'fa-sort-asc' : 'fa-sort-desc'; ?> <?php echo numericalCSS($data_percent1Y); ?>-text'></i>
 							<span class='percent'><?php echo abs($data_percent1Y)."%"; ?></span>
-							<span class='duration'>(1y)</span>
+							<span class='duration'>(<?php _e('1y'); ?>)</span>
 						</div>
 					</div>
 				</div>
