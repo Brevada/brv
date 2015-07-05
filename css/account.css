@@ -7,14 +7,7 @@ body{
 div.top-banner {
 	width: 100%; height: 50px; position: absolute; top: 0; left: 0;
 
-	background-color: #FFFFFF;
-	background-image:linear-gradient(#EEEEEE, #CCCCCC);
-	background-color: #FFFFFF;
-    
-	background-image: linear-gradient(0deg, transparent 24%, rgba(0, 0, 0, .04) 25%, rgba(0, 0, 0, .04) 26%, transparent 27%, transparent 74%, rgba(0, 0, 0, .04) 75%, rgba(0, 0, 0, .04) 76%, transparent 77%, transparent), linear-gradient(90deg, transparent 24%, rgba(0, 0, 0, .04) 25%, rgba(0, 0, 0, .04) 26%, transparent 27%, transparent 74%, rgba(0, 0, 0, .04) 75%, rgba(0, 0, 0, .04) 76%, transparent 77%, transparent);
-	
-	background-size:30px 30px;
-	background-attachment: fixed; 
+	background-color: #FFFFFF
 	
 	padding-bottom: 0.5em;
 }

@@ -46,6 +46,7 @@ if(($check = Database::prepare("SELECT `feedback`.id FROM `feedback` LEFT JOIN u
 			if(!$alreadyRated){
 			?>
 			<div><?php $this->add(new View('../widgets/profile/star_rating_bar.php', array('row' => $r, 'id' => $this->getParameter('id')))); ?></div>
+			<br style="clear: both;" />
 			<div class="rate-description">
 				<div class="pull-left"><?php _e('Worst'); ?></div>
 				<div class="pull-right"><?php _e('Best'); ?></div>

@@ -5,6 +5,7 @@
 	margin: 0px;
 	display: inline-block;
 	border: 0px;
+	border-right:2px solid #454545;
 	background: url('/images/star.png') no-repeat center center;
 	box-sizing:border-box;
 	padding:5px;
@@ -21,11 +22,11 @@
 	opacity:0.5;
 }
 
-div.star-1 { background-color: #EE2B2B; background-size: 10%;}
-div.star-2 { background-color: #EE872B; background-size: 15%;}
-div.star-3 { background-color: #EDC812; background-size: 20%;}
-div.star-4 { background-color: #D0EE2B; background-size: 25%;}
-div.star-5 { background-color: #4EAF0E; background-size: 30%;}
+div.star-1 { background-color: #cc750e; background-size: 10%;}
+div.star-2 { background-color: #ccc10e; background-size: 15%;}
+div.star-3 { background-color: #afcc0e; background-size: 20%;}
+div.star-4 { background-color: #82cc0e; background-size: 25%;}
+div.star-5 { background-color: #2ecc0e; background-size: 30%;}
 
 .holder {
 	padding: 0px;

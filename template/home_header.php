@@ -17,7 +17,7 @@
         </div>
     </div>
    
-    <header class="grid">
+    <header class="j-bg">
         
         <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
                 <div class="container">
@@ -35,13 +35,13 @@
                     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 
                         <ul class="nav navbar-nav navbar-right">
-                            <li><a href="#about">how it works</a>
+                            <li><a class="hidden-sm" href="#about">how it works</a>
                             </li>
-                            <li><a href="#features">features</a>
+                            <li><a class="hidden-sm" href="#features">get feedback</a>
                             </li>
-                            <li><a href="#reviews">reviews</a>
+                            <li><a class="hidden-sm" href="#reviews">get results</a>
                             </li>
-                            <li><a href="#screens">pricing</a>
+                            <li><a class="hidden-sm" href="#screens">pricing</a>
                             </li>
                             <li><a class="getApp" href="/signup">Get Started</a>
                             </li>
@@ -64,7 +64,7 @@
 					
 					<div class="col-md-8">
 						<div class="large_white_bold">
-                           <h1>Transform your business with  <span class="highlighted">valuable feedback</span></h1>
+                           <h1>Transform your business with  <span class="highlighted">VALUABLE FEEDBACK</span></h1>
                         </div>
                         <div class="large_white_light">
                            <p>Providing businesses with actionable data and their customers with an integrated and seamless feedback giving experience.</p>
