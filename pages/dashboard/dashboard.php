@@ -282,7 +282,6 @@ $areasOfLeastConcern = array_diff($areasOfLeastConcern, $areasOfFocus);
 	<div class='col-sm-12 area-title'><i class='fa fa-comments'></i> Feedback</div>
 	
 	<?php if ($level < 2) { ?>
-	<br style="clear:both;" />
 	<div class="upgrade">
 		<div class="message">Welcome to Brevada! Please <b>upgrade your account</b> to view your feedback.</div>
 		<a class="btn btn-primary btn-pay" href="upgrade.php">Upgrade</a>
