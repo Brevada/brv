@@ -43,7 +43,7 @@
 	padding: 10px;
 	border: 1px solid #444;
 	border-radius: 3px;
-	background:#3B3B3B;
+	background:#454545;
 }
 .aspect-header{
 	width: 100%;
@@ -122,6 +122,7 @@
 	opacity:0.5;
 }
 .rate-description{
+	clear: both;
 	color: #F5F5F5;
 	width: 100%;
 	opacity: 0.2;
