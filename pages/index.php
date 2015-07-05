@@ -244,8 +244,8 @@ $this->add(new View('../template/home_header.php'));
                                 <i class="fa fa-map-marker fa-2x"></i>
                             </a>
                             <div class="media-body">
-                                <h3 class="media-heading">Local Comparisons</h3>
-                                View comparisons to local averages.
+                                <h3 class="media-heading">Industry Comparisons</h3>
+                                View comparisons to industry averages.
                             </div>
                         </div>
                         <div class="feature col-md-4">
