@@ -12,10 +12,7 @@ if(!Brevada::IsLoggedIn()){
 
 /*
 	TODO:
-	- If trial account.
 	- Referral credits / credits.
-	- Payment redirect.
-	- Voting pages / feedback page.
 	- Corporate.
 */
 
@@ -108,27 +105,39 @@ $areasOfLeastConcern = array_diff($areasOfLeastConcern, $areasOfFocus);
 				</div>
 				<ul class='dropdown-menu'>
 					<li class='link' data-link='account'>Account Settings</li>
-					<li class='link' data-link='logout'>Logout</li>
+					<li class='link' data-link='logout' style="border-bottom: none;">Logout</li>
 				</ul>
+			</div>
+			<div class='name pull-right'>
+				Current User: <span class="variable"><?php echo $name; ?></span>
 			</div>
 		</div>
 	</div>
 
 	<div class="mid-banner row">
-			<a href="/<?php echo $url_name; ?>" target="_TOP"><div class='pull-left icon-button'><i class='fa fa-external-link'></i></div></a>
-			<a href="hub/includes/marketing/promo_white.php" target="_BLANK"><div class='pull-left icon-button'><i class='fa fa-print'></i></div></a>
-			<a href="/user_data/qr/<?php echo $user_id; ?>.png" target="_TOP"><div class='pull-left icon-button'><i class='fa fa-qrcode'></i></div></a>
-
+			<a href="/<?php echo $url_name; ?>" target="_TOP">
+				<div class='pull-left icon-button'>
+					<i class='fa fa-external-link'></i>
+					<div class='icon-subtext'>Your Page</div>
+				</div>
+			</a>
+			<a href="hub/includes/marketing/promo_white.php" target="_TOP">
+				<div class='pull-left icon-button'>
+					<i class='fa fa-print'></i>
+					<div class='icon-subtext'>Printables</div>
+				</div>
+			</a>
+			<a href="/user_data/qr/<?php echo $user_id; ?>.png" target="_TOP">
+				<div class='pull-left icon-button'>
+					<i class='fa fa-qrcode'></i>
+					<div class='icon-subtext'>QR Code</div>
+				</div>
+			</a>
 	</div>
 
 </div>
 
-<div class="spacer hidden-xs">
-
-</div>
-
-
-<div class="spacer spacer-thin visible-xs">
+<div class="spacer">
 
 </div>
 
@@ -141,126 +150,126 @@ $areasOfLeastConcern = array_diff($areasOfLeastConcern, $areasOfFocus);
 	<div class='row'>
 		<div class='col-sm-12 area-title'><i class='fa fa-area-chart'></i> Consultant</div>
 		<div class="col-sm-12 hidden-xs">		
-			
-		<div class='col-sm-12 block consultant'>
-			<div class='title'>Where to Focus</div>
+
+			<div class='col-sm-12 area-title'><i class='fa fa-area-chart'></i> Consultant</div>
+
+			<!-- Overall Average -->
+			<?php 
+				if($data_overallAll>=50){
+					$change = 'positive';
+					$icon = 'fa-thumbs-up';
+				} else if ($data_overallAll==0){
+					$change = 'neutral';
+					$icon = 'fa-minus-circle';
+				} else {
+					$change = 'negative';
+					$icon = 'fa-thumbs-down';
+				}
+			?>
+			<div class='col-sm-12 overall-decrease block <?php echo $change; ?>-text'>
+				<div class="block-left hidden-sm">
+					<i class='fa <?php echo $icon; ?>'></i>
+				</div>
+				<div class="block-right">
+					<div class='big-number <?php echo $change; ?>-text'>
+						<?php echo abs($data_overallAll)."%"; ?>
+					</div>
+				</div>
+				<div class="block-bottom">
+					Overall Score
+				</div>
+			</div>
+
+
+			<!-- Past 4 weeks -->
+			<?php 
+				if($data_overall4W>=50){
+					$change = 'positive';
+					$icon = 'fa-chevron-circle-up';
+				} else if ($data_overall4W==0){
+					$change = 'neutral';
+					$icon = 'fa-minus-circle';
+				} else {
+					$change = 'negative';
+					$icon = 'fa-chevron-circle-down';
+				}
+			?>
+			<div class='col-sm-12 overall-improvement block <?php echo $change; ?>-text'>
+				<div class="block-left hidden-sm">
+					<i class='fa <?php echo $icon; ?>'></i>
+				</div>
+				<div class="block-right">
+					<div class='big-number <?php echo $change; ?>-text'>
+						<?php echo abs($data_overall4W)."%"; ?>
+					</div>
+				</div>
+				<div class="block-bottom">
+					Change in the Past 4 Weeks
+				</div>
+			</div>
+
+			<!-- vs benchmark -->
+			<?php 
+				if($data_relativeBenchmark>=1){
+					$icon = 'fa-chevron-circle-up';
+					$message = 'above the industry average';
+				} else if ($data_relativeBenchmark==0){
+					$icon = 'fa-minus-circle';
+					$message = 'same as industry average';
+				} else {
+					$icon = 'fa-chevron-circle-down';
+					$message = 'below the industry average';
+				}
+			?>
+			<div class='col-sm-12 below-benchmark block <?php echo numericalCSS($data_relativeBenchmark); ?>-text'>
+				<div class="block-left hidden-sm">
+					<i class='fa <?php echo $icon; ?>'></i>
+				</div>
+				<div class="block-right">
+					<div class='big-number <?php echo numericalCSS($data_relativeBenchmark); ?>-text'>
+						<?php echo abs($data_relativeBenchmark)."%"; ?>
+					</div>
+				</div>
+				<div class="block-bottom">
+					<?php 
+						$abs_relative = abs($data_relativeBenchmark);
+						echo "$message"; 
+					?>
+				</div>
+			</div>
+
+			<div class='col-sm-12 block consultant'>
+				<div class='title'>Areas For Improvement</div>
+					<div class='body'>
+						<?php
+						foreach($areasOfFocus as $aspect){
+							echo "<span class='aspect-title pull-left negative'>{$aspect}</span>";
+						}
+						if(empty($areasOfFocus)){
+							echo "<span class='aspect-title placeholder'></span>";
+						}
+						?>
+						<br class="clear: both;" />
+					</div>
+				<br class="clear: both;" />
+			</div>
+
+
+			<div class='col-sm-12 block consultant'>
+				<div class='title'>Strengths</div>
 				<div class='body'>
 					<?php
-					foreach($areasOfFocus as $aspect){
-						echo "<span class='aspect-title pull-left negative'>{$aspect}</span>";
+					foreach($areasOfLeastConcern as $aspect){
+						echo "<span class='aspect-title pull-left positive'>{$aspect}</span>";
 					}
-					if(empty($areasOfFocus)){
-						echo "<span class='aspect-title placeholder'></span>";
+					if(empty($areasOfLeastConcern)){
+						echo "<span style='color: #BBB;'>None yet.</span>";
 					}
 					?>
 					<br class="clear: both;" />
 				</div>
-			<br class="clear: both;" />
-		</div>
-
-
-		<div class='col-sm-12 block consultant'>
-			<div class='title'>Areas of Least Concern</div>
-			<div class='body'>
-				<?php
-				foreach($areasOfLeastConcern as $aspect){
-					echo "<span class='aspect-title pull-left positive'>{$aspect}</span>";
-				}
-				if(empty($areasOfLeastConcern)){
-					echo "<span style='color: #BBB;'>None yet.</span>";
-				}
-				?>
 				<br class="clear: both;" />
 			</div>
-			<br class="clear: both;" />
-		</div>
-
-		<div class='col-sm-12 area-title'><i class='fa fa-area-chart'></i> Consultant</div>
-
-		<!-- Overall Average -->
-		<?php 
-			if($data_overallAll>=50){
-				$change = 'positive';
-				$icon = 'fa-check-circle';
-			} else if ($data_overallAll==0){
-				$change = 'neutral';
-				$icon = 'fa-minus-circle';
-			} else {
-				$change = 'negative';
-				$icon = 'fa-times-circle';
-			}
-		?>
-		<div class='col-sm-12 overall-decrease block <?php echo $change; ?>'>
-			<div class="block-left hidden-md hidden-sm">
-				<i class='fa <?php echo $icon; ?>'></i>
-			</div>
-			<div class="block-right">
-				<div class='big-number <?php echo $change; ?>'>
-					<?php echo abs($data_overallAll)."%"; ?>
-				</div>
-			</div>
-			<div class="block-bottom">
-				All Time Average
-			</div>
-		</div>
-
-
-		<!-- Past 4 weeks -->
-		<?php 
-			if($data_overall4W>=50){
-				$change = 'positive';
-				$icon = 'fa-chevron-circle-up';
-			} else if ($data_overall4W==0){
-				$change = 'neutral';
-				$icon = 'fa-minus-circle';
-			} else {
-				$change = 'negative';
-				$icon = 'fa-chevron-circle-down';
-			}
-		?>
-		<div class='col-sm-12 overall-improvement block <?php echo $change; ?>'>
-			<div class="block-left hidden-md hidden-sm">
-				<i class='fa <?php echo $icon; ?>'></i>
-			</div>
-			<div class="block-right">
-				<div class='big-number <?php echo $change; ?>'>
-					<?php echo abs($data_overall4W)."%"; ?>
-				</div>
-			</div>
-			<div class="block-bottom">
-				Change in the Past 4 Weeks
-			</div>
-		</div>
-
-		<!-- vs benchmark -->
-		<?php 
-			if($data_relativeBenchmark>=1){
-				$icon = 'fa-chevron-circle-up';
-				$message = 'above the benchmark';
-			} else if ($data_relativeBenchmark==0){
-				$icon = 'fa-minus-circle';
-				$message = ', same as benchmark average';
-			} else {
-				$icon = 'fa-chevron-circle-down';
-				$message = 'below the benchmark';
-			}
-		?>
-		<div class='col-sm-12 below-benchmark block <?php echo numericalCSS($data_relativeBenchmark); ?>'>
-			<div class="block-left hidden-md hidden-sm">
-				<i class='fa <?php echo $icon; ?>'></i>
-			</div>
-			<div class="block-right">
-				<div class='big-number <?php echo numericalCSS($data_relativeBenchmark); ?>'>
-					<?php echo abs($data_relativeBenchmark)."%"; ?>
-				</div>
-			</div>
-			<div class="block-bottom">
-				<?php 
-					$abs_relative = abs($data_relativeBenchmark);
-					echo "$message"; 
-				?>
-			</div>
-		</div>
 
 
 		</div>
@@ -290,8 +299,8 @@ $areasOfLeastConcern = array_diff($areasOfLeastConcern, $areasOfFocus);
 		
 		$data_ratingPercent = round((float) $row['Data_RatingPercent'] + 0, 1);
 		$data_ratingPercentOther = round((float) $row['Data_RatingPercentOther'] + 0);
-		$data_percent4W = round((float) $row['Data_Percent4W'] + 0, 1);
-		$data_percent1Y = round((float) $row['Data_Percent1Y'] + 0, 1);
+		$data_percent4W = round((float) $row['Data_Percent4W'] + 0, 0);
+		$data_percent1Y = round((float) $row['Data_Percent1Y'] + 0, 0);
 		
 		$total_responses = ((int) $row['Total']);
 
@@ -307,118 +316,6 @@ $areasOfLeastConcern = array_diff($areasOfLeastConcern, $areasOfFocus);
 			$colour = 'negative';
 		}
 	?>
-		<style>
-			
-			.pod-holder {
-				padding: 0px 10px 20px 10px;
-			}
-			.pod {
-				overflow: hidden;
-				background: #FFF;
-				-webkit-box-shadow: 0px 0px 5px 0px rgba(50, 50, 50, 0.75);
-				-moz-box-shadow:    0px 0px 5px 0px rgba(50, 50, 50, 0.75);
-				box-shadow:         0px 0px 5px 0px rgba(50, 50, 50, 0.75);
-				-webkit-border-radius: 3px;
-				-moz-border-radius: 3px;
-				border-radius: 3px;
-			}
-			.pod .header {
-				padding: 10px;
-			}
-			.pod .body {
-				background: #eaeaea;
-			}
-			.pod .body .pod-body-right {
-				text-align: right;
-			}
-			.pod .body .pod-body-right .rating-text {
-				color: #999;
-			}
-			.pod .body .pod-body-right .rating-text.external {
-				font-size: 10px;
-			}
-			.pod .body .pod-body-left {
-				padding: 15px;
-			}
-			.pod .body .pod-body-left .top {
-				font-size: 20px;
-				clear: both;
-			}
-			.pod .body .pod-body-left .top .percent {
-				font-weight: bold;
-				color: #999;
-			}
-			.pod .body .pod-body-left .top .duration {
-				margin-left: 5px;
-				font-size: 10px;
-				text-transform: uppercase;
-			}
-			.pod .body .pod-body-left i {
-				font-size: 25px;
-				color: #999;
-			}
-			.pod .body .pod-body-rating {
-				margin-top: 10px;
-				font-size: 35px;
-				line-height: 40px;
-				font-weight: bold;
-			}
-			.pod .body .pod-body-rating.external {
-
-				font-size: 25px;
-				line-height: 30px;
-				color: #999;
-			}
-			.pod .body .pod-body-bottom {
-				clear: both;
-				margin-top: -35px;
-			}
-			.pod .aspect-title {
-				text-transform: uppercase;
-				font-size: 18px;
-				background: none;
-			}
-			.pod .pod-footer {
-				font-size: 20px;
-				color: #999;
-			}
-
-			.pod .body .pod-body-bottom div.graphs {
-					height: 200px;
-				 }
-
-			.pod .body .pod-body-bottom div.graphs div.graph {
-				float: left;
-				position: absolute;
-				bottom: 0;
-			 }
-
-			.pod .body .pod-body-bottom div.graphs div.graph:hover {opacity: 0.9;}
-
-			.pod .body .pod-body-bottom div.graph:hover {opacity: 0.9;}
-
-			.pod .body .pod-body-bottom div.left-graph {
-				height: 15%;
-				width: 30%;
-				left: 0;
-			 }
-
-			.pod .body .pod-body-bottom div.left-graph div.percent {
-				color: #FFFFFF;
-				font-size: 1.2em;
-				font-weight: bold;
-				position: absolute;
-				bottom: 0.4em;
-				left: 0.4em;
-			 }
-
-			.pod .body .pod-body-bottom div.right-graph {
-				background: #BBB;
-				width: 15%;
-				height: 15%;
-				left: 30%;
-			 }
-		</style>
 		<div class="col-sm-6 col-md-6 col-lg-4 pod-holder">
 			<div class="pod">
 				<div class="header">
@@ -497,16 +394,4 @@ $areasOfLeastConcern = array_diff($areasOfLeastConcern, $areasOfFocus);
 <div class="bottom-bar">
 	&copy; 2015 Brevada Inc. &nbsp;
 </div>
-
-<script>
-$(window).on('scroll',function(){
-	var scroll = $(window).scrollTop();
-	if(scroll<=20){
-		$('.top-fixed').removeClass('scrolled');
-	} else {
-		$('.top-fixed').addClass('scrolled');
-	}
-});
-</script>
-
 

@@ -57,9 +57,9 @@ $this->addResource("<meta property='og:description' content='Give {$name} Feedba
 <div class="topbar">
 	<div class="container">
 		<div class="title">
-			<!-- <i class="fa fa-cutlery"></i>  -->  Give <b><?php echo $name; ?></b> Feedback 
+			<!-- <i class="fa fa-cutlery"></i>  -->  Give <?php echo $name; ?> Feedback 
 		</div>
-		<div class="icons"><img class="logo" src="/images/quote-white.png" /></div>
+		<div class="icons"><img class="logo" src="/images/quote.png" /></div>
 	</div>
 </div>
 
