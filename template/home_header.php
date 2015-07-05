@@ -37,9 +37,9 @@
                         <ul class="nav navbar-nav navbar-right">
                             <li><a class="hidden-sm" href="#about">how it works</a>
                             </li>
-                            <li><a class="hidden-sm" href="#features">features</a>
+                            <li><a class="hidden-sm" href="#features">get feedback</a>
                             </li>
-                            <li><a class="hidden-sm" href="#reviews">reviews</a>
+                            <li><a class="hidden-sm" href="#reviews">get results</a>
                             </li>
                             <li><a class="hidden-sm" href="#screens">pricing</a>
                             </li>
