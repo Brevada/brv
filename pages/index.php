@@ -1,6 +1,10 @@
 <?php
 if(Brevada::IsLoggedIn()){ Brevada::Redirect('/dashboard'); }
 
+if(Brevada::IsMobile()){
+	$this->addResource("<meta name='viewport' content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0'/>", true, true);
+}
+
 $this->addResource('/css/home/animate.css');
 $this->addResource('/css/home/bootstrap.css');
 $this->addResource('/css/home/eco.css');
@@ -20,11 +24,7 @@ $this->addResource('/js/home/scripts.js');
 $this->add(new View('../template/home_header.php'));
 ?>
 
-
-
-
     <div class="wrapper">
-
         
 		<!-- How it works -->
         <section id="about">
