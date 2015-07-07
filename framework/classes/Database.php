@@ -27,6 +27,10 @@ class Database
 		if(!isset(self::$Connection))
 		{
 			self::$Connection = mysqli_connect(self::DB_HOST, self::DB_USERNAME, self::DB_PASSWORD, self::DB_DATABASE);
+			if(self::$Connection->connect_error)
+			{
+				exit("Our servers are being updated. Please wait a couple minutes before refreshing this page.");
+			}
 		}
 		return self::$Connection;
 	}
