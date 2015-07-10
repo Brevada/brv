@@ -11,6 +11,9 @@ define('URL', 'http://brevada.com/');
 session_start();
 //session_regenerate_id();
 
+mb_internal_encoding('UTF-8');
+mb_http_output('UTF-8');
+
 //header("Cache-Control: no-cache, must-revalidate"); // HTTP/1.1
 //header("Expires: Sat, 26 Jul 1997 05:00:00 GMT"); // Date in the past
 
@@ -20,9 +23,14 @@ function __autoload($c){
 	}
 }
 
+require 'classes/Language.php';
 require 'Brevada.php';
 require 'Common.php';
 require 'View.php';
+
+if(!empty($_GET['lang']) || !empty($_COOKIE['lang'])){
+	setLocalization(empty($_GET['lang']) ? $_COOKIE['lang'] : $_GET['lang'], true);
+}
 
 $page = empty($_GET['page']) ? '404' : trim($_GET['page']);
 
@@ -36,20 +44,6 @@ if(!empty($ext)){
 }
 
 $viewPath = '';
-
-//MOBILE CODE
-/*if(Brevada::IsMobile())
-{
-	$viewPath = "../pages/mobile/{$page}.php";
-	if(!file_exists($viewPath)){
-		$viewPath = "../pages/mobile/{$page}/{$page}.php";
-	}
-} else {
-	$viewPath = "../pages/{$page}.php";
-	if(!file_exists($viewPath)){
-		$viewPath = "../pages/{$page}/{$page}.php";
-	}
-}*/
 
 $isWidget = false;
 
