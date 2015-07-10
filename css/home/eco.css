@@ -1128,7 +1128,6 @@ form .form-control:focus {
   box-shadow: 3px 3px 5px 0px rgba(50, 50, 50, 0.75);
 }
 .jumbotron{
-	width:90%;
 	padding-top:150px;
 	padding-bottom:100px;
 	background:none;
@@ -1141,10 +1140,9 @@ form .form-control:focus {
   color: #FFF;
   line-height: 65px;
   font-size: 55px;
-  text-transform: uppercase;
 }
 .j-bg{
-     background: linear-gradient( rgba(255, 0, 0, 0.5), rgba(255, 0, 0, 0.5) ), url('../../../../images/applause1.png');
+     background: linear-gradient( rgba(255, 0, 0, 0.5), rgba(255, 0, 0, 0.5) ), url('../../../../images/restaurant.jpg');
      background-size: cover; 
      background-repeat: no-repeat;
 }
