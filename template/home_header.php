@@ -35,17 +35,17 @@
                     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 
                         <ul class="nav navbar-nav navbar-right">
-                            <li><a class="hidden-sm" href="#about">how it works</a>
+                            <li><a class="hidden-sm" href="#about"><?php _e('how it works'); ?></a>
                             </li>
-                            <li><a class="hidden-sm" href="#features">get feedback</a>
+                            <li><a class="hidden-sm" href="#features"><?php _e('get feedback'); ?></a>
                             </li>
-                            <li><a class="hidden-sm" href="#reviews">get results</a>
+                            <li><a class="hidden-sm" href="#reviews"><?php _e('get results'); ?></a>
                             </li>
-                            <li><a class="hidden-sm" href="#screens">pricing</a>
+                            <li><a class="hidden-sm" href="#screens"><?php _e('pricing'); ?></a>
                             </li>
-                            <li><a class="getApp" href="/signup">Get Started</a>
+                            <li><a class="getApp" href="/signup"><?php _e('Get Started'); ?></a>
                             </li>
-                            <li><a href="/login">Login</a>
+                            <li><a href="/login"><?php _e('Login'); ?></a>
                             </li>
                         </ul>
                     </div>
@@ -64,14 +64,14 @@
 					
 					<div class="col-md-8">
 						<div class="large_white_bold">
-                           <h1>Transform your business with <span class="highlighted">valuable feedback</span></h1>
+                           <h1><?php echo sprintf(__('Transform your restaurant with %s'), '<span class="highlighted">'.__('VALUABLE FEEDBACK').'</span>'); ?></h1>
                         </div>
                         <div class="large_white_light">
-                           <p>Providing businesses with actionable data and their customers with an integrated and seamless feedback giving experience.</p>
+                           <p><?php _e('Providing businesses with actionable data and their customers with an integrated and seamless feedback giving experience.'); ?></p>
                         </div>
 
                         <div class="tp-caption">
-                            <a href="/signup/" class="btn btn-default btn-lg">Get Started</a>
+                            <a href="/signup/" class="btn btn-default btn-lg"><?php _e('Get Started'); ?></a>
                         </div>
 			   		</div>
 			   		
