@@ -63,7 +63,7 @@ $this->addResource("<meta property='og:description' content='Give {$name} Feedba
 	</div>
 </div>
 
-<div  class="aspect-container container">
+<div id="aspects" class="aspect-container container">
 	<?php
 	$postQuery=Database::query("SELECT aspects.ID, aspect_type.Title, aspect_type.Description as Description FROM aspects LEFT JOIN aspect_type ON aspect_type.ID = aspects.AspectTypeID WHERE aspects.OwnerID = {$id} AND aspects.`Active` = 1 ORDER BY aspects.ID DESC");
 	if($postQuery !== false && $postQuery->num_rows > 0){
@@ -80,4 +80,8 @@ $this->addResource("<meta property='og:description' content='Give {$name} Feedba
 		<!-- <div class="help"><i class="fa fa-question-circle"></i> Help</div> -->
 		<div class="submit" id='imdone'><i class="fa fa-check"></i> <?php _e("I'm Done"); ?></div>
 	</div>
+</div>
+
+<div id="email_connect"  class="aspect-container container" style="display: none;">
+	<?php $this->add(new View('../widgets/profile/email_connect.php', array('user_id' => $user_id))); ?>
 </div>

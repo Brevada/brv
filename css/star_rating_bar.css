@@ -1,7 +1,6 @@
 .star {
 	width: 20%; /*40x40*/
-	height:40px;
-	max-height:40px;
+	max-height:60px;
 	margin: 0px;
 	display: inline-block;
 	border: 0px;

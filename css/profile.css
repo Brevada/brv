@@ -66,7 +66,7 @@ body{
 	padding: 10px 20px;
 	color: #454545;
 	font-size: 25px;
-	border: 1px solid #8f1b1b;
+	border: 1px solid #FFF;
 	opacity: 0.9;
 	cursor: pointer;
 
@@ -80,4 +80,18 @@ body{
 .bottom-spacer{
 	width: 100%;
 	height: 75px;
+}
+#communicate_form{
+	padding: 35px 15px;
+	background: #454545;
+	color: #FEFEFE;
+}
+.opt-out {
+	color: #FFF;
+	font-size: 12px;
+	text-decoration: none;
+	cursor: pointer;
+}
+.opt-out:hover {
+	color: #BBB;
 }
