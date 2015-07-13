@@ -2,14 +2,8 @@
 $this->IsScript = true;
 date_default_timezone_set('America/New_York');
 
-/* TODO: Test insert_rating.php */
-
 $rating = Brevada::validate(Brevada::FromPOSTGET('value'), VALIDATE_DATABASE);
 $aspectID = @intval(Brevada::FromPOSTGET('post_id'));
-
-/*
-	Removed reviewers. - Not a good way to test for repeat users.
-*/
 
 $geo = Geography::GetGeo();
 
