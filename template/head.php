@@ -1,3 +1,5 @@
+<meta charset="UTF-8" />
+
 <meta name="description" content="The feedback platform that makes getting customer feedback simple and effective." />
 <meta name="keywords" content="feedback, brevada, get feedback, online survey, survey software, bravada, feedback survey, customer response, business metrics, get customer opinions, how is my business doing" />
 

@@ -20,6 +20,8 @@ $this->addResource('/js/home/rs-plugin/js/jquery.themepunch.revolution.min.js');
 $this->addResource('/js/home/waypoints.min.js');
 $this->addResource('/js/home/scripts.js');
 
+$this->addResource('/js/home/collapse.min.js'); /* bootstrap is either missing the collapse function or another script is overwriting it. */
+
 
 $this->add(new View('../template/home_header.php'));
 ?>

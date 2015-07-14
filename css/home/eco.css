@@ -69,7 +69,7 @@ header .navbar-default ul.navbar-nav li a {
 }
 header .navbar-default ul.navbar-nav li a:after {
   content: '';
-  width: 32px;
+  width: 38px;
   background: none;
   height: 4px;
   position: absolute;
@@ -722,10 +722,11 @@ header .navbar-default ul.navbar-nav li a {
 header .navbar-default ul.navbar-nav li a.getApp {
   color: #FFF;
   background: #FF2B2B;
+  border: 1px solid #FF2B2B;
 }
 header .navbar-default ul.navbar-nav li a.getApp:hover {
   color: #FF2B2B;
-  background: #ffffff;
+  background: #FFFFFF;
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#ffffff, endColorstr=#cccccc, GradientType=1);
   /* IE6-9 fallback on horizontal gradient */
   -webkit-transition: all 0.25s ease-in-out;
@@ -735,7 +736,7 @@ header .navbar-default ul.navbar-nav li a.getApp:hover {
   transition: all 0.25s ease-in-out;
 }
 header .navbar-default ul.navbar-nav li a:hover {
-  color: #ffffff;
+  color: #dedede;
   -webkit-transition: all 0.25s ease-in-out;
   -moz-transition: all 0.25s ease-in-out;
   -ms-transition: all 0.25s ease-in-out;
@@ -988,7 +989,7 @@ footer .rights a {
   text-decoration: none;
 }
 .navbar-toggle {
-  background-color: #CCC;
+  background-color: #EEE;
   border: 1px solid rgba(0, 0, 0, 0);
 }
 .btn.btn-primary {
@@ -1034,7 +1035,10 @@ form .form-control:focus {
   }
   header .navbar-default ul.navbar-nav li a {
     color: #ffffff;
-    border-bottom: 1px solid #ffffff;
+    border-bottom: 1px solid #ffffff !important;
+  }
+  header .navbar-default ul.navbar-nav li:last-child a {
+	border-bottom: 0 !important;
   }
   header .navbar-default ul.navbar-nav li a.getApp:hover {
     color: #ffffff !important;
@@ -1154,7 +1158,7 @@ form .form-control:focus {
 }
 
 .j-bg{
-     background: linear-gradient( rgba(255, 0, 0, 0.5), rgba(255, 0, 0, 0.5) ), url('../../../../images/restaurant.jpg');
+     background: linear-gradient( rgba(255, 0, 0, 0.5), rgba(255, 0, 0, 0.5) ), url('../../images/restaurant-lq.jpg');
      background-size: cover; 
      background-repeat: no-repeat;
 }
