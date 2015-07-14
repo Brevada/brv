@@ -36,6 +36,16 @@ $(document).ready(function(){
 		updateTokens();
 	});
 	
+	$('#chkAgree').change(function(){
+		if(this.checked){
+			$('#submit').removeClass('disabled');
+			$('#submit').removeAttr('disabled');
+		} else {
+			$('#submit').addClass('disabled');
+			$('#submit').attr('disabled', true);
+		}
+	});
+	
 });
 
 function updateTokens(){

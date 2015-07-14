@@ -54,8 +54,9 @@ $existing_address = isset($_GET['email']) && $_GET['email'] != 'false';
 			<input class="in" id="password1" type="password" name="password"  placeholder="<?php _e('Password'); ?>" style="color:#555;"/>
 			<input class="in" id="password2" type="password" name="password2" placeholder="<?php _e('Retype Password'); ?>"  style="color:#555;" />
 			<input class="in" type="text" name="name" placeholder="<?php _e('Your Company Name'); ?>"  style="background:#eee; opacity:1;">
+			<br /><p class='terms'><input type='checkbox' name='chkAgree' id='chkAgree' />I have read and agree to the <a href='#' target='_blank'>Terms &amp; Conditions</a>.</p><br />
 			<input type="hidden" name="level" value="<?php echo $level; ?>" />
-			<input type='button' id="back" class="button4" value='<?php _e('Back'); ?>' /><input id="submit" class="button4" type="submit" name="submit" value="<?php _e('Sign Up'); ?>" />
+			<input type='button' id="back" class="button4" value='<?php _e('Back'); ?>' /><input id="submit" class="button4 disabled" type="submit" name="submit" value="<?php _e('Sign Up'); ?>" disabled />
 		</div>
 	</form>
 	<br />
