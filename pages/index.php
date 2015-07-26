@@ -87,7 +87,7 @@ $this->add(new View('../template/home_header.php'));
                     <div class="side col-md-4 col-sm-4 scrollpoint sp-effect1">
                         
                         <div class="media feature">
-                            <a class="pull-right" href="#">
+                            <a class="pull-right">
                                 <i class="fa fa-envelope fa-2x"></i>
                             </a>
                             <div class="media-body">
@@ -97,7 +97,7 @@ $this->add(new View('../template/home_header.php'));
                         </div>
                         
                         <div class="media feature ">
-                            <a class="pull-right" href="#">
+                            <a class="pull-right">
                                 <i class="fa fa-cogs fa-2x"></i>
                             </a>
                             <div class="media-body">
@@ -106,7 +106,7 @@ $this->add(new View('../template/home_header.php'));
                             </div>
                         </div>
                         <div class="media eature">
-                            <a class="pull-right" href="#">
+                            <a class="pull-right">
                                 <i class="fa fa-users fa-2x"></i>
                             </a>
                             <div class="media-body">
@@ -124,7 +124,7 @@ $this->add(new View('../template/home_header.php'));
                     <div class="side col-md-4 col-sm-4 scrollpoint sp-effect2">
                         
                         <div class="media feature">
-                            <a class="pull-left" href="#">
+                            <a class="pull-left">
                                 <i class="fa fa-comments fa-2x"></i>
                             </a>
                             <div class="media-body">
@@ -133,7 +133,7 @@ $this->add(new View('../template/home_header.php'));
                             </div>
                         </div>
                         <div class="media feature">
-                            <a class="pull-left" href="#">
+                            <a class="pull-left">
                                 <i class="fa fa-calendar fa-2x"></i>
                             </a>
                             <div class="media-body">
@@ -142,7 +142,7 @@ $this->add(new View('../template/home_header.php'));
                             </div>
                         </div>
                         <div class="media active feature">
-                            <a class="pull-left" href="#">
+                            <a class="pull-left">
                                 <i class="fa fa-plus fa-2x"></i>
                             </a>
                             <div class="media-body">
@@ -165,82 +165,6 @@ $this->add(new View('../template/home_header.php'));
                     <img class="focus-image" src="/images/macbook.png" alt="">
                 </div>
                 <div class="row">
-     <!--                <div class="col-md-10 col-md-push-1 scrollpoint sp-effect3">
-                        <div class="review-filtering">
-                            <div class="review">
-                                <div class="row">
-                                    <div class="col-md-2">
-                                        <div class="review-person">
-                                            <img src="http://api.randomuser.me/portraits/women/94.jpg" alt="" class="img-responsive">
-                                        </div>
-                                    </div>
-                                    <div class="col-md-10">
-                                        <div class="review-comment">
-                                            <h3>“Brevada offers incredible insight into my business and allows me to gather feedback in an attractive and classy fashion.”</h3>
-                                            <p>
-                                                - Krin Fox
-                                                <span>
-                                                    <i class="fa fa-star fa-lg"></i>
-                                                    <i class="fa fa-star fa-lg"></i>
-                                                    <i class="fa fa-star fa-lg"></i>
-                                                    <i class="fa fa-star fa-lg"></i>
-                                                    <i class="fa fa-star-half-o  fa-lg"></i>
-                                                </span>
-                                            </p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="review rollitin">
-                                <div class="row">
-                                    <div class="col-md-2">
-                                        <div class="review-person">
-                                            <img src="http://api.randomuser.me/portraits/men/70.jpg" alt="" class="img-responsive">
-                                        </div>
-                                    </div>
-                                    <div class="col-md-10">
-                                        <div class="review-comment">
-                                            <h3>“Oleaose Is The Best Stable, Fast App I Have Ever Experienced”</h3>
-                                            <p>
-                                                - Theodore Willis
-                                                <span>
-                                                    <i class="fa fa-star fa-lg"></i>
-                                                    <i class="fa fa-star fa-lg"></i>
-                                                    <i class="fa fa-star fa-lg"></i>
-                                                    <i class="fa fa-star-half-o fa-lg"></i>
-                                                    <i class="fa fa-star-o fa-lg"></i>
-                                                </span>
-                                            </p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="review rollitin">
-                                <div class="row">
-                                    <div class="col-md-2">
-                                        <div class="review-person">
-                                            <img src="http://api.randomuser.me/portraits/men/93.jpg" alt="" class="img-responsive">
-                                        </div>
-                                    </div>
-                                    <div class="col-md-10">
-                                        <div class="review-comment">
-                                            <h3>“Keep It Up Guys Your Work Rules, Cheers :)”</h3>
-                                            <p>
-                                                - Ricky Grant
-                                                <span>
-                                                    <i class="fa fa-star fa-lg"></i>
-                                                    <i class="fa fa-star fa-lg"></i>
-                                                    <i class="fa fa-star fa-lg"></i>
-                                                    <i class="fa fa-star-half-o fa-lg"></i>
-                                                    <i class="fa fa-star-o fa-lg"></i>
-                                                </span>
-                                            </p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div> -->
                      <div class="feature col-md-4">
                             <a class="icon" href="#">
                                 <i class="fa fa-map-marker fa-2x"></i>

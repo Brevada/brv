@@ -2,6 +2,10 @@ $(document).ready(function(){
 	$("#reset").click(function() { 
 		location.reload(true);
 	});	
+
+	$("#finished").click(function() { 
+		finish();
+	});	
 	
 	$('#emailTie').on('keyup click focus', function(e){
 		var value = $(this).val();
@@ -34,7 +38,7 @@ $(document).ready(function(){
 		var email = $('#communicate_form input[name="emailTie"]').val();
 		if(typeof email !== 'undefined' && typeof uid !== 'undefined' && email.length > 0){
 			$.post('/overall/insert/insert_emailTie.php', { 'user_id' : uid, 'emailTie' : email }, function(data){
-				location.reload(true);
+				finish();
 			});
 		}
 	});
@@ -42,6 +46,10 @@ $(document).ready(function(){
 
 function clearContents(element) {
 	element.value = '';
+}
+
+function finish() {
+	$('.thanks-header h2, #communicate_form').fadeOut(100);
 }
 
 function validateEmail($email) {

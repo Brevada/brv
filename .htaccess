@@ -14,4 +14,4 @@ RewriteEngine On
 RewriteBase /
 RewriteRule ^$ framework/Controller.php?page=index [NC,L]
 RewriteRule ^(secure/.*)$ framework/Controller.php?secure=1&page=$1 [NC,L]
-RewriteRule ^(?!user_data|framework|js|pages|css|images|widgets|favicon\.ico)\b([^\\\.*]+\/?[a-z-A-Z0-9]+\.?[a-zA-Z0-9]+)?\/?$ framework/Controller.php?page=$1 [NC,L,QSA] #add P for proxy
+RewriteRule ^(?!user_data|framework|js|pages|css|images|widgets|files|favicon\.ico)\b([^\\\.*]+\/?[a-z-A-Z0-9]+\.?[a-zA-Z0-9]+)?\/?$ framework/Controller.php?page=$1 [NC,L,QSA] #add P for proxy

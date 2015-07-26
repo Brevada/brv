@@ -552,17 +552,15 @@ section::after {
   font-size: 45px;
   font-weight: 400;
 }
+.tp-caption a {
+  margin: 0px 10px 0px 0px;
+}
 .large_white_light {
   font-size: 30px;
   font-weight: 400;
   font-weight: 300;
 }
 .btn {
-  -webkit-border-radius: 3em;
-  -moz-border-radius: 3em;
-  -ms-border-radius: 3em;
-  -o-border-radius: 3em;
-  border-radius: 3em;
   -webkit-box-shadow: none;
   -moz-box-shadow: none;
   box-shadow: none;
@@ -1002,8 +1000,8 @@ footer .rights a {
   border-color: #FF2B2C;
 }
 .btn.btn-primary.inverse {
-  color: #FF2B2B;
-  border-color: #FF2B2B;
+  color: #FFF;
+  border-color: #FFF;
 }
 .btn.btn-primary.inverse:hover {
   color: #ffffff;
@@ -1149,7 +1147,7 @@ form .form-control:focus {
 .jumbotron h1{
   color: #FFF;
   line-height: 65px;
-  font-size: 3.438em; /* old: 55px; */
+  font-size: 4em; /* old: 55px; */
 }
 
 @media screen and (max-width: 640px) {
@@ -1158,7 +1156,7 @@ form .form-control:focus {
 }
 
 .j-bg{
-     background: linear-gradient( rgba(255, 0, 0, 0.5), rgba(255, 0, 0, 0.5) ), url('../../images/restaurant-lq.jpg');
+     background: linear-gradient( rgba(255, 0, 0, 0.7), rgba(255, 0, 0, 0.7) ), url('../../images/restaurant-lq.jpg');
      background-size: cover; 
      background-repeat: no-repeat;
 }

@@ -3,9 +3,12 @@ $session_id = session_id();
 $user_id = $this->getParameter('user_id');
 $this->addResource('/js/communicate_pod.js');
 ?>
-	<h2>
-		<b>Thank's for the feedback!</b> Please provide your email address so we can stay in touch.
-	</h2>
+
+<div class="thanks-header">
+	<h1>Thank's for the feedback!</h1> 
+	<h2>Let's stay in touch.</h2>
+</div>
+
 <div id="communicate_form">
 	 	<input type="hidden" name="user_id" value="<?php echo $user_id; ?>" />
 	 	<div class="input-group input-group-lg">
@@ -16,5 +19,9 @@ $this->addResource('/js/communicate_pod.js');
 		        <input id="email-submit" class="btn btn-success disabled" type="submit" value="Go" />
 		    </span>
 	 	</div>
-	 <a id="reset" class="opt-out">I'd rather not</a>
+	 <div id="finished" class="btn opt-out">I'd rather not.</div>
 </div>
+
+ <div id="reset" class="refresh">
+ 	<i class="fa fa-refresh"></i>
+ </div>

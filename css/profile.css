@@ -82,16 +82,36 @@ body{
 	height: 75px;
 }
 #communicate_form{
-	padding: 35px 15px;
-	background: #454545;
+	padding: 15px 15px;
 	color: #FEFEFE;
 }
-.opt-out {
-	color: #FFF;
-	font-size: 12px;
+.opt-out{
+	color: #666666;
+	font-size: 14px;
 	text-decoration: none;
 	cursor: pointer;
+	margin-top: 10px;
+	padding: 3px;
 }
-.opt-out:hover {
-	color: #BBB;
+.opt-out:hover{
+	color: #454545;
+}
+.thanks-header{
+	width: 100%;
+	padding: 15px 0px;
+	text-align: center;
+	color: #454545;
+}
+.thanks-header h1{
+	font-size: 30px;
+	font-weight: bold;
+}
+.thanks-header h2{
+	font-size: 20px;
+}
+.refresh {
+	width: 100%;
+	text-align: center;
+	color: #EEE;
+	margin: 10px 0px 0px 0px;
 }

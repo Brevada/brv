@@ -2,6 +2,7 @@
 $this->addResource('/css/layout.css');
 $this->addResource('/css/dashboard.css');
 $this->addResource('/js/dashboard.js');
+$this->addResource('/js/dashboard-slide.js');
 
 $this->addResource('/css/brevada.tooltip.css');
 $this->addResource('/js/brevada.tooltip.js');
@@ -133,12 +134,24 @@ $areasOfLeastConcern = array_diff($areasOfLeastConcern, $areasOfFocus);
 					<div class='icon-subtext'><?php _e('QR Code'); ?></div>
 				</div>
 			</a>
+			<a href="#" id="email-display" class="slide-down-trigger">
+				<div class='pull-left icon-button'>
+					<i class='fa fa-envelope-o'></i>
+					<div class='icon-subtext'><?php _e('Email List'); ?></div>
+				</div>
+			</a>
 	</div>
 
 </div>
 
 <div class="spacer">
 
+</div>
+
+<div id="slide-down" class="slide-down">
+	<div id="email-display-holder">
+		<?php $this->add(new View('../widgets/dashboard/email_display.php', array('user_id' => $user_id))); ?>
+	</div>
 </div>
 
 <?php

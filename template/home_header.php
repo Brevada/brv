@@ -72,6 +72,7 @@
 
                         <div class="tp-caption">
                             <a href="/signup/" class="btn btn-default btn-lg">Get Started</a>
+                            <a target="_BLANK" href="/files/BrevadaPressPack.pdf" class="btn btn-primary inverse btn-lg">Download Press Pack</a>
                         </div>
 			   		</div>
 			   		

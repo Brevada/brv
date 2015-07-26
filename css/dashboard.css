@@ -393,3 +393,47 @@ div.bottom-bar {
     height: 15%;
     left: 30%;
 }
+
+/* Slide Down */
+
+div.slide-down {
+    width: 100%;
+    padding:20px;
+    background: #FFF;
+    display: none;
+}
+div.slide-down .slide-down-button {
+    display: inline-block;
+    text-decoration: underline;
+    cursor: pointer;
+    margin: 0px 10px 0px 0px;
+}
+div.email-display-container {
+    display: none;
+}
+div.email-display-container .email {
+    display: inline-block;
+    margin: 5px 10px 5px 0px;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+    overflow: hidden;
+    border: 1px solid #DDD;
+}
+div.email-display-container .email .text{
+    display: inline-block;
+    color: #454545;
+    background: #FFF;
+    padding: 10px;
+}
+div.email-display-container .email .rating{
+    display: inline-block;
+    padding: 10px;
+    color: #FFF;
+    text-align: center;
+    width: 50px;
+    font-weight: bold;
+}
+
+
+
