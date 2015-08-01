@@ -5,10 +5,6 @@ $this->setTitle('Brevada - Login');
 $this->addResource('/css/layout.css');
 $this->addResource('/css/login.css');
 
-if(!isset($_SESSION['user_id'])){
-	$_SESSION['user_id']='none';
-}
-
 if(Brevada::IsMobile()){
 	$this->addResource("<meta name='viewport' content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0'/>", true, true);
 }

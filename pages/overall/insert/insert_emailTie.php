@@ -3,7 +3,7 @@ $this->IsScript = true;
 date_default_timezone_set('America/New_York');
 
 $email = Brevada::validate(Brevada::FromPOSTGET('emailTie'), VALIDATE_DATABASE);
-$userID = @intval(Brevada::FromPOSTGET('user_id'));
+$storeID = @intval(Brevada::FromPOSTGET('store_id'));
 
 if(!isset($email) || !filter_var($email, FILTER_VALIDATE_EMAIL)){ exit('Invalid'); }
 
@@ -21,8 +21,8 @@ $authUserAgent = TABLET_USERAGENT;
 
 $userExists = false;
 
-if(($check = Database::prepare("SELECT users.id FROM users WHERE users.id = ? LIMIT 1")) !== false){
-	$check->bind_param('i', $userID);
+if(($check = Database::prepare("SELECT stores.id FROM stores WHERE stores.id = ? LIMIT 1")) !== false){
+	$check->bind_param('i', $storeID);
 	if($check->execute()){
 		$check->store_result();
 		if($check->num_rows > 0){
@@ -31,6 +31,8 @@ if(($check = Database::prepare("SELECT users.id FROM users WHERE users.id = ? LI
 		}
 	}
 }
+
+$sessionCode = isset($_SESSION['SessionCode']) ? $_SESSION['SessionCode'] : '';
 
 if($userExists && ($check = Database::prepare("SELECT `subscriptions`.id FROM `subscriptions` WHERE `subscriptions`.EmailAddress = ? LIMIT 1")) !== false){
 	$check->bind_param('s', $email);
@@ -49,11 +51,24 @@ if($userExists && ($check = Database::prepare("SELECT `subscriptions`.id FROM `s
 					/* Unique public identifier (used for unsubscribing) */
 					$unique = strval(bin2hex(openssl_random_pseudo_bytes(10)));
 					
-					if($userAgentID > 0){
-						if(($stmt = Database::prepare("INSERT INTO `subscriptions` (`UserID`, `Date`, `EmailAddress`, `IPAddress`, `UserAgentID`, `Country`, `Province`, `City`, `UniqueCode`) VALUES (?, NOW(), ?, ?, ?, ?, ?, ?, ?)")) !== false){
-							$stmt->bind_param('ississss', $userID, $email, $ipAddress, $userAgentID, $country, $province, $city, $unique);
-							$stmt->execute();
-							$stmt->close();
+					if(($stmt = Database::prepare("INSERT INTO `locations` (`Country`, `Province`, `City`) VALUES (?, ?, ?)")) !== false){
+						$locationID = -1;
+						$stmt->bind_param('sss', $country, $province, $city);
+						if($stmt->execute()){
+							$locationID = $stmt->insert_id;
+						}
+						$stmt->close();
+						
+						if($userAgentID > 0 && $locationID > 0){
+							if(($stmt = Database::prepare("INSERT INTO `subscriptions` (`StoreID`, `Date`, `EmailAddress`, `IPAddress`, `UserAgentID`, `LocationID`, `UniqueCode`, `SessionCode`) VALUES (?, NOW(), ?, ?, ?, ?, ?, ?)")) !== false){
+								$stmt->bind_param('issiiss', $storeID, $email, $ipAddress, $userAgentID, $locationID, $unique, $sessionCode);
+								$stmt->execute();
+								$stmt->close();
+								
+								if(isset($_SESSION['SessionCode'])){
+									unset($_SESSION['SessionCode']);
+								}
+							}
 						}
 					}
 				}

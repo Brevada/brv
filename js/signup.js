@@ -1,75 +1,155 @@
+var scannedWebsite = categoryChanged = false;
+var website = '';
+
 $(document).ready(function(){
-	$('#next').click(function(e){
-		e.preventDefault();
-		$('#part1').fadeOut(0);
-		$('#part2').fadeIn(0);
-		return false;
+	
+	$('.in').keypress(function(){
+		if($(this).hasClass('invalid')){
+			$(this).removeClass('invalid');
+		}
 	});
 	
-	$('#back').click(function(e){
-		e.preventDefault();
-		$('#part2').fadeOut(0);
-		$('#part1').fadeIn(0);
-		return false;
+	$('div.submit-next').click(function(e){
+		advancePart($(this));
+	});
+	
+	$('div.submit-back').click(function(e){
+		var $self = $(this);
+		$self.parent().fadeOut(100, function(){
+			$self.parent().prev('div').fadeIn();
+		});
 	});
 	
     $('#logo').each(function(i) {
         if (this.complete) {
-            $('#signup_box').fadeIn(2000, function(){
-				
-			});
+            $('#signup_box').fadeIn(2000);
         } else {
             $(this).load(function() {
-				$('#signup_box').fadeIn(2000, function(){
-					
-				});
+				$('#signup_box').fadeIn(2000);
             });
         }
     });
 	
-	$('div.tokens > div.token').click(function(){
-		if($(this).hasClass('selected')){
-			$(this).removeClass('selected');
-		} else {
-			$(this).addClass('selected');
-		}
-		updateTokens();
-	});
+	$('div.token-aspects div.tokens > div.token').click(tokenClicked);
 	
 	$('#chkAgree').change(function(){
 		if(this.checked){
 			$('#submit').removeClass('disabled');
-			$('#submit').removeAttr('disabled');
 		} else {
 			$('#submit').addClass('disabled');
-			$('#submit').attr('disabled', true);
 		}
+	});
+	
+	$('#ddCategory').change(function(){
+		categoryChanged = true;
 	});
 	
 });
 
-function updateTokens(){
+function tokenClicked(){
+	if($(this).hasClass('selected')){
+		$(this).removeClass('selected');
+	} else {
+		$(this).addClass('selected');
+	}
+	updateTokens($(this).parent());
+}
+
+function updateTokens(container){
 	var tokens = [];
-	$('div.tokens > div.token').each(function(){
+	container.children('div.token').each(function(){
 		if($(this).hasClass('selected')){
 			tokens.push($(this).data('tokenid'));
 		}
 	});
-	$('#tokens').val(tokens.join(','));
+	container.children('input.token-input').val(tokens.join(','));
 }
 
-window.onload=function () {
-	$('#password1').change(validatePassword);
-	$('#password2').change(validatePassword);
+function validateForm(){
+	if($('#password1').val().length == 0 || $('#password1').val() != $('#password2').val()){
+		$('#password1').addClass('invalid');
+		$('#password2').addClass('invalid');
+		return false;
+	}
+	
+	return true;
 }
 
-function validatePassword(){
-	var pass1=$("#password2").val();
-	var pass2=$("#password1").val();
-	if(pass1!=pass2){
-		document.getElementById("password2").setCustomValidity("Passwords Don't Match");
+function resetNext($self){
+	var icon = $self.children('i').removeClass('fa-spin').removeClass('fa-spinner').addClass('fa-chevron-right')[0].outerHTML;
+	$self.html("Next " + icon).removeClass('button-loading');
+}
+
+function advancePart($self){
+	if($self.hasClass('disabled') || $self.children('i').hasClass('fa-spinner')) return;
+	
+	if($self.parent().next('div').length == 0){
+		if(validateForm()){
+			$('#frmSignup').submit();
+		}
 	} else {
-		document.getElementById("password2").setCustomValidity('');  
-		//empty string means no validation error
+		var partN = $self.parent().parent().find('div.part').index($self.parent());
+		
+		if(partN == 0 && $('#txtWebsite').val().length > 0 && (!scannedWebsite || $('#txtWebsite').val() != website)){
+			scannedWebsite = true;
+			website = $('#txtWebsite').val();
+			var icon = $self.children('i').removeClass('fa-chevron-right').addClass('fa-spinner').addClass('fa-spin')[0].outerHTML;
+			$self.html("Loading " + icon).addClass('button-loading');
+			
+			$.getJSON('/home/crawl.php', { website : $('#txtWebsite').val() }, function(data){
+				if(data.hasOwnProperty('error')){
+					$self.parent().fadeOut(100, function(){
+						resetNext($self);
+						$self.parent().next('div').fadeIn();
+					});
+				} else {
+					$('#categoryDetection').text(data.category.title);
+					$('#ddCategory').val(data.category.id);
+					
+					$('.not-crawled').hide();
+					$('.crawled').show();
+					
+					$.post('/home/keywords.php', { category: data.category.id }, function(cont){
+						$('.token-keywords > .tokens').html(cont);
+						
+						$('div.token-keywords div.tokens > div.token').click(tokenClicked);
+						
+						for(var i = 0; i < data.keywords.length; i++){
+							$('.token-keywords > .tokens > div[data-tokenid="'+(data.keywords[i])+'"]').click();
+						}
+						updateTokens($('div.token-keywords'));
+						
+						$self.parent().fadeOut(100, function(){
+							resetNext($self);
+							$self.parent().next('div').fadeIn();
+						});
+					});
+				}
+			});
+		} else if(partN == 1 && categoryChanged){
+			categoryChanged = false;
+			
+			var icon = $self.children('i').removeClass('fa-chevron-right').addClass('fa-spinner').addClass('fa-spin')[0].outerHTML;
+			$self.html("Loading " + icon).addClass('button-loading');
+			
+			$.post('/home/keywords.php', { category: $('#ddCategory').val() }, function(cont){
+				$('.token-keywords > .tokens').html(cont);
+				
+				$('div.token-keywords div.tokens > div.token').click(tokenClicked);
+				
+				updateTokens($('div.tokens-keywords'));
+				
+				$self.parent().fadeOut(100, function(){
+					$self.parent().next('div').fadeIn();
+					
+					resetNext($self);
+				});
+			});
+			
+		} else {
+			$self.parent().fadeOut(100, function(){
+				$self.parent().next('div').fadeIn();
+			});
+		}
 	}
 }

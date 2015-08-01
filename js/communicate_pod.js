@@ -34,10 +34,10 @@ $(document).ready(function(){
 	});
 	
 	$('#email-submit').click(function(){
-		var uid = $('#communicate_form input[name="user_id"]').val();
+		var uid = $('#communicate_form input[name="store_id"]').val();
 		var email = $('#communicate_form input[name="emailTie"]').val();
 		if(typeof email !== 'undefined' && typeof uid !== 'undefined' && email.length > 0){
-			$.post('/overall/insert/insert_emailTie.php', { 'user_id' : uid, 'emailTie' : email }, function(data){
+			$.post('/overall/insert/insert_emailTie.php', { 'store_id' : uid, 'emailTie' : email }, function(data){
 				finish();
 			});
 		}
@@ -53,6 +53,6 @@ function finish() {
 }
 
 function validateEmail($email) {
-  var emailReg = /^([\w-\.]+@([\w-]+\.)+[\w-]{2,4})?$/;
+  var emailReg = /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
   return emailReg.test( $email );
 }

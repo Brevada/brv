@@ -8,10 +8,8 @@ $post_id = $r['ID'];
 $post_name = $r['Title'];
 $post_description = $r['Description'];
 
-$isMobile = $this->getParameter('mobile');
-$isMobile = empty($isMobile) ? '' : '_mobile';
-
-$ipAddress = $this->getParameter('ip');
+$geo = Geography::GetGeo();
+$ipAddress = $geo['ip'];
 
 $userAgent = $_SERVER['HTTP_USER_AGENT'];
 
@@ -45,7 +43,7 @@ if(($check = Database::prepare("SELECT `feedback`.id FROM `feedback` LEFT JOIN u
 			<?php				
 			if(!$alreadyRated){
 			?>
-			<div><?php $this->add(new View('../widgets/profile/star_rating_bar.php', array('row' => $r, 'id' => $this->getParameter('id')))); ?></div>
+			<div><?php $this->add(new View('../widgets/profile/star_rating_bar.php', array('row' => $r))); ?></div>
 			<br style="clear: both;" />
 			<div class="rate-description">
 				<div class="pull-left"><?php _e('Worst'); ?></div>
