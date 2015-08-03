@@ -30,7 +30,7 @@ if(!Permissions::has(Permissions::VIEW_ADMIN)){ Brevada::Redirect('/404'); }
 		$date = date('d-m-Y', intval($row['Date']));
 		$companyID = $row['CompanyID'];
 		$companyName = $row['CompanyName'];
-		$value = $row['Value'];
+		$value = number_format(floatval($row['Value'])/100, 2, '.');
 		$product = $row['Product'];
 		$status = $row['Confirmed'] == 1 ? 'Confirmed' : 'Pending';
 		$paypalID = $row['PaypalTransactionID'];

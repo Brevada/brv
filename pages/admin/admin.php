@@ -24,6 +24,10 @@ $this->addResource('/js/admin.js');
 */
 
 $show = Brevada::FromGET('show');
+if($show != 'overview' && $show != 'companies' && $show != 'stores' && $show != 'accounts' && $show != 'tablets' && $show != 'finance' && $show != 'promotions' && $show != 'newclient' && $show != 'salesfaq'){
+	$show = 'overview';
+}
+
 ?>
 <nav class="navbar navbar-inverse navbar-fixed-top">
   <div class="container-fluid">
@@ -51,34 +55,36 @@ $show = Brevada::FromGET('show');
   <div class="row">
     <div class="col-sm-3 col-md-2 sidebar">
       <ul class="nav nav-sidebar">
-        <li<?php echo empty($show) || $show == 'overview' ? ' class="active" ' : ''; ?>><a href="?show=overview">Overview<?php echo empty($show) || $show == 'overview' ? ' <span class="sr-only">(current)</span>' : ''; ?></a></li>
-        <li<?php echo $show == 'companies' ? ' class="active" ' : ''; ?>><a href="?show=companies">Companies<?php echo $show == 'companies' ? ' <span class="sr-only">(current)</span>' : ''; ?></a></li>
-        <li<?php echo $show == 'stores' ? ' class="active" ' : ''; ?>><a href="?show=stores">Stores<?php echo $show == 'stores' ? ' <span class="sr-only">(current)</span>' : ''; ?></a></li>
-        <li<?php echo $show == 'accounts' ? ' class="active" ' : ''; ?>><a href="?show=accounts">Accounts<?php echo $show == 'accounts' ? ' <span class="sr-only">(current)</span>' : ''; ?></a></li>
-		<li<?php echo $show == 'tablets' ? ' class="active" ' : ''; ?>><a href="?show=tablets">Tablets<?php echo $show == 'tablets' ? ' <span class="sr-only">(current)</span>' : ''; ?></a></li>
-		<li<?php echo $show == 'finance' ? ' class="active" ' : ''; ?>><a href="?show=finance">Finance<?php echo $show == 'finance' ? ' <span class="sr-only">(current)</span>' : ''; ?></a></li>
-		<li<?php echo $show == 'promotions' ? ' class="active" ' : ''; ?>><a href="?show=promotions">Promo Codes<?php echo $show == 'promotions' ? ' <span class="sr-only">(current)</span>' : ''; ?></a></li>
+        <li data-page='overview'><a href="?show=overview">Overview</a></li>
+      </ul>
+      <ul class="nav nav-sidebar">
+        <li data-page='companies'><a href="?show=companies">Companies</a></li>
+        <li data-page='stores'><a href="?show=stores">Stores</a></li>
+        <li data-page='accounts'><a href="?show=accounts">Accounts</a></li>
+      </ul>
+      <ul class="nav nav-sidebar">
+		<li data-page='tablets'><a href="?show=tablets">Tablets</a></li>
+		<li data-page='finance'><a href="?show=finance">Finance</a></li>
+		<li data-page='promotions'><a href="?show=promotions">Promo Codes</a></li>
+      </ul>
+      <ul class="nav nav-sidebar">
+		<li data-page='newclient'><a href="?show=newclient">Setup New Client</a></li>
+      </ul>
+      <ul class="nav nav-sidebar">
+		<li data-page='salesfaq'><a href="?show=salesfaq">Sales FAQ</a></li>
       </ul>
     </div>
 	
+<script type='text/javascript'>
+$('ul.nav-sidebar > li').removeClass('active');
+$('ul.nav-sidebar > li[data-page="<?php echo $show;?>"]').addClass('active');
+</script>
+	
     <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
 <?php
-if(empty($show) || $show == 'overview'){
-	$this->add(new View('../pages/admin/page_overview.php', array('valid' => true)));
-} else if($show == 'companies'){
-	$this->add(new View('../pages/admin/page_companies.php', array('valid' => true)));
-} else if($show == 'stores'){
-	$this->add(new View('../pages/admin/page_stores.php', array('valid' => true)));
-} else if($show == 'accounts'){
-	$this->add(new View('../pages/admin/page_accounts.php', array('valid' => true)));
-} else if($show == 'tablets'){
-	$this->add(new View('../pages/admin/page_tablets.php', array('valid' => true)));
-} else if($show == 'finance'){
-	$this->add(new View('../pages/admin/page_finance.php', array('valid' => true)));
-} else if($show == 'promotions'){
-	$this->add(new View('../pages/admin/page_promotions.php', array('valid' => true)));
-}
+$this->add(new View("../pages/admin/page_{$show}.php", array('valid' => true)));
 ?>	
 	</div>
 </div>
 </div>
+

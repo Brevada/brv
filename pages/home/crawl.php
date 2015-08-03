@@ -5,6 +5,12 @@ $websiteURL = trim(Brevada::FromPOSTGET('website'));
 
 $data = array();
 
+if(!empty($websiteURL)){
+	if(stripos($websiteURL, 'http://') !== 0){
+		$websiteURL = 'http://'.$websiteURL;
+	}
+}
+
 if(isset($_SESSION['LastCrawlTime']) || empty($websiteURL) || !filter_var($websiteURL, FILTER_VALIDATE_URL)){
 	$data['error'] = 1;
 } else {	

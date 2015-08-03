@@ -60,3 +60,91 @@ div.button-loading { animation: button-loading 1s linear 0s infinite alternate; 
 span#categoryDetection { font-weight: bold; }
 
 .crawled { display: none; }
+
+.submit-next {
+    float: right;
+    width: 80px;
+    padding: 10px 5px;
+    margin: 2em 0 2em 0;
+    text-align: center;
+    font-weight: bold;
+    font-size: 0.95em;
+    color: #FEFEFE;
+    border: 0px;
+    background: #FF2b2b;
+    -moz-border-radius: 4px;
+    -webkit-border-radius: 4px;
+    border-radius: 4px;
+    display: inline-block;
+    font-family: arial;
+    text-decoration: none;
+    cursor: pointer;
+}
+.submit-next:hover {
+    opacity: 0.9;
+    filter: opacity(90);
+}
+
+.submit-next.disabled { cursor: default; opacity: 0.4; filter: opacity(40); }
+.submit-next.disabled:hover { cursor: default; opacity: 0.4; filter: opacity(40); }
+
+.submit-back {
+    float: left;
+    width: 80px;
+    padding: 10px 5px;
+    margin: 2em 0 2em 0;
+    text-align: center;
+    font-weight: bold;
+    font-size: 0.95em;
+    color: #FEFEFE;
+    border: 0px;
+    background: #FF2b2b;
+    -moz-border-radius: 4px;
+    -webkit-border-radius: 4px;
+    border-radius: 4px;
+    display: inline-block;
+    font-family: arial;
+    text-decoration: none;
+    cursor: pointer;
+}
+.submit-next:hover {
+    opacity: 0.9;
+    filter: opacity(90);
+}
+
+div.token-container {
+    width: 100%;
+    position: relative;
+}
+div.tokens {} div.tokens div.token {
+    background: #FF2B2B;
+    border-radius: 0.2em;
+    color: #FFFFFF;
+    padding: 0.65em 2.2em;
+    margin: 0 0.5em 0.3em 0;
+    font-size: 0.95em;
+    cursor: pointer;
+    display: inline-block;
+    border: 2px solid #EE2B2B;
+    opacity: 0.5;
+    text-transform: uppercase;
+}
+div.tokens div.token:not(.selected):hover {
+    background: #FF2B2B;
+    border: 2px solid #DD2B2B;
+    opacity: 0.75;
+}
+div.tokens div.token.selected {
+    background: #2ECC0E;
+    border: 2px solid #1EBB0E;
+    opacity: 1;
+}
+div.tokens div.token span {} div.dropdown-menu div.three-lines {
+    margin: 0;
+    padding: 0;
+    cursor: pointer;
+    display: block;
+    width: 100%;
+    text-align: center;
+    height: 55px;
+}

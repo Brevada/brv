@@ -89,9 +89,10 @@ if(isset($_GET['l'])){
 		<div class='part'>
 			<div class="signup_instruction"><?php echo sprintf(__('Where is your business located? If you have more than one location, please give us a call for a <i>%s</i>.'), __('custom corporate package')); ?></div>
 			
-			<input class="in" type="text" name="txtStreetAddress" id="txtStreetAddress" placeholder="<?php _e('Street Address'); ?>" style="color:#555;" />
-			<input class="in" type="text" name="txtCity" id="txtCity" placeholder="<?php _e('City'); ?>" style="color:#555;" />
-			<input class="in" type="text" name="txtProvince" id="txtProvince" placeholder="<?php _e('Province'); ?>" style="color:#555;" />
+			<input class="in" type="text" name="txtStoreName0" id="txtStreetAddress" placeholder="<?php _e('Store Name (leave blank if same as company)'); ?>" style="color:#555;" />
+			<input class="in" type="text" name="txtStreetAddress0" id="txtStreetAddress" placeholder="<?php _e('Street Address'); ?>" style="color:#555;" />
+			<input class="in" type="text" name="txtCity0" id="txtCity" placeholder="<?php _e('City'); ?>" style="color:#555;" />
+			<input class="in" type="text" name="txtProvince0" id="txtProvince" placeholder="<?php _e('Province'); ?>" style="color:#555;" />
 			
 			<div class="signup_instruction"><?php _e("* We are only available in Canada at the moment."); ?></div>
 			
@@ -104,7 +105,7 @@ if(isset($_GET['l'])){
 			<input class="in" type="email" name="txtEmail" placeholder="<?php _e('Email Address'); ?>" style="color:#555;" />
 			<input class="in" id="password1" type="password" name="txtPassword"  placeholder="<?php _e('Password'); ?>" style="color:#555;"/>
 			<input class="in" id="password2" type="password" name="txtPassword2" placeholder="<?php _e('Retype Password'); ?>"  style="color:#555;" />
-			<br /><p class='terms'><input type='checkbox' name='chkAgree' id='chkAgree' /><?php echo sprintf(__("I have read and agree to the %s Terms &amp; Conditions %s."), "<a href='#' target='_blank'>", "</a>"); ?></p>
+			<br /><p class='terms'><input type='checkbox' name='chkAgree' id='chkAgree' /><?php echo sprintf(__("I have read and agree to the %s Terms &amp; Conditions %s."), "<a href='/privacy' target='_blank'>", "</a>"); ?></p>
 			<input type="hidden" name="plan" value="<?php echo $plan; ?>" />
 			<div class="submit-back"><i class="fa fa-chevron-left"></i> <?php _e('Back'); ?></div>
 			<div class="submit-next disabled" id='submit'><?php _e('Sign Up'); ?> <i class="fa fa-chevron-right"></i></div>
