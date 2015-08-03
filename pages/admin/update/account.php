@@ -13,6 +13,7 @@ if(empty($id) || empty($column) || $column < 0 || $column > count($columns) || $
 if($columns[$column] == 'Company'){
 	$value = @intval($value);
 	if(($query = Database::query("UPDATE `accounts` SET `CompanyID` = {$value} WHERE `accounts`.`id` = {$id}")) !== false){
+		Logger::info("Account #{$_SESSION['AccountID']} modified accounts#{$id}.CompanyID = {$value}");
 		if(($query = Database::query("SELECT `companies`.`Name` FROM `companies` WHERE `companies`.`id` = {$value} LIMIT 1")) !== false){
 			if($query->num_rows == 0){ exit('Invalid'); }
 			while($row = $query->fetch_assoc()){
@@ -23,11 +24,13 @@ if($columns[$column] == 'Company'){
 } else if($columns[$column] == 'Store'){
 	if($value == '' || strtolower($value) == 'null'){
 		if(($query = Database::query("UPDATE `accounts` SET `StoreID` = NULL WHERE `accounts`.`id` = {$id}")) !== false){
+			Logger::info("Account #{$_SESSION['AccountID']} modified accounts#{$id}.StoreID = NULL");
 			exit('null');
 		} else { exit('Invalid'); }
 	} else {
 		$value = @intval($value);
 		if(($query = Database::query("UPDATE `accounts` SET `StoreID` = {$value} WHERE `accounts`.`id` = {$id}")) !== false){
+			Logger::info("Account #{$_SESSION['AccountID']} modified accounts#{$id}.StoreID = {$value}");
 			if(($query = Database::query("SELECT `stores`.`Name` FROM `stores` WHERE `stores`.`id` = {$value} LIMIT 1")) !== false){
 				if($query->num_rows == 0){ exit('Invalid'); }
 				while($row = $query->fetch_assoc()){
@@ -48,6 +51,8 @@ if($columns[$column] == 'Company'){
 			exit('Invalid');
 		}
 		$stmt->close();
+		
+		Logger::info("Account #{$_SESSION['AccountID']} modified accounts#{$id}.{$columns[$column]} = {$value}");
 	}
 }
 

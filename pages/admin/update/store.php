@@ -17,6 +17,8 @@ if(($stmt = Database::prepare("UPDATE `stores` SET `{$columns[$column]}` = ? WHE
 		exit('Invalid');
 	}
 	$stmt->close();
+	
+	Logger::info("Account #{$_SESSION['AccountID']} modified stores#{$id}.{$columns[$column]} = {$value}");
 }
 
 exit('OK');

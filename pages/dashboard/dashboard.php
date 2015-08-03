@@ -2,6 +2,7 @@
 if(!Brevada::IsLoggedIn()){ Brevada::Redirect('/home/logout'); }
 
 if(Permissions::has(Permissions::VIEW_ADMIN)){
+	Logger::info("Account #{$_SESSION['AccountID']} logging in to Admin Panel.");
 	Brevada::Redirect('/admin');
 }
 

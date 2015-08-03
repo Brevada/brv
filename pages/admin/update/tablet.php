@@ -13,6 +13,7 @@ if(empty($id) || empty($column) || $column < 0 || $column > count($columns) || $
 if($columns[$column] == 'StoreName'){
 	$value = @intval($value);
 	if(($query = Database::query("UPDATE `tablets` SET `StoreID` = {$value} WHERE `tablets`.`id` = {$id}")) !== false){
+		Logger::info("Account #{$_SESSION['AccountID']} modified tablets#{$id}.StoreID = {$value}");
 		if(($query = Database::query("SELECT `stores`.`Name` FROM `stores` WHERE `stores`.`id` = {$value} LIMIT 1")) !== false){
 			if($query->num_rows == 0){ exit('Invalid'); }
 			while($row = $query->fetch_assoc()){
@@ -28,6 +29,8 @@ if($columns[$column] == 'StoreName'){
 			exit('Invalid');
 		}
 		$stmt->close();
+		
+		Logger::info("Account #{$_SESSION['AccountID']} modified tablets#{$id}.{$columns[$column]} = {$value}");
 	}
 }
 
