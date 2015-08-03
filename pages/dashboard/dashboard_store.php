@@ -124,13 +124,14 @@ $areasOfLeastConcern = array_diff($areasOfLeastConcern, $areasOfFocus);
 					<div class='icon-subtext'><?php _e('Email List'); ?></div>
 				</div>
 			</a>
-			
+			<?php if(isset($_SESSION['Corporate']) && $_SESSION['Corporate']){ ?>
 			<a href="/dashboard">
 				<div class='pull-right icon-button'>
 					<i class='fa fa-briefcase'></i>
 					<div class='icon-subtext'><?php _e('Corporate'); ?></div>
 				</div>
 			</a>
+			<?php } ?>
 	</div>
 
 </div>
