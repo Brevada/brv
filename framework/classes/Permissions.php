@@ -21,5 +21,32 @@ class Permissions
 	{
 		return self::get() >= $i;
 	}
+	
+	public static function translate($i)
+	{
+		switch($i)
+		{
+			case self::LOGIN_ACCESS:
+				return 'LOGIN_ACCESS';
+			case self::VIEW_STORE:
+				return 'VIEW_STORE';
+			case self::MODIFY_STORE:
+				return 'MODIFY_STORE';
+			case self::VIEW_COMPANY:
+				return 'VIEW_COMPANY';
+			case self::MODIFY_COMPANY_STORES:
+				return 'MODIFY_COMPANY_STORES';
+			case self::MODIFY_COMPANY:
+				return 'MODIFY_COMPANY';
+			case self::VIEW_ADMIN:
+				return 'VIEW_ADMIN';
+			case self::EDIT_ADMIN:
+				return 'EDIT_ADMIN';
+			case self::FULL_ADMIN:
+				return 'FULL_ADMIN';
+			default:
+				return 'UNKNOWN';
+		}
+	}
 }
 ?>

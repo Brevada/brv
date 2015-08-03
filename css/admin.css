@@ -116,4 +116,8 @@ td.status.active { color: #16B811; }
 td.status.notready { color: #206BF7; }
 td.status.expired { color: #F72B20; }
 
+td.secure { font-style: italic; font-variant: small-caps; cursor: no-drop; }
+
 td.options a { display: inline-block; margin: 0 0.1em 0 0.2em; }
+
+table.editable td i { margin-left: 0.9em; }
