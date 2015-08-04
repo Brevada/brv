@@ -89,7 +89,7 @@ $areasOfLeastConcern = array_diff($areasOfLeastConcern, $areasOfFocus);
 					<i class='fa fa-ellipsis-h'></i>
 				</div>
 				<ul class='dropdown-menu'>
-					<li class='link' data-link='account'><?php _e('Account Settings'); ?></li>
+					<li class='link' data-link='settings'><?php _e('Settings'); ?></li>
 					<li class='link' data-link='logout' style="border-bottom: none;"><?php _e('Logout'); ?></li>
 				</ul>
 			</div>

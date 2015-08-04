@@ -12,7 +12,7 @@ body {
     font-family: 'Source Sans Pro', sans-serif;
     font-weight: 300;
 }
-a {
+a.small-link {
     color: #ee2b2b;
     font-size: 11px;
 }
@@ -33,9 +33,7 @@ h2 {
     color: #555;
     font-family: helvetica;
 }
-#emphasis {
-    color: #ee2b2b;
-}
+.emphasis { color: #ee2b2b; }
 .textarea {
     resize: none;
     background: #fff;

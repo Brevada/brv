@@ -30,6 +30,7 @@ $(document).ready(function(){
         }
     });
 	
+	$('div.token-keywords div.tokens > div.token').click(tokenClicked);
 	$('div.token-aspects div.tokens > div.token').click(tokenClicked);
 	
 	$('#chkAgree').change(function(){

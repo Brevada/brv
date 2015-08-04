@@ -1,4 +1,6 @@
 $(document).ready(function(){
+	$('.link').css({'cursor' : 'pointer'});
+
 	$('.link').click(function(){
 		window.location = '/'+$(this).data('link');
 	});

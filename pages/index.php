@@ -11,7 +11,6 @@ $this->addResource('/css/home/eco.css');
 
 $this->addResource('/css/home/slick.css');
 
-$this->addResource('/js/home/jquery-1.11.1.min.js');
 $this->addResource('/js/home/bootstrap.min.js');
 $this->addResource('/js/home/slick.min.js');
 $this->addResource('/js/home/placeholdem.min.js');

@@ -113,7 +113,7 @@ if(isset($_GET['l'])){
 	</form>
 	<br /><br /><br /><br /><br />
 	<div class="text_clean">
-		<strong><?php _e("We'll help you get signed up"); ?>: <span id="emphasis"><a href='tel:1-844-2738232' style='text-decoration:none;'>1 (844) BREVADA</a></span></strong><br /><?php _e('Have an account?'); ?> <a href="/home/login.php"><span style="color:#bc0101;"><?php _e("Click Here"); ?></span></a>
+		<strong><?php _e("We'll help you get signed up"); ?>: <span id="emphasis"><a href='tel:1-844-2738232' style='text-decoration:none;'>1 (844) BREVADA</a></span></strong><br /><?php _e('Have an account?'); ?> <a href="/home/login.php" class='small-link'><span style="color:#bc0101;"><?php _e("Click Here"); ?></span></a>
 	</div>
 </div>
 

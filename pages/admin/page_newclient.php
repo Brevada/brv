@@ -10,7 +10,7 @@ $this->addResource('/js/signup.js');
 <?php if(isset($_GET['done'])){ ?>
 <div class='attention'>
 <h2 class='sub-header'>The client has been signed up.</h2>
-<p>An account has been made for the client. The client can log into his/her account, however the account must be activated via transaction to view feedback analytics. It is recommended that the client pay for his account on his/her own device (for privacy/security) by clicking "Purchase A Package" in his/her dashboard.</p>
+<p>An account has been made for the client. The client can log into his/her account, however the account must be activated via transaction to view feedback analytics. It is recommended that the client pay for his account on his/her own device (for privacy/security) by clicking "Activate Your Account" in his/her dashboard.</p>
 </div>
 <?php } ?>
 

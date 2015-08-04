@@ -25,7 +25,7 @@ if(!isset($_GET['switch']) && ($query = Database::query("SELECT IFNULL(company_f
 				<?php _e("Take your <strong>pick</strong>!"); ?>
 			</div>
             <div id="home_text2" style="float:none; width:500px; margin:0 auto; margin-top:20px; text-align:center;">
-				<?php echo sprintf(__("Or give us a call at <span id='emphasis'>%s</span> and we'll help you figure out exactly what your business needs and get you set up!"), __('1 (844) BREVADA')); ?>
+				<?php echo sprintf(__("Or give us a call at <span class='emphasis'>%s</span> and we'll help you figure out exactly what your business needs and get you set up!"), __('1 (844) BREVADA')); ?>
 			</div>
 			<div id="pricing_holder" style='margin-top:-50px;'>
 						<!-- Pricing Module 1 -->

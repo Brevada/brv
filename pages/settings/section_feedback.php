@@ -1,11 +1,6 @@
 <?php
-$this->addResource('/css/layout.css');
-$this->addResource('/css/account.css');
-$this->addResource('/js/account.js');
-
-if(!Brevada::IsLoggedIn()){
-	Brevada::Redirect('/logout');
-}
+if($this->getParameter('valid') !== true){ exit('Error.'); }
+$_POST = $this->getParameter('POST');
 
 if(!empty($_SESSION['StoreID']) && (($_SESSION['Corporate'] && Permissions::has(Permissions::MODIFY_COMPANY_STORES)) || !$_SESSION['Corporate'] && Permissions::has(Permissions::MODIFY_STORE))){
 	$store_id = Brevada::validate($_SESSION['StoreID'], VALIDATE_DATABASE);
@@ -40,7 +35,7 @@ if(!empty($_SESSION['StoreID']) && (($_SESSION['Corporate'] && Permissions::has(
 			}
 		}
 		
-		if(!empty($_SESSION['StoreID'])){
+		if(!empty($_SESSION['StoreID']) && $_SESSION['Corporate']){
 			Brevada::Redirect('/dashboard?s='.$_SESSION['StoreID']);
 		} else {
 			Brevada::Redirect('/dashboard');
@@ -48,22 +43,7 @@ if(!empty($_SESSION['StoreID']) && (($_SESSION['Corporate'] && Permissions::has(
 	}	
 }
 ?>
-<div class='top-banner'>
-	<img class='logo-quote link' src='/images/quote.png' data-link='' />
-	<div class='dropdown-menu noselect'>
-		<div class='three-lines'>
-			<i class='fa fa-ellipsis-h'></i>
-		</div>
-		<ul>
-			<li class='link' data-link='dashboard'><?php _e('Dashboard'); ?></li>
-			<li class='link' data-link='logout'><?php _e('Logout'); ?></li>
-		</ul>
-	</div>
-</div>
-
-<div class='spacer'></div>
-
-<form id='frmAccount' action='account' method='post'>
+<form id='frmAccount' action='settings?section=feedback' method='post'>
 <div class='form-account'>
 	<?php if(!empty($_SESSION['StoreID']) && (($_SESSION['Corporate'] && Permissions::has(Permissions::MODIFY_COMPANY_STORES)) || !$_SESSION['Corporate'] && Permissions::has(Permissions::MODIFY_STORE))){ ?>
 	<span class="form-header"><?php _e('What do you want to get feedback on?'); ?></span>

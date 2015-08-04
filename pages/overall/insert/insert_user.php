@@ -56,7 +56,7 @@ if(empty($email) || empty($password) || empty($name)){
 			/* Check validity of name. */			
 			$reserved_names = array('index', '404', 'approved', 'complete', 'corporate', 'dashboard', 'home', 'ipn', 'ipnlistener', 'login', 'logout', 'payment', 'pricing', 'signup', 'tablet', 'thanks', 'upgrade', 'voting', 'about', 'account', 'secure', 'images', 'user_data', 'overall');
 			
-			$validity_name = !empty(strtolower(preg_replace("/[^a-zA-Z\-]+/", "", $name)));
+			$validity_name = !empty(strtolower(preg_replace("/[^a-zA-Z\-0-9]+/", "", $name)));
 			
 			if($validity_name)
 			{
@@ -102,7 +102,7 @@ if(empty($email) || empty($password) || empty($name)){
 					$city = $store['City'];
 					$province = $store['Province'];
 					
-					if(empty($storename)){ $storename = $name . " - #".($numStores+1) }
+					if(empty($storename)){ $storename = $name . " - #".($numStores+1); }
 					
 					if(empty($streetaddress) || empty($city) || empty($province)){ continue; }
 					
@@ -128,7 +128,7 @@ if(empty($email) || empty($password) || empty($name)){
 							}				
 							
 							/* Insert company. */
-							if(($stmt = Database::prepare("INSERT INTO `companies` (`Name`, `CategoryID`, `FeaturesID`, `Website`) VALUES (?, ?, ?, ?)")) !== false){
+							if(($stmt = Database::prepare("INSERT INTO `companies` (`Name`, `DateCreated`, `CategoryID`, `FeaturesID`, `Website`) VALUES (?, NOW(), ?, ?, ?)")) !== false){
 								$stmt->bind_param('siis', $d_companyName, $d_categoryID, $d_featuresID, $website);
 								if($stmt->execute()){
 									$d_companyID = $stmt->insert_id;
@@ -163,7 +163,7 @@ if(empty($email) || empty($password) || empty($name)){
 						
 						$d_storeName = $storename;
 						
-						$d_urlName = $url_name_root = strtolower(preg_replace("/[^a-zA-Z\-]+/", "", $storename));
+						$d_urlName = $url_name_root = strtolower(preg_replace("/[^a-zA-Z\-0-9]+/", "", $storename));
 						
 						$url_name_mod = 1;
 						
@@ -181,7 +181,7 @@ if(empty($email) || empty($password) || empty($name)){
 						}
 						
 						/* Insert store. */
-						if(($stmt = Database::prepare("INSERT INTO `stores` (`Name`, `CompanyID`, `Active`, `URLName`, `LocationID`) VALUES (?, ?, 1, ?, ?)")) !== false){
+						if(($stmt = Database::prepare("INSERT INTO `stores` (`Name`, `DateCreated`, `CompanyID`, `Active`, `URLName`, `LocationID`) VALUES (?, NOW(), ?, 1, ?, ?)")) !== false){
 							$stmt->bind_param('sisi', $d_storeName, $d_companyID, $d_urlName, $d_locationID);
 							if($stmt->execute()){
 								$d_storeID = $stmt->insert_id;
@@ -217,14 +217,14 @@ if(empty($email) || empty($password) || empty($name)){
 				
 				if($numStores > 1 && $isCorporate){
 					/* Insert admin account. */
-					if(($stmt = Database::prepare("INSERT INTO `accounts` (`EmailAddress`, `Password`, `CompanyID`, `StoreID`, `Permissions`) VALUES (?, ?, ?, NULL, ?)")) !== false){
+					if(($stmt = Database::prepare("INSERT INTO `accounts` (`EmailAddress`, `DateCreated`, `Password`, `CompanyID`, `StoreID`, `Permissions`) VALUES (?, NOW(), ?, ?, NULL, ?)")) !== false){
 						$stmt->bind_param('ssii', $email, $d_password, $d_companyID, $d_permissions);
 						$stmt->execute();
 						$stmt->close();
 					}
 				} else {				
 					/* Insert admin account. */
-					if(($stmt = Database::prepare("INSERT INTO `accounts` (`EmailAddress`, `Password`, `CompanyID`, `StoreID`, `Permissions`) VALUES (?, ?, ?, ?, ?)")) !== false){
+					if(($stmt = Database::prepare("INSERT INTO `accounts` (`EmailAddress`, `DateCreated`, `Password`, `CompanyID`, `StoreID`, `Permissions`) VALUES (?, NOW(), ?, ?, ?, ?)")) !== false){
 						$stmt->bind_param('ssiii', $email, $d_password, $d_companyID, $d_storeID, $d_permissions);
 						$stmt->execute();
 						$stmt->close();

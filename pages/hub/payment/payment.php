@@ -67,7 +67,7 @@ if($company_active && $company_expired){
 				<?php echo sprintf(__("You're only <strong>one step</strong> away %s!"), $name); ?>
 			</div>
 			<div id="home_text2" style="float:none; width:500px; margin:0 auto; margin-top:20px; text-align:center;">
-				<?php _e("Give us a call at <span id='emphasis'>1 (844) BREVADA</span> and we'll help you figure out exactly what your business needs and get you set up!"); ?>
+				<?php _e("Give us a call at <span class='emphasis'>1 (844) BREVADA</span> and we'll help you figure out exactly what your business needs and get you set up!"); ?>
 			</div>
 			<br />
 			<div id="pricing_holder">

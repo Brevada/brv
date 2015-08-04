@@ -37,7 +37,7 @@ $(document).ready(function() {
 
 <div id="bottom">
 	<center>
-		<span class="text_clean"><?php _e("Don't have an account?"); ?></span>&nbsp;<a href="/home/signup.php"><span style="color:#bc0101;"><?php _e('Click Here'); ?></span></a>
+		<span class="text_clean"><?php _e("Don't have an account?"); ?></span>&nbsp;<a href="/home/signup.php" class='small-link'><span style="color:#bc0101;"><?php _e('Click Here'); ?></span></a>
 		<br /><br /><br />
 		<span style="font-size:11px;"><?php _e('Toll free'); ?>: 1 (855) 484-7451 <br /> &copy; <?php echo date('Y'); ?> brevada.com</span>
 	</center>
