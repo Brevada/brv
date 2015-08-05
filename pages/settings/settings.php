@@ -12,7 +12,8 @@ if(!Brevada::IsLoggedIn()){
 $name = Database::query("SELECT `Name` FROM `companies` WHERE `companies`.`id` = {$_SESSION['CompanyID']} LIMIT 1")->fetch_assoc()['Name'];
 
 $section = Brevada::FromGET('section');
-if($section != 'account' && $section != 'feedback' && $section != 'billing'){ $section = 'account'; }
+$acceptableSections = ['account', 'feedback', 'billing', 'tablets', 'logins', 'stores'];
+if(!in_array($section, $acceptableSections)){ $section = 'account'; }
 ?>
 <div class='top-fixed'>
 	<div class='top-banner row'>
@@ -46,6 +47,11 @@ if($section != 'account' && $section != 'feedback' && $section != 'billing'){ $s
 				
 				<?php if(($_SESSION['Corporate'] && Permissions::has(Permissions::MODIFY_COMPANY_STORES)) || (!$_SESSION['Corporate'] && Permissions::has(Permissions::MODIFY_STORE))){ ?>
 				<li data-page='billing'><a href='?section=billing'>Billing</a></li>
+				<li data-page='logins'><a href='?section=logins'>Manage Logins</a></li>
+				<?php } ?>
+				<?php if($_SESSION['Corporate']){ ?>
+				<li data-page='stores'><a href='?section=stores'>Manage Stores</a></li>
+				<li data-page='tablets'><a href='?section=tablets'>Tablets</a></li>
 				<?php } ?>
 			</ul>
 		</div>
@@ -59,7 +65,7 @@ if($section != 'account' && $section != 'feedback' && $section != 'billing'){ $s
 			<div class='panel-heading'><?php echo ucfirst($section); ?></div>
 			<div class='panel-body'>
 			<?php	
-			$this->add(new View("../pages/settings/section_{$section}.php", array('valid' => true, 'POST' => $_POST)));
+			$this->add(new View("../pages/settings/section_{$section}.php", array('valid' => true, 'POST' => $_POST, 'GET' => $_GET)));
 			?>
 			</div>
 		</div>

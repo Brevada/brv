@@ -129,7 +129,7 @@ while($row = $query->fetch_assoc()){
 	$data_ratingPercentOther = round((float) $row['DataAverage'] + 0, 1);
 }
 
-$query = Database::query("SELECT `stores`.`id`, `stores`.`Name`, AVG(dashboard.Data_OverallAll) as Data_OverallAll, (SELECT COUNT(*) FROM `feedback` LEFT JOIN `aspects` ON `feedback`.AspectID = `aspects`.id WHERE `aspects`.StoreID = `stores`.`id` AND UNIX_TIMESTAMP(`feedback`.`Date`) < `aspects`.`Data_LastUpdate`) as TotalResponses FROM `stores` LEFT JOIN `dashboard` ON `dashboard`.StoreID = `stores`.id WHERE `stores`.CompanyID = {$company_id} GROUP BY `stores`.`id`");
+$query = Database::query("SELECT `stores`.`id`, `stores`.`Name`, AVG(dashboard.Data_OverallAll) as Data_OverallAll, (SELECT COUNT(*) FROM `feedback` LEFT JOIN `aspects` ON `feedback`.AspectID = `aspects`.id WHERE `aspects`.StoreID = `stores`.`id` AND UNIX_TIMESTAMP(`feedback`.`Date`) < `aspects`.`Data_LastUpdate`) as TotalResponses FROM `stores` LEFT JOIN `dashboard` ON `dashboard`.StoreID = `stores`.id WHERE `stores`.CompanyID = {$company_id} GROUP BY `stores`.`id` ORDER BY `stores`.`Name` ASC");
 ?>
 
 <!-- Left side -->

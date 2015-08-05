@@ -151,7 +151,7 @@ $areasOfLeastConcern = array_diff($areasOfLeastConcern, $areasOfFocus);
 </div>
 
 <?php
-	$query = Database::query("SELECT aspect_type.Title, aspects.Data_LastUpdate, aspects.Data_RatingPercent, aspects.Data_RatingPercentOther, aspects.Data_Percent4W, aspects.Data_Percent6M, aspects.Data_Percent1Y, (SELECT COUNT(*) FROM feedback WHERE feedback.Rating > -1 AND feedback.AspectID = aspects.ID AND UNIX_TIMESTAMP(`feedback`.`Date`) < `aspects`.`Data_LastUpdate`) as Total FROM aspects LEFT JOIN aspect_type ON aspect_type.ID = aspects.AspectTypeID WHERE aspects.StoreID = {$store_id} AND `Active` = 1 AND aspect_type.Title <> ''");
+	$query = Database::query("SELECT aspect_type.Title, aspects.Data_LastUpdate, aspects.Data_RatingPercent, aspects.Data_RatingPercentOther, aspects.Data_Percent4W, aspects.Data_Percent6M, aspects.Data_Percent1Y, (SELECT COUNT(*) FROM feedback WHERE feedback.Rating > -1 AND feedback.AspectID = aspects.ID AND UNIX_TIMESTAMP(`feedback`.`Date`) < `aspects`.`Data_LastUpdate`) as Total FROM aspects LEFT JOIN aspect_type ON aspect_type.ID = aspects.AspectTypeID WHERE aspects.StoreID = {$store_id} AND `Active` = 1 AND aspect_type.Title <> '' ORDER BY `aspect_type`.Title ASC");
 ?>
 
 <!-- Left side -->
@@ -293,6 +293,14 @@ $areasOfLeastConcern = array_diff($areasOfLeastConcern, $areasOfFocus);
 	<div class="message-container">
 		<div class='close'><i class='fa fa-times'></i></div>
 		<div class="message"><?php _e('Thank you for your purchase and welcome to Brevada!'); ?></div>
+		<div class="sub-message"><?php echo sprintf(__('Feel free to contact us at %s or 1 (844) BREVADA for any questions regarding your Brevada experience.'), __('customercare@brevada.com')); ?></div>
+	</div>
+	<?php } ?>
+	<?php if($query === false || $query->num_rows == 0){ ?>
+	<div class="message-container">
+		<div class='close'><i class='fa fa-times'></i></div>
+		<div class="message"><?php _e('You can enable and disable aspects on the Settings page, or just click below.'); ?></div>
+		<div class='sub-message'><a class="btn btn-default" href="/settings?section=feedback"><?php _e('Turn On Aspects'); ?></a></div>
 		<div class="sub-message"><?php echo sprintf(__('Feel free to contact us at %s or 1 (844) BREVADA for any questions regarding your Brevada experience.'), __('customercare@brevada.com')); ?></div>
 	</div>
 	<?php } ?>
