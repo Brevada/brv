@@ -46,9 +46,10 @@ if(($res = curl_exec($ch)) === false) {
 curl_close($ch);
 
 if(empty($res) || strcmp($res, "VERIFIED") !== 0){
-	/* IPN invalid. */	
+	// IPN invalid.
 	exit;
 }
+
 
 if(($check = Database::query("SELECT `id` FROM `companies` WHERE `companies`.`id` = {$companyID} LIMIT 1")) !== false){
 	if($check->num_rows == 0){
@@ -83,14 +84,14 @@ foreach($_POST as $post => $value){
 }
 $fraudString = '';
 if(!empty($fraud)){
-	$fraudString = implode(',' $fraud);
+	$fraudString = implode(',', $fraud);
 }
 
 $d_txn_id = Brevada::validate($txn_id, VALIDATE_DATABASE);
 $d_payer_email = Brevada::validate($payer_email, VALIDATE_DATABASE);
 if(($check = Database::query("SELECT `id`, `Confirmed` FROM `transactions` WHERE `transactions`.`PaypalTransactionID` = '{$d_txn_id}' AND `transactions`.`PaypalPayerEmail` = '{$d_payer_email}' LIMIT 1")) !== false){
 	if($check->num_rows > 0){
-		$row = $query->fetch_assoc();
+		$row = $check->fetch_assoc();
 		$confirmed = $row['Confirmed'] == 1;
 		$transactionStarted = true;
 	}
@@ -136,15 +137,14 @@ if(!$confirmed){
 		
 		$paymentAmountCents = @intval($expectedValue*100);
 		
-		if($expectedValue != $payment_amount && $payment_amount = 0){ exit; }
+		if($expectedValue != $payment_amount && $payment_amount == 0){ exit; }
 		
-		if(($expectedValue == 0 && $payment_amount == 0) || abs(($expectedValue-$payment_amount)/$payment_amount) < abs($expectedValue-$payment_amount) && strtolower($payment_currency) == 'cad'){
+		if(($expectedValue == 0 && $payment_amount == 0) || abs(($expectedValue-$payment_amount)/$payment_amount) <= abs($expectedValue-$payment_amount) && strtolower($payment_currency) == 'cad'){
 			/* Everything checks out. */
-			
 			$payment_status = strtolower($payment_status);
 			if($payment_status == 'pending' && !$transactionStarted){
-				if(($stmt = Database::prepare("INSERT INTO `transactions` (`Date`, `CompanyID`, `Value`, `Currency`, `Product`, `Confirmed`, `PaypalTransactionID`, `PaypalPayerEmail`, `Fraud`) VALUES (NOW(), ?, ?, 'CAD', ?, 0, ?, ?)")) !== false){
-					$stmt->bind_param('iisssss', $companyID, $paymentAmountCents, $plan, $txn_id, $payer_email, $fraudString);
+				if(($stmt = Database::prepare("INSERT INTO `transactions` (`Date`, `CompanyID`, `Value`, `Currency`, `Product`, `Confirmed`, `PaypalTransactionID`, `PaypalPayerEmail`, `Fraud`) VALUES (NOW(), ?, ?, 'CAD', ?, 0, ?, ?, ?)")) !== false){
+					$stmt->bind_param('iissss', $companyID, $paymentAmountCents, $plan, $txn_id, $payer_email, $fraudString);
 					$stmt->execute();
 					$stmt->close();
 				}
@@ -152,7 +152,7 @@ if(!$confirmed){
 				if(($stmt = Database::prepare("UPDATE `transactions` SET `Confirmed` = 1, `Fraud` = ? WHERE `CompanyID` = ? AND `PaypalTransactionID` = ? AND `PaypalPayerEmail` = ? AND `Confirmed` = 0 ORDER BY `id` DESC LIMIT 1")) !== false){
 					$stmt->bind_param('ssss', $fraudString, $companyID, $txn_id, $payer_email);
 					if($stmt->execute()){
-						Database::query("UPDATE `companies` SET `Active` = 1, `ExpiryDate` = (NOW() + INTERVAL 365) DAY WHERE `companies`.`id` = {$companyID}");
+						Database::query("UPDATE `companies` SET `Active` = 1, `ExpiryDate` = (NOW() + INTERVAL 365 DAY) WHERE `companies`.`id` = {$companyID}");
 						
 						if($query = Database::query("SELECT 1 FROM `company_features` LEFT JOIN `companies` ON `companies`.FeaturesID = `company_features`.`id` LIMIT 1")){
 							if($query->num_rows == 0){

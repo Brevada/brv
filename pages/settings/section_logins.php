@@ -58,7 +58,7 @@ if(($storeQuery = Database::query("SELECT `stores`.`Name`, `stores`.id FROM `sto
 							<td>
 							<?php
 								if($permissions == Permissions::MODIFY_COMPANY){
-									echo $permissionsText;
+									echo 'N/A';
 								} else {
 							?>
 								<select class='ddstores'>
