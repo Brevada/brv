@@ -4,6 +4,7 @@ Controller
 
 Entry point for website.
 */
+define('DEBUG', true);
 
 define('ROOT_PATH', '/');
 define('URL', 'http://brevada.com/');

@@ -9,6 +9,8 @@ class Logger
 		
 		$filePath = 'logs/log '.date('d-m-Y').'.log';
 		
+		if(!file_exists('logs')){ @mkdir('logs', 0600); }
+		
 		$line = date('H:i:s')." - [{$level}]: {$s}\n";
 		
 		if(!file_exists($filePath)){
@@ -22,6 +24,12 @@ class Logger
 		
 	}
 
+	public static function debug($s, $location='ANY')
+	{
+		if(!DEBUG) return;
+		self::log($s, 'DEBUG', $location);
+	}
+	
 	public static function info($s, $location='ANY')
 	{
 		self::log($s, 'INFO', $location);

@@ -10,7 +10,7 @@ $promoCode = Brevada::FromGET('promo');
 
 $name = ''; $company_active = false; $company_expired = false;
 
-if(($query = Database::query("SELECT companies.`Name`, companies.`Active`, UNIX_TIMESTAMP(companies.`ExpiryDate`) as `Expiry`, IFNULL(company_features.MaxTablets, 0) as MaxTablets, IFNULL(company_features.MaxAccounts, 1) as MaxAccounts, IFNULL(company_features.MaxStores, 1) as MaxStores FROM companies LEFT JOIN company_features ON company_features.id = companies.FeaturesID LIMIT 1")) !== false){
+if(($query = Database::query("SELECT companies.`Name`, companies.`Active`, UNIX_TIMESTAMP(companies.`ExpiryDate`) as `Expiry`, IFNULL(company_features.MaxTablets, 0) as MaxTablets, IFNULL(company_features.MaxAccounts, 1) as MaxAccounts, IFNULL(company_features.MaxStores, 1) as MaxStores FROM companies LEFT JOIN company_features ON company_features.id = companies.FeaturesID WHERE `companies`.id = {$companyID} LIMIT 1")) !== false){
 	while($row = $query->fetch_assoc()){
 		$name = $row['Name'];
 		$company_active = $row['Active'] != 0;

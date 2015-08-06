@@ -9,16 +9,16 @@ if(isset($_POST)){
 	$password2 = Brevada::FromPOST('txtPassword2');
 	if(!empty($password) && !empty($password2) && $password == $password2){
 		if(strlen($password) < 8){
-			$message = 'Your password is too short. It must be at least 8 characters.';
+			$message = __('Your password is too short. It must be at least 8 characters.');
 		} else {
 			$password = Brevada::HashPassword($password);
 			if(($stmt = Database::prepare("UPDATE `accounts` SET `Password` = ? WHERE `id` = ? LIMIT 1")) !== false){
 				$accountID = $_SESSION['AccountID'];
 				$stmt->bind_param('si', $password, $accountID);
 				if($stmt->execute()){
-					$message = 'Your password has been changed.';
+					$message = __('Your password has been changed.');
 				} else {
-					$message = 'There was an error changing your password.';
+					$message = __('There was an error changing your password.');
 				}
 				$stmt->close();
 			}

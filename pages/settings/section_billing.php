@@ -12,14 +12,14 @@ if(!$_SESSION['Corporate'] && !Permissions::has(Permissions::MODIFY_STORE)){
 ?>
 <form id='frmAccount' action='settings?section=billing' method='post'>
 <div class='form-account'>
-	<span class="form-subheader">If you have any questions about a transaction, please feel free to contact us at CustomerCare@brevada.com.</span><br />
+	<span class="form-subheader"><?php echo sprintf(__("If you have any questions about a transaction, please feel free to contact us at %s."), __("customercare@brevada.com")); ?></span><br />
 	
 	<table class='table table-white table-bordered table-hover table-data'>
 		<thead>
-			<th>Product</th>
-			<th>Price (CAD)</th>
-			<th>Date</th>
-			<th>Status</th>
+			<th><?php _e("Product"); ?></th>
+			<th><?php _e("Price (CAD)"); ?></th>
+			<th><?php _e("Date"); ?></th>
+			<th><?php _e("Status"); ?></th>
 		</thead>
 		<tbody>
 			<?php
@@ -28,10 +28,10 @@ if(!$_SESSION['Corporate'] && !Permissions::has(Permissions::MODIFY_STORE)){
 						$product = ucwords($row['Product']);
 						$price = '$'.number_format(floatval($row['Value'])/100, 2, '.', ',');
 						$date = $row['Date'];
-						$status = $row['Confirmed'] == 0 ? "Pending <i class='fa fa-circle-o-notch fa-spin'></i>" : "Good <i class='fa fa-check-circle-o'></i>";
+						$status = $row['Confirmed'] == 0 ? __("Pending")." <i class='fa fa-circle-o-notch fa-spin'></i>" : __("Good")." <i class='fa fa-check-circle-o'></i>";
 			?>
 						<tr>
-							<td><?php echo $product; ?></td>
+							<td><?php _e($product); ?></td>
 							<td><?php echo $price; ?></td>
 							<td><?php echo $date; ?></td>
 							<td class='status'><?php echo $status; ?></td>

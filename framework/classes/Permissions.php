@@ -22,22 +22,22 @@ class Permissions
 		return self::get() >= $i;
 	}
 	
-	public static function translate($i)
+	public static function translate($i, $humanReadable = false)
 	{
 		switch($i)
 		{
 			case self::LOGIN_ACCESS:
 				return 'LOGIN_ACCESS';
 			case self::VIEW_STORE:
-				return 'VIEW_STORE';
+				return $humanReadable ? 'View Only' : 'VIEW_STORE';
 			case self::MODIFY_STORE:
-				return 'MODIFY_STORE';
+				return $humanReadable ? 'Store Access' : 'MODIFY_STORE';
 			case self::VIEW_COMPANY:
 				return 'VIEW_COMPANY';
 			case self::MODIFY_COMPANY_STORES:
-				return 'MODIFY_COMPANY_STORES';
+				return $humanReadable ? 'Company Access' : 'MODIFY_COMPANY_STORES';
 			case self::MODIFY_COMPANY:
-				return 'MODIFY_COMPANY';
+				return $humanReadable ? 'Administrator' : 'MODIFY_COMPANY';
 			case self::VIEW_ADMIN:
 				return 'VIEW_ADMIN';
 			case self::EDIT_ADMIN:
@@ -47,6 +47,11 @@ class Permissions
 			default:
 				return 'UNKNOWN';
 		}
+	}
+	
+	public static function translateH($i)
+	{
+		return self::translate($i, true);
 	}
 }
 ?>

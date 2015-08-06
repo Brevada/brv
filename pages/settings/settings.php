@@ -42,16 +42,16 @@ if(!in_array($section, $acceptableSections)){ $section = 'account'; }
 		<div class='col-md-2'></div>
 		<div class='col-sm-2 col-md-2 sidebar'>
 			<ul class='nav nav-sidebar'>
-				<li data-page='account'><a href='?section=account'>Account</a></li>
-				<li data-page='feedback'><a href='?section=feedback'>Feedback</a></li>
+				<li data-page='account'><a href='?section=account'><?php _e("Account"); ?></a></li>
+				<li data-page='feedback'><a href='?section=feedback'><?php _e("Feedback"); ?></a></li>
 				
 				<?php if(($_SESSION['Corporate'] && Permissions::has(Permissions::MODIFY_COMPANY_STORES)) || (!$_SESSION['Corporate'] && Permissions::has(Permissions::MODIFY_STORE))){ ?>
-				<li data-page='billing'><a href='?section=billing'>Billing</a></li>
-				<li data-page='logins'><a href='?section=logins'>Manage Logins</a></li>
+				<li data-page='billing'><a href='?section=billing'><?php _e("Billing"); ?></a></li>
+				<li data-page='logins'><a href='?section=logins'><?php _e("Manage Logins"); ?></a></li>
 				<?php } ?>
 				<?php if($_SESSION['Corporate']){ ?>
-				<li data-page='stores'><a href='?section=stores'>Manage Stores</a></li>
-				<li data-page='tablets'><a href='?section=tablets'>Tablets</a></li>
+				<li data-page='stores'><a href='?section=stores'><?php _e("Manage Stores"); ?></a></li>
+				<li data-page='tablets'><a href='?section=tablets'><?php _e("Tablets"); ?></a></li>
 				<?php } ?>
 			</ul>
 		</div>
