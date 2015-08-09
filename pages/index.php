@@ -180,7 +180,7 @@ $this->add(new View('../template/home_header.php'));
                             <div class="media-body">
                                 <h3 class="media-heading"><?php _e("Intra-Company Analysis"); ?></h3>
                                 <?php _e("View comparisons between the different aspects internally."); ?>
-                            </div>
+                           </div>
                         </div>
                         <div class="feature col-md-4">
                             <a class="icon" href="#">
