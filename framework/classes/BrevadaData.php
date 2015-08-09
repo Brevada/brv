@@ -10,10 +10,10 @@ define('SECONDS_DAY', 3600*24);
 define('SECONDS_WEEK', SECONDS_DAY * 7);
 define('SECONDS_MONTH', SECONDS_WEEK * 4);
 define('SECONDS_YEAR', SECONDS_MONTH * 12);
-	
+
 class BrevadaData
 {
-	
+
 	public static function execute_analysis()
 	{
 		/* Retrieve current time to standardize Data_LastUpdate. */
@@ -22,34 +22,34 @@ class BrevadaData
 		/* Contains meta information for each aspect_type, i.e. info for Data_RatingPercentOther */
 		$metaAspects = array();
 		
-		/* Retrieve list of users. */
-		$users = array();
-		if(($qUsers = Database::query("SELECT users.id as UserID, dashboard.ID as DashboardID FROM dashboard LEFT JOIN users ON users.ID = dashboard.OwnerID")) !== false){
-			while($row = $qUsers->fetch_assoc()){
-				$users[] = array('UserID' => $row['UserID'], 'DashboardID' => $row['DashboardID']);
+		/* Retrieve list of stores. */
+		$stores = array();
+		if(($qStores = Database::query("SELECT stores.id as StoreID, dashboard.id as DashboardID FROM dashboard LEFT JOIN stores ON stores.id = dashboard.StoreID")) !== false){
+			while($row = $qStores->fetch_assoc()){
+				$stores[] = array('StoreID' => $row['StoreID'], 'DashboardID' => $row['DashboardID']);
 			}
 			
-			$qUsers->close();
+			$qStores->close();
 		}
 		
 		/* Overall market benchmark considering all aspects. */
 		$benchmarkSum = $benchmarkCount = 0;
 		
-		/* Perform aspect data analysis for each user. */
-		foreach($users as $user){
+		/* Perform aspect data analysis for each store. */
+		foreach($stores as $store){
 		
-			/* Local version of metaAspects, limited to scope of user. */
+			/* Local version of metaAspects, limited to scope of store. */
 			$localMetaAspects = array();
 			$aspects = array();
 			
-			if(($qFeedback = Database::query("SELECT feedback.Rating, feedback.Date, aspect_type.Title, aspects.ID as AspectID, aspects.Data_RatingPercent as PreviousRating, aspects.AspectTypeID as AspectTypeID FROM feedback LEFT JOIN aspects ON aspects.ID = feedback.AspectID LEFT JOIN aspect_type ON aspect_type.ID = aspects.AspectTypeID WHERE aspects.`Active` = 1 AND feedback.Rating IS NOT NULL AND feedback.Rating > -1 AND aspects.OwnerID = {$user['UserID']}")) !== false){
+			if(($qFeedback = Database::query("SELECT feedback.Rating, feedback.Date, aspect_type.Title, aspects.ID as AspectID, aspects.Data_RatingPercent as PreviousRating, aspects.AspectTypeID as AspectTypeID FROM feedback LEFT JOIN aspects ON aspects.ID = feedback.AspectID LEFT JOIN aspect_type ON aspect_type.ID = aspects.AspectTypeID WHERE aspects.`Active` = 1 AND feedback.Rating IS NOT NULL AND feedback.Rating > -1 AND aspects.StoreID = {$store['StoreID']}")) !== false){
 				while($row = $qFeedback->fetch_assoc()){
 					if(!isset($aspects[$row['Title']])){
 						$aspects[$row['Title']] = array();
 						$localMetaAspects[$row['Title']] = array('AspectID' => $row['AspectID'], 'AspectTypeID' => $row['AspectTypeID'], 'PreviousRating' => (float) $row['PreviousRating']);
 					}
 					
-					/* Multidimensional data array linking feedback to user's aspects. */
+					/* Multidimensional data array linking feedback to store's aspects. */
 					$aspects[$row['Title']][] = array('Rating' => (float) $row['Rating'], 'Date' => (int) $row['Date']);
 				}
 			}
@@ -57,7 +57,7 @@ class BrevadaData
 			/* Overall change of all aspects over 4W and overall rating % of all time. */
 			$overall4W = $overallAll = 0;
 			
-			/* Iterate through all of user's aspects and perform data analysis. */
+			/* Iterate through all of store's aspects and perform data analysis. */
 			foreach($aspects as $aspectTitle => $aspect){
 				
 				/* If no data is available for a particular time span, use previous overall rating %. */
@@ -88,7 +88,7 @@ class BrevadaData
 				//$attentionScore = 100-$data_RatingPercent; //Alternative, base comparison.
 				$attentionScore = 100 - ($data_RatingPercent*2 - $data_Percent4W);
 				
-				/* Update data for individual aspect belonging to user. */
+				/* Update data for individual aspect belonging to store. */
 				$aspectID = $localMetaAspects[$aspectTitle]['AspectID'];				
 				if(($stmt = Database::prepare("UPDATE aspects SET `Data_RatingPercent` = ?, `Data_Percent4W` = ?, `Data_Percent6M` = ?, `Data_Percent1Y` = ?, `Data_AttentionScore` = ?, `Data_LastUpdate` = {$now} WHERE aspects.ID = ?")) !== false){
 					$stmt->bind_param('dddddi', $data_RatingPercent, $data_Percent4W, $data_Percent6M, $data_Percent1Y, $attentionScore, $aspectID);
@@ -112,16 +112,16 @@ class BrevadaData
 				$overall4W /= count($aspects);
 				$overallAll /= count($aspects);
 				
-				/* 	TODO: See Simpson's Paradox. Considering the averages of each user equally may skew data. 
-					If a single user occupies a large stake of the market, perhaps the user's data 
+				/* 	TODO: See Simpson's Paradox. Considering the averages of each store equally may skew data. 
+					If a single store occupies a large stake of the market, perhaps the store's data 
 					should be weighed more using a weighted arithmatic sum (WAS). */
 				$benchmarkCount++;
 				$benchmarkSum += $overallAll;
 			}
 			
 			/* Update dashboard data. */
-			$dashboardID = $user['DashboardID'];
-			if(($stmt = Database::prepare("UPDATE dashboard SET `Data_Overall4W` = ?, `Data_OverallAll` = ? WHERE dashboard.ID = ?")) !== false){
+			$dashboardID = $store['DashboardID'];
+			if(($stmt = Database::prepare("UPDATE dashboard SET `Data_Overall4W` = ?, `Data_OverallAll` = ? WHERE dashboard.id = ?")) !== false){
 				$stmt->bind_param('ddi', $overall4W, $overallAll, $dashboardID);
 				$stmt->execute();
 				$stmt->close();

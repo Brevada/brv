@@ -41,8 +41,8 @@ class Language
 	
 	public static function get($text)
 	{
-		if(isset(self::$dictionary[strtolower($text)])){
-			return self::$dictionary[strtolower($text)];
+		if(isset(self::$dictionary[$text])){
+			return self::$dictionary[$text];
 		} else {
 			return $text;
 		}
@@ -83,7 +83,7 @@ class Language
 				if (substr($line,0,6) == 'msgstr' && !empty($key)) {
 					$value = trim(substr(trim(substr($line,6)),1,-1));
 					if(!empty($value)){
-						$output[strtolower($key)] = $value;
+						$output[$key] = $value;
 					}
 					$key = '';
 				}

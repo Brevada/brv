@@ -10,8 +10,23 @@ BrowserMatch \bMSI[E] !no-gzip !gzip-only-text/html
 SetEnvIfNoCase Request_URI \.(?:gif|jpe?g|png)$ no-gzip
 Header append Vary User-Agent env=!dont-vary
 
+DirectorySlash Off
+
 RewriteEngine On
 RewriteBase /
-RewriteRule ^$ framework/Controller.php?page=index [NC,L]
-RewriteRule ^(secure/.*)$ framework/Controller.php?secure=1&page=$1 [NC,L]
-RewriteRule ^(?!user_data|framework|js|pages|css|images|widgets|files|favicon\.ico)\b([^\\\.*]+\/?[a-z-A-Z0-9]+\.?[a-zA-Z0-9]+)?\/?$ framework/Controller.php?page=$1 [NC,L,QSA] #add P for proxy
+
+RewriteCond %{REQUEST_URI} ^\b(framework|pages|css|js|images|user_data|files)
+RewriteCond %{REQUEST_URI} (\.css|\.js|\.jpg|\.jpeg|\.gif|robots\.txt)$ [NC]
+RewriteCond %{REQUEST_FILENAME} -f
+RewriteCond %{REQUEST_FILENAME} -d
+RewriteRule ^(.*)$ - [L]
+
+RewriteRule ^$ framework/Controller.php?page=index [NC,L,DPI]
+
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^\b([^\\\.*]+\/?[a-z-A-Z0-9\-]+\.?[a-zA-Z0-9\-]+)?\/?$ framework/Controller.php?page=$1 [NC,L,QSA,DPI] #add P for proxy
+
+# RewriteCond %{REQUEST_URI} (\.php)$ [NC]
+# RewriteCond %{REQUEST_FILENAME} -f
+# RewriteRule ^(.*)$ framework/Controller.php?page=404 [NC,L,QSA,DPI]

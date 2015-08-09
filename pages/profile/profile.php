@@ -14,33 +14,25 @@ $geo = Geography::GetGeo();
 $country = $geo['country'];
 $ip = $geo['ip'];
 
-$condition = empty($url_name) ? "ID = '".$_SESSION['user_id']."'" : "url_name='{$url_name}'";
+$condition = empty($url_name) ? "id = '".$_SESSION['StoreID']."'" : "URLName='{$url_name}'";
 
-$query = Database::query("SELECT * FROM users WHERE {$condition} LIMIT 1");
+$query = Database::query("SELECT * FROM `stores` WHERE {$condition} LIMIT 1");
 
 if($query->num_rows == 0) {
 	Brevada::Redirect('/404');
 }
 
-$id='';
-$user_id='';
+$_SESSION['SessionCode'] = strval(bin2hex(openssl_random_pseudo_bytes(16)));
+
+$store_id='';
 $name='';
-$type='';
 $user_extension='';
 $corporate='';
 
 while($row=$query->fetch_assoc()){
-   $id=Brevada::validate($row['id']);
-   $user_id=$id;
-   $name=Brevada::validate($row['name']);
-   $type=Brevada::validate($row['type']);
-   $user_extension=Brevada::validate($row['extension']);
-   $corporate=Brevada::validate($row['corporate']);
-   $url_name=Brevada::validate($row['url_name']);
-}
-
-if($corporate == '1'){
-	Brevada::Redirect("/corporate/profile/corporate_profile.php?name={$url_name}");
+   $store_id=Brevada::validate($row['id']);
+   $name=Brevada::validate($row['Name']);
+   $url_name=Brevada::validate($row['URLName']);
 }
 
 $this->setTitle("Give {$name} Feedback");
@@ -65,10 +57,10 @@ $this->addResource("<meta property='og:description' content='Give {$name} Feedba
 
 <div id="aspects" class="aspect-container container">
 	<?php
-	$postQuery=Database::query("SELECT aspects.ID, aspect_type.Title, aspect_type.Description as Description FROM aspects LEFT JOIN aspect_type ON aspect_type.ID = aspects.AspectTypeID WHERE aspects.OwnerID = {$id} AND aspects.`Active` = 1 ORDER BY aspects.ID DESC");
+	$postQuery=Database::query("SELECT aspects.ID, aspect_type.Title, aspect_type.Description as Description FROM aspects LEFT JOIN aspect_type ON aspect_type.ID = aspects.AspectTypeID WHERE aspects.StoreID = {$store_id} AND aspects.`Active` = 1 ORDER BY aspects.ID DESC");
 	if($postQuery !== false && $postQuery->num_rows > 0){
 		while($row=$postQuery->fetch_assoc()) {		
-			$this->add(new View('../widgets/profile/post_box.php', array('row' => $row, 'country' => $country, 'ip' => $ip, 'id' => $user_id, 'user_extension' => $user_extension)));
+			$this->add(new View('../widgets/profile/post_box.php', array('row' => $row, 'id' => $store_id)));
 		}
 	}
 	?>	
@@ -83,5 +75,5 @@ $this->addResource("<meta property='og:description' content='Give {$name} Feedba
 </div>
 
 <div id="email_connect"  class="aspect-container container" style="display: none;">
-	<?php $this->add(new View('../widgets/profile/email_connect.php', array('user_id' => $user_id))); ?>
+	<?php $this->add(new View('../widgets/profile/email_connect.php', array('store_id' => $store_id))); ?>
 </div>

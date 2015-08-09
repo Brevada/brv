@@ -17,6 +17,8 @@ $userAgent = $_SERVER['HTTP_USER_AGENT'];
 /* Authorized tablet user agent. */
 $authUserAgent = TABLET_USERAGENT;
 
+$sessionCode = isset($_SESSION['SessionCode']) ? $_SESSION['SessionCode'] : '';
+
 if(($check = Database::prepare("SELECT `feedback`.id FROM `feedback` LEFT JOIN user_agents ON user_agents.ID = feedback.UserAgentID WHERE `feedback`.AspectID = ? AND `feedback`.IPAddress = ? AND (`feedback`.`Date` > NOW() - INTERVAL 1 HOUR) AND `user_agents`.UserAgent = ? AND `user_agents`.UserAgent <> ? LIMIT 1")) !== false){
 	$check->bind_param('isss', $aspectID, $ipAddress, $userAgent, $authUserAgent);
 	if($check->execute()){
@@ -31,12 +33,20 @@ if(($check = Database::prepare("SELECT `feedback`.id FROM `feedback` LEFT JOIN u
 					}
 					$stmt->close();
 					
-					if($userAgentID > 0){
-					
-						if(($stmt = Database::prepare("INSERT INTO `feedback` (`AspectID`, `Date`, `Rating`, `IPAddress`, `UserAgentID`, `Country`, `Province`, `City`) SELECT aspects.ID, NOW(), ?, ?, ?, ?, ?, ? FROM aspects WHERE aspects.ID = ?")) !== false){
-							$stmt->bind_param('dsisssi', $rating, $ipAddress, $userAgentID, $country, $province, $city, $aspectID);
-							$stmt->execute();
-							$stmt->close();
+					if(($stmt = Database::prepare("INSERT INTO `locations` (`Country`, `Province`, `City`) VALUES (?, ?, ?)")) !== false){
+						$locationID = -1;
+						$stmt->bind_param('sss', $country, $province, $city);
+						if($stmt->execute()){
+							$locationID = $stmt->insert_id;
+						}
+						$stmt->close();
+						
+						if($userAgentID > 0 && $locationID > 0){
+							if(($stmt = Database::prepare("INSERT INTO `feedback` (`AspectID`, `Date`, `Rating`, `IPAddress`, `UserAgentID`, `LocationID`, `SessionCode`) SELECT aspects.ID, NOW(), ?, ?, ?, ?, ? FROM aspects WHERE aspects.ID = ?")) !== false){
+								$stmt->bind_param('dsiisi', $rating, $ipAddress, $userAgentID, $locationID, $sessionCode, $aspectID);
+								$stmt->execute();
+								$stmt->close();
+							}
 						}
 					}
 				}
