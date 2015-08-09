@@ -1,15 +1,31 @@
 .bottom_link{
 	color:#FFAEA5; 
-	padding:4px;
+	padding:4px 4px 4px 0;
 	font-size:13px; 
 	letter-spacing:1px;
 	cursor:pointer;
 	text-decoration:none;
 }
+
 .bottom_link:hover{
 	color:#fff;
 }
+
 .bottom_link_big{
-padding-bottom:5px; color:#f9f9f9; 
-letter-spacing:1px;
+	padding-bottom:5px;
+	color:#f9f9f9; 
+	letter-spacing:1px;
+}
+
+.footer-column {
+	float: left;
+	margin: 0 2.5em 1em 0;
+}
+
+div.footer-holder {
+	min-height: 300px;
+	color: #f9f9f9;
+	background: #ee2b2b;
+	border-top: 1px solid #dcdcdc;
+	padding-bottom: 0.5em;
 }

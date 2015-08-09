@@ -12,7 +12,7 @@ body {
     font-family: 'Source Sans Pro', sans-serif;
     font-weight: 300;
 }
-a {
+a.small-link {
     color: #ee2b2b;
     font-size: 11px;
 }
@@ -33,9 +33,7 @@ h2 {
     color: #555;
     font-family: helvetica;
 }
-#emphasis {
-    color: #ee2b2b;
-}
+.emphasis { color: #ee2b2b; }
 .textarea {
     resize: none;
     background: #fff;
@@ -906,27 +904,4 @@ div.dropdown-menu ul li {
 }
 div.dropdown-menu ul li:hover {
     background: #9F9F9F;
-}
-.submit-next {
-    float: right;
-    width: 80px;
-    padding: 10px 5px;
-    margin: 2em 0 2em 0;
-    text-align: center;
-    font-weight: bold;
-    font-size: 0.75em;
-    color: #FEFEFE;
-    border: 0px;
-    background: #FF2b2b;
-    -moz-border-radius: 4px;
-    -webkit-border-radius: 4px;
-    border-radius: 4px;
-    display: inline-block;
-    font-family: arial;
-    text-decoration: none;
-    cursor: pointer;
-}
-.submit-next:hover {
-    opacity: 0.9;
-    filter: opacity(90);
 }
