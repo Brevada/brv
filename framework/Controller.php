@@ -4,6 +4,7 @@ Controller
 
 Entry point for website.
 */
+define('DEBUG', true);
 
 define('ROOT_PATH', '/');
 define('URL', 'http://brevada.com/');
@@ -24,8 +25,8 @@ function __autoload($c){
 }
 
 require 'classes/Language.php';
+require 'Minify.php';
 require 'Brevada.php';
-require 'Common.php';
 require 'View.php';
 
 if(!empty($_GET['lang']) || !empty($_COOKIE['lang'])){
@@ -58,8 +59,11 @@ if(!file_exists($viewPath)){
 		$viewPath = "../widgets/{$page}.php";
 		$isWidget = true;
 	} else {
-		//Check if scores/profile
-		if(preg_match('#scores/([a-z0-9_\-\s]+)/?#i', $page, $matches)){
+	
+		if(preg_match('#qr/([a-z0-9_\-]+)#i', $page, $matches)){
+			$_GET['name'] = $matches[1];
+			$viewPath = "../pages/qr.php";
+		} else if(preg_match('#scores/([a-z0-9_\-\s]+)/?#i', $page, $matches)){
 			$_GET['name'] = $matches[1];
 			$viewPath = "../pages/profile/scores/scores.php";
 		} else if(preg_match('#([a-z0-9_\-\s]+)/?#i', $page, $matches)){
@@ -68,12 +72,6 @@ if(!file_exists($viewPath)){
 		} else {
 			$viewPath = '../pages/404.php';
 		}
-	}
-}
-
-if(isset($_GET['secure'])){
-	if (!isset($_SESSION['secure']) || time() - ((int)$_SESSION['secure']) > 3600) {
-		echo 'Authentication required. <a href="/login">Login</a>'; exit;
 	}
 }
 
@@ -88,5 +86,5 @@ if(!$isWidget && !$view->IsScript){
 	$view->DocType = false;
 }
 
-$view->printView();
+echo Minify::sanitize($view);
 ?>
