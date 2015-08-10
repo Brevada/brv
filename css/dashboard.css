@@ -123,10 +123,13 @@ div.mid-banner .icon-button:hover {
     opacity: 1;
 }
 div.mid-banner .icon-button i {
+    float: left;
 	color: #EEE;
 }
 div.mid-banner .icon-button .icon-subtext {
-	width: 100%;
+    float: left;
+    margin-left: 5px;
+    line-height: 30px;
 	font-size: 12px;
 	color: #EEE;
 	text-align: center;
@@ -165,14 +168,14 @@ div.block div.block-bottom {
 }
 div.spacer {
     width: 100%;
-    height: 135px;
+    height: 115px;
     padding: 0;
     margin: 0;
 }
 div.aspect-area {
     height: auto;
     overflow: hidden;
-    margin: 2em auto;
+    margin: 1em auto;
 }
 div.aspect-area div.message-container {
     padding: 30px 30px 10px 30px;
