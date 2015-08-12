@@ -148,6 +148,12 @@ class Brevada
 		//cost is the CPU cost (4 - 31). The higher the number, the better.
 		
 		return password_hash($password, PASSWORD_BCRYPT, array('cost' => 10));
-	}	
+	}
+	
+	public static function IsLocal()
+	{
+		$whitelist = array('127.0.0.1', '::1');
+		return in_array($_SERVER['REMOTE_ADDR'], $whitelist);
+	}
 }
 ?>
