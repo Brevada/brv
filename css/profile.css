@@ -110,8 +110,13 @@ body{
 	font-size: 20px;
 }
 .refresh {
-	width: 100%;
+	width: 80px;
 	text-align: center;
 	color: #EEE;
-	margin: 10px 0px 0px 0px;
+	margin: 0 auto;
+	margin-top: 10px;
+	cursor: pointer;
+}
+.refresh .fa {
+	font-size: 40px;
 }
