@@ -64,7 +64,7 @@
 					
 					<div class="col-md-8">
 						<div class="large_white_bold">
-                           <h1><?php echo sprintf(__('Transform your restaurant with %s'), '<span class="highlighted">'.__('VALUABLE FEEDBACK').'</span>'); ?></h1>
+                           <h1><?php echo sprintf('<span class="highlighted">'.__('Transform your restaurant with %s'),'<b>'. __('VALUABLE FEEDBACK').'</b></span>'); ?></h1>
                         </div>
                         <div class="large_white_light">
                            <p><?php _e('Providing businesses with actionable data and their customers with an integrated and seamless feedback giving experience.'); ?></p>

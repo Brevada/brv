@@ -4,7 +4,7 @@ $this->addResource('/js/communicate_pod.js');
 ?>
 
 <div class="thanks-header">
-	<h1><?php _e("Thank's for the feedback!"); ?></h1> 
+	<h1><?php _e("Thanks for the feedback!"); ?></h1> 
 	<h2><?php _e("Let's stay in touch."); ?></h2>
 </div>
 
