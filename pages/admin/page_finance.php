@@ -24,13 +24,13 @@ if(!Permissions::has(Permissions::VIEW_ADMIN)){ Brevada::Redirect('/404'); }
     </thead>
 	<tbody>
 	<?php
-	$query = Database::query("SELECT `transactions`.id as TransactionID, UNIX_TIMESTAMP(`transactions`.`Date`) as `Date`, `transactions`.CompanyID, `transactions`.`Value`, `transactions`.`Value`, `transactions`.Product, `transactions`.COnfirmed, `transactions`.PaypalTransactionID, `transactions`.PaypalPayerEmail, `transactions`.`Fraud`, `companies`.`Name` FROM `transactions` LEFT JOIN `companies` ON `companies`.id = `transactions`.CompanyID");
+	$query = Database::query("SELECT `transactions`.id as TransactionID, UNIX_TIMESTAMP(`transactions`.`Date`) as `Date`, `transactions`.CompanyID, `transactions`.`Value`, `transactions`.Product, `transactions`.Confirmed, `transactions`.PaypalTransactionID, `transactions`.PaypalPayerEmail, `transactions`.`Fraud`, `companies`.`Name` as CompanyName FROM `transactions` LEFT JOIN `companies` ON `companies`.id = `transactions`.CompanyID");
 	while($row = $query->fetch_assoc()){
 		$id = $row['TransactionID'];
 		$date = date('d-m-Y', intval($row['Date']));
 		$companyID = $row['CompanyID'];
 		$companyName = $row['CompanyName'];
-		$value = number_format(floatval($row['Value'])/100, 2, '.');
+		$value = number_format(floatval($row['Value'])/100, 2);
 		$product = $row['Product'];
 		$status = $row['Confirmed'] == 1 ? 'Confirmed' : 'Pending';
 		$paypalID = $row['PaypalTransactionID'];

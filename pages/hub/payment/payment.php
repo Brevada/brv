@@ -37,7 +37,7 @@ $discountedValue = $payment_price;
 $validPromo = false;
 
 if(!empty($promoCode)){
-	$d_promoCode = Brevada::validate($promoCode, VALIDATE_DATABASE);
+	$d_promoCode = strtolower(Brevada::validate($promoCode, VALIDATE_DATABASE));
 	$d_paypalItemName = Brevada::validate($plan, VALIDATE_DATABASE);
 	if(($query = Database::query("SELECT `id`, `DiscountedValue` FROM `promo_codes` WHERE `Code` = '{$d_promoCode}' AND `Used` = 0 ORDER BY `id` DESC LIMIT 1")) !== false){
 		if($query->num_rows > 0){
