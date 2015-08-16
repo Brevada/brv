@@ -42,7 +42,7 @@ if(!empty($promoCode)){
 	if(($query = Database::query("SELECT `id`, `DiscountedValue` FROM `promo_codes` WHERE `Code` = '{$d_promoCode}' AND `Used` = 0 ORDER BY `id` DESC LIMIT 1")) !== false){
 		if($query->num_rows > 0){
 			$row = $query->fetch_assoc();
-			$discountedValue = @intval($row['DiscountedValue']);
+			$discountedValue = @floatval(@intval($row['DiscountedValue'])/100);
 			$validPromo = true;
 		}
 	}

@@ -1,5 +1,7 @@
 <?php
-require_once 'packages/PHPMailer-5.2.10/PHPMailerAutoload.php';
+require_once 'packages/PHPMailer-5.2.10/class.pop3.php';
+require_once 'packages/PHPMailer-5.2.10/class.smtp.php';
+require_once 'packages/PHPMailer-5.2.10/class.phpmailer.php';
 
 class Email
 {
@@ -89,7 +91,7 @@ class Email
 		}
 		
 		if(DEBUG){
-			Logger:debug('Email sent: ' . var_export($this->mailer, true));
+			Logger::debug('Email sent: ' . var_export($this->mailer, true));
 			return true;
 		} else {
 			return $this->mailer->send();

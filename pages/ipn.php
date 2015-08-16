@@ -106,14 +106,14 @@ if(!$confirmed){
 	$maxAccounts = 0;
 	$maxStores = 0;
 	
-	$expectedValue = 0; $discountedValue = 1080;
+	$expectedValue = 0; $discountedValue = 1080*100;
 	if(strtolower(trim($item_name)) == strtolower(trim($plan_basic))){
-		$expectedValue = 600;
+		$expectedValue = 600*100;
 		$plan = $plan_basic;
 		
 		$maxTablets = 2; $maxAccounts = 1; $maxStores = 1;
 	} else if(strtolower(trim($item_name)) == strtolower(trim($plan_premium))){
-		$expectedValue = 1080;
+		$expectedValue = 1080*100;
 		$plan = $plan_premium;
 		
 		$maxTablets = 5; $maxAccounts = 3; $maxStores = 1;
@@ -132,10 +132,7 @@ if(!$confirmed){
 			}
 		}
 		
-		$expectedValue = floatval($expectedValue);
-		$payment_amount = floatval($payment_amount);
-		
-		$paymentAmountCents = @intval($expectedValue*100);
+		$payment_amount = @intval(ceil(floatval($payment_amount)*100));
 		
 		if($expectedValue != $payment_amount && $payment_amount == 0){ exit; }
 		
@@ -144,7 +141,7 @@ if(!$confirmed){
 			$payment_status = strtolower($payment_status);
 			if($payment_status == 'pending' && !$transactionStarted){
 				if(($stmt = Database::prepare("INSERT INTO `transactions` (`Date`, `CompanyID`, `Value`, `Currency`, `Product`, `Confirmed`, `PaypalTransactionID`, `PaypalPayerEmail`, `Fraud`) VALUES (NOW(), ?, ?, 'CAD', ?, 0, ?, ?, ?)")) !== false){
-					$stmt->bind_param('iissss', $companyID, $paymentAmountCents, $plan, $txn_id, $payer_email, $fraudString);
+					$stmt->bind_param('iissss', $companyID, $expectedValue, $plan, $txn_id, $payer_email, $fraudString);
 					$stmt->execute();
 					$stmt->close();
 				}

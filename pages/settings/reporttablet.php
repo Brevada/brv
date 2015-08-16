@@ -14,7 +14,7 @@ if(!$_SESSION['Corporate'] && !Permissions::has(Permissions::MODIFY_STORE)){
 }
 
 if(!isset($_SESSION['Last_ReportTablet'])){
-	Email::build()->setSubject('Report - Tablet')->setTo('contact@brevada.com', 'Admin')->loadTemplate('report_tablet.html')->send();
+	Email::build()->setSubject('Report - Tablet')->setTo('contact@brevada.com', 'Admin')->loadTemplate('report_broken.html')->send();
 	
 	$_SESSION['Last_ReportTablet'] = time();
 }

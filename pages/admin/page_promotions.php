@@ -47,7 +47,7 @@ if(!Permissions::has(Permissions::VIEW_ADMIN)){ Brevada::Redirect('/404'); }
 		$id = $row['id'];
 		$dateIssued = intval($row['DateIssued']);
 		$issuer = $row['EmailAddress'];
-		$value = $row['DiscountedValue'];
+		$value = @floatval($row['DiscountedValue'])/100.0;
 		$used = $row['Used'] == 1 ? 'Used' : 'Unused';
 		$code = $row['Code'];
 		$paypalItem = $row['PaypalItemName'];

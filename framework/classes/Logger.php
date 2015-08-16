@@ -26,7 +26,7 @@ class Logger
 
 	public static function debug($s, $location='ANY')
 	{
-		if(!DEBUG) return;
+		if(!DEBUG){ return; }
 		self::log($s, 'DEBUG', $location);
 	}
 	

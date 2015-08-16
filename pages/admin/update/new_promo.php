@@ -6,13 +6,13 @@ $value = strtolower(trim(Brevada::FromPOST('txtValue')));
 $code = strtolower(trim(Brevada::FromPOST('txtCode')));
 $paypalItem = strtolower(trim(Brevada::FromPOST('ddPaypalItem')));
 
-if(empty($value) || empty($code) || empty($paypalItem)){ Brevada::Redirect('/admin?show=promotions&error'); }
+if(!isset($value) || empty($code) || empty($paypalItem)){ Brevada::Redirect('/admin?show=promotions&error'); }
 
 if(strpos($value, '$') === 0){
 	$value = substr($value, 1);
 }
 
-$value = @intval($value);
+$value = @intval(@floatval($value) * 100);
 
 if(($stmt = Database::prepare("INSERT INTO `promo_codes` (`DateIssued`, `IssuerID`, `DiscountedValue`, `Used`, `Code`, `PaypalItemName`) VALUES (NOW(), ?, ?, 0, ?, ?)")) !== false){
 	$issuerID = $_SESSION['AccountID'];
