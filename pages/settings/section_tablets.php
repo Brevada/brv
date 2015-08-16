@@ -21,6 +21,8 @@ if(($query = Database::query("SELECT `tablets`.`id`, `tablets`.`Status`, `stores
 	$numTablets = $query->num_rows;
 }
 
+if($numTablets > $maxTablets){ $maxTablets = $numTablets; }
+
 $message = '';
 if(isset($_GET['thanks'])){
 	$message = __("Thank you for reporting a broken tablet. We will look into it and get back to you shortly.");
@@ -47,7 +49,7 @@ if(isset($_GET['thanks'])){
 			?>
 						<tr>
 							<td>#<?php echo $id; ?></td>
-							<td><?php echo $storeName; ?></td>
+							<td><?php echo ucwords($storeName); ?></td>
 							<td><?php _e(ucwords($status)); ?></td>
 						</tr>
 			<?php
