@@ -23,7 +23,7 @@
                 <div class="container">
                     <!-- Brand and toggle get grouped for better mobile display -->
                     <div class="navbar-header">
-                        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#brevada-navbar">
                             <span class="fa fa-bars fa-lg"></span>
                         </button>
                         <a class="navbar-brand" href="index.html">
@@ -32,7 +32,7 @@
                     </div>
 
                     <!-- Collect the nav links, forms, and other content for toggling -->
-                    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                    <div class="collapse navbar-collapse" id="brevada-navbar">
 
                         <ul class="nav navbar-nav navbar-right">
                             <li><a class="hidden-sm" href="#about"><?php _e('how it works'); ?></a>
@@ -64,14 +64,15 @@
 					
 					<div class="col-md-8">
 						<div class="large_white_bold">
-                           <h1><?php echo sprintf(__('Transform your restaurant with %s'), '<span class="highlighted">'.__('VALUABLE FEEDBACK').'</span>'); ?></h1>
+                           <h1><?php echo sprintf('<span class="highlighted">'.__('Transform your restaurant with %s'),'<b>'. __('VALUABLE FEEDBACK').'</b></span>'); ?></h1>
                         </div>
                         <div class="large_white_light">
                            <p><?php _e('Providing businesses with actionable data and their customers with an integrated and seamless feedback giving experience.'); ?></p>
                         </div>
 
                         <div class="tp-caption">
-                            <a href="/signup/" class="btn btn-default btn-lg"><?php _e('Get Started'); ?></a>
+                            <a href="/signup/" class="btn btn-default btn-lg">Get Started</a>
+                            <a target="_BLANK" href="/files/BrevadaPressPack.pdf" class="btn btn-primary inverse btn-lg">Download Press Pack</a>
                         </div>
 			   		</div>
 			   		

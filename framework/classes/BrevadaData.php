@@ -10,46 +10,39 @@ define('SECONDS_DAY', 3600*24);
 define('SECONDS_WEEK', SECONDS_DAY * 7);
 define('SECONDS_MONTH', SECONDS_WEEK * 4);
 define('SECONDS_YEAR', SECONDS_MONTH * 12);
-	
+
 class BrevadaData
 {
-	
+
 	public static function execute_analysis()
 	{
 		/* Retrieve current time to standardize Data_LastUpdate. */
 		$now = time();
-	
-		/* Contains meta information for each aspect_type, i.e. info for Data_RatingPercentOther */
-		$metaAspects = array();
 		
-		/* Retrieve list of users. */
-		$users = array();
-		if(($qUsers = Database::query("SELECT users.id as UserID, dashboard.ID as DashboardID FROM dashboard LEFT JOIN users ON users.ID = dashboard.OwnerID")) !== false){
-			while($row = $qUsers->fetch_assoc()){
-				$users[] = array('UserID' => $row['UserID'], 'DashboardID' => $row['DashboardID']);
+		/* Retrieve list of stores. */
+		$stores = array();
+		if(($qStores = Database::query("SELECT stores.id as StoreID, dashboard.id as DashboardID, IFNULL(GROUP_CONCAT(company_keywords_link.CompanyKeywordID ORDER BY company_keywords_link.CompanyKeywordID ASC SEPARATOR ','), '') as keywords FROM dashboard LEFT JOIN stores ON stores.id = dashboard.StoreID LEFT JOIN companies ON companies.`id` = stores.CompanyID LEFT JOIN company_keywords_link ON company_keywords_link.CompanyID = companies.id GROUP BY stores.id")) !== false){
+			while($row = $qStores->fetch_assoc()){
+				$stores[] = array('StoreID' => $row['StoreID'], 'DashboardID' => $row['DashboardID'], 'Keywords' => explode(',', $row['keywords']), 'OverallPercent' => 0);
 			}
 			
-			$qUsers->close();
+			$qStores->close();
 		}
 		
-		/* Overall market benchmark considering all aspects. */
-		$benchmarkSum = $benchmarkCount = 0;
+		/* Perform aspect data analysis for each store. */
+		foreach($stores as &$store){
 		
-		/* Perform aspect data analysis for each user. */
-		foreach($users as $user){
-		
-			/* Local version of metaAspects, limited to scope of user. */
 			$localMetaAspects = array();
 			$aspects = array();
 			
-			if(($qFeedback = Database::query("SELECT feedback.Rating, feedback.Date, aspect_type.Title, aspects.ID as AspectID, aspects.Data_RatingPercent as PreviousRating, aspects.AspectTypeID as AspectTypeID FROM feedback LEFT JOIN aspects ON aspects.ID = feedback.AspectID LEFT JOIN aspect_type ON aspect_type.ID = aspects.AspectTypeID WHERE aspects.`Active` = 1 AND feedback.Rating IS NOT NULL AND feedback.Rating > -1 AND aspects.OwnerID = {$user['UserID']}")) !== false){
+			if(($qFeedback = Database::query("SELECT feedback.Rating, UNIX_TIMESTAMP(feedback.Date) as `Date`, aspect_type.Title, aspects.ID as AspectID, aspects.Data_RatingPercent as PreviousRating, aspects.AspectTypeID as AspectTypeID FROM feedback LEFT JOIN aspects ON aspects.ID = feedback.AspectID LEFT JOIN aspect_type ON aspect_type.ID = aspects.AspectTypeID WHERE aspects.`Active` = 1 AND feedback.Rating IS NOT NULL AND feedback.Rating > -1 AND aspects.StoreID = {$store['StoreID']}")) !== false){
 				while($row = $qFeedback->fetch_assoc()){
 					if(!isset($aspects[$row['Title']])){
 						$aspects[$row['Title']] = array();
-						$localMetaAspects[$row['Title']] = array('AspectID' => $row['AspectID'], 'AspectTypeID' => $row['AspectTypeID'], 'PreviousRating' => (float) $row['PreviousRating']);
+						$localMetaAspects[$row['Title']] = array('AspectID' => $row['AspectID'], 'AspectTypeID' => $row['AspectTypeID'], 'PreviousRating' => (float) $row['PreviousRating'], 'Sum' => 0, 'Count' => 0);
 					}
 					
-					/* Multidimensional data array linking feedback to user's aspects. */
+					/* Multidimensional data array linking feedback to store's aspects. */
 					$aspects[$row['Title']][] = array('Rating' => (float) $row['Rating'], 'Date' => (int) $row['Date']);
 				}
 			}
@@ -57,7 +50,7 @@ class BrevadaData
 			/* Overall change of all aspects over 4W and overall rating % of all time. */
 			$overall4W = $overallAll = 0;
 			
-			/* Iterate through all of user's aspects and perform data analysis. */
+			/* Iterate through all of store's aspects and perform data analysis. */
 			foreach($aspects as $aspectTitle => $aspect){
 				
 				/* If no data is available for a particular time span, use previous overall rating %. */
@@ -68,7 +61,7 @@ class BrevadaData
 				$data_RatingPercent = self::biased_mean(self::extract_nested($aspect, 'Rating'));
 				
 				/* Change in aspect rating over 4W; compares 4W to all time. */
-				$spanOf4W = self::extract_nested(self::subdata_date($aspect, time() - SECONDS_MONTH), 'Rating');
+				$spanOf4W = self::extract_nested(self::subdata_date($aspect, time() - SECONDS_MONTH), 'Rating'); 
 				$data_Percent4W = self::biased_mean($spanOf4W, $previousRating) - $data_RatingPercent;
 				
 				/* Change in aspect rating over 8W; compares 8W to all time. */
@@ -88,7 +81,7 @@ class BrevadaData
 				//$attentionScore = 100-$data_RatingPercent; //Alternative, base comparison.
 				$attentionScore = 100 - ($data_RatingPercent*2 - $data_Percent4W);
 				
-				/* Update data for individual aspect belonging to user. */
+				/* Update data for individual aspect belonging to store. */
 				$aspectID = $localMetaAspects[$aspectTitle]['AspectID'];				
 				if(($stmt = Database::prepare("UPDATE aspects SET `Data_RatingPercent` = ?, `Data_Percent4W` = ?, `Data_Percent6M` = ?, `Data_Percent1Y` = ?, `Data_AttentionScore` = ?, `Data_LastUpdate` = {$now} WHERE aspects.ID = ?")) !== false){
 					$stmt->bind_param('dddddi', $data_RatingPercent, $data_Percent4W, $data_Percent6M, $data_Percent1Y, $attentionScore, $aspectID);
@@ -100,49 +93,81 @@ class BrevadaData
 				$overall4W += $data_Percent4W;
 				$overallAll += $data_RatingPercent;
 				
-				if(!isset($metaAspects[$aspectTitle])){
-					$metaAspects[$aspectTitle] = array('ID' => $localMetaAspects[$aspectTitle]['AspectTypeID'], 'Sum' => 0, 'Count' => 0);
-				}
-				$metaAspects[$aspectTitle]['Sum'] += $data_RatingPercent;
-				$metaAspects[$aspectTitle]['Count']++;
+				$localMetaAspects[$aspectTitle]['Sum'] += $data_RatingPercent;
+				$localMetaAspects[$aspectTitle]['Count'] += count($aspect);
 			}
 			
 			/* Calculate overall 4W change and overall % for dashboard, considering ALL aspects. */
 			if(count($aspects) > 0){
 				$overall4W /= count($aspects);
 				$overallAll /= count($aspects);
-				
-				/* 	TODO: See Simpson's Paradox. Considering the averages of each user equally may skew data. 
-					If a single user occupies a large stake of the market, perhaps the user's data 
-					should be weighed more using a weighted arithmatic sum (WAS). */
-				$benchmarkCount++;
-				$benchmarkSum += $overallAll;
 			}
 			
 			/* Update dashboard data. */
-			$dashboardID = $user['DashboardID'];
-			if(($stmt = Database::prepare("UPDATE dashboard SET `Data_Overall4W` = ?, `Data_OverallAll` = ? WHERE dashboard.ID = ?")) !== false){
+			$dashboardID = $store['DashboardID'];
+			if(($stmt = Database::prepare("UPDATE dashboard SET `Data_Overall4W` = ?, `Data_OverallAll` = ? WHERE dashboard.id = ?")) !== false){
 				$stmt->bind_param('ddi', $overall4W, $overallAll, $dashboardID);
 				$stmt->execute();
 				$stmt->close();
 			}
 			
+			$store['OverallPercent'] = $overallAll;
+			$store['MetaAspects'] = $localMetaAspects;
 		}
-		
-		/* Calculate overall market benchmark, considering ALL aspects. TODO: See previous comment regarding WAS. */
-		$benchmarkPercent = $benchmarkCount > 0 ? ((float) $benchmarkSum / $benchmarkCount) : 0;
-		
-		/* Update relative global benchmark percentages. */
-		Database::query("UPDATE dashboard SET dashboard.Data_RelativeBenchmark = dashboard.Data_OverallAll - {$benchmarkPercent}");
+		unset($store);
 		
 		/* 	Update relative aspect specific benchmark percentages.
-			TODO: Benchmark can theoretically be calculated based on data within a geographical area. */
-		foreach($metaAspects as $metaAspect){
-			$benchmark = @intval($metaAspect['Count']) > 0 ? ((float) $metaAspect['Sum']/$metaAspect['Count']) : 0;
-			$metaAspectID = $metaAspect['ID'];
-			
-			Database::query("UPDATE aspects SET aspects.Data_RatingPercentOther = {$benchmark} WHERE aspects.AspectTypeID = {$metaAspectID}");
+			This implements a Weighted Arithmatic Sum, weighted by quanitity of feedback.
+			TODO: Benchmark can theoretically be calculated based on data within a geographical area.
+			In addition to similar keywords. */
+		foreach($stores as $store){
+			if(!isset($store['MetaAspects'])){ continue; }
+			foreach($store['MetaAspects'] as $title => $meta){
+				$ckCount = 0; $ckSum = 0;
+				foreach($stores as $ckStore){
+					if(!isset($ckStore['MetaAspects']) || !isset($ckStore['MetaAspects'][$title])){
+						continue;
+					}
+					if(empty($ckStore['Keywords']) && empty($store['Keywords'])){
+						$ckCount += $ckStore['MetaAspects'][$title]['Count'];
+						$ckSum += $ckStore['MetaAspects'][$title]['Sum'];
+					} else {
+						$common = array_intersect($ckStore['Keywords'], $store['Keywords']);
+						if(!empty($common)){
+							$ckCount += $ckStore['MetaAspects'][$title]['Count'];
+							$ckSum += $ckStore['MetaAspects'][$title]['Sum'];							
+						}
+					}
+				}
+				
+				$ckPercent = $ckCount > 0 ? ((float) $ckSum / $ckCount) : 0;
+				
+				Database::query("UPDATE aspects SET aspects.Data_RatingPercentOther = {$ckPercent} WHERE aspects.ID = {$meta['AspectID']}");
+			}
 		}
+		
+		/* Calculate overall market benchmark, considering ALL aspects. based on common keywords (ck). */
+		foreach($stores as $store){
+			$ckCount = 0; $ckSum = 0;
+			foreach($stores as $ckStore){
+				if(empty($ckStore['Keywords']) && empty($store['Keywords'])){
+					$ckCount++;
+					$ckSum += $ckStore['OverallPercent'];
+				} else {
+					$common = array_intersect($ckStore['Keywords'], $store['Keywords']);
+					if(!empty($common)){
+						$ckCount++;
+						$ckSum += $ckStore['OverallPercent'];
+					}
+				}
+			}
+			
+			$ckBenchmarkPercent = $ckCount > 0 ? ((float) $ckSum / $ckCount) : 0;
+			
+			/* Update relative benchmark percentages of current store. */
+			Database::query("UPDATE dashboard SET dashboard.Data_RelativeBenchmark = dashboard.Data_OverallAll - {$ckBenchmarkPercent} WHERE dashboard.StoreID = {$store['StoreID']}");
+		}
+			
 	}
 	
 	/* Advanced Statistical Functions */

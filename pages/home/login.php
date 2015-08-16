@@ -5,10 +5,6 @@ $this->setTitle('Brevada - Login');
 $this->addResource('/css/layout.css');
 $this->addResource('/css/login.css');
 
-if(!isset($_SESSION['user_id'])){
-	$_SESSION['user_id']='none';
-}
-
 if(Brevada::IsMobile()){
 	$this->addResource("<meta name='viewport' content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0'/>", true, true);
 }
@@ -41,7 +37,7 @@ $(document).ready(function() {
 
 <div id="bottom">
 	<center>
-		<span class="text_clean"><?php _e("Don't have an account?"); ?></span>&nbsp;<a href="/home/signup.php"><span style="color:#bc0101;"><?php _e('Click Here'); ?></span></a>
+		<span class="text_clean"><?php _e("Don't have an account?"); ?></span>&nbsp;<a href="/home/signup.php" class='small-link'><span style="color:#bc0101;"><?php _e('Click Here'); ?></span></a>
 		<br /><br /><br />
 		<span style="font-size:11px;"><?php _e('Toll free'); ?>: 1 (855) 484-7451 <br /> &copy; <?php echo date('Y'); ?> brevada.com</span>
 	</center>

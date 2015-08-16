@@ -1,3 +1,3 @@
 <?php
-Brevada::Redirect('/hub/thanks');
+Brevada::Redirect('/dashboard?thanks');
 ?>

@@ -4,4 +4,4 @@ Disallow: /images/
 Disallow: /pages/
 Disallow: /js/
 Disallow: /css/
-Disallow: /widget/
+Disallow: /widgets/
