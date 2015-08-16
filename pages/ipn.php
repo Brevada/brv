@@ -3,7 +3,7 @@
 $this->IsScript = true;
 
 $companyID = @intval(Brevada::FromGET('id'));
-$promoCode = Brevada::FromGET('promo');
+$promoCode = strtolower(Brevada::FromGET('promo'));
 
 $raw_post_data = file_get_contents('php://input');
 $raw_post_array = explode('&', $raw_post_data);

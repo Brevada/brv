@@ -1,9 +1,23 @@
 <?php
 if(!Brevada::IsLoggedIn()){ Brevada::Redirect('/home/logout'); }
 if(!Permissions::has(Permissions::VIEW_ADMIN)){ Brevada::Redirect('/404'); }
+
 ?>
 <h1 class="page-header">Tablets</h1>
 
+<div>
+	<h2 class="sub-header">Register a Tablet</h2>
+	<p>To retrieve the tablet's Serial #, tap the "Back" button 10 times. You will be prompted to enter a password. Enter "serial" (no quotes).</p>
+
+	<form action='admin/update/new_tablet.php' method="POST">
+		<div class='input-group col-lg-6 col-md-6'>
+			<input type="text" class='form-control' placeholder="Enter the Serial # of the new tablet" name="txtSerial" />
+			<span class='input-group-btn'>
+				<button type='submit' class='btn btn-default'>Register</button>
+			</span>
+		</div>
+	</form>
+</div>
 
 <h2 class="sub-header">Tablet Data</h2>
 <p>For Store Name, enter the ID not the name.</p>
@@ -24,9 +38,9 @@ if(!Permissions::has(Permissions::VIEW_ADMIN)){ Brevada::Redirect('/404'); }
 	while($row = $query->fetch_assoc()){
 		$id = $row['TabletID'];
 		$storeID = $row['StoreID'];
-		$serial = $row['SerialCode'];
+		$serial = strtoupper($row['SerialCode']);
 		$status = $row['Status'];
-		$name = $row['Name'];
+		$name = empty($row['Name']) ? 'NULL' : $row['Name'];
 	?>
       <tr data-id='<?php echo $id; ?>'>
         <td><?php echo $id; ?></td>
