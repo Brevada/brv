@@ -20,7 +20,7 @@ $isCorporate = Brevada::FromGET('corporate') == '1' && Brevada::IsLoggedIn() && 
 
 while(isset($_POST['txtStreetAddress'.count($stores)])){
 	$index = count($stores);
-	$stores[] = array('Name' => strtolower(trim(Brevada::FromPOST('txtStoreName'.$index))), 'StreetAddress' => strtolower(trim(Brevada::FromPOST('txtStreetAddress'.$index))), 'City' => strtolower(trim(Brevada::FromPOST('txtCity'.$index))), 'Province' => strtolower(trim(Brevada::FromPOST('txtProvince'.$index))), );
+	$stores[] = array('Name' => trim(Brevada::FromPOST('txtStoreName'.$index)), 'StreetAddress' => strtolower(trim(Brevada::FromPOST('txtStreetAddress'.$index))), 'City' => strtolower(trim(Brevada::FromPOST('txtCity'.$index))), 'Province' => strtolower(trim(Brevada::FromPOST('txtProvince'.$index))), );
 }
 
 if(empty($email) || empty($password) || empty($name)){
@@ -93,6 +93,8 @@ if(empty($email) || empty($password) || empty($name)){
 					$row = $query->fetch_assoc();
 					$d_categoryID = $row['id'];
 				}
+				
+				$aspects = explode(',', $aspects);
 				
 				foreach($stores as $store){
 					if($numStores == 1 && !$isCorporate){ break; }
@@ -197,7 +199,6 @@ if(empty($email) || empty($password) || empty($name)){
 						}
 						
 						/* Insert aspects. */
-						$aspects = explode(',', $aspects);
 						if($aspects !== false){
 							foreach($aspects as $token){
 								if(!empty($token)){
