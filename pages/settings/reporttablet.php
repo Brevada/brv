@@ -19,5 +19,5 @@ if(!isset($_SESSION['Last_ReportTablet'])){
 	$_SESSION['Last_ReportTablet'] = time();
 }
 
-Brevada::Redirect('/settings?section=tablet&thanks=1');
+Brevada::Redirect('/settings?section=tablets&thanks=1');
 ?>

@@ -22,6 +22,8 @@ if($maxStores == 0){ $maxStores = 1; }
 if(($query = Database::query("SELECT `stores`.`Name`, `stores`.URLName FROM `stores` WHERE `stores`.CompanyID = {$_SESSION['CompanyID']} ORDER BY `stores`.`Name` ASC")) !== false){
 	$numStores = $query->num_rows;
 }
+
+if($numStores > $maxStores){ $maxStores = $numStores; }
 ?>
 <form id='frmAccount' action='settings?section=logins' method='post'>
 <div class='form-account'>
@@ -36,7 +38,7 @@ if(($query = Database::query("SELECT `stores`.`Name`, `stores`.URLName FROM `sto
 			<?php
 				if($query !== false && $query->num_rows > 0){
 					while($row = $query->fetch_assoc()){
-						$name = $row['Name'];
+						$name = ucwords($row['Name']);
 						$url = URL . $row['URLName'];
 			?>
 						<tr>

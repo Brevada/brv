@@ -13,7 +13,7 @@ $logins = @intval(strtolower(trim(Brevada::FromPOST('txtLogins'))));
 
 if(empty($id) || empty($months)){ Brevada::Redirect('/admin?show=companies&error'); }
 
-if(($stmt = Database::query("SELECT `companies`.`id` FROM `companies` WHERE `companies`.`id` = ? LIMIT 1")) !== false){
+if(($stmt = Database::prepare("SELECT `companies`.`id`, `companies`.`ExpiryDate` FROM `companies` WHERE `companies`.`id` = ? LIMIT 1")) !== false){
 	$stmt->bind_param('i', $id);
 	if($stmt->execute()){
 		$stmt->store_result();
@@ -44,7 +44,7 @@ if($check !== false && $check->num_rows == 0){
 
 Database::query("UPDATE `company_features` LEFT JOIN `companies` ON `companies`.`FeaturesID` = `company_features`.`id` SET `MaxAccounts` = `MaxAccounts` + {$logins}, `MaxStores` = `MaxStores` + {$stores}, `MaxTablets` = `MaxTablets` + {$tablets} WHERE `companies`.`id` = {$id}");
 
-Database::query("UPDATE `companies` SET `Active` = 1, `ExpiryDate` = DATE_ADD(`ExpiryDate`, INTERVAL {$months} MONTH) WHERE `companies`.`id` = {$id}");
+Database::query("UPDATE `companies` SET `Active` = 1, `ExpiryDate` = IF(`ExpiryDate` IS NULL, NOW() + INTERVAL {$months} MONTH, DATE_ADD(`ExpiryDate`, INTERVAL {$months} MONTH)) WHERE `companies`.`id` = {$id}");
 
 Brevada::Redirect('/admin?show=companies');
 ?>
