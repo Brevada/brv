@@ -99,7 +99,7 @@ if(($storeQuery = Database::query("SELECT `stores`.`Name`, `stores`.id FROM `sto
 		<div class="submit-next"><?php _e('Create Login'); ?></div>
 	</form>
 	<?php } else { ?>
-	<span class="form-header"><?php _e("If you would like to add additional logins, you can purchase more via the Upgrade tab to the left."); ?></span>
+	<span class="form-header"><?php _e("If you would like to add additional logins, please send us an email or give us a call."); ?></span>
 	<?php } ?>
 
 </div>

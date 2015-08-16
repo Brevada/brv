@@ -51,6 +51,8 @@ if(!in_array($section, $acceptableSections)){ $section = 'account'; }
 				<?php } ?>
 				<?php if($_SESSION['Corporate']){ ?>
 				<li data-page='stores'><a href='?section=stores'><?php _e("Manage Stores"); ?></a></li>
+				<?php } ?>
+				<?php if(($_SESSION['Corporate'] && Permissions::has(Permissions::MODIFY_COMPANY_STORES)) || (!$_SESSION['Corporate'] && Permissions::has(Permissions::MODIFY_STORE))){ ?>
 				<li data-page='tablets'><a href='?section=tablets'><?php _e("Tablets"); ?></a></li>
 				<?php } ?>
 			</ul>
