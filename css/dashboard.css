@@ -128,7 +128,7 @@ div.mid-banner .icon-button i {
 }
 div.mid-banner .icon-button .icon-subtext {
     float: left;
-    margin-left: 5px;
+	margin: 4px 0px -4px 8px;
     line-height: 30px;
 	font-size: 12px;
 	color: #EEE;
@@ -291,7 +291,7 @@ div.aspect-area.right-bar div.consultant .body {
 }
 div.aspect-area.right-bar div.consultant .aspect-title {
     padding: 10px;
-    margin: 0px 5px 0px 0px;
+    margin: 0px 5px 5px 0px;
     border-radius: 5px;
     color: #FFFFFF;
     font-size: 1em;

@@ -24,7 +24,7 @@ $this->addResource('/js/admin.js');
 */
 
 $show = Brevada::FromGET('show');
-if($show != 'overview' && $show != 'companies' && $show != 'stores' && $show != 'accounts' && $show != 'tablets' && $show != 'finance' && $show != 'promotions' && $show != 'newclient' && $show != 'salesfaq'){
+if($show != 'overview' && $show != 'companies' && $show != 'stores' && $show != 'accounts' && $show != 'tablets' && $show != 'finance' && $show != 'promotions' && $show != 'newclient' && $show != 'salesfaq' && $show != 'data'){
 	$show = 'overview';
 }
 
@@ -61,6 +61,9 @@ if($show != 'overview' && $show != 'companies' && $show != 'stores' && $show != 
         <li data-page='companies'><a href="?show=companies">Companies</a></li>
         <li data-page='stores'><a href="?show=stores">Stores</a></li>
         <li data-page='accounts'><a href="?show=accounts">Accounts</a></li>
+      </ul>
+      <ul class="nav nav-sidebar">
+        <li data-page='companies'><a href="?show=data">Data Analysis</a></li>
       </ul>
       <ul class="nav nav-sidebar">
 		<li data-page='tablets'><a href="?show=tablets">Tablets</a></li>
