@@ -6,6 +6,8 @@ $dest = '/home/login.php?login=failed';
 
 if(Brevada::Login($email, $password)){
 	$dest = '/dashboard';
+} else {
+	Brevada::Logout();
 }
 
 $this->add(new View('../widgets/loader.php', array('destination' => $dest)));
