@@ -6,6 +6,7 @@ $this->addResource('/css/layout.css');
 $this->addResource('/css/dashboard.css');
 $this->addResource('/js/dashboard.js');
 $this->addResource('/js/dashboard-slide.js');
+$this->addResource('/js/dashboard-graph.js');
 
 $this->addResource('/css/brevada.tooltip.css');
 $this->addResource('/js/brevada.tooltip.js');
@@ -151,7 +152,7 @@ $areasOfLeastConcern = array_diff($areasOfLeastConcern, $areasOfFocus);
 </div>
 
 <?php
-	$query = Database::query("SELECT aspect_type.Title, aspects.Data_LastUpdate, aspects.Data_RatingPercent, aspects.Data_RatingPercentOther, aspects.Data_Percent4W, aspects.Data_Percent6M, aspects.Data_Percent1Y, (SELECT COUNT(*) FROM feedback WHERE feedback.Rating > -1 AND feedback.AspectID = aspects.ID AND UNIX_TIMESTAMP(`feedback`.`Date`) < `aspects`.`Data_LastUpdate`) as Total FROM aspects LEFT JOIN aspect_type ON aspect_type.ID = aspects.AspectTypeID WHERE aspects.StoreID = {$store_id} AND `Active` = 1 AND aspect_type.Title <> '' ORDER BY `aspect_type`.Title ASC");
+	$query = Database::query("SELECT aspect_type.Title, aspects.id, aspects.Data_LastUpdate, aspects.Data_RatingPercent, aspects.Data_RatingPercentOther, aspects.Data_Percent4W, aspects.Data_Percent6M, aspects.Data_Percent1Y, (SELECT COUNT(*) FROM feedback WHERE feedback.Rating > -1 AND feedback.AspectID = aspects.ID AND UNIX_TIMESTAMP(`feedback`.`Date`) < `aspects`.`Data_LastUpdate`) as Total FROM aspects LEFT JOIN aspect_type ON aspect_type.ID = aspects.AspectTypeID WHERE aspects.StoreID = {$store_id} AND `Active` = 1 AND aspect_type.Title <> '' ORDER BY `aspect_type`.Title ASC");
 ?>
 
 <!-- Left side -->
@@ -324,6 +325,7 @@ $areasOfLeastConcern = array_diff($areasOfLeastConcern, $areasOfFocus);
 	} else {
 	while($query !== false && $row = $query->fetch_assoc()){
 		$title = $row['Title'];
+		$id = $row['id'];
 		
 		/* Adding '0' forces float(0) rather than float(-0). */
 		
@@ -346,8 +348,9 @@ $areasOfLeastConcern = array_diff($areasOfLeastConcern, $areasOfFocus);
 			$colour = 'negative';
 		}
 	?>
+		<!-- Aspect Box -->
 		<div class="col-sm-6 col-md-6 col-lg-4 pod-holder">
-			<div class="pod">
+			<div id="<?php echo $id; ?>" class="pod">
 				<div class="body">
 					<div class="header">
 						<span class='aspect-title <?php echo $colour; ?>'><?php _e($title); ?></span>
@@ -372,44 +375,22 @@ $areasOfLeastConcern = array_diff($areasOfLeastConcern, $areasOfFocus);
 					</div>
 					
 					<div class="col-md-12 pod-body-bottom">
+						<input class="graph-toggle" type="checkbox" checked data-toggle="toggle" data-onstyle="default" data-on="Line" data-off="Bar" data-size="mini" data-width="100" data-height="25">
 						<div class='graphs'>
-						<div class='left-graph graph <?php echo $colour; ?>' data-percent='<?php echo $data_ratingPercent; ?>'>
-							<div class='percent'><?php echo "{$data_ratingPercent}%"; ?></div>
-						</div>
-						<div class='right-graph graph' data-percent='<?php echo $data_ratingPercentOther; ?>' data-tooltip='<?php _e('Market Benchmark'); ?> (<?php echo "{$data_ratingPercentOther}%"; ?>)'></div>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
+							<div class="bar-graph">
+								<div class='left-graph graph <?php echo $colour; ?>' data-percent='<?php echo $data_ratingPercent; ?>'>
+									<div class='percent'><?php echo "{$data_ratingPercent}%"; ?></div>
+								</div>
+								<div class='right-graph graph' data-percent='<?php echo $data_ratingPercentOther; ?>' data-tooltip='<?php _e('Market Benchmark'); ?> (<?php echo "{$data_ratingPercentOther}%"; ?>)'>
+								</div>
+							</div>
 
-
-
-		<div class="col-sm-3 col-md-3 col-lg-3" style="display: none;">	
-			<div class='aspect-container'>
-				<span class='aspect-title <?php echo $colour; ?>'><?php _e($title); ?></span>
-				<div class='graphs'>
-					<div class='left-graph graph' data-percent='<?php echo $data_ratingPercent; ?>'>
-						<div class='percent'><?php echo "{$data_ratingPercent}%"; ?></div>
-					</div>
-					<div class='right-graph graph' data-percent='<?php echo $data_ratingPercentOther; ?>' data-tooltip='<?php _e('Market Benchmark'); ?> (<?php echo "{$data_ratingPercentOther}%"; ?>)'></div>
-				</div>
-				<div class='graph-info'>
-					<div class='left-block pull-left'>
-						<!-- SWITCH TO NUM RATINGS -->
-						<span class='fraction numerator'><?php echo $total_responses; ?></span>
-						<span class='fraction denominator'><?php _e('Responses'); ?></span>
-					</div>
-					<div class='right-block pull-right'>
-						<div class='top'>
-							<i class='fa <?php echo $data_percent4W >= 0 ? 'fa-sort-asc' : 'fa-sort-desc'; ?> <?php echo numericalCSS($data_percent4W); ?>-text'></i>
-							<span class='percent'><?php echo abs($data_percent4W)."%"; ?></span>
-							<span class='duration'>(<?php _e('4w'); ?>)</span>
-						</div>
-						<div class='bottom'>
-							<i class='fa <?php echo $data_percent1Y >= 0 ? 'fa-sort-asc' : 'fa-sort-desc'; ?> <?php echo numericalCSS($data_percent1Y); ?>-text'></i>
-							<span class='percent'><?php echo abs($data_percent1Y)."%"; ?></span>
-							<span class='duration'>(<?php _e('1y'); ?>)</span>
+							<div class="line-graph">
+								<script>
+									build_line_graph(<?php echo "\"$title\""; ?>, <?php echo "\"$id\""; ?>);
+									// build_bar_graph(<?php echo "\"$title\""; ?>, 3);
+								</script>
+							</div>
 						</div>
 					</div>
 				</div>

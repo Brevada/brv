@@ -383,6 +383,7 @@ div.bottom-bar {
 	position: absolute;
 	bottom: 0;
 	width: 100%;
+    padding: 0px;
 }
 .pod .aspect-title {
     text-transform: uppercase;
@@ -393,7 +394,22 @@ div.bottom-bar {
     font-size: 20px;
     color: #999;
 }
+.pod .toggle {
+    margin: 10px;
+}
 .pod .body .pod-body-bottom div.graphs {
+    height: 200px;
+}
+.pod .body .pod-body-bottom div.graphs canvas{
+    width: 150% !important;
+}
+.pod .body .pod-body-bottom div.graphs div.line-graph {
+    height: 200px;
+    margin-left: -20px;
+    width: 100%;
+}
+.pod .body .pod-body-bottom div.graphs div.bar-graph {
+    display: none;
     height: 200px;
 }
 .pod .body .pod-body-bottom div.graphs div.graph {
