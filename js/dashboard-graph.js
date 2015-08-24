@@ -16,32 +16,39 @@ Chart.Scale.prototype.buildYLabels = function () {
 };
 
 function build_line_graph (data, id) {
+	// sample deserialized data array (that the BrevadaData file should create)
+	data = {
+		bucket_size: 9,
+		aspect: [87, 84, 89, 92, 83, 88, 90, 90, 88],
+		industry: [78, 87, 84, 89, 92, 83, 90, 88, 90]
+	}
+
 	$pod = $('#' + id);
 	$pod.find('.line-graph').html('\
 		<canvas style="width: 100%; height: 250px;"></canvas>');
 	var data = {
 		// take in 12 points for now (optionally include labels)
-	    labels: ["", "", "", "", "", "", "", "", "", "", "", ""],
+	    labels: new Array(data.bucket_size).join(".").split("."),
 	    datasets: [
 	        {
 	            label: "My First dataset",
 	            fillColor: "rgba(220,220,220,0.6)",
 	            strokeColor: "rgba(220,220,220,1)",
 	            pointColor: "rgba(220,220,220,1)",
-	            pointStrokeColor: "#fff",
-	            pointHighlightFill: "#fff",
+	            pointStrokeColor: "#FFFFFF",
+	            pointHighlightFill: "#FFFFFF",
 	            pointHighlightStroke: "rgba(220,220,220,1)",
-	            data: [87, 84, 89, 92, 83, 88, 90]
+	            data: data.aspect
 	        },
 	        {
 	            label: "My Second dataset",
-	            fillColor: "rgba(21,187,75,0.9)",
+	            fillColor: "rgba(21,187,75,0.7)",
 	            strokeColor: "rgba(151,187,205,1)",
 	            pointColor: "rgba(151,187,205,1)",
-	            pointStrokeColor: "#fff",
-	            pointHighlightFill: "#fff",
+	            pointStrokeColor: "#FFFFFF",
+	            pointHighlightFill: "#FFFFFF",
 	            pointHighlightStroke: "rgba(151,187,205,1)",
-	            data: [78, 87, 84, 89, 92, 83, 90, 88, 90]
+	            data: data.industry
 	        }
 	    ]
 	};
