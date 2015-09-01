@@ -129,7 +129,6 @@
 	font-size: 14px;
 	font-weight: bold;
 	text-transform: uppercase;
-	padding-top: 10px;
 }
 
 div.aspect > div.rating-box .appear { display: none; width: 100%; text-align: center; margin: auto auto; }
