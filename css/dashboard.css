@@ -400,14 +400,22 @@ div.bottom-bar {
 .pod .body .pod-body-bottom div.graphs {
     height: 200px;
 }
-.pod .body .pod-body-bottom div.graphs canvas{
-    width: 150% !important;
-}
+
 .pod .body .pod-body-bottom div.graphs div.line-graph {
-    height: 200px;
-    margin-left: -20px;
+    height: 100%;
+	margin: 0;
+	padding: 0;
     width: 100%;
+	position: relative;
 }
+
+.pod .body .pod-body-bottom div.graphs div.line-graph canvas {
+    width: 100%;
+	height: 80%;
+	position: absolute;
+	bottom: 0;
+}
+
 .pod .body .pod-body-bottom div.graphs div.bar-graph {
     display: none;
     height: 200px;
@@ -484,3 +492,52 @@ div.email-display-container .email .rating{
     width: 50px;
     font-weight: bold;
 }
+
+
+/* Tooltip for Chart JS */
+#chartjs-customtooltip {
+    opacity: 1;
+    position: absolute;
+    background: rgba(230, 230, 230, .7);
+    transition: all, .1s ease, opacity .1s .2s linear;
+	
+	width: auto; height: auto; border-radius: 0.2em; background: #E6E6E6; padding: 0.65em 0.5em; margin: 0; z-index: 999999; -webkit-touch-callout: none; -webkit-user-select: none; -khtml-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none; border: 1px solid #cecece;
+}
+#chartjs-customtooltip.below {
+	transform: translate(-50%, 10%);
+}
+#chartjs-customtooltip.below::before {
+	border: solid;
+    border-color: #111 transparent;
+    border-color: rgba(200, 200, 200, 1) transparent;
+    border-width: 0 8px 8px 8px;
+    bottom: 1em;
+    content: "";
+    display: block;
+    left: 50%;
+	top: 0;
+    position: absolute;
+    z-index: 99;
+    transform: translate(-50%, -100%);
+}
+#chartjs-customtooltip.above {
+	transform: translate(-50%, -110%);
+}
+#chartjs-customtooltip.above::before {
+	border: solid;
+    border-color: #111 transparent;
+    border-color: rgba(200, 200, 200, 1) transparent;
+    border-width: 8px 8px 0 8px;
+    bottom: 1em;
+    content: "";
+    display: block;
+    left: 50%;
+    top: 100%;
+    position: absolute;
+    z-index: 99;
+    transform: translate(-50%, 0);
+}
+
+#chartjs-customtooltip .tooltip-label { display: block; text-align: center; }
+#chartjs-customtooltip .tooltip-value { display: block; text-align: center; }
+/* End of ChartJS tooltip */

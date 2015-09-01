@@ -26,9 +26,9 @@ class BrevadaData
 		
 		/* Retrieve list of stores. */
 		$stores = array();
-		if(($qStores = Database::query("SELECT stores.id as StoreID, dashboard.id as DashboardID, IFNULL(GROUP_CONCAT(company_keywords_link.CompanyKeywordID ORDER BY company_keywords_link.CompanyKeywordID ASC SEPARATOR ','), '') as keywords FROM dashboard LEFT JOIN stores ON stores.id = dashboard.StoreID LEFT JOIN companies ON companies.`id` = stores.CompanyID LEFT JOIN company_keywords_link ON company_keywords_link.CompanyID = companies.id GROUP BY stores.id")) !== false){
+		if(($qStores = Database::query("SELECT stores.id as StoreID, dashboard.id as DashboardID, IFNULL(GROUP_CONCAT(company_keywords_link.CompanyKeywordID ORDER BY company_keywords_link.CompanyKeywordID ASC SEPARATOR ','), '') as keywords, UNIX_TIMESTAMP(companies.DateCreated) as DateCreated FROM dashboard LEFT JOIN stores ON stores.id = dashboard.StoreID LEFT JOIN companies ON companies.`id` = stores.CompanyID LEFT JOIN company_keywords_link ON company_keywords_link.CompanyID = companies.id GROUP BY stores.id")) !== false){
 			while($row = $qStores->fetch_assoc()){
-				$stores[] = array('StoreID' => $row['StoreID'], 'DashboardID' => $row['DashboardID'], 'Keywords' => explode(',', $row['keywords']), 'OverallPercent' => 0);
+				$stores[] = array('StoreID' => $row['StoreID'], 'DashboardID' => $row['DashboardID'], 'Keywords' => explode(',', $row['keywords']), 'OverallPercent' => 0, 'DateCreated' => @intval($row['DateCreated']));
 				
 				if($debug_store && $debug_store == $row['StoreID']){
 					echo "StoreID => {$row['StoreID']}<br />";
@@ -80,6 +80,16 @@ class BrevadaData
 				/* TODO: Consider using limited time span for more relevant data. */
 				$data_RatingPercent = self::biased_mean(self::extract_nested($aspect, 'Rating'));
 				
+				/* Extract # data points, equally spaced. */
+				$bucketSize = (time() - $store['DateCreated']) > SECONDS_WEEK*3 ? 5 : 7;
+				$interval = (time() - $store['DateCreated']) > SECONDS_WEEK*3 ? SECONDS_WEEK : SECONDS_DAY;
+				$bucket = array();
+				for($i = 0; $i < $bucketSize; $i++){
+					$endDate = time() - ($interval*($bucketSize - $i - 1));
+					$bucket[] = array('Date' => $endDate, 'Data' => self::biased_mean(self::extract_nested(self::subdata_date($aspect, 0, $endDate), 'Rating')));
+				}
+				$bucketJSON = json_encode($bucket);
+				
 				/* Change in aspect rating over 4W; compares 4W to all time. */
 				$spanOf4W = self::extract_nested(self::subdata_date($aspect, time() - SECONDS_MONTH), 'Rating'); 
 				$data_Percent4W = self::biased_mean($spanOf4W, $previousRating) - $data_RatingPercent;
@@ -103,8 +113,8 @@ class BrevadaData
 				
 				/* Update data for individual aspect belonging to store. */
 				$aspectID = $localMetaAspects[$aspectTitle]['AspectID'];				
-				if(($stmt = Database::prepare("UPDATE aspects SET `Data_RatingPercent` = ?, `Data_Percent4W` = ?, `Data_Percent6M` = ?, `Data_Percent1Y` = ?, `Data_AttentionScore` = ?, `Data_LastUpdate` = {$now} WHERE aspects.ID = ?")) !== false){
-					$stmt->bind_param('dddddi', $data_RatingPercent, $data_Percent4W, $data_Percent6M, $data_Percent1Y, $attentionScore, $aspectID);
+				if(($stmt = Database::prepare("UPDATE aspects SET `Data_RatingPercent` = ?, `Data_Percent4W` = ?, `Data_Percent6M` = ?, `Data_Percent1Y` = ?, `Data_AttentionScore` = ?, `Data_Bucket` = ?, `Data_LastUpdate` = {$now} WHERE aspects.ID = ?")) !== false){
+					$stmt->bind_param('dddddsi', $data_RatingPercent, $data_Percent4W, $data_Percent6M, $data_Percent1Y, $attentionScore, $bucketJSON, $aspectID);
 					$stmt->execute();
 					$stmt->close();
 				}
@@ -121,6 +131,7 @@ class BrevadaData
 					echo "Aspect Analysis: {$aspectTitle}<br />";
 					echo "Aspect ID: {$aspectID}<br />";
 					echo "-- Previous Rating: {$previousRating}%<br />";
+					echo "-- Bucket: {$bucketJSON}<br />";
 					echo "-- All Time: {$data_RatingPercent}%<br />";
 					echo "-- 4 Weeks: {$data_Percent4W}%<br />";
 					echo "-- 8 Weeks: {$data_Percent8W}%<br />";

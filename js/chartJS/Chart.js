@@ -1587,7 +1587,7 @@
 		},
 		calculateY : function(value){
 			var scalingFactor = this.drawingArea() / (this.min - this.max);
-			return this.endPoint - (scalingFactor * (value - this.min));
+			return this.endPoint - (scalingFactor * (value - this.min)); /* Add 10 to return? */
 		},
 		calculateX : function(index){
 			var isRotated = (this.xLabelRotation > 0),
@@ -2516,7 +2516,7 @@
 
 	var defaultConfig = {
 
-		///Boolean - Whether grid lines are shown across the chart
+		//Boolean - Whether grid lines are shown across the chart
 		scaleShowGridLines : true,
 
 		//String - Colour of the grid lines

@@ -15,91 +15,108 @@ Chart.Scale.prototype.buildYLabels = function () {
   this.yLabelWidth = 0;
 };
 
-function build_line_graph (data, id) {
-	// sample deserialized data array (that the BrevadaData file should create)
-	data = {
-		bucket_size: 9,
-		aspect: [87, 84, 89, 92, 83, 88, 90, 90, 88],
-		industry: [78, 87, 84, 89, 92, 83, 90, 88, 90]
-	}
-
+function build_line_graph(bucket, id) {
 	$pod = $('#' + id);
-	$pod.find('.line-graph').html('\
-		<canvas style="width: 100%; height: 250px;"></canvas>');
+	$pod.find('.line-graph').html('<canvas></canvas>');
 	var data = {
-		// take in 12 points for now (optionally include labels)
-	    labels: new Array(data.bucket_size).join(".").split("."),
+	    labels: bucket.dates,
 	    datasets: [
-	        {
-	            label: "My First dataset",
+	        /*{
+	            label: "Industry",
 	            fillColor: "rgba(220,220,220,0.6)",
 	            strokeColor: "rgba(220,220,220,1)",
 	            pointColor: "rgba(220,220,220,1)",
 	            pointStrokeColor: "#FFFFFF",
 	            pointHighlightFill: "#FFFFFF",
 	            pointHighlightStroke: "rgba(220,220,220,1)",
-	            data: data.aspect
-	        },
+	            data: bucket.data
+	        },*/
 	        {
-	            label: "My Second dataset",
+	            label: "Aspect",
 	            fillColor: "rgba(21,187,75,0.7)",
 	            strokeColor: "rgba(151,187,205,1)",
 	            pointColor: "rgba(151,187,205,1)",
 	            pointStrokeColor: "#FFFFFF",
 	            pointHighlightFill: "#FFFFFF",
 	            pointHighlightStroke: "rgba(151,187,205,1)",
-	            data: data.industry
+	            data: bucket.data
 	        }
 	    ]
 	};
 	var options = {
-
-	    ///Boolean - Whether grid lines are shown across the chart
-	    scaleShowGridLines : false,
-
-	    scaleShowLabels : false,
-
-	    //String - Colour of the grid lines
+		showScale : false,
 	    scaleGridLineColor : "rgba(0,0,0,.1)",
-
-	    //Number - Width of the grid lines
 	    scaleGridLineWidth : 1,
-
-	    //Boolean - Whether to show horizontal lines (except X axis)
 	    scaleShowHorizontalLines: false,
-
-	    //Boolean - Whether to show vertical lines (except Y axis)
 	    scaleShowVerticalLines: false,
-
-	    //Boolean - Whether the line is curved between points
 	    bezierCurve : true,
-
-	    //Number - Tension of the bezier curve between points
-	    bezierCurveTension : 0.4,
-
-	    //Boolean - Whether to show a dot for each point
+	    bezierCurveTension : 0.8,
 	    pointDot : true,
-
-	    //Number - Radius of each point dot in pixels
-	    pointDotRadius : 4,
-
-	    //Number - Pixel width of point dot stroke
+	    pointDotRadius : 5,
 	    pointDotStrokeWidth : 1,
-
-	    //Number - amount extra to add to the radius to cater for hit detection outside the drawn point
 	    pointHitDetectionRadius : 20,
-
-	    //Boolean - Whether to show a stroke for datasets
 	    datasetStroke : true,
-
-	    //Number - Pixel width of dataset stroke
 	    datasetStrokeWidth : 2,
-
-	    //Boolean - Whether to fill the dataset with a colour
+		scaleBeginAtZero: true,
 	    datasetFill : true,
+		responsive : true,
+		showTooltips: true,
+		tooltipTemplate: "<%if (label){%><%= '<span class=\"tooltip-label\">' + label + '</span>' %> <%}%><%= '<span class=\"tooltip-value\">' + value + '%</span>' %>",
+		customTooltips: function(tooltip) {
+			// Tooltip Element
+			var tooltipEl = $('#chartjs-customtooltip');
 
-	    //String - A legend template
-	    // legendTemplate : "<ul class=\"<%=name.toLowerCase()%>-legend\"><% for (var i=0; i<datasets.length; i++){%><li><span style=\"background-color:<%=datasets[i].strokeColor%>\"></span><%if(datasets[i].label){%><%=datasets[i].label%><%}%></li><%}%></ul>"
+			// Make the element if not available
+			if (!tooltipEl[0]) {
+				$('body').append('<div id="chartjs-customtooltip"></div>');
+				tooltipEl = $('#chartjs-customtooltip');
+			}
+
+			// Hide if no tooltip
+			if (!tooltip) {
+				tooltipEl.css({
+					opacity: 0
+				});
+				return;
+			}
+
+			// Set caret Position
+			tooltipEl.removeClass('above below no-transform');
+			if (tooltip.yAlign) {
+				tooltipEl.addClass(tooltip.yAlign);
+			} else {
+				tooltipEl.addClass('no-transform');
+			}
+
+			// Set Text
+			if (tooltip.text) {
+				tooltipEl.html(tooltip.text);
+			}
+
+			// Find Y Location on page
+			var top = 0;
+			if (tooltip.yAlign) {
+				if (tooltip.yAlign == 'above') {
+					top = tooltip.y - tooltip.caretHeight - tooltip.caretPadding;
+				} else {
+					top = tooltip.y + tooltip.caretHeight + tooltip.caretPadding;
+				}
+			}
+
+			var offset = $(tooltip.chart.canvas).offset();
+
+			// Display, position, and set styles for font
+			tooltipEl.css({
+				opacity: 1,
+				width: tooltip.width ? (tooltip.width + 'px') : 'auto',
+				left: offset.left + tooltip.x + 'px',
+				top: offset.top + top + 'px',
+				fontFamily: tooltip.fontFamily,
+				fontSize: tooltip.fontSize,
+				fontStyle: tooltip.fontStyle,
+			});
+
+		}
 	};
 	var ctx = $pod.find('.line-graph canvas').get(0).getContext("2d");
 	// This will get the first returned node in the jQuery collection.

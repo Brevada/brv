@@ -152,7 +152,7 @@ $areasOfLeastConcern = array_diff($areasOfLeastConcern, $areasOfFocus);
 </div>
 
 <?php
-	$query = Database::query("SELECT aspect_type.Title, aspects.id, aspects.Data_LastUpdate, aspects.Data_RatingPercent, aspects.Data_RatingPercentOther, aspects.Data_Percent4W, aspects.Data_Percent6M, aspects.Data_Percent1Y, (SELECT COUNT(*) FROM feedback WHERE feedback.Rating > -1 AND feedback.AspectID = aspects.ID AND UNIX_TIMESTAMP(`feedback`.`Date`) < `aspects`.`Data_LastUpdate`) as Total FROM aspects LEFT JOIN aspect_type ON aspect_type.ID = aspects.AspectTypeID WHERE aspects.StoreID = {$store_id} AND `Active` = 1 AND aspect_type.Title <> '' ORDER BY `aspect_type`.Title ASC");
+	$query = Database::query("SELECT aspect_type.Title, IFNULL(aspects.`Data_Bucket`, '[]') as `Data_Bucket`, aspects.id, aspects.Data_LastUpdate, aspects.Data_RatingPercent, aspects.Data_RatingPercentOther, aspects.Data_Percent4W, aspects.Data_Percent6M, aspects.Data_Percent1Y, (SELECT COUNT(*) FROM feedback WHERE feedback.Rating > -1 AND feedback.AspectID = aspects.ID AND UNIX_TIMESTAMP(`feedback`.`Date`) < `aspects`.`Data_LastUpdate`) as Total FROM aspects LEFT JOIN aspect_type ON aspect_type.ID = aspects.AspectTypeID WHERE aspects.StoreID = {$store_id} AND `Active` = 1 AND aspect_type.Title <> '' ORDER BY `aspect_type`.Title ASC");
 ?>
 
 <!-- Left side -->
@@ -347,10 +347,25 @@ $areasOfLeastConcern = array_diff($areasOfLeastConcern, $areasOfFocus);
 		} else {
 			$colour = 'negative';
 		}
+		
+		$bucket = json_decode($row['Data_Bucket'], true);
+		
+		$transDate = function($a){
+			return date('d/m/Y', $a);
+		};
+		$bucketDates = array_map($transDate, array_column($bucket, 'Date'));
+		
+		$roundData = function($a){
+			return round($a, 1);
+		};
+		$bucketData = array_map($roundData, array_column($bucket, 'Data'));
+		
+		$bucketJSON = array('dates' => $bucketDates, 'data' => $bucketData);
+		$bucketJSON = json_encode($bucketJSON);
 	?>
 		<!-- Aspect Box -->
 		<div class="col-sm-6 col-md-6 col-lg-4 pod-holder">
-			<div id="<?php echo $id; ?>" class="pod">
+			<div id="pod<?php echo $id; ?>" class="pod">
 				<div class="body">
 					<div class="header">
 						<span class='aspect-title <?php echo $colour; ?>'><?php _e($title); ?></span>
@@ -386,9 +401,8 @@ $areasOfLeastConcern = array_diff($areasOfLeastConcern, $areasOfFocus);
 							</div>
 
 							<div class="line-graph">
-								<script>
-									build_line_graph(<?php echo "\"$title\""; ?>, <?php echo "\"$id\""; ?>);
-									// build_bar_graph(<?php echo "\"$title\""; ?>, 3);
+								<script type='text/javascript'>
+									build_line_graph(<?php echo $bucketJSON; ?>, "pod<?php echo $id; ?>");
 								</script>
 							</div>
 						</div>
