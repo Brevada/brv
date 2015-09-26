@@ -81,20 +81,20 @@ class BrevadaData
 				$data_RatingPercent = self::biased_mean(self::extract_nested($aspect, 'Rating'));
 				
 				/* Change in aspect rating over 4W; compares 4W to all time. */
-				$spanOf4W = self::extract_nested(self::subdata_date($aspect, time() - SECONDS_MONTH), 'Rating'); 
-				$data_Percent4W = self::biased_mean($spanOf4W, $previousRating) - $data_RatingPercent;
+				$spanOf4W = self::extract_nested(self::subdata_date($aspect, 0, time() - SECONDS_MONTH), 'Rating'); 
+				$data_Percent4W = $data_RatingPercent - self::biased_mean($spanOf4W, $previousRating);
 				
 				/* Change in aspect rating over 8W; compares 8W to all time. */
-				$spanOf8W = self::extract_nested(self::subdata_date($aspect, time() - 2*SECONDS_MONTH), 'Rating');
-				$data_Percent8W = self::biased_mean($spanOf8W, $previousRating) - $data_RatingPercent;
+				$spanOf8W = self::extract_nested(self::subdata_date($aspect, 0, time() - 2*SECONDS_MONTH), 'Rating');
+				$data_Percent8W = $data_RatingPercent - self::biased_mean($spanOf8W, $previousRating);
 				
 				/* Change in aspect rating over 6M; compares 6M to all time. */
-				$spanOf6M = self::extract_nested(self::subdata_date($aspect, time() - (SECONDS_YEAR/2)), 'Rating');
-				$data_Percent6M = self::biased_mean($spanOf6M, $previousRating) - $data_RatingPercent;
+				$spanOf6M = self::extract_nested(self::subdata_date($aspect, 0, time() - (SECONDS_YEAR/2)), 'Rating');
+				$data_Percent6M = $data_RatingPercent - self::biased_mean($spanOf6M, $previousRating);
 				
 				/* Change in aspect rating over 1Y; compares 1Y to all time. */
-				$spanOf1Y = self::extract_nested(self::subdata_date($aspect, time() - SECONDS_YEAR), 'Rating');
-				$data_Percent1Y = self::biased_mean($spanOf1Y, $previousRating) - $data_RatingPercent;
+				$spanOf1Y = self::extract_nested(self::subdata_date($aspect, 0, time() - SECONDS_YEAR), 'Rating');
+				$data_Percent1Y = $data_RatingPercent - self::biased_mean($spanOf1Y, $previousRating);
 				
 				/*	Calculate attention score. Greater attention places aspect under 'Areas of Focus'.
 					Compare past 4W of aggregate data to beginning of time up until the 4W. */
