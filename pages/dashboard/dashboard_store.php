@@ -410,7 +410,7 @@ $areasOfLeastConcern = array_diff($areasOfLeastConcern, $areasOfFocus);
 				</div>
 			</div>
 		</div>
-		<?php } $query->close(); } ?>
+		<?php } if($query !== false){ $query->close(); } } ?>
 	</div>
 </div>
 
