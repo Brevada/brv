@@ -7,7 +7,7 @@ BrowserMatch ^Mozilla/4 gzip-only-text/html
 BrowserMatch ^Mozilla/4\.0[678] no-gzip
 BrowserMatch \bMSIE !no-gzip !gzip-only-text/html
 BrowserMatch \bMSI[E] !no-gzip !gzip-only-text/html
-SetEnvIfNoCase Request_URI \.(?:gif|jpe?g|png)$ no-gzip
+SetEnvIfNoCase Request_URI \.(?:gif|jpe?g|png|bmp|ico)$ no-gzip
 Header append Vary User-Agent env=!dont-vary
 
 DirectorySlash Off
@@ -15,18 +15,16 @@ DirectorySlash Off
 RewriteEngine On
 RewriteBase /
 
-RewriteCond %{REQUEST_URI} ^\b(framework|pages|css|js|images|user_data|files)
-RewriteCond %{REQUEST_URI} (\.css|\.js|\.jpg|\.jpeg|\.gif|robots\.txt)$ [NC]
-RewriteCond %{REQUEST_FILENAME} -f
-RewriteCond %{REQUEST_FILENAME} -d
+# Always allow access to Controller script.
+RewriteCond %{REQUEST_URI} ^framework\/Controller\.php
 RewriteRule ^(.*)$ - [L]
 
+# Rewrite brevada.com to brevada.com/index
 RewriteRule ^$ framework/Controller.php?page=index [NC,L,DPI]
 
+# Don't allow access to framework/pages/template/widgets.
+# If file exists and is not contained in restricted directory, don't rewrite.
+RewriteCond %{REQUEST_URI} ^(framework|pages|template|widgets) [NC,OR]
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteRule ^\b([^\\\.*]+\/?[a-z-A-Z0-9\-]+\.?[a-zA-Z0-9\-]+)?\/?$ framework/Controller.php?page=$1 [NC,L,QSA,DPI] #add P for proxy
-
-# RewriteCond %{REQUEST_URI} (\.php)$ [NC]
-# RewriteCond %{REQUEST_FILENAME} -f
-# RewriteRule ^(.*)$ framework/Controller.php?page=404 [NC,L,QSA,DPI]
