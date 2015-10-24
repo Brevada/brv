@@ -26,18 +26,18 @@ class Geography
 		}
 		
 		$ip_data = @json_decode(file_get_contents("http://www.geoplugin.net/json.gp?ip=".$ip));
-
-		if($ip_data && $ip_data->geoplugin_countryName != null)
+		
+		if($ip_data && !empty($ip_data->geoplugin_countryName))
 		{
 			$_SESSION['geo_country'] = $result['country'] = $ip_data->geoplugin_countryName;
 		}
 		
-		if($ip_data && $ip_data->geoplugin_regionName != null)
+		if($ip_data && !empty($ip_data->geoplugin_regionName))
 		{
 			$_SESSION['geo_province'] = $result['province'] = $ip_data->geoplugin_regionName;
 		}
 		
-		if($ip_data && $ip_data->geoplugin_city != null)
+		if($ip_data && !empty($ip_data->geoplugin_city))
 		{
 			$_SESSION['geo_city'] = $result['city'] = $ip_data->geoplugin_city;
 		}
