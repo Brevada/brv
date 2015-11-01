@@ -1,2 +1,8 @@
 user_data
 framework/logs
+
+# OS generated
+Thumbs.db
+.DS_Store
+.Spotlight-V100
+.Trashes

@@ -48,9 +48,9 @@
 					</div>
 					<div>
 						<?php if(isset($_SESSION['lang']) && $_SESSION['lang'] == 'fr_CA') { ?>
-						<a href="index?lang=en"><div class="bottom_link">Speak English?</div></a>
+						<a href="/index?lang=en"><div class="bottom_link">Speak English?</div></a>
 						<?php } else { ?>
-						<a href="index?lang=fr"><div class="bottom_link">Parlez-vous français?</div></a>
+						<a href="/index?lang=fr"><div class="bottom_link">Parlez-vous français?</div></a>
 						<?php } ?>
 					</div>
 				</div>
