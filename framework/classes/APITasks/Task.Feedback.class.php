@@ -4,7 +4,9 @@ class TaskFeedback extends AbstractTask
 	public function execute($method, $tasks, &$data)
 	{
 		if($method == 'post'){
-			$k = $_POST['k'];
+			if($data['secure'] !== true){
+				throw new Exception("Data integrity compromised.");
+			}
 			
 			/* Ensure all required data is present. */
 			if(TaskLoader::requiresData(['serial', 'now', 'rating', 'aspectID', 'batteryLevel', 'batteryIsPlugged'], $_POST)){
@@ -16,25 +18,16 @@ class TaskFeedback extends AbstractTask
 				$bLevel = $_POST['batteryLevel'];
 				$bPlugged = $_POST['batteryIsPlugged'];
 				
-				/* Check data integrity. */
-				$computedHash = strtoupper(sha1(
-					$serial . $time . $rating . $aspectID . $bLevel . $bPlugged
-				));
-				
-				if($computedHash === $_POST['hash']){
-					
-					/*
-						Insert into Database.
-						Use $computedHash has session, although it is meaningless in this case.
-					*/
-					if(TaskFeedback::insertRating($rating, $aspectID, $computedHash, $time)){
-						/* Good. */
-					} else {
-						throw new Exception("Error inserting rating.");
-					}
-					
+				/*
+					Insert into Database.
+					Use random string as session id, although it is meaningless in this case.
+				*/
+				$sessionID = bin2hex(openssl_random_pseudo_bytes(16));
+				if(TaskFeedback::insertRating($rating, $aspectID, $sessionID, $time)){
+					/* Good. */
+					Logger::info("Rating inserted via API: {$rating}, {$aspectID}, {$sessionID}, {$time}");
 				} else {
-					throw new Exception("Data integrity compromised.");
+					throw new Exception("Error inserting rating.");
 				}
 				
 			} else {

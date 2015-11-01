@@ -17,7 +17,8 @@ class TaskLoader
 	
 	public static function requiresData($needles, $hay)
 	{
-		return count(array_diff_key($needles, $hay)) == 0;
+		$hay = array_keys($hay);
+		return count(array_diff($needles, $hay)) == 0;
 	}
 }
 

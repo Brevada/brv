@@ -16,46 +16,16 @@ $('#reset').click(function(){
 });
 
 function insertRating(val, id) {
-	//$.get("/overall/insert/insert_rating.php", { value : val, post_id : id });
-	// send timestamp as well (if timestamp is within delta of server, accept, otherwise somethings wrong
-	// corrupted connection / high latency.
 	var payload = {
-		k : globals.key,
 		serial : globals.uuid,
-		now : (new Date()).getTime(),
+		now : Math.floor((new Date()).getTime()/1000),
 		rating : val,
 		aspectID : id,
 		batteryLevel : globals.battery.level,
-		batteryIsPlugged : globals.battery.isPlugged,
-		hash : ''
+		batteryIsPlugged : globals.battery.isPlugged.toString()
 	};
 	
-	Checksum.forString(stringifyPayload(payload), function(hex){
-		payload.hash = hex;
-		
-		$.ajax({
-			url : globals.api+'feedback',
-			cache : false,
-			dataType : 'json',
-			timeout : 5000,
-			method : 'POST',
-			data: payload,
-			success : function(data){
-				console.log(JSON.stringify(data));
-				if(!data.hasOwnProperty('error') || data.error.length == 0){
-					console.log("Rating submitted.");
-				} else {
-					app.failedSubmission(payload);
-				}
-			}
-		}).fail(function(){
-			console.log("Failed to post feedback.");
-			app.failedSubmission(payload);
-		});
-	}, function(err){
-		console.log("Failed to generate hash for feedback.");
-		app.failedSubmission(payload);
-	});
+	app.sendPayload(payload);
 }
 
 function disappearRating(post_id) {
