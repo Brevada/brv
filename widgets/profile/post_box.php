@@ -14,14 +14,14 @@ $ipAddress = $geo['ip'];
 $userAgent = $_SERVER['HTTP_USER_AGENT'];
 
 /* Authorized tablet user agent. */
-$authUserAgent = TABLET_USERAGENT;
+$authUserAgent = TABLET_USERAGENT.'%';
 
 /*
 	Taken directly from /pages/overall/insert/insert_rating.php
 	(NOW() - INTERVAL 1 HOUR) determines how long a user must wait before rating again.
 */
 $alreadyRated = true;
-if(($check = Database::prepare("SELECT `feedback`.id FROM `feedback` LEFT JOIN user_agents ON user_agents.ID = feedback.UserAgentID WHERE `feedback`.AspectID = ? AND `feedback`.IPAddress = ? AND (`feedback`.`Date` > NOW() - INTERVAL 1 HOUR) AND `user_agents`.UserAgent = ? AND `user_agents`.UserAgent <> ? LIMIT 1")) !== false){
+if(($check = Database::prepare("SELECT `feedback`.id FROM `feedback` LEFT JOIN user_agents ON user_agents.ID = feedback.UserAgentID WHERE `feedback`.AspectID = ? AND `feedback`.IPAddress = ? AND (`feedback`.`Date` > NOW() - INTERVAL 1 HOUR) AND `user_agents`.UserAgent = ? AND `user_agents`.UserAgent NOT LIKE ? LIMIT 1")) !== false){
 	$check->bind_param('isss', $post_id, $ipAddress, $userAgent, $authUserAgent);
 	if($check->execute()){
 		$check->store_result();
