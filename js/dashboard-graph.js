@@ -45,17 +45,17 @@ function build_line_graph(bucket, id) {
 	};
 	var options = {
 		showScale : false,
-	    scaleGridLineColor : "rgba(0,0,0,.1)",
-	    scaleGridLineWidth : 1,
-	    scaleShowHorizontalLines: false,
-	    scaleShowVerticalLines: false,
-	    bezierCurve : true,
-	    bezierCurveTension : 0.8,
+	    // scaleGridLineColor : "rgba(0,0,0,.1)",
+	    // scaleGridLineWidth : 1,
+	    // scaleShowHorizontalLines: false,
+	    // scaleShowVerticalLines: false,
+	    bezierCurve : false,
+	    // bezierCurveTension : 0.8,
 	    pointDot : true,
 	    pointDotRadius : 5,
 	    pointDotStrokeWidth : 1,
-	    pointHitDetectionRadius : 20,
-	    datasetStroke : true,
+	    pointHitDetectionRadius : 40,
+	    // datasetStroke : true,
 	    datasetStrokeWidth : 2,
 		scaleBeginAtZero: true,
 	    datasetFill : true,
@@ -110,7 +110,7 @@ function build_line_graph(bucket, id) {
 				opacity: 1,
 				width: tooltip.width ? (tooltip.width + 'px') : 'auto',
 				left: offset.left + tooltip.x + 'px',
-				top: offset.top + top + 'px',
+				top: offset.top + top+40 + 'px',
 				fontFamily: tooltip.fontFamily,
 				fontSize: tooltip.fontSize,
 				fontStyle: tooltip.fontStyle,
@@ -119,7 +119,6 @@ function build_line_graph(bucket, id) {
 		}
 	};
 	var ctx = $pod.find('.line-graph canvas').get(0).getContext("2d");
-	// This will get the first returned node in the jQuery collection.
 	var myLineChart = new Chart(ctx).Line(data, options);
 	// $pod.find('canvas').attr({width: '100%'});
 }

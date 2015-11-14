@@ -402,18 +402,19 @@ div.bottom-bar {
 }
 
 .pod .body .pod-body-bottom div.graphs div.line-graph {
-    height: 100%;
+    height: 105%;
 	margin: 0;
+    margin-left:-2%;
 	padding: 0;
-    width: 100%;
+    width: 105%;
 	position: relative;
 }
 
 .pod .body .pod-body-bottom div.graphs div.line-graph canvas {
     width: 100%;
-	height: 80%;
+	height: 100%;
 	position: absolute;
-	bottom: 0;
+	bottom: -20px;
 }
 
 .pod .body .pod-body-bottom div.graphs div.bar-graph {
