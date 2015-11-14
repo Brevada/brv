@@ -108,7 +108,7 @@ $areasOfLeastConcern = array_diff($areasOfLeastConcern, $areasOfFocus);
 				</div>
 			</a>
 			<a href="hub/includes/marketing/promo_white.php" target="_blank">
-				<div class='pull-left icon-button'>
+				<div class='pull-left icon-button hidden-xs'>
 					<i class='fa fa-print'></i>
 					<div class='icon-subtext'><?php _e('Printables'); ?></div>
 				</div>
@@ -120,7 +120,7 @@ $areasOfLeastConcern = array_diff($areasOfLeastConcern, $areasOfFocus);
 				</div>
 			</a>
 			<a href="#" id="email-display" class="slide-down-trigger">
-				<div class='pull-left icon-button'>
+				<div class='pull-left icon-button hidden-xs'>
 					<i class='fa fa-envelope-o'></i>
 					<div class='icon-subtext'><?php _e('Email List'); ?></div>
 				</div>
