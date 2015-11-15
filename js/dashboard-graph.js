@@ -96,11 +96,7 @@ function build_line_graph(bucket, id) {
 			// Find Y Location on page
 			var top = 0;
 			if (tooltip.yAlign) {
-				if (tooltip.yAlign == 'above') {
-					top = tooltip.y - tooltip.caretHeight - tooltip.caretPadding;
-				} else {
-					top = tooltip.y + tooltip.caretHeight + tooltip.caretPadding;
-				}
+				top = tooltip.y - tooltip.caretHeight - tooltip.caretPadding;
 			}
 
 			var offset = $(tooltip.chart.canvas).offset();
@@ -110,7 +106,7 @@ function build_line_graph(bucket, id) {
 				opacity: 1,
 				width: tooltip.width ? (tooltip.width + 'px') : 'auto',
 				left: offset.left + tooltip.x + 'px',
-				top: offset.top + top+40 + 'px',
+				top: offset.top + top + 'px',
 				fontFamily: tooltip.fontFamily,
 				fontSize: tooltip.fontSize,
 				fontStyle: tooltip.fontStyle,
