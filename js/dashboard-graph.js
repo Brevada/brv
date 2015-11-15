@@ -44,23 +44,23 @@ function build_line_graph(bucket, id) {
 	    ]
 	};
 	var options = {
+		scaleShowGridLines : true,
 		showScale : false,
-	    // scaleGridLineColor : "rgba(0,0,0,.1)",
-	    // scaleGridLineWidth : 1,
-	    // scaleShowHorizontalLines: false,
-	    // scaleShowVerticalLines: false,
-	    bezierCurve : false,
-	    // bezierCurveTension : 0.8,
+	    bezierCurve : true,
+	    bezierCurveTension : 0.8,
 	    pointDot : true,
 	    pointDotRadius : 5,
 	    pointDotStrokeWidth : 1,
 	    pointHitDetectionRadius : 40,
-	    // datasetStroke : true,
 	    datasetStrokeWidth : 2,
 		scaleBeginAtZero: true,
 	    datasetFill : true,
 		responsive : true,
 		showTooltips: true,
+		scaleOverride : true,
+        scaleSteps : 100,
+        scaleStepWidth : 1,
+        scaleStartValue : 0,
 		tooltipTemplate: "<%if (label){%><%= '<span class=\"tooltip-label\">' + label + '</span>' %> <%}%><%= '<span class=\"tooltip-value\">' + value + '%</span>' %>",
 		customTooltips: function(tooltip) {
 			// Tooltip Element
