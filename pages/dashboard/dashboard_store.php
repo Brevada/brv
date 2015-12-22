@@ -4,9 +4,12 @@ if($this->getParameter('valid') !== true){ Brevada::Redirect('/404'); }
 <?php
 $this->addResource('/css/layout.css');
 $this->addResource('/css/dashboard.css');
-$this->addResource('/js/dashboard.js');
-$this->addResource('/js/dashboard-slide.js');
-$this->addResource('/js/dashboard-graph.js');
+$this->addResource('/js/dashboard/dashboard.js');
+$this->addResource('/js/dashboard/milestones.js');
+$this->addResource('/js/dashboard/live.js');
+$this->addResource('/js/dashboard/support.js');
+$this->addResource('/js/dashboard/dashboard-slide.js');
+$this->addResource('/js/dashboard/dashboard-graph.js');
 
 $this->addResource('/css/brevada.tooltip.css');
 $this->addResource('/js/brevada.tooltip.js');
@@ -100,39 +103,23 @@ $areasOfLeastConcern = array_diff($areasOfLeastConcern, $areasOfFocus);
 		</div>
 	</div>
 
-	<div class="mid-banner row">
-			<a href="/<?php echo $url_name; ?>" target="_blank">
-				<div class='pull-left icon-button'>
-					<i class='fa fa-external-link'></i>
-					<div class='icon-subtext'><?php _e('Your Page'); ?></div>
-				</div>
-			</a>
-			<a href="hub/includes/marketing/promo_white.php" target="_blank">
-				<div class='pull-left icon-button hidden-xs'>
-					<i class='fa fa-print'></i>
-					<div class='icon-subtext'><?php _e('Printables'); ?></div>
-				</div>
-			</a>
-			<a href="/qr/<?php echo $url_name; ?>.png" target="_blank">
-				<div class='pull-left icon-button'>
-					<i class='fa fa-qrcode'></i>
-					<div class='icon-subtext'><?php _e('QR Code'); ?></div>
-				</div>
-			</a>
-			<a href="#" id="email-display" class="slide-down-trigger">
-				<div class='pull-left icon-button hidden-xs'>
-					<i class='fa fa-envelope-o'></i>
-					<div class='icon-subtext'><?php _e('Email List'); ?></div>
-				</div>
-			</a>
-			<?php if(isset($_SESSION['Corporate']) && $_SESSION['Corporate']){ ?>
-			<a href="/dashboard">
-				<div class='pull-right icon-button'>
-					<i class='fa fa-briefcase'></i>
-					<div class='icon-subtext'><?php _e('Corporate'); ?></div>
-				</div>
-			</a>
-			<?php } ?>
+	<div class="mid-banner row" style="">
+	  <button data-id="aspects" type="button" class="btn icon-button toggle-button">
+      	<i class='fa fa-th-list'></i>
+      	Aspects
+      </button>
+      <button data-id="live" type="button" class="btn icon-button toggle-button">
+      	<i class='fa fa-asterisk'></i>
+      	Live
+      </button>
+	  <button data-id="milestones" type="button" class="btn icon-button toggle-button">
+      	<i class='fa fa-star'></i>
+      	Milestones
+      </button>
+      <button data-id="support" type="button" class="btn icon-button toggle-button">
+      	<i class='fa fa-star'></i>
+      	Support
+      </button>
 	</div>
 
 </div>
@@ -156,7 +143,7 @@ $areasOfLeastConcern = array_diff($areasOfLeastConcern, $areasOfFocus);
 ?>
 
 <!-- Left side -->
-<div class='aspect-area hidden-xs hidden-sm col-md-3 right-bar'>
+<div class='aspect-area hidden-xs hidden-sm col-md-3 right-bar' style="display: none;">
 	<div class='row'>
 		<div class='col-sm-12 area-title'><i class='fa fa-area-chart'></i> <?php _e('Consultant'); ?></div>
 		<div class="col-sm-12 hidden-xs">		
@@ -286,133 +273,174 @@ $areasOfLeastConcern = array_diff($areasOfLeastConcern, $areasOfFocus);
 	</div>
 </div>
 
-<!-- Right Side -->
-<div class='aspect-area col-md-9'>
-	<div class='row'>
-	<div class='col-sm-12 area-title'><i class='fa fa-comments'></i> <?php _e('Feedback'); ?></div>
-	<?php if(isset($_GET['thanks'])){ ?>
-	<div class="message-container">
-		<div class='close'><i class='fa fa-times'></i></div>
-		<div class="message"><?php _e('Thank you for your purchase and welcome to Brevada!'); ?></div>
-		<div class="sub-message"><?php echo sprintf(__('Feel free to contact us at %s or 1 (844) BREVADA for any questions regarding your Brevada experience.'), __('customercare@brevada.com')); ?></div>
-	</div>
-	<?php } ?>
-	<?php if($query === false || $query->num_rows == 0){ ?>
-	<div class="message-container">
-		<div class='close'><i class='fa fa-times'></i></div>
-		<div class="message"><?php _e('You can enable and disable aspects on the Settings page, or just click below.'); ?></div>
-		<div class='sub-message'><a class="btn btn-default" href="/settings?section=feedback"><?php _e('Turn On Aspects'); ?></a></div>
-		<div class="sub-message"><?php echo sprintf(__('Feel free to contact us at %s or 1 (844) BREVADA for any questions regarding your Brevada experience.'), __('customercare@brevada.com')); ?></div>
-	</div>
-	<?php } ?>
-	<?php if (!$company_active) { ?>
-	<div class="message-container">
-		<div class="message"><?php _e('Welcome to Brevada! Please <b>purchase a package</b> to activate your account.'); ?></div>
-		<div class="sub-message">
-		<a class="btn btn-primary btn-pay" href="upgrade.php"><?php _e('Activate Your Account'); ?></a>
-		<a class="btn btn-default" target="_TOP" href="<?php echo $url_name; ?>"><?php _e('Checkout Your Page'); ?></a>
-		</div>
-		<div class="sub-message"><?php echo sprintf(__('Or feel free to contact us at %s for any help.'), __('customercare@brevada.com')); ?></div>
-	</div>
-	<?php } else if($company_expired) { ?>
-	<div class="message-container">
-		<div class="message"><?php _e('Your account has expired. Please <b>renew your account</b> to view your feedback.'); ?></div>
-		<a class="btn btn-primary btn-pay" href="/hub/payment/payment.php"><?php _e('Renew Account'); ?></a>
-		<a class="btn btn-default" target="_TOP" href="<?php echo $url_name; ?>"><?php _e('Checkout Your Page'); ?></a>
-		<div class="sub-message"><?php echo sprintf(__('Or feel free to contact us at %s for any help.'), __('customercare@brevada.com')); ?></div>
-	</div>
-	<?php
-	} else {
-	while($query !== false && $row = $query->fetch_assoc()){
-		$title = $row['Title'];
-		$id = $row['id'];
-		
-		/* Adding '0' forces float(0) rather than float(-0). */
-		
-		$data_ratingPercent = round((float) $row['Data_RatingPercent'] + 0, 1);
-		$data_ratingPercentOther = round((float) $row['Data_RatingPercentOther'] + 0);
-		$data_percent4W = round((float) $row['Data_Percent4W'] + 0, 0);
-		$data_percent1Y = round((float) $row['Data_Percent1Y'] + 0, 0);
-		
-		$total_responses = ((int) $row['Total']);
+<div id="wrapper">
+	<!-- Side bar -->
+    <div id="sidebar-wrapper">
 
-		if($data_ratingPercent >= 80) {
-			$colour = 'positive';
-		} else if ($data_ratingPercent >= 60) {
-			$colour = 'great';
-		} else if ($data_ratingPercent >= 40) {
-			$colour = 'neutral';
-		} else if ($data_ratingPercent >= 20) {
-			$colour = 'bad';
-		} else {
-			$colour = 'negative';
-		}
-		
-		$bucket = json_decode($row['Data_Bucket'], true);
-		
-		$transDate = function($a){
-			return date('d/m/Y', $a);
-		};
-		$bucketDates = array_map($transDate, array_column($bucket, 'Date'));
-		
-		$roundData = function($a){
-			return round($a, 1);
-		};
-		$bucketData = array_map($roundData, array_column($bucket, 'Data'));
-		
-		$bucketJSON = array('dates' => $bucketDates, 'data' => $bucketData);
-		$bucketJSON = json_encode($bucketJSON);
-	?>
-		<!-- Aspect Box -->
-		<div class="col-sm-6 col-md-6 col-lg-4 pod-holder">
-			<div id="pod<?php echo $id; ?>" class="pod">
-				<div class="body">
-					<div class="header">
-						<span class='aspect-title <?php echo $colour; ?>'><?php _e($title); ?></span>
-					</div>
-					<div class="pull-left col-md-6 pod-body-left">
-						<div class='top'>
-							<i class='pull-left fa <?php echo $data_percent4W >= 0 ? 'fa-arrow-circle-up' : 'fa-arrow-circle-down'; ?>'></i>
-							<span class='pull-left percent'><?php echo abs($data_percent4W)."%"; ?></span>
-							<span class='duration'><?php _e('4 weeks'); ?></span>
-						</div>
-						<div class='top'>
-							<i class='pull-left fa <?php echo $data_percent1Y >= 0 ? 'fa-arrow-circle-up' : 'fa-arrow-circle-down'; ?>'></i>
-							<span class='pull-left percent'><?php echo abs($data_percent1Y)."%"; ?></span>
-							<span class='duration'><?php _e('1 year'); ?></span>
-						</div>
-					</div>
-					<div class="pull-right col-md-6 pod-body-right">
-						<div class='pod-body-rating <?php echo $colour; ?>-text'><?php echo "{$data_ratingPercent}%"; ?></div>
-						<div class="rating-text"><?php _e('in'); ?> <?php echo $total_responses; ?> <?php _e('responses'); ?>.</div>
-						<div class='pod-body-rating external'><?php echo "{$data_ratingPercentOther}%"; ?></div>
-						<div class="rating-text external"><?php _e('industry average'); ?>.</div>
-					</div>
-					
-					<div class="col-md-12 pod-body-bottom">
-						<input class="graph-toggle" type="checkbox" checked data-toggle="toggle" data-onstyle="default" data-on="Line" data-off="Bar" data-size="mini" data-width="100" data-height="25">
-						<div class='graphs'>
-							<div class="bar-graph">
-								<div class='left-graph graph <?php echo $colour; ?>' data-percent='<?php echo $data_ratingPercent; ?>'>
-									<div class='percent'><?php echo "{$data_ratingPercent}%"; ?></div>
+        <div class="sidebar btn-group-vertical">
+			<a type="button" class="btn btn-default btn-sidebar" href="/<?php echo $url_name; ?>" target="_blank">
+				<i class='fa fa-external-link'></i>
+				<div class='icon-subtext'><?php _e('Your Page'); ?></div>
+			</a>
+			<a href="hub/includes/marketing/promo_white.php" target="_blank" type="button" class="btn btn-default btn-sidebar">
+					<i class='fa fa-print'></i>
+					<div class='icon-subtext'><?php _e('Printables'); ?></div>
+			</a>
+			<a href="/qr/<?php echo $url_name; ?>.png" target="_blank" type="button" class="btn btn-default btn-sidebar">
+					<i class='fa fa-qrcode'></i>
+					<div class='icon-subtext'><?php _e('QR Code'); ?></div>
+			</a>
+			<a href="#" id="email-display" class="slide-down-trigger btn btn-default btn-sidebar" type="button">
+					<i class='fa fa-envelope-o'></i>
+					<div class='icon-subtext'><?php _e('Email List'); ?></div>
+			</a>
+			<button type="button" class="btn btn-default btn-sidebar">
+		      	<i class='fa fa-gear'></i>
+		      	<br />
+		      	Settings
+		      </button>
+			<?php if(isset($_SESSION['Corporate']) && $_SESSION['Corporate']){ ?>
+			<a href="/dashboard" type="button" class="btn btn-default btn-sidebar">
+					<i class='fa fa-briefcase'></i>
+					<div class='icon-subtext'><?php _e('Corporate'); ?></div>
+			</a>
+			<?php } ?>
+        </div>
+    </div>
+    <!-- Right Side -->
+    <div id="page-content-wrapper">
+    	<div class='aspect-area container'>
+			<div id="main-container" class='row'>
+			<div class='col-sm-12 area-title'><i class='fa fa-comments'></i> <?php _e('Feedback'); ?></div>
+			<?php if(isset($_GET['thanks'])){ ?>
+			<div class="message-container">
+				<div class='close'><i class='fa fa-times'></i></div>
+				<div class="message"><?php _e('Thank you for your purchase and welcome to Brevada!'); ?></div>
+				<div class="sub-message"><?php echo sprintf(__('Feel free to contact us at %s or 1 (844) BREVADA for any questions regarding your Brevada experience.'), __('customercare@brevada.com')); ?></div>
+			</div>
+			<?php } ?>
+			<?php if($query === false || $query->num_rows == 0){ ?>
+			<div class="message-container">
+				<div class='close'><i class='fa fa-times'></i></div>
+				<div class="message"><?php _e('You can enable and disable aspects on the Settings page, or just click below.'); ?></div>
+				<div class='sub-message'><a class="btn btn-default" href="/settings?section=feedback"><?php _e('Turn On Aspects'); ?></a></div>
+				<div class="sub-message"><?php echo sprintf(__('Feel free to contact us at %s or 1 (844) BREVADA for any questions regarding your Brevada experience.'), __('customercare@brevada.com')); ?></div>
+			</div>
+			<?php } ?>
+			<?php if (!$company_active) { ?>
+			<div class="message-container">
+				<div class="message"><?php _e('Welcome to Brevada! Please <b>purchase a package</b> to activate your account.'); ?></div>
+				<div class="sub-message">
+				<a class="btn btn-primary btn-pay" href="upgrade.php"><?php _e('Activate Your Account'); ?></a>
+				<a class="btn btn-default" target="_TOP" href="<?php echo $url_name; ?>"><?php _e('Checkout Your Page'); ?></a>
+				</div>
+				<div class="sub-message"><?php echo sprintf(__('Or feel free to contact us at %s for any help.'), __('customercare@brevada.com')); ?></div>
+			</div>
+			<?php } else if($company_expired) { ?>
+			<div class="message-container">
+				<div class="message"><?php _e('Your account has expired. Please <b>renew your account</b> to view your feedback.'); ?></div>
+				<a class="btn btn-primary btn-pay" href="/hub/payment/payment.php"><?php _e('Renew Account'); ?></a>
+				<a class="btn btn-default" target="_TOP" href="<?php echo $url_name; ?>"><?php _e('Checkout Your Page'); ?></a>
+				<div class="sub-message"><?php echo sprintf(__('Or feel free to contact us at %s for any help.'), __('customercare@brevada.com')); ?></div>
+			</div>
+			<?php
+			} else {
+			while($query !== false && $row = $query->fetch_assoc()){
+				$title = $row['Title'];
+				$id = $row['id'];
+				
+				/* Adding '0' forces float(0) rather than float(-0). */
+				
+				$data_ratingPercent = round((float) $row['Data_RatingPercent'] + 0, 1);
+				$data_ratingPercentOther = round((float) $row['Data_RatingPercentOther'] + 0);
+				$data_percent4W = round((float) $row['Data_Percent4W'] + 0, 0);
+				$data_percent1Y = round((float) $row['Data_Percent1Y'] + 0, 0);
+				
+				$total_responses = ((int) $row['Total']);
+
+				if($data_ratingPercent >= 80) {
+					$colour = 'positive';
+				} else if ($data_ratingPercent >= 60) {
+					$colour = 'great';
+				} else if ($data_ratingPercent >= 40) {
+					$colour = 'neutral';
+				} else if ($data_ratingPercent >= 20) {
+					$colour = 'bad';
+				} else {
+					$colour = 'negative';
+				}
+				
+				$bucket = json_decode($row['Data_Bucket'], true);
+				
+				$transDate = function($a){
+					return date('d/m/Y', $a);
+				};
+				$bucketDates = array_map($transDate, array_column($bucket, 'Date'));
+				
+				$roundData = function($a){
+					return round($a, 1);
+				};
+				$bucketData = array_map($roundData, array_column($bucket, 'Data'));
+				
+				$bucketJSON = array('dates' => $bucketDates, 'data' => $bucketData);
+				$bucketJSON = json_encode($bucketJSON);
+			?>
+				<!-- Aspect Box -->
+				<div class="col-sm-6 col-md-4 col-lg-3 pod-holder">
+					<div id="pod<?php echo $id; ?>" class="pod">
+						<div class="body">
+							<div class="header">
+								<span class='aspect-title <?php echo $colour; ?>'><?php _e($title); ?></span>
+							</div>
+							<div class="pull-left col-md-6 pod-body-left">
+								<div class='top'>
+									<i class='pull-left fa <?php echo $data_percent4W >= 0 ? 'fa-arrow-circle-up' : 'fa-arrow-circle-down'; ?>'></i>
+									<span class='pull-left percent'><?php echo abs($data_percent4W)."%"; ?></span>
+									<span class='duration'><?php _e('4 weeks'); ?></span>
 								</div>
-								<div class='right-graph graph' data-percent='<?php echo $data_ratingPercentOther; ?>' data-tooltip='<?php _e('Market Benchmark'); ?> (<?php echo "{$data_ratingPercentOther}%"; ?>)'>
+								<div class='top'>
+									<i class='pull-left fa <?php echo $data_percent1Y >= 0 ? 'fa-arrow-circle-up' : 'fa-arrow-circle-down'; ?>'></i>
+									<span class='pull-left percent'><?php echo abs($data_percent1Y)."%"; ?></span>
+									<span class='duration'><?php _e('1 year'); ?></span>
 								</div>
 							</div>
+							<div class="pull-right col-md-6 pod-body-right">
+								<div class='pod-body-rating <?php echo $colour; ?>-text'><?php echo "{$data_ratingPercent}%"; ?></div>
+								<div class="rating-text"><?php _e('in'); ?> <?php echo $total_responses; ?> <?php _e('responses'); ?>.</div>
+								<div class='pod-body-rating external'><?php echo "{$data_ratingPercentOther}%"; ?></div>
+								<div class="rating-text external"><?php _e('industry average'); ?>.</div>
+							</div>
+							
+							<div class="col-md-12 pod-body-bottom">
+								<input class="graph-toggle" type="checkbox" checked data-toggle="toggle" data-onstyle="default" data-on="Line" data-off="Bar" data-size="mini" data-width="100" data-height="25">
+								<div class='graphs'>
+									<div class="bar-graph">
+										<div class='left-graph graph <?php echo $colour; ?>' data-percent='<?php echo $data_ratingPercent; ?>'>
+											<div class='percent'><?php echo "{$data_ratingPercent}%"; ?></div>
+										</div>
+										<div class='right-graph graph' data-percent='<?php echo $data_ratingPercentOther; ?>' data-tooltip='<?php _e('Market Benchmark'); ?> (<?php echo "{$data_ratingPercentOther}%"; ?>)'>
+										</div>
+									</div>
 
-							<div class="line-graph">
-								<script type='text/javascript'>
-									build_line_graph(<?php echo $bucketJSON; ?>, "pod<?php echo $id; ?>");
-								</script>
+									<div class="line-graph">
+										<script type='text/javascript'>
+											build_line_graph(<?php echo $bucketJSON; ?>, "pod<?php echo $id; ?>");
+										</script>
+									</div>
+								</div>
 							</div>
 						</div>
 					</div>
 				</div>
+				<?php } if($query !== false){ $query->close(); } } ?>
 			</div>
 		</div>
-		<?php } if($query !== false){ $query->close(); } } ?>
-	</div>
+    </div>
 </div>
+
+
+
+
 
 <div class="bottom-bar">
 	&copy; 2015 Brevada Inc. &nbsp;
