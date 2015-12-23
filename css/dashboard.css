@@ -102,9 +102,9 @@ div.mid-banner {
     width: 100%;
     min-height: 30px;
     height: auto;
-    background: #454545;
+    background: #333;
     margin: 0;
-    padding: 0.5em;
+    padding: 0em;
     overflow: hidden;
     -webkit-transform-style: preserve-3d;
     -moz-transform-style: preserve-3d;
@@ -113,17 +113,51 @@ div.mid-banner {
     -moz-box-shadow: 0px 0px 9px 0px rgba(50, 50, 50, 0.75);
     box-shadow: 0px 0px 9px 0px rgba(50, 50, 50, 0.75);
 }
+
 div.mid-banner .icon-button {
     cursor: pointer;
-    margin: 0 20px;
+    width: 120px;
     text-align: center;
-    font-size: 15px;
+    font-size: 12px;
     background: none;
-    color: #FFFFFF;
-
+    color: #999;
+    outline: none;
+    border-right: 1px solid #666;
+    border-radius: 0px;
+    overflow: hidden;
+    height: 40px;
+    border-bottom: 0px;
+    text-transform: uppercase;
 }
-div.mid-banner .icon-button:hover {
-    opacity: 1;
+
+@media (max-width:500px) {
+    div.mid-banner .icon-button {
+        width: 70px;
+        font-size: 10px;
+    }
+}
+
+div.mid-banner .icon-button.selected {
+    line-height: 27px;
+}
+
+div.mid-banner .icon-button.selected::after {
+    border: 30px solid #CCC;
+    height: 5px;
+    width: 5px;
+    content: '';
+    display: block;
+    position: relative;
+    z-index: 9;
+    top: 6px;
+    left: 20px;
+    -webkit-transform: rotate(45deg);
+    -ms-transform: rotate(45deg);
+    transform: rotate(45deg);
+}
+
+div.mid-banner .icon-button:active {
+    outline: none;
 }
 div.mid-banner .icon-button i {
     float: left;
@@ -171,7 +205,7 @@ div.block div.block-bottom {
 }
 div.spacer {
     width: 100%;
-    height: 105px;
+    height: 100px;
     padding: 0;
     margin: 0;
 }
@@ -568,10 +602,12 @@ div.email-display-container .email .rating{
     margin-bottom: 30px;
 }
 .btn-sidebar {
-    background: #FFFFFF;
-    color: #666;
+    text-transform: uppercase;
+    font-size: 11px;
+    background: #333333;
+    color: #BBB;
     outline: none;
-    border-color: #BBBBBB;
+    border-color: #666;
 }
 .btn-sidebar i {
     font-size: 30px;
@@ -725,16 +761,26 @@ div.email-display-container .email .rating{
     margin-left: 10px;
 }
 
+/* Live */
 
-.bigticker .score {
-    font-size: 40px;
+.bigticker {
+    padding: 10px;
+}
+
+.bigticker div {
+    text-align: center;
+}
+
+.bigticker.hourly .data {
+    font-size: 80px;
     font-weight: bold;
 }
 
-
-
-.support-form {
-    padding: 10px;
+.bigticker.current .bulb {
+    width: 100px;
+    height: 100px;
+    margin: 0 auto;
+    background: blue;
 }
 
 .support-form textarea {
@@ -749,6 +795,79 @@ div.email-display-container .email .rating{
     border-radius: 3px;
 }
 
-.support-resources {
+.support-form .submit {
+    width: 100%;
+    margin: 0px;
     padding: 10px;
+    text-align:center;
+    width: 100%;
+    cursor: pointer;
+}
+
+
+
+.hoverpod {
+    cursor: pointer;
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background: #333;
+    color: #FFF;
+    -webkit-box-shadow: 0px 0px 5px 0px rgba(50, 50, 50, 0.75);
+    -moz-box-shadow: 0px 0px 5px 0px rgba(50, 50, 50, 0.75);
+    box-shadow: 0px 0px 5px 0px rgba(50, 50, 50, 0.75);
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+    opacity: 0.95;
+}
+.hoverpod:hover {
+    opacity: 1;
+}
+
+.hoverpod .body {
+    padding: 5px;
+}
+.hoverpod .body div {
+    width: 100px;
+    margin-right: 10px;
+    display: inline-block;
+}
+.hoverpod .body div div {
+    display: block;
+}
+
+.hoverpod .body .number {
+    text-align: center;
+    font-size: 30px;
+    font-weight: bold;
+}
+.hoverpod .body .text {
+    font-size: 11px;
+    text-align: center;
+}
+.hoverpod .status .bulb {
+    background: #82cc0e;
+    width: 30px;
+    height: 30px;
+    border-radius: 3px;
+    margin: 0 auto;
+    margin-bottom: 5px;
+}
+
+
+#alert-holder .alert {
+    width: 70%;
+    padding: 10px;
+    z-index: 99;
+    background: #FF2B2B;
+    color: #FFF;
+    position: fixed;
+    top: 50%;
+    left: 15%;
+    text-align: center;
+}
+
+#alert-holder .alert.success {
+    background: #2ecc0e;
 }

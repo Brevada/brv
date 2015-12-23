@@ -8,6 +8,7 @@ $this->addResource('/js/dashboard/dashboard.js');
 $this->addResource('/js/dashboard/milestones.js');
 $this->addResource('/js/dashboard/live.js');
 $this->addResource('/js/dashboard/support.js');
+$this->addResource('/js/dashboard/hoverpod.js');
 $this->addResource('/js/dashboard/dashboard-slide.js');
 $this->addResource('/js/dashboard/dashboard-graph.js');
 
@@ -82,7 +83,7 @@ if($query !== false){
 
 $areasOfLeastConcern = array_diff($areasOfLeastConcern, $areasOfFocus);
 ?>
-
+<div id="alert-holder"></div>
 <div class="top-fixed">
 
 	<div class='top-banner row'>
@@ -97,7 +98,7 @@ $areasOfLeastConcern = array_diff($areasOfLeastConcern, $areasOfFocus);
 					<li class='link' data-link='logout' style="border-bottom: none;"><?php _e('Logout'); ?></li>
 				</ul>
 			</div>
-			<div class='name pull-right'>
+			<div class='name pull-right hidden-xs'>
 				<?php _e('Current User'); ?>: <span class="variable"><?php echo $name; ?></span>
 			</div>
 		</div>
@@ -105,19 +106,19 @@ $areasOfLeastConcern = array_diff($areasOfLeastConcern, $areasOfFocus);
 
 	<div class="mid-banner row" style="">
 	  <button data-id="aspects" type="button" class="btn icon-button toggle-button">
-      	<i class='fa fa-th-list'></i>
+      	<!-- <i class='fa fa-th-list'></i> -->
       	Aspects
       </button>
       <button data-id="live" type="button" class="btn icon-button toggle-button">
-      	<i class='fa fa-asterisk'></i>
+      	<!-- <i class='fa fa-asterisk'></i> -->
       	Live
       </button>
 	  <button data-id="milestones" type="button" class="btn icon-button toggle-button">
-      	<i class='fa fa-star'></i>
+      	<!-- <i class='fa fa-star'></i> -->
       	Milestones
       </button>
       <button data-id="support" type="button" class="btn icon-button toggle-button">
-      	<i class='fa fa-star'></i>
+      	<!-- <i class='fa fa-star'></i> -->
       	Support
       </button>
 	</div>
@@ -442,6 +443,6 @@ $areasOfLeastConcern = array_diff($areasOfLeastConcern, $areasOfFocus);
 
 
 
-<div class="bottom-bar">
+<!-- <div class="bottom-bar">
 	&copy; 2015 Brevada Inc. &nbsp;
-</div>
+</div> -->

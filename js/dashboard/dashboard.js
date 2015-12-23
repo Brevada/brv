@@ -20,10 +20,14 @@ $(document).ready(function(){
 	});
 
 	// Load a live-data pod that hovers
+	dashboards.hoverpod.render($('#main-container').parent());
+	
+	// Initial State
+	//$('#main-container').html(...default (aspects) template...);
+	$('.toggle-button[data-id="aspects"]').addClass('selected');
+	window.current_face = 'aspects';
 
 	// Toggle Behaviour
-	//$('#main-container').html(...default (aspects) template...);
-	window.current_face = 'aspects';
 	$('.toggle-button').click(function(){
 		var new_face = $(this).attr('data-id');
 
@@ -31,20 +35,41 @@ $(document).ready(function(){
 			aspects_holder = aspects_holder || $('#main-container').html();
 		}
 
-		if (new_face == 'aspects') {
-			// TODO: Setup the aspects template with BDFF
-			$('#main-container').html(aspects_holder);
-			window.current_face = 'aspects';
-		} else if (new_face == 'milestones') {
-			dashboards.milestones.render($('#main-container'));	
-			window.current_face = 'milestones';
-		} else if (new_face == 'live') {
-			dashboards.live.render($('#main-container'));	
-			window.current_face = 'live';
-		} else if (new_face == 'support') {
-			dashboards.support.render($('#main-container'));	
-			window.current_face = 'support';
-		}
+		
+
+		dashboards.changeFace(new_face);
 		
 	});
 });
+
+dashboards.changeFace = function (new_face) {
+	$('.toggle-button').removeClass('selected');
+	$('.toggle-button[data-id=' + new_face + "]").addClass('selected');
+
+	if (new_face == 'aspects') {
+		// TODO: Setup the aspects template with BDFF
+		$('#main-container').html(aspects_holder);
+		window.current_face = 'aspects';
+	} else if (new_face == 'milestones') {
+		dashboards.milestones.render($('#main-container'));	
+		window.current_face = 'milestones';
+	} else if (new_face == 'live') {
+		dashboards.live.render($('#main-container'));	
+		window.current_face = 'live';
+	} else if (new_face == 'support') {
+		dashboards.support.render($('#main-container'));	
+		window.current_face = 'support';
+	}
+}
+
+dashboards.alert = function (alert, type) {
+	 $('\
+	 	<div class="alert '+type+'">\
+		Your submission has been recieved, you will be contacted shortly by email.\
+		</div>\
+		').appendTo($('#alert-holder'));
+	 setTimeout(dashboards.clearAlert, 3000);
+}
+dashboards.clearAlert = function () {
+	$('#alert-holder .alert').fadeOut(500);
+}

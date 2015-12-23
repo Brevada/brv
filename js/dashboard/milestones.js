@@ -52,13 +52,13 @@ dashboards.milestones.renderForm = function (canvas) {
 
 dashboards.milestones.milestone.fetch = function (id) {
 	dashboards.milestones.milestone.data[id] = {
-		'title': 'Hired Chef John Smith',
+		'title': 'Hired Chef Sheff Jones',
 		'date': 'November ' + id + ' 2015'
 	};
 }
 
 dashboards.milestones.milestone.render = function (canvas, id) {
-	dashboards.milestones.milestone.fetch(id);
+	
 
 	// Create the milestone
 	var milestone = document.createElement("div");
@@ -99,18 +99,21 @@ dashboards.milestones.milestone.render = function (canvas, id) {
 }
 
 dashboards.milestones.milestone.renderTitle = function (milestone, id) {
+	dashboards.milestones.milestone.fetch(id);
 	$(milestone).find('.title').html(
 		dashboards.milestones.milestone.data[id]['title']
 	);
 }
 
 dashboards.milestones.milestone.renderDate = function (milestone, id) {
+	dashboards.milestones.milestone.fetch(id);
 	$(milestone).find('.date').html(
 		dashboards.milestones.milestone.data[id]['date']
 	);
 }
 
 dashboards.milestones.milestone.renderBody = function (milestone, id) {
+	dashboards.milestones.milestone.fetch(id);
 	// TODO: Loop through each of the milestone's chosen aspects
 	var body = $(milestone).find('.body');
 	dashboards.milestones.milestone.aspect.render($(body), id, 1);
@@ -127,11 +130,11 @@ dashboards.milestones.milestone.aspect.fetch = function (id, aspect_id) {
 		'percent-change': 27,
 		'parity': '+',
 		'responses': 358,
+		'score': 83
 	}
 }
 
 dashboards.milestones.milestone.aspect.render = function (body, id, aspect_id) {
-	dashboards.milestones.milestone.aspect.fetch(id, aspect_id);
 
 	var aspect = document.createElement("div");
  	aspect.setAttribute('class', 'milestone-aspect');
@@ -152,6 +155,7 @@ dashboards.milestones.milestone.aspect.render = function (body, id, aspect_id) {
 }
 
 dashboards.milestones.milestone.aspect.renderStats = function (aspect, id, aspect_id) {
+	dashboards.milestones.milestone.aspect.fetch(id, aspect_id);
 	var percent_change = dashboards.milestones.milestone.aspect.data['percent-change'],
 		parity = dashboards.milestones.milestone.aspect.data['parity'],
 		responses = dashboards.milestones.milestone.aspect.data['responses'];

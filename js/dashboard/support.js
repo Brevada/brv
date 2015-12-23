@@ -30,12 +30,33 @@ dashboards.support.form.render = function (canvas) {
 	var support_form = document.createElement("div");
  	support_form.setAttribute('class', 'support-form col-md-9');
  	$(support_form).appendTo($(canvas));
+ 	dashboards.support.form.element = support_form;
 
  	$('\
  		<div class="dashboard-pod">\
  		<textarea class="issue" placeholder="What can we help you with?"></textarea>\
+ 		<div class="submit">Submit</div>\
  		</div>\
- 		').appendTo($(support_form));
+ 		').appendTo($(dashboards.support.form.element));
+
+ 	/* Events */
+ 	$(dashboards.support.form.element).find('.submit').click(function () {
+ 		dashboards.support.form.submit($(dashboards.support.form.element).find('.issue').val());
+ 	});
+}
+
+dashboards.support.form.submit = function (message) {
+	if (message) {
+		// TODO: Submit the message through the API
+		$(dashboards.support.form.element).find('textarea, .submit').hide();
+		dashboards.support.form.renderSumbission();
+	}
+}
+
+dashboards.support.form.renderSumbission = function () {
+	dashboards.changeFace('aspects');
+	dashboards.alert('Your response has been recieved, \
+		you will be contacted shortly.', 'success');
 }
 
 /* Support Resources */
