@@ -1,7 +1,7 @@
 <?php
 if(Brevada::IsLoggedIn()){ Brevada::Redirect('/dashboard'); }
 
-$this->setTitle('Brevada - Login');
+$this->setTitle('Brevada');
 $this->addResource('/css/layout.css');
 $this->addResource('/css/login.css');
 
@@ -20,6 +20,11 @@ $(document).ready(function() {
                 $('#main_container').fadeIn(2000);
             });
         }
+    });
+
+    $('#download').click(function () {
+    	$('#download .message').hide();
+    	$('#download .pop-up').fadeIn();
     });
 });
 </script>
@@ -41,4 +46,16 @@ $(document).ready(function() {
 		<br /><br /><br />
 		<span style="font-size:11px;"><?php _e('Toll free'); ?>: 1 (855) 484-7451 <br /> &copy; <?php echo date('Y'); ?> brevada.com</span>
 	</center>
+</div>
+
+<div id="download">
+	<div class="message">
+		Download the Brevada mobile app for free.
+	</div>
+	<div class="pop-up">
+		
+		<div>Click the share button below, then select the 'Add to Home Screen' option</div>
+
+		<i class='fa fa-arrow-circle-o-down'></i>
+	</div>
 </div>

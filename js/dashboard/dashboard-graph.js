@@ -51,7 +51,7 @@ function build_line_graph(bucket, id) {
 	    pointDot : true,
 	    pointDotRadius : 5,
 	    pointDotStrokeWidth : 1,
-	    pointHitDetectionRadius : 40,
+	    pointHitDetectionRadius : 20,
 	    datasetStrokeWidth : 2,
 		scaleBeginAtZero: true,
 	    datasetFill : true,
@@ -116,6 +116,10 @@ function build_line_graph(bucket, id) {
 	};
 	var ctx = $pod.find('.line-graph canvas').get(0).getContext("2d");
 	var myLineChart = new Chart(ctx).Line(data, options);
-	// $pod.find('canvas').attr({width: '100%'});
+	window.onresize = function(event){
+		var width = $('canvas').parent().width();
+		$('canvas').attr("width", width);
+		new Chart(ctx).Line(data, options);
+	};
 }
 
