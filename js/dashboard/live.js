@@ -79,8 +79,11 @@ dashboards.live.current.render = function (canvas) {
 	$(dashboards.live.current.element).addClass('current');
 
 	$('\
-		<div class="bulb"></div>\
-		<div class="text"><span class="data"></span> Hourly Responses</div>\
+		<div>Last 10 Hours</div>\
+		<div class="col-md-3">\
+			<div class="bulb positive"></div>\
+			<div class="text"><span class="data"></span>% Average</div>\
+		</div>\
 		').appendTo($(dashboards.live.current.element));
 	dashboards.live.current.renderData();
 }
