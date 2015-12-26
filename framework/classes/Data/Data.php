@@ -1,4 +1,6 @@
 <?php
+require_once dirname(__FILE__).'/DataResult.php';
+
 /*
 	Data Retrieval
 */
@@ -19,7 +21,7 @@ class Data
 	
 	function __construct()
 	{
-		
+		$this->dTo = time();
 	}
 	
 	/* Domain Parameters */
@@ -38,7 +40,8 @@ class Data
 		if(is_string($date)){
 			$date = @intval(strtotime($date));
 		}
-		$this->from = $date;
+		$this->dFrom = $date;
+		return $this;
 	}
 	
 	/**
@@ -55,7 +58,8 @@ class Data
 		if(is_string($date)){
 			$date = @intval(strtotime($date));
 		}
-		$this->to = $date;
+		$this->dTo = $date;
+		return $this;
 	}
 	
 	/**
@@ -68,10 +72,11 @@ class Data
 	public function aspectType($id)
 	{
 		if(is_array($id)){
-			$this->aspectType = array_unique(array_merge($this->aspectType, $id));
+			$this->dAspectType = array_unique(array_merge($this->dAspectType, $id));
 		} else {
-			$this->aspectType[] = $id;
+			$this->dAspectType[] = $id;
 		}
+		return $this;
 	}
 	
 	/**
@@ -84,10 +89,11 @@ class Data
 	public function store($id)
 	{
 		if(is_array($id)){
-			$this->store = array_unique(array_merge($this->store, $id));
+			$this->dStore = array_unique(array_merge($this->dStore, $id));
 		} else {
-			$this->store[] = $id;
+			$this->dStore[] = $id;
 		}
+		return $this;
 	}
 	
 	/**
@@ -100,10 +106,11 @@ class Data
 	public function company($id)
 	{
 		if(is_array($id)){
-			$this->company = array_unique(array_merge($this->company, $id));
+			$this->dCompany = array_unique(array_merge($this->dCompany, $id));
 		} else {
-			$this->company[] = $id;
+			$this->dCompany[] = $id;
 		}
+		return $this;
 	}
 	
 	/**
@@ -116,10 +123,11 @@ class Data
 	public function industry($id)
 	{
 		if(is_array($id)){
-			$this->industry = array_unique(array_merge($this->industry, $id));
+			$this->dIndustry = array_unique(array_merge($this->dIndustry, $id));
 		} else {
-			$this->industry[] = $id;
+			$this->dIndustry[] = $id;
 		}
+		return $this;
 	}
 	
 	/**
@@ -132,10 +140,11 @@ class Data
 	public function keyword($id)
 	{
 		if(is_array($id)){
-			$this->keywords = array_unique(array_merge($this->keywords, $id));
+			$this->dKeywords = array_unique(array_merge($this->dKeywords, $id));
 		} else {
-			$this->keywords[] = $id;
+			$this->dKeywords[] = $id;
 		}
+		return $this;
 	}
 	
 	/**
@@ -147,16 +156,24 @@ class Data
 	{		
 		$wheres = [];
 		
-		$daysBack = ceil(($this->to - $this->from)/(3600.0*24.0));
+		$daysBack = ceil(($this->dTo - $this->dFrom)/(3600.0*24.0));
 		
 		/* Eliminate data sets that are too small/narrow. */
 		$wheres[] = "(`DaysBack` >= {$daysBack} OR `DaysBack` = -1)";
-		$wheres[] = "(`EndDate` >= FROM_UNIXTIME({$this->to}) OR `EndDate` = '0000-00-00 00:00:00')";
+		$wheres[] = "(`EndDate` >= FROM_UNIXTIME({$this->dTo}) OR `EndDate` = '0000-00-00 00:00:00')";
 		
-		$wheres[] = self::domainToWhere('Domain_AspectID', '-1', $this->aspectType);
-		$wheres[] = self::domainToWhere('Domain_StoreID', '-1', $this->store);
-		$wheres[] = self::domainToWhere('Domain_CompanyID', '-1', $this->company);
-		$wheres[] = self::domainToWhere('Domain_IndustryID', '-1', $this->industry);
+		if(!empty($this->dAspectType)){
+			$wheres[] = self::domainToWhere('Domain_AspectID', '-1', $this->dAspectType);
+		}
+		if(!empty($this->dStore)){
+			$wheres[] = self::domainToWhere('Domain_StoreID', '-1', $this->dStore);
+		}
+		if(!empty($this->dCompany)){
+			$wheres[] = self::domainToWhere('Domain_CompanyID', '-1', $this->dCompany);
+		}
+		if(!empty($this->dIndustry)){
+			$wheres[] = self::domainToWhere('Domain_IndustryID', '-1', $this->dIndustry);
+		}
 		
 		$domain_where = implode(' AND ', $wheres);
 		
@@ -181,10 +198,10 @@ class Data
 							IF(`EndDate` = '0000-00-00 00:00:00', '{$upperEndDate}', `EndDate`)
 						)
 					) AS min_de
-					FROM {$table}
+					FROM {$table} dcB
 					GROUP BY
-						`Domain_AspectID`, `Domain_StoreID`,
-						`Domain_CompanyID`, `Domain_IndustryID`
+						dcB.`Domain_AspectID`, dcB.`Domain_StoreID`,
+						dcB.`Domain_CompanyID`, dcB.`Domain_IndustryID`
 			) s ON
 				dcA.`Domain_AspectID` = s.`Domain_AspectID` AND
 				dcA.`Domain_StoreID` = s.`Domain_StoreID` AND
@@ -204,7 +221,7 @@ class Data
 		
 		if(($stmt = Database::query($sql)) !== false){
 			while($row = $stmt->fetch_assoc()){
-				$cached = json_decode($row['dcA.CachedData'], true);
+				$cached = json_decode($row['CachedData'], true);
 				
 				$clusterAvgs = []; /* [[AvgRating, AvgDate, Count]] */
 				
@@ -214,7 +231,7 @@ class Data
 					
 					foreach($cluster as $datapoint){
 						$rDate = @intval($datapoint['date']);
-						if($this->from <= $rDate && $rDate <= $this->to){
+						if($this->dFrom <= $rDate && $rDate <= $this->dTo){
 							$sumRating += floatval($datapoint['rating']);
 							$sumDate += $rDate;
 							$count++;
@@ -223,8 +240,6 @@ class Data
 					
 					$avgRating = $count > 0 ? round($sumRating / $count, 2) : 0;
 					$avgDate = $count > 0 ? ceil($sumDate / $count) : null;
-					
-					
 					
 					$clusterAvgs[] = [self::AVERAGE_RATING => $avgRating, self::AVERAGE_DATE => $avgDate, self::TOTAL_DATASIZE => $count];
 				}
@@ -247,6 +262,10 @@ class Data
 	{
 		$clusterAvgs = $this->getAveragedClusters();
 		
+		if(empty($clusterAvgs)){
+			return new DataResult([[self::AVERAGE_RATING => 0.0, self::AVERAGE_DATE => 0, self::TOTAL_DATASIZE => 0]]);
+		}
+		
 		$result = [];
 		
 		/* Find largest cluster dimensions <= $numPoints. */
@@ -257,30 +276,39 @@ class Data
 		}
 		
 		/* Set largest cluster to result. */
-		$result = array_splice($clusterAvgs, $index, 1);
-		
-		/* TODO: if result is empty... */
+		$result = array_splice($clusterAvgs, $index, 1)[0];
 		
 		/* Collapse all other clusters into $numPoints. */
 		foreach($clusterAvgs as $clusters){
 			// according to closest avg date. //work with 1 numPoint
 			foreach($clusters as $cluster){
-				for($c = 0; $c < count($cluster); $c++){
-					$distance = -1;
-					$rIndex = 0;
-					for($r = 0; $r < count($result); $r++){
-						$newDistance = abs($cluster[$i][self::AVERAGE_DATE] - $result[$r][self::AVERAGE_DATE]);
-						if($distance == -1 || $newDistance < $distance){
-							$distance = $newDistance;
-							$rIndex = $r;
-						}
+				$distance = -1;
+				$rIndex = 0;
+				for($r = 0; $r < count($result); $r++){
+					$newDistance = abs($cluster[self::AVERAGE_DATE] - $result[$r][self::AVERAGE_DATE]);
+					if($distance == -1 || $newDistance < $distance){
+						$distance = $newDistance;
+						$rIndex = $r;
 					}
-					$result[$rIndex] = self::mergeClusterAvgs($result[$rIndex], $cluster[$c]);
 				}
+				$result[$rIndex] = self::mergeClusterAvgs($result[$rIndex], $cluster);
 			}
 		}
 		
-		return new DataResult($result);
+		/* Squeeze into $numPoints. This damages kMedoid property. */
+		$density = ceil(count($result)/$numPoints);
+		$squeezed = array_fill(0, min($numPoints, max(count($result), 1)), [self::AVERAGE_RATING => 0.0, self::AVERAGE_DATE => 0, self::TOTAL_DATASIZE => 0]);
+		
+		for($i = 0; $i < count($squeezed); $i++){
+			for($j = 0; $j < $density; $j++){
+				if(($i*$density) + $j >= count($result)){
+					break;
+				}
+				$squeezed[$i] = self::mergeClusterAvgs($squeezed[$i], $result[($i*$density) + $j]);
+			}
+		}
+		
+		return new DataResult($squeezed);
 	}
 	
 	/**
@@ -291,9 +319,14 @@ class Data
 	*
 	* @return array() The merged cluster average.
 	*/
-	public static function mergeClusterAvgs($a, b)
+	public static function mergeClusterAvgs($a, $b)
 	{
 		$total = $a[self::TOTAL_DATASIZE] + $b[self::TOTAL_DATASIZE];
+		
+		if($total == 0){
+			return [self::AVERAGE_RATING => 0.0, self::AVERAGE_DATE => 0, self::TOTAL_DATASIZE => 0];
+		}
+		
 		$avgRating = round((($a[self::AVERAGE_RATING]*$a[self::TOTAL_DATASIZE]) + ($b[self::AVERAGE_RATING]*$b[self::TOTAL_DATASIZE]))/$total, 2);
 		$avgDate = ceil((($a[self::AVERAGE_DATE]*$a[self::TOTAL_DATASIZE]) + ($b[self::AVERAGE_DATE]*$b[self::TOTAL_DATASIZE]))/$total);
 		
@@ -314,8 +347,8 @@ class Data
 		if(empty($domain)){
 			return "`{$column}` = {$default}";
 		} else {
-			$list = implode(',', $this->domain);
-			return "`{$column}` IN ({$list})"
+			$list = implode(',', $domain);
+			return "`{$column}` IN ({$list})";
 		}
 	}
 }

@@ -24,10 +24,11 @@ function __autoload($c){
 	}
 }
 
-require 'classes/Language.php';
-require 'Minify.php';
-require 'Brevada.php';
-require 'View.php';
+require_once 'classes/Language.php';
+require_once 'Minify.php';
+require_once 'Brevada.php';
+require_once 'classes/Data/Data.php';
+require_once 'View.php';
 
 if(!empty($_GET['lang']) || !empty($_COOKIE['lang'])){
 	setLocalization(empty($_GET['lang']) ? $_COOKIE['lang'] : $_GET['lang'], true);

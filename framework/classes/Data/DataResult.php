@@ -8,7 +8,7 @@ class DataResult
 	
 	function __construct($result = [])
 	{
-		$this->result = result;
+		$this->result = $result;
 	}
 	
 	/**
@@ -91,12 +91,12 @@ class DataResult
 	*/
 	public static function diffRating($dataA, $dataB)
 	{
-		return round($dataA[0][Data::AVERAGE_RATING] - $dataB[0][Data::AVERAGE_RATING], 2);
+		return round($dataA->get()[Data::AVERAGE_RATING] - $dataB->get()[Data::AVERAGE_RATING], 2);
 	}
 
 	public function __toString()
 	{
-		return $this->getRating();
+		return (string) $this->getRating();
 	}
 }
 ?>

@@ -163,28 +163,6 @@ def getField(index, field):
         return None
 
 
-def refineBenchmarks(db):
-    """
-    Generate industry averages and
-    other benchmarks based on already
-    refined aspects.
-
-    Args:
-        db: Brevada database connection.
-
-    Returns:
-        None
-    """
-    """
-    cursor = db.cursor()
-    cursor.execute("
-    SELECT  FROM `data_cache`
-    ")
-    cursor.close()
-    """
-    logger.debug("Refining benchmarks...")
-
-
 def refineAspects(db):
     """
     Generate clusters for each aspect group.
@@ -780,7 +758,6 @@ def main():
             )
             retrieveData(db)
             refineAspects(db)
-            refineBenchmarks(db)
             logger.debug("Refinement complete. Took %d seconds.",
                          (time.time() - timeStarted))
 
