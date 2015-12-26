@@ -4,8 +4,9 @@ if($this->getParameter('valid') !== true){ Brevada::Redirect('/404'); }
 <?php
 $this->addResource('/css/layout.css');
 $this->addResource('/css/dashboard.css');
-$this->addResource('/js/dashboard.js');
-$this->addResource('/js/dashboard-slide.js');
+$this->addResource('/js/dashboard/dashboard.js');
+$this->addResource('/js/dashboard/dashboard-slide.js');
+$this->addResource('/js/dashboard/dashboard-graph.js');
 
 $this->addResource('/css/brevada.tooltip.css');
 $this->addResource('/js/brevada.tooltip.js');
@@ -98,12 +99,14 @@ $areasOfLeastConcern = array_diff($areasOfLeastConcern, $areasOfFocus);
 	</div>
 
 	<div class="mid-banner row">
-			<a href="#" id="email-display" class="slide-down-trigger">
-				<div class='pull-left icon-button'>
-					<i class='fa fa-envelope-o'></i>
-					<div class='icon-subtext'><?php _e('Email List'); ?></div>
-				</div>
-			</a>
+		<button href="#" id="email-display" type="button" class="btn icon-button slide-down-trigger">
+			<!-- <i class='fa fa-th-list'></i> -->
+			Add a Store
+		</button>
+		<button href="#" id="email-display" type="button" class="btn icon-button slide-down-trigger">
+			<!-- <i class='fa fa-th-list'></i> -->
+			Support
+		</button>
 	</div>
 
 </div>
@@ -319,7 +322,7 @@ $query = Database::query("SELECT `stores`.`id`, `stores`.`Name`, AVG(dashboard.D
 			<div class="pod">
 				<div class="body">
 					<div class="header">
-						<span class='aspect-title link <?php echo $colour; ?>' data-link='dashboard?s=<?php echo $storeID; ?>'><?php _e($title); ?></span>
+						<span class='aspect-title link' data-link='dashboard?s=<?php echo $storeID; ?>'><?php _e($title); ?></span>
 					</div>
 					<div class="pull-right col-md-6 pod-body-right">
 						<div class='pod-body-rating <?php echo $colour; ?>-text'><?php echo "{$data_ratingPercent}%"; ?></div>
@@ -364,6 +367,6 @@ $query = Database::query("SELECT `stores`.`id`, `stores`.`Name`, AVG(dashboard.D
 	</div>
 </div>
 
-<div class="bottom-bar">
+<!-- <div class="bottom-bar">
 	&copy; 2015 Brevada Inc. &nbsp;
-</div>
+</div> -->
