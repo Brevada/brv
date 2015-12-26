@@ -107,7 +107,7 @@ $areasOfLeastConcern = array_diff($areasOfLeastConcern, $areasOfFocus);
 	<div class="mid-banner row" style="">
 	  <button data-id="aspects" type="button" class="btn icon-button toggle-button">
       	<!-- <i class='fa fa-th-list'></i> -->
-      	Aspects
+      	Overall
       </button>
       <button data-id="live" type="button" class="btn icon-button toggle-button">
       	<!-- <i class='fa fa-asterisk'></i> -->
@@ -280,11 +280,17 @@ $areasOfLeastConcern = array_diff($areasOfLeastConcern, $areasOfFocus);
 
         <div class="sidebar btn-group-vertical">
 			<a type="button" class="btn btn-default btn-sidebar" href="/<?php echo $url_name; ?>" target="_blank">
-				<i class='fa fa-external-link'></i>
+				<!-- <i class='fa fa-external-link'></i> -->
+				<div class="icon">
+					<img src="/images/icons/your-page.png" />
+				</div>
 				<div class='icon-subtext'><?php _e('Your Page'); ?></div>
 			</a>
 			<a href="hub/includes/marketing/promo_white.php" target="_blank" type="button" class="btn btn-default btn-sidebar">
-					<i class='fa fa-print'></i>
+					<!-- <i class='fa fa-print'></i> -->
+					<div class="icon">
+						<img src="/images/icons/printables.png" />
+					</div>
 					<div class='icon-subtext'><?php _e('Printables'); ?></div>
 			</a>
 			<a href="/qr/<?php echo $url_name; ?>.png" target="_blank" type="button" class="btn btn-default btn-sidebar">
@@ -391,18 +397,18 @@ $areasOfLeastConcern = array_diff($areasOfLeastConcern, $areasOfFocus);
 					<div id="pod<?php echo $id; ?>" class="pod">
 						<div class="body">
 							<div class="header">
-								<span class='aspect-title <?php echo $colour; ?>'><?php _e($title); ?></span>
+								<span class='aspect-title'><?php _e($title); ?></span>
 							</div>
 							<div class="pull-left col-md-6 pod-body-left">
 								<div class='top'>
-									<i class='pull-left fa <?php echo $data_percent4W >= 0 ? 'fa-arrow-circle-up' : 'fa-arrow-circle-down'; ?>'></i>
-									<span class='pull-left percent'><?php echo abs($data_percent4W)."%"; ?></span>
-									<span class='duration'><?php _e('4 weeks'); ?></span>
-								</div>
-								<div class='top'>
 									<i class='pull-left fa <?php echo $data_percent1Y >= 0 ? 'fa-arrow-circle-up' : 'fa-arrow-circle-down'; ?>'></i>
 									<span class='pull-left percent'><?php echo abs($data_percent1Y)."%"; ?></span>
-									<span class='duration'><?php _e('1 year'); ?></span>
+									<span class='duration'><?php _e('24H'); ?></span>
+								</div>
+								<div class='top'>
+									<i class='pull-left fa <?php echo $data_percent4W >= 0 ? 'fa-arrow-circle-up' : 'fa-arrow-circle-down'; ?>'></i>
+									<span class='pull-left percent'><?php echo abs($data_percent4W)."%"; ?></span>
+									<span class='duration'><?php _e('4W'); ?></span>
 								</div>
 							</div>
 							<div class="pull-right col-md-6 pod-body-right">

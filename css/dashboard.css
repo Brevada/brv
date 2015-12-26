@@ -51,34 +51,34 @@ div.top-banner .three-lines {
     font-size: 30px;
 }
 .positive {
-    background: #2ecc0e;
+    background: #2ecc0e !important;
 }
 .great {
-    background: #82cc0e;
+    background: #82cc0e !important;
 }
 .neutral {
-    background: #afcc0e;
+    background: #afcc0e !important;
 }
 .bad {
-    background: #ccc10e;
+    background: #ccc10e !important;
 }
 .negative {
-    background: #cc750e;
+    background: #cc750e !important;
 }
 .positive-text {
-    color: #2ecc0e;
+    color: #2ecc0e !important;
 }
 .great-text {
-    color: #82cc0e;
+    color: #82cc0e !important;
 }
 .neutral-text {
-    color: #afcc0e;
+    color: #afcc0e !important;
 }
 .bad-text {
-    color: #ccc10e;
+    color: #ccc10e !important;
 }
 .negative-text {
-    color: #cc750e;
+    color: #cc750e !important;
 }
 .positive-border {
     border: 2px solid #2ecc0e;
@@ -609,6 +609,22 @@ div.email-display-container .email .rating{
     outline: none;
     border-color: #666;
 }
+.btn-sidebar .icon {
+    width: 50px;
+    height: 50px;
+    text-align: center;
+    border: 2px solid #dcdcdc;
+    border-radius: 50px;
+    margin: 0 auto;
+
+}
+
+.btn-sidebar .icon img {
+    max-width: 30px;
+    max-height: 30px;
+    margin: 0 auto;
+}
+
 .btn-sidebar i {
     font-size: 30px;
 }
@@ -769,19 +785,51 @@ div.email-display-container .email .rating{
 
 .bigticker div {
     text-align: center;
+    /*color: #FFF;*/
 }
 
-.bigticker.hourly .data {
-    font-size: 80px;
+.bigticker.score {
+    color: #FFFFFF;
+    /*background-image:;*/
+}
+
+.bigticker .title {
+    color: #333333;
+    font-size: 17px;
+    padding: 0px 0px 5px 0px;
+}
+
+.bigticker .data {
+    font-size: 100px;
     font-weight: bold;
 }
 
-.bigticker.current .bulb {
-    width: 100px;
-    height: 100px;
-    margin: 0 auto;
+.bigticker.breakdown {
+    height: 400px;
 }
 
+.bigticker.breakdown .graph {
+}
+
+.bigticker .bulb {
+    width: 100%;
+    height: 110px;
+    margin: 0 auto;
+    border-radius: 4px;
+    color: #FFF;
+}
+
+.square-1 div, .square-2 div, .square-3 div {
+    padding: 5px;
+}
+
+.bigticker.daily .bulb .all-data {
+    font-size: 20px;
+    font-weight: bold;
+}
+.bigticker.daily .bulb .all-data .data {
+    font-size: 50px;
+}
 .support-form textarea {
     padding: 10px;
     font-size:18px;
@@ -870,3 +918,4 @@ div.email-display-container .email .rating{
 #alert-holder .alert.success {
     background: #2ecc0e;
 }
+

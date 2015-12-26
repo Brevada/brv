@@ -39,9 +39,9 @@ dashboards.milestones.renderForm = function (canvas) {
 	/* Template */
 	$('\
 		<div class="milestone-form">\
-		<input class="title" placeholder="New Milestone Title" />\
-		<input class="date" placeholder="Date" />\
-		<button type="submit">Add</button>\
+			<input class="title" placeholder="New Milestone Title" />\
+			<input class="date" placeholder="Date" />\
+			<button type="submit">Add</button>\
 		</div>\
 		').appendTo($(canvas));
 }
