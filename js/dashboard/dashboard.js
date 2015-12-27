@@ -26,7 +26,6 @@ $(document).ready(function(){
 	//$('#main-container').html(...default (aspects) template...);
 	$('.toggle-button[data-id="aspects"]').addClass('selected');
 	window.current_face = 'aspects';
-
 	// Toggle Behaviour
 	$('.toggle-button').click(function(){
 		var new_face = $(this).attr('data-id');
@@ -34,8 +33,6 @@ $(document).ready(function(){
 		if (window.current_face == 'aspects') {
 			aspects_holder = aspects_holder || $('#main-container').html();
 		}
-
-		
 
 		dashboards.changeFace(new_face);
 		
@@ -47,8 +44,7 @@ dashboards.changeFace = function (new_face) {
 	$('.toggle-button[data-id=' + new_face + "]").addClass('selected');
 
 	if (new_face == 'aspects') {
-		// TODO: Setup the aspects template with BDFF
-		$('#main-container').html(aspects_holder);
+		dashboards.aspects.render($('#main-container'));
 		window.current_face = 'aspects';
 	} else if (new_face == 'milestones') {
 		dashboards.milestones.render($('#main-container'));	
@@ -62,10 +58,25 @@ dashboards.changeFace = function (new_face) {
 	}
 }
 
+dashboards.createTemplate = function (structure, canvas) {
+	var structure = [
+		['div', 'testclass', 'other class'],
+		[
+			['testclass', 'other class'],
+			['testclass', 'other class']
+		]
+	]
+	// Traverse the array and continue to append to an element
+
+	// Append the element to a canvas
+}
+
+/* Alerts */
+
 dashboards.alert = function (alert, type) {
 	 $('\
 	 	<div class="alert '+type+'">\
-		Your submission has been recieved, you will be contacted shortly by email.\
+		' + alert + '\
 		</div>\
 		').appendTo($('#alert-holder'));
 	 setTimeout(dashboards.clearAlert, 3000);

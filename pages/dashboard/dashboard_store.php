@@ -5,10 +5,17 @@ if($this->getParameter('valid') !== true){ Brevada::Redirect('/404'); }
 $this->addResource('/css/layout.css');
 $this->addResource('/css/dashboard.css');
 $this->addResource('/js/dashboard/dashboard.js');
-$this->addResource('/js/dashboard/milestones.js');
-$this->addResource('/js/dashboard/live.js');
-$this->addResource('/js/dashboard/support.js');
-$this->addResource('/js/dashboard/hoverpod.js');
+
+$this->addResource('/js/dashboard/aspects/aspects.js');
+
+$this->addResource('/js/dashboard/milestones/milestones.js');
+$this->addResource('/js/dashboard/milestones/milestone.js');
+$this->addResource('/js/dashboard/milestones/aspects.js');
+
+$this->addResource('/js/dashboard/live/live.js');
+$this->addResource('/js/dashboard/support/support.js');
+$this->addResource('/js/dashboard/hoverpod/hoverpod.js');
+
 $this->addResource('/js/dashboard/dashboard-slide.js');
 $this->addResource('/js/dashboard/dashboard-graph.js');
 
@@ -105,22 +112,24 @@ $areasOfLeastConcern = array_diff($areasOfLeastConcern, $areasOfFocus);
 	</div>
 
 	<div class="mid-banner row" style="">
-	  <button data-id="aspects" type="button" class="btn icon-button toggle-button">
-      	<!-- <i class='fa fa-th-list'></i> -->
-      	Overall
-      </button>
-      <button data-id="live" type="button" class="btn icon-button toggle-button">
-      	<!-- <i class='fa fa-asterisk'></i> -->
-      	Live
-      </button>
-	  <button data-id="milestones" type="button" class="btn icon-button toggle-button">
-      	<!-- <i class='fa fa-star'></i> -->
-      	Milestones
-      </button>
-      <button data-id="support" type="button" class="btn icon-button toggle-button">
-      	<!-- <i class='fa fa-star'></i> -->
-      	Support
-      </button>
+	  	<a type="button" class="btn icon-button" href="/<?php echo $url_name; ?>" target="_blank">
+      		Your Page
+      	</a>
+      	<a href="/qr/<?php echo $url_name; ?>.png" target="_blank" type="button" class="btn icon-button">
+			<?php _e('QR Code'); ?>
+		</a>
+      	<a href="hub/includes/marketing/promo_white.php" target="_blank" type="button" class="btn icon-button">
+			<?php _e('Printables'); ?>
+		</a>
+
+		<a href="#" id="email-display" class="slide-down-trigger btn icon-button" type="button">
+			<?php _e('Email List'); ?>
+		</a>
+		<?php if(isset($_SESSION['Corporate']) && $_SESSION['Corporate']){ ?>
+		<a href="/dashboard" type="button" class="btn icon-button">
+			<?php _e('Corporate'); ?>
+		</a>
+		<?php } ?> -->
 	</div>
 
 </div>
@@ -279,39 +288,33 @@ $areasOfLeastConcern = array_diff($areasOfLeastConcern, $areasOfFocus);
     <div id="sidebar-wrapper">
 
         <div class="sidebar btn-group-vertical">
-			<a type="button" class="btn btn-default btn-sidebar" href="/<?php echo $url_name; ?>" target="_blank">
-				<!-- <i class='fa fa-external-link'></i> -->
+	        <button type="button" data-id="aspects" class="btn btn-sidebar toggle-button icon-button">
 				<div class="icon">
-					<img src="/images/icons/your-page.png" />
+					<i class='fa fa-list'></i>
 				</div>
-				<div class='icon-subtext'><?php _e('Your Page'); ?></div>
-			</a>
-			<a href="hub/includes/marketing/promo_white.php" target="_blank" type="button" class="btn btn-default btn-sidebar">
-					<!-- <i class='fa fa-print'></i> -->
-					<div class="icon">
-						<img src="/images/icons/printables.png" />
-					</div>
-					<div class='icon-subtext'><?php _e('Printables'); ?></div>
-			</a>
-			<a href="/qr/<?php echo $url_name; ?>.png" target="_blank" type="button" class="btn btn-default btn-sidebar">
-					<i class='fa fa-qrcode'></i>
-					<div class='icon-subtext'><?php _e('QR Code'); ?></div>
-			</a>
-			<a href="#" id="email-display" class="slide-down-trigger btn btn-default btn-sidebar" type="button">
-					<i class='fa fa-envelope-o'></i>
-					<div class='icon-subtext'><?php _e('Email List'); ?></div>
-			</a>
-			<button type="button" class="btn btn-default btn-sidebar">
-		      	<i class='fa fa-gear'></i>
-		      	<br />
-		      	Settings
-		      </button>
-			<?php if(isset($_SESSION['Corporate']) && $_SESSION['Corporate']){ ?>
-			<a href="/dashboard" type="button" class="btn btn-default btn-sidebar">
-					<i class='fa fa-briefcase'></i>
-					<div class='icon-subtext'><?php _e('Corporate'); ?></div>
-			</a>
-			<?php } ?>
+				<div class='icon-subtext hidden-xs'><?php _e('Overall'); ?></div>
+			</button>
+
+			 <button data-id="live" class="btn btn-sidebar toggle-button icon-button">
+				<div class="icon">
+					<i class='fa fa-check'></i>
+				</div>
+				<div class='icon-subtext hidden-xs'><?php _e('Live'); ?></div>
+			</button>
+
+			<button type="button" data-id="milestones" class="btn btn-sidebar toggle-button icon-button">
+				<div class="icon">
+					<i class='fa fa-calendar'></i>
+				</div>
+				<div class='icon-subtext hidden-xs'><?php _e('Milestones'); ?></div>
+			</button>
+
+			<button type="button" data-id="support" class="btn btn-sidebar toggle-button icon-button">
+				<div class="icon">
+					<i class='fa fa-support'></i>
+				</div>
+				<div class='icon-subtext hidden-xs'><?php _e('Support'); ?></div>
+			</button>
         </div>
     </div>
     <!-- Right Side -->
@@ -429,7 +432,7 @@ $areasOfLeastConcern = array_diff($areasOfLeastConcern, $areasOfFocus);
 										</div>
 									</div>
 
-									<div class="line-graph">
+									<div class="line-graph" data-id="<?php echo $id; ?>" graph-json='<?php echo $bucketJSON; ?>'>
 										<script type='text/javascript'>
 											build_line_graph(<?php echo $bucketJSON; ?>, "pod<?php echo $id; ?>");
 										</script>

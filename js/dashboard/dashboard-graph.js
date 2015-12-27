@@ -21,16 +21,6 @@ function build_line_graph(bucket, id) {
 	var data = {
 	    labels: bucket.dates,
 	    datasets: [
-	        /*{
-	            label: "Industry",
-	            fillColor: "rgba(220,220,220,0.6)",
-	            strokeColor: "rgba(220,220,220,1)",
-	            pointColor: "rgba(220,220,220,1)",
-	            pointStrokeColor: "#FFFFFF",
-	            pointHighlightFill: "#FFFFFF",
-	            pointHighlightStroke: "rgba(220,220,220,1)",
-	            data: bucket.data
-	        },*/
 	        {
 	            label: "Aspect",
 	            fillColor: "rgba(21,187,75,0.7)",
@@ -115,6 +105,7 @@ function build_line_graph(bucket, id) {
 		}
 	};
 	var ctx = $pod.find('.line-graph canvas').get(0).getContext("2d");
+	// console.log(data);
 	var myLineChart = new Chart(ctx).Line(data, options);
 	window.onresize = function(event){
 		var width = $('canvas').parent().width();

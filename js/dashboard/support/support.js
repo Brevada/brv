@@ -1,19 +1,11 @@
-/* 
-	Live Dashboard App
-	Brevada Dashboard Frontend Framework (BDFF)
-*/
+/* Support Dashboard App */
 
-/* Setup */
-
-// Support App
 dashboards.support = {};
 dashboards.support.data = {};
 
 dashboards.support.form = {};
 
 dashboards.support.resources = {};
-
-/* Support App */
 
 dashboards.support.fetch = function (id) {
 }
@@ -32,6 +24,7 @@ dashboards.support.form.render = function (canvas) {
  	$(support_form).appendTo($(canvas));
  	dashboards.support.form.element = support_form;
 
+ 	/* Template */
  	$('\
  		<div class="dashboard-pod">\
  		<textarea class="issue" placeholder="What can we help you with?"></textarea>\
@@ -59,6 +52,7 @@ dashboards.support.form.renderSumbission = function () {
 		you will be contacted shortly.', 'success');
 }
 
+
 /* Support Resources */
 
 dashboards.support.resources.render = function (canvas) {
@@ -66,6 +60,7 @@ dashboards.support.resources.render = function (canvas) {
  	support_resources.setAttribute('class', 'support-resources col-md-3');
  	$(support_resources).appendTo($(canvas));
 
+ 	/* Template */
  	$('\
  		<div class="dashboard-pod">Dashboard Support, Tablet Support</div>\
  		').appendTo($(support_resources));
