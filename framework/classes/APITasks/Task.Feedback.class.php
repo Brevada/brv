@@ -9,12 +9,13 @@ class TaskFeedback extends AbstractTask
 			}
 			
 			/* Ensure all required data is present. */
-			if(TaskLoader::requiresData(['serial', 'now', 'rating', 'aspectID', 'batteryLevel', 'batteryIsPlugged'], $_POST)){
+			if(TaskLoader::requiresData(['serial', 'now', 'rating', 'aspectID', 'session', 'batteryLevel', 'batteryIsPlugged'], $_POST)){
 			
 				$serial = $_POST['serial'];
 				$time = $_POST['now'];
 				$rating = $_POST['rating'];
 				$aspectID = $_POST['aspectID'];
+				$sessionID = $_POST['session'];
 				$bLevel = $_POST['batteryLevel'];
 				$bPlugged = $_POST['batteryIsPlugged'];
 				
@@ -22,7 +23,7 @@ class TaskFeedback extends AbstractTask
 					Insert into Database.
 					Use random string as session id, although it is meaningless in this case.
 				*/
-				$sessionID = bin2hex(openssl_random_pseudo_bytes(16));
+
 				if(TaskFeedback::insertRating($rating, $aspectID, $sessionID, $time)){
 					/* Good. */
 					Logger::info("Rating inserted via API: {$rating}, {$aspectID}, {$sessionID}, {$time}");

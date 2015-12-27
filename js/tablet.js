@@ -10,12 +10,17 @@ $('div.star').each(function(){
 
 $('#reset').click(function(){
 	console.log("Reset clicked!");
+	resetAll();
+});
+
+function resetAll(){
+	app.newSessionToken();
 	$('html, body').scrollTop(0);
 	$('#email_connect').hide();
 	$('.rated').removeClass('rated');
 	$('#aspects, .fixed-toolbar').fadeIn(300);
 	$('#imdone').hide();
-});
+}
 
 function insertRating(val, id) {
 	if(!$('#imdone').is(':visible')){
@@ -27,6 +32,7 @@ function insertRating(val, id) {
 		now : Math.floor((new Date()).getTime()/1000),
 		rating : val,
 		aspectID : id,
+		session : globals.sessionToken,
 		batteryLevel : globals.battery.level,
 		batteryIsPlugged : globals.battery.isPlugged.toString()
 	};
