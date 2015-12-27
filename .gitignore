@@ -1,3 +1,10 @@
 user_data
 framework/logs
+
 *.pyc
+
+# OS generated
+Thumbs.db
+.DS_Store
+.Spotlight-V100
+.Trashes
