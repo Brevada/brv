@@ -1,3 +1,5 @@
+console.log("Loaded tablet.js");
+
 $("#imdone").click(function() { 
 	$('#aspects, .fixed-toolbar').fadeOut(300, function () {
 		$('#email_connect').show();
@@ -9,7 +11,6 @@ $('div.star').each(function(){
 });
 
 $('#reset').click(function(){
-	console.log("Reset clicked!");
 	resetAll();
 });
 
@@ -43,3 +44,50 @@ function insertRating(val, id) {
 function disappearRating(post_id) {
 	$("#aspect_"+post_id).addClass('rated');
 }
+
+function showInactivityWarning(){
+	if($('.inactivity').length == 0){
+		var message = "If you're not done giving feedback, tap anywhere on the screen.";
+		$('html, body').addClass('locked');
+		$('<div>').attr('id', 'inactivity-overlay').addClass('inactivity').appendTo('body');
+		$('<div>').attr('id', 'inactivity').addClass('inactivity').append($('<p>').html(message)).appendTo('body');
+		
+		$('#inactivity-overlay, #inactivity').click(function(){
+			app.updateInteraction();
+			$('#inactivity').fadeOut(225, function(){
+				$('#inactivity-overlay').fadeOut(125, function(){
+					$('html, body').removeClass('locked');
+				});
+			});
+		});
+	}
+	$('#inactivity-overlay').fadeIn(200, function(){
+		$('#inactivity').fadeIn(350);
+	});
+	console.log('Inactivity Warning shown.');
+}
+
+globals.inactiveA = function(){
+	if($('div.aspect.rated').length > 0){
+		showInactivityWarning();
+	}
+};
+
+globals.inactiveB = function(){
+	if($('div.aspect.rated').length > 0){
+		if($('.inactivity').length > 0){
+			$('#inactivity').fadeOut(225, function(){
+				$('#inactivity-overlay').fadeOut(125, function(){
+					$('html, body').removeClass('locked');
+				});
+			});
+			
+		}
+		resetAll();
+	}
+	app.updateInteraction();
+};
+
+$(document).click(app.updateInteraction);
+
+app.updateInteraction();
