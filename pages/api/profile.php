@@ -54,11 +54,12 @@ while($row=$query->fetch_assoc()){
 <div class="topbar">
 	<div class="container">
 		<div class="title">
-			<!-- <i class="fa fa-cutlery"></i>  -->  <?php echo sprintf(__('Give %s Feedback'), "<b>{$name}</b>"); ?>
+			<?php echo sprintf(__('Give %s Feedback'), "<b>{$name}</b>"); ?>
 		</div>
 		<div class="icons"><img class="logo" src="/images/quote.png" /></div>
 	</div>
 </div>
+<div class='push'></div>
 
 <div id="aspects" class="aspect-container container">
 	<?php
@@ -74,7 +75,6 @@ while($row=$query->fetch_assoc()){
 
 <div class="fixed-toolbar">
 	<div class="container">
-		<!-- <div class="help"><i class="fa fa-question-circle"></i> Help</div> -->
 		<div class="submit" id='imdone'><i class="fa fa-check"></i> <?php _e("I'm Done"); ?></div>
 	</div>
 </div>

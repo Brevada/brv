@@ -10,12 +10,18 @@ $('div.star').each(function(){
 
 $('#reset').click(function(){
 	console.log("Reset clicked!");
+	$('html, body').scrollTop(0);
 	$('#email_connect').hide();
 	$('.rated').removeClass('rated');
 	$('#aspects, .fixed-toolbar').fadeIn(300);
+	$('#imdone').hide();
 });
 
 function insertRating(val, id) {
+	if(!$('#imdone').is(':visible')){
+		$('#imdone').slideDown(125);
+	}
+	
 	var payload = {
 		serial : globals.uuid,
 		now : Math.floor((new Date()).getTime()/1000),

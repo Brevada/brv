@@ -120,3 +120,5 @@ body{
 .refresh .fa {
 	font-size: 40px;
 }
+#imdone { display: none; }
+div.push { width: 100%; height: 80px; padding: 0; margin: 0; }
