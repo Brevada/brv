@@ -175,10 +175,17 @@ class Data
 			$wheres[] = self::domainToWhere('Domain_IndustryID', '-1', $this->dIndustry);
 		}
 		
+		if(!empty($this->dKeywords)){
+			$keywords = implode(',', $this->dKeywords);
+			$wheres[] = "`company_keywords_link`.`CompanyKeywordID` IN ({$keywords})";
+		}
+		
 		$domain_where = implode(' AND ', $wheres);
 		
 		$table = "
-			(SELECT * FROM `data_cache`
+			(SELECT `data_cache`.* FROM `data_cache`
+			LEFT JOIN `company_keywords_link`
+			ON `company_keywords_link`.`CompanyID` = `data_cache`.`Domain_CompanyID`
 			WHERE {$domain_where}
 			AND `CachedData` IS NOT NULL)
 		";
@@ -215,7 +222,7 @@ class Data
 				dcA.`Domain_AspectID`, dcA.`Domain_StoreID`,
 				dcA.`Domain_CompanyID`, dcA.`Domain_IndustryID`
 		";
-		
+
 		/* Each element consists of an array of cluster averages. */
 		$avgs = [];
 		
