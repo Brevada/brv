@@ -58,7 +58,7 @@ function build_line_graph(bucket, id) {
 
 			// Make the element if not available
 			if (!tooltipEl[0]) {
-				$('body').append('<div id="chartjs-customtooltip"></div>');
+				$('body').append('<div id="chartjs-customtooltip" class="hidden-xs"></div>');
 				tooltipEl = $('#chartjs-customtooltip');
 			}
 

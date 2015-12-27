@@ -56,6 +56,7 @@ dashboards.changeFace = function (new_face) {
 		dashboards.support.render($('#main-container'));	
 		window.current_face = 'support';
 	}
+	document.body.scrollTop = document.documentElement.scrollTop = 0;
 }
 
 dashboards.createTemplate = function (structure, canvas) {
