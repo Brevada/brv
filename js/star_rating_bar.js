@@ -8,6 +8,10 @@ $(document).ready(function(){
 });
 
 function insertRating(val, id) {
+	if(!$('#imdone').is(':visible')){
+		$('#imdone').slideDown(125);
+	}
+	
 	$.get("/overall/insert/insert_rating.php", { value : val, post_id : id });
     return false;
 }

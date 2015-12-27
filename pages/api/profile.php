@@ -1,14 +1,28 @@
 <?php
-$this->addResource('/css/layout.css');
-$this->addResource('/css/profile_header.css');
-$this->addResource('/css/profile.css');
-$this->addResource('/js/profile.js');
+$this->IsScript = true;
 
-$tablet_id = $this->getParameter("tablet_id");
-$tablet_url = $this->getParameter("tablet_url");
+$tablet_id = '';
+$tablet_url = '';
 
-$id = @intval(Brevada::validate(empty($tablet_id) ? Brevada::FromPOSTGET('id') : $tablet_id));
-$url_name=Brevada::validate(empty($tablet_url) ? Brevada::FromPOSTGET('name') : $tablet_url, VALIDATE_DATABASE);
+$serial = Brevada::validate(Brevada::FromPOSTGET('m'), VALIDATE_DATABASE);
+
+if(!empty($serial)){
+	if(($query = Database::query("SELECT stores.URLName, stores.id as SID FROM `tablets` LEFT JOIN stores ON stores.id = tablets.StoreID WHERE tablets.`SerialCode` = '{$serial}' LIMIT 1")) !== false){
+		$row = $query->fetch_assoc();
+		if($row && !empty($row)){
+			$tablet_id = $row['SID'];
+			$tablet_url = $row['URLName'];
+		} else {
+			Database::query("INSERT INTO `tablets` (SerialCode, StoreID, Status) VALUES ('{$serial}', NULL, 'Pending')");
+			exit("Error: Request pending with ID: {$serial}.");
+		}
+	} else {
+		exit;
+	}
+} else { exit; }
+
+$id = @intval(Brevada::validate($tablet_id));
+$url_name=Brevada::validate($tablet_url, VALIDATE_DATABASE);
 
 $geo = Geography::GetGeo();
 $country = $geo['country'];
@@ -34,15 +48,6 @@ while($row=$query->fetch_assoc()){
    $name=Brevada::validate($row['Name']);
    $url_name=Brevada::validate($row['URLName']);
 }
-
-$this->setTitle("Give {$name} Feedback");
-
-$this->addResource("<meta property='og:title' content='Give us feedback!'/>", true, true);
-$this->addResource("<meta property='og:type' content='website'/>", true, true);
-$this->addResource("<meta property='og:url' content='http://brevada.com/{$url_name}'/>", true, true);
-$this->addResource("<meta property='og:image' content='http://brevada.com/images/square_logo.png'/>", true, true);
-$this->addResource("<meta property='og:site_name' content='Brevada'/>", true, true);
-$this->addResource("<meta property='og:description' content='Give {$name} Feedback on Brevada'/>", true, true);
 ?>
 
 	

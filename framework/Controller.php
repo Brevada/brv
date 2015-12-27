@@ -24,10 +24,11 @@ function __autoload($c){
 	}
 }
 
-require 'classes/Language.php';
-require 'Minify.php';
-require 'Brevada.php';
-require 'View.php';
+require_once 'classes/Language.php';
+require_once 'Minify.php';
+require_once 'Brevada.php';
+require_once 'classes/Data/Data.php';
+require_once 'View.php';
 
 if(!empty($_GET['lang']) || !empty($_COOKIE['lang'])){
 	setLocalization(empty($_GET['lang']) ? $_COOKIE['lang'] : $_GET['lang'], true);
@@ -58,6 +59,15 @@ if(!file_exists($viewPath)){
 		$page = substr($page, 7);
 		$viewPath = "../widgets/{$page}.php";
 		$isWidget = true;
+	} else if(preg_match('#api/v1/(.*)#i', $page, $matches)){
+		$request = $matches[1];
+		try{
+			$api = new BrevadaAPI;
+			$api->process('1', $_SERVER['REQUEST_METHOD'], $request);
+		} catch (Exception $e){
+			echo json_encode(Array('error' => array($e->getMessage())));
+		}
+		exit;
 	} else {
 	
 		if(preg_match('#qr/([a-z0-9_\-]+)#i', $page, $matches)){
