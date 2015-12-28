@@ -155,7 +155,7 @@ class Data
 	public function getAveragedClusters()
 	{		
 		$wheres = [];
-		
+
 		$daysBack = ceil(($this->dTo - $this->dFrom)/(3600.0*24.0));
 		
 		/* Eliminate data sets that are too small/narrow. */
@@ -194,7 +194,7 @@ class Data
 		$upperEndDate = date('Y-m-d H:i:s', time()+1);
 		
 		$sql = "
-			SELECT dcA.* FROM {$table} dcA
+			SELECT dcA.CachedData FROM {$table} dcA
 			JOIN (
 				SELECT
 					`Domain_AspectID`, `Domain_StoreID`,
@@ -225,10 +225,12 @@ class Data
 
 		/* Each element consists of an array of cluster averages. */
 		$avgs = [];
-		
-		if(($stmt = Database::query($sql)) !== false){
-			while($row = $stmt->fetch_assoc()){
-				$cached = json_decode($row['CachedData'], true);
+
+		if(($stmt = Database::prepare($sql)) !== false){
+			$stmt->execute();
+			$stmt->bind_result($cachedData);
+			while($stmt->fetch()){
+				$cached = json_decode($cachedData, true);
 				
 				$clusterAvgs = []; /* [[AvgRating, AvgDate, Count]] */
 				
@@ -254,6 +256,7 @@ class Data
 				$avgs[] = $clusterAvgs;
 			}
 		}
+		$stmt->close();
 		
 		return $avgs;
 	}
@@ -268,7 +271,7 @@ class Data
 	public function getAvg($numPoints = 1)
 	{
 		$clusterAvgs = $this->getAveragedClusters();
-		
+
 		if(empty($clusterAvgs)){
 			return new DataResult([[self::AVERAGE_RATING => 0.0, self::AVERAGE_DATE => 0, self::TOTAL_DATASIZE => 0]]);
 		}
@@ -314,6 +317,10 @@ class Data
 				$squeezed[$i] = self::mergeClusterAvgs($squeezed[$i], $result[($i*$density) + $j]);
 			}
 		}
+		
+		usort($squeezed, function($a, $b){
+			return $a[self::AVERAGE_DATE] < $b[self::AVERAGE_DATE] ? -1 : 1;
+		});
 		
 		return new DataResult($squeezed);
 	}

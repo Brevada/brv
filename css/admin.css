@@ -144,3 +144,7 @@ table.editable td i { margin-left: 0.9em; }
 div#storeList > div.store-list-item { margin: 0 0 1em 0; padding: 0 0 1em 0; border-bottom: 1px solid #DDD; }
 
 div.attention { border: 3px solid #DDD; padding: 0.5em; }
+
+div.aspect-chart { height: 250px; }
+div.chart-container { height: 98%; width: 100%; }
+canvas.aspect-chart { width: 98%; }
