@@ -27,11 +27,21 @@ if(!Brevada::IsLoggedIn()){
 }
 
 $store_id = Brevada::validate($_SESSION['StoreID'], VALIDATE_DATABASE);
+$company_id = -1;
 
-$query = Database::query("SELECT stores.`Name`, stores.`URLName`, companies.`Active`, UNIX_TIMESTAMP(companies.`ExpiryDate`) as Expiry FROM stores LEFT JOIN companies ON companies.`id` = stores.`CompanyID` WHERE `stores`.id = {$store_id} LIMIT 1");
+$query = Database::query("SELECT stores.`Name`, stores.`URLName`,
+						  companies.`Active`, companies.`id` as CompanyID,
+						  UNIX_TIMESTAMP(companies.`ExpiryDate`) as Expiry,
+						  company_keywords_link.CompanyKeywordID
+						  FROM stores
+						  JOIN companies ON companies.`id` = stores.`CompanyID`
+						  LEFT JOIN company_keywords_link ON company_keywords_link.`CompanyID` = `companies`.`id`
+						  WHERE `stores`.id = {$store_id}");
 
 $company_active = false; /* False if account has NEVER been set up. */
 $company_expired = false;
+
+$keywords = [];
 
 while($row = $query->fetch_assoc()){
 	if((!isset($row['Expiry']) || $row['Expiry'] < time())){
@@ -45,34 +55,38 @@ while($row = $query->fetch_assoc()){
 	$this->setTitle("Brevada Dashboard - {$name}");
 	
 	$url_name = $row['URLName'];
+	
+	$company_id = $row['CompanyID'];
+	
+	if(!empty($row['CompanyKeywordID'])){
+		$keywords[] = intval($row['CompanyKeywordID']);
+	}
 }
 
 function numericalCSS($i){
 	return $i >= 0 ? 'positive' : 'negative';
 }
 
-$data_overall4W = 0;
-$data_overallAll = 0;
-$data_relativeBenchmark = 0;
-
-if(($query = Database::prepare("SELECT dashboard.Data_Overall4W, dashboard.Data_OverallAll, dashboard.Data_RelativeBenchmark FROM `dashboard` WHERE dashboard.StoreID = ? LIMIT 1")) !== false){
-	$query->bind_param('i', $store_id);
-	if($query->execute()){
-		$query->bind_result($data_overall4W, $data_overallAll, $data_relativeBenchmark);
-		while($query->fetch()){
-			$data_overall4W = round((float) $data_overall4W + 0, 0);
-			$data_overallAll = round((float) $data_overallAll + 0, 0);
-			$data_relativeBenchmark = round((float) $data_relativeBenchmark + 0, 0);
-		}
-	}
-	$query->close();
-}
+$data_overall4W = (new Data())->store($store_id)->from(time()-(4*7*24*3600))->getAvg()->getRating();
+$data_overallAll = (new Data())->store($store_id)->getAvg()->getRating();
+$data_relativeBenchmark = DataResult::diffRating(
+	(new Data())->store($store_id)->getAvg(),
+	(new Data())->keyword($keywords)->getAvg()
+);
 
 
 $areasOfFocus = array();
 $areasOfLeastConcern = array();
 
-$query = Database::query("SELECT aspect_type.Title FROM aspects LEFT JOIN aspect_type ON aspects.AspectTypeID = aspect_type.ID WHERE aspect_type.Title IS NOT NULL AND aspects.StoreID = {$store_id} AND aspects.`Active` = 1 ORDER BY aspects.Data_AttentionScore DESC LIMIT 2");
+$query = Database::query("SELECT aspect_type.Title FROM `data_cache`
+						  JOIN aspect_type ON `data_cache`.Domain_AspectID = aspect_type.`id`
+						  JOIN aspects ON aspects.StoreID = `data_cache`.Domain_StoreID AND aspects.AspectTypeID = aspect_type.`id`
+						  WHERE
+							`data_cache`.Domain_StoreID = {$store_id}
+							AND `data_cache`.`DaysBack` = -1
+							AND `data_cache`.`EndDate` = '0000-00-00 00:00:00'
+							AND aspects.`Active` = 1
+						  ORDER BY `data_cache`.`TotalAverage` ASC LIMIT 2");
 if($query !== false){
 	while($row = $query->fetch_assoc()){
 		$areasOfFocus[] = $row['Title'];
@@ -80,7 +94,15 @@ if($query !== false){
 	$query->close();
 }
 
-$query = Database::query("SELECT aspect_type.Title FROM aspects LEFT JOIN aspect_type ON aspects.AspectTypeID = aspect_type.ID WHERE aspect_type.Title IS NOT NULL AND aspects.StoreID = {$store_id} AND aspects.`Active` = 1 ORDER BY aspects.Data_AttentionScore ASC LIMIT 2");
+$query = Database::query("SELECT aspect_type.Title FROM `data_cache`
+						  JOIN aspect_type ON `data_cache`.Domain_AspectID = aspect_type.`id`
+						  JOIN aspects ON aspects.StoreID = `data_cache`.Domain_StoreID AND aspects.AspectTypeID = aspect_type.`id`
+						  WHERE
+							`data_cache`.Domain_StoreID = {$store_id}
+							AND `data_cache`.`DaysBack` = -1
+							AND `data_cache`.`EndDate` = '0000-00-00 00:00:00'
+							AND aspects.`Active` = 1
+						  ORDER BY `data_cache`.`TotalAverage` DESC LIMIT 2");
 if($query !== false){
 	while($row = $query->fetch_assoc()){
 		$areasOfLeastConcern[] = $row['Title'];
@@ -149,7 +171,11 @@ $areasOfLeastConcern = array_diff($areasOfLeastConcern, $areasOfFocus);
 </div>
 
 <?php
-	$query = Database::query("SELECT aspect_type.Title, IFNULL(aspects.`Data_Bucket`, '[]') as `Data_Bucket`, aspects.id, aspects.Data_LastUpdate, aspects.Data_RatingPercent, aspects.Data_RatingPercentOther, aspects.Data_Percent4W, aspects.Data_Percent6M, aspects.Data_Percent1Y, (SELECT COUNT(*) FROM feedback WHERE feedback.Rating > -1 AND feedback.AspectID = aspects.ID AND UNIX_TIMESTAMP(`feedback`.`Date`) < `aspects`.`Data_LastUpdate`) as Total FROM aspects LEFT JOIN aspect_type ON aspect_type.ID = aspects.AspectTypeID WHERE aspects.StoreID = {$store_id} AND `Active` = 1 AND aspect_type.Title <> '' ORDER BY `aspect_type`.Title ASC");
+/* All aspects. */
+	$query = Database::query("SELECT aspect_type.Title, aspects.id as AspectID, aspect_type.id as AspectTypeID
+	FROM aspects LEFT JOIN aspect_type ON aspect_type.ID = aspects.AspectTypeID
+	WHERE aspects.StoreID = {$store_id}
+	AND `Active` = 1 ORDER BY `aspect_type`.Title ASC");
 ?>
 
 <!-- Left side -->
@@ -355,18 +381,28 @@ $areasOfLeastConcern = array_diff($areasOfLeastConcern, $areasOfFocus);
 			</div>
 			<?php
 			} else {
-			while($query !== false && $row = $query->fetch_assoc()){
+			$rows = $query->fetch_all(MYSQLI_ASSOC);
+			foreach($rows as $row){
 				$title = $row['Title'];
-				$id = $row['id'];
+				$id = $row['AspectID'];
+				$aspectType = @intval($row['AspectTypeID']);
 				
-				/* Adding '0' forces float(0) rather than float(-0). */
+				$ratingResult = (new Data())->store($store_id)->aspectType($aspectType)->getAvg();
 				
-				$data_ratingPercent = round((float) $row['Data_RatingPercent'] + 0, 1);
-				$data_ratingPercentOther = round((float) $row['Data_RatingPercentOther'] + 0);
-				$data_percent4W = round((float) $row['Data_Percent4W'] + 0, 0);
-				$data_percent1Y = round((float) $row['Data_Percent1Y'] + 0, 0);
+				$data_ratingPercent = $ratingResult->getRating();
+				$data_ratingPercentOther = (new Data())->store($store_id)->aspectType($aspectType)->keyword($keywords)->getAvg()->getRating();
+
+				$data_percent24H = DataResult::diffRating(
+					(new Data())->store($store_id)->aspectType($aspectType)->from(time()-(24*3600))->getAvg(),
+					(new Data())->store($store_id)->aspectType($aspectType)->from(time()-(2*24*3600))->to(time()-(24*3600))->getAvg()
+				);
 				
-				$total_responses = ((int) $row['Total']);
+				$data_percent4W = DataResult::diffRating(
+					(new Data())->store($store_id)->aspectType($aspectType)->from(time()-(4*7*24*3600))->getAvg(),
+					(new Data())->store($store_id)->aspectType($aspectType)->from(time()-(2*4*7*24*3600))->to(time()-(4*7*24*3600))->getAvg()
+				);
+				
+				$total_responses = $ratingResult->getSize();
 
 				if($data_ratingPercent >= 80) {
 					$colour = 'positive';
@@ -380,17 +416,18 @@ $areasOfLeastConcern = array_diff($areasOfLeastConcern, $areasOfFocus);
 					$colour = 'negative';
 				}
 				
-				$bucket = json_decode($row['Data_Bucket'], true);
+				$bucketSize = 5;
 				
-				$transDate = function($a){
-					return date('d/m/Y', $a);
-				};
-				$bucketDates = array_map($transDate, array_column($bucket, 'Date'));
+				$bucket = (new Data())->store($store_id)->aspectType($aspectType)->from(time()-(2*7*24*3600))->getAvg($bucketSize, Data::BY_UNIFORM);
 				
-				$roundData = function($a){
-					return round($a, 1);
-				};
-				$bucketData = array_map($roundData, array_column($bucket, 'Data'));
+				$bucketDates = [];
+				$bucketData = [];
+				
+				for($i = 0; $i < $bucketSize; $i++){
+					if(!$bucket->get($i)){ break; }
+					$bucketDates[] = date('M jS', $bucket->getUTC($i));
+					$bucketData[] = $bucket->getRating($i);
+				}
 				
 				$bucketJSON = array('dates' => $bucketDates, 'data' => $bucketData);
 				$bucketJSON = json_encode($bucketJSON);
@@ -404,20 +441,20 @@ $areasOfLeastConcern = array_diff($areasOfLeastConcern, $areasOfFocus);
 							</div>
 							<div class="pull-left col-md-6 pod-body-left">
 								<div class='top'>
-									<i class='pull-left fa <?php echo $data_percent1Y >= 0 ? 'fa-arrow-circle-up' : 'fa-arrow-circle-down'; ?>'></i>
-									<span class='pull-left percent'><?php echo abs($data_percent1Y)."%"; ?></span>
+									<i class='pull-left fa <?php echo $data_percent4W >= 0 ? 'fa-arrow-circle-up' : 'fa-arrow-circle-down'; ?>'></i>
+									<span class='pull-left percent'><?php echo abs($data_percent4W)."%"; ?></span>
 									<span class='duration'><?php _e('24H'); ?></span>
 								</div>
 								<div class='top'>
-									<i class='pull-left fa <?php echo $data_percent4W >= 0 ? 'fa-arrow-circle-up' : 'fa-arrow-circle-down'; ?>'></i>
-									<span class='pull-left percent'><?php echo abs($data_percent4W)."%"; ?></span>
+									<i class='pull-left fa <?php echo $data_percent24H >= 0 ? 'fa-arrow-circle-up' : 'fa-arrow-circle-down'; ?>'></i>
+									<span class='pull-left percent'><?php echo abs($data_percent24H)."%"; ?></span>
 									<span class='duration'><?php _e('4W'); ?></span>
 								</div>
 							</div>
 							<div class="pull-right col-md-6 pod-body-right">
-								<div class='pod-body-rating <?php echo $colour; ?>-text'><?php echo "{$data_ratingPercent}%"; ?></div>
+								<div class='pod-body-rating <?php echo $colour; ?>-text'><?php echo round($data_ratingPercent,1)."%"; ?></div>
 								<div class="rating-text"><?php _e('in'); ?> <?php echo $total_responses; ?> <?php _e('responses'); ?>.</div>
-								<div class='pod-body-rating external'><?php echo "{$data_ratingPercentOther}%"; ?></div>
+								<div class='pod-body-rating external'><?php echo round($data_ratingPercentOther,1)."%"; ?></div>
 								<div class="rating-text external"><?php _e('industry average'); ?>.</div>
 							</div>
 							
@@ -447,10 +484,6 @@ $areasOfLeastConcern = array_diff($areasOfLeastConcern, $areasOfFocus);
 		</div>
     </div>
 </div>
-
-
-
-
 
 <!-- <div class="bottom-bar">
 	&copy; 2015 Brevada Inc. &nbsp;

@@ -26,7 +26,7 @@ class DataResult
 			}
 		}
 		
-		return [];
+		return false;
 	}
 	
 	/**

@@ -9,6 +9,14 @@ class Data
 	const AVERAGE_RATING = 'AverageRating';
 	const AVERAGE_DATE = 'AverageDate';
 	const TOTAL_DATASIZE = 'TotalDataSize';
+	const TOTAL_ONE_STAR = 'Total1Star';
+	const TOTAL_TWO_STAR = 'Total2Star';
+	const TOTAL_THREE_STAR = 'Total3Star';
+	const TOTAL_FOUR_STAR = 'Total4Star';
+	const TOTAL_FIVE_STAR = 'Total5Star';
+	
+	const BY_CLUSTER = 'ByCluster';
+	const BY_UNIFORM = 'ByUniform';
 	
 	/* d* domain variables. */
 	private $dFrom = 0;
@@ -262,13 +270,13 @@ class Data
 	}
 	
 	/**
-	* Retrieves data average.
+	* Retrieves data average, grouped by clusters.
 	*
 	* @param int $numPoints Maximum number of clusters.
 	*
 	* @return DataResult
 	*/
-	public function getAvg($numPoints = 1)
+	public function getAvgByCluster($numPoints = 1)
 	{
 		$clusterAvgs = $this->getAveragedClusters();
 
@@ -323,6 +331,153 @@ class Data
 		});
 		
 		return new DataResult($squeezed);
+	}
+	
+	/**
+	* Retrieves data average, grouped by uniformly distributed
+	* date groups.
+	*
+	* @param int $numPoints Maximum number of partitions.
+	*
+	* @return DataResult
+	*/
+	public function getAvgByUniform($numPoints = 1)
+	{
+		$wheres = [];
+		
+		if(!empty($this->dAspectType)){
+			$wheres[] = self::domainToWhere('AspectTypeID', '-1', $this->dAspectType);
+		}
+		if(!empty($this->dStore)){
+			$wheres[] = self::domainToWhere('StoreID', '-1', $this->dStore);
+		}
+		if(!empty($this->dCompany)){
+			$wheres[] = self::domainToWhere('CompanyID', '-1', $this->dCompany);
+		}
+		if(!empty($this->dIndustry)){
+			$wheres[] = self::domainToWhere('IndustryID', '-1', $this->dIndustry);
+		}
+		
+		if(!empty($this->dKeywords)){
+			$keywords = implode(',', $this->dKeywords);
+			$wheres[] = "`company_keywords_link`.`CompanyKeywordID` IN ({$keywords})";
+		}
+		
+		$domain_where = implode(' AND ', $wheres);
+		
+		$sql = "
+			SELECT UNIX_TIMESTAMP(MIN(`feedback`.`Date`)) as min_date, UNIX_TIMESTAMP(MAX(`feedback`.`Date`)) as max_date
+			FROM `feedback`
+			JOIN `aspects` ON `aspects`.`id` = `feedback`.`AspectID`
+			JOIN `aspect_type` ON `aspect_type`.`id` = `aspects`.`AspectTypeID`
+			JOIN `stores` ON `stores`.`id` = `aspects`.`StoreID`
+			JOIN `companies` ON `companies`.`id` = `stores`.`CompanyID`
+			LEFT JOIN `company_keywords_link` ON `company_keywords_link`.`CompanyID` = `companies`.`id`
+			WHERE
+				`aspects`.`Active` = 1 
+				AND `stores`.`Active` = 1
+				AND `companies`.`Active` = 1
+				AND `feedback`.`Date` >= FROM_UNIXTIME(?)
+				AND `feedback`.`Date` <= FROM_UNIXTIME(?)
+				AND {$domain_where}
+		";
+
+		/* Partition duration i.e. size of each partition */
+		$from = 0;
+		$to = time();
+		$parDuration = floor($to / floatval($numPoints));
+		
+		if(($stmt = Database::prepare($sql)) !== false){
+			$stmt->bind_param('ii', $this->dFrom, $this->dTo);
+			$stmt->execute();
+			$stmt->bind_result($from, $to);
+			while($stmt->fetch()){
+				$parDuration = floor(($to - $from) / floatval($numPoints));
+			}
+		} else { exit(Database::getCon()->error); }
+		$stmt->close();
+		
+		if(empty($from) && empty($to)){
+			return new DataResult([[self::AVERAGE_RATING => 0.0, self::AVERAGE_DATE => 0, self::TOTAL_DATASIZE => 0]]);
+		}
+		
+		$avgs = [];
+		
+		/* Fill each point. */
+		$kFrom = $from;
+		$kTo = $numPoints == 1 ? $this->dTo : $kFrom + $parDuration;
+		
+		for($i = 0; $i < $numPoints; $i++){
+			if($i == $numPoints - 1){
+				$kTo = $this->dTo;
+			}
+			
+			/* TODO: Float comparisons? */
+			$sql = "
+				SELECT
+					AVG(`feedback`.`Rating`) as avg_rating,
+					COUNT(`feedback`.`Rating`) as count_rating,
+					SUM(IF(`feedback`.`Rating` >= 20 AND `feedback`.`Rating` < 40, 1, 0)) as count_one,
+					SUM(IF(`feedback`.`Rating` >= 40 AND `feedback`.`Rating` < 60, 1, 0)) as count_two,
+					SUM(IF(`feedback`.`Rating` >= 60 AND `feedback`.`Rating` < 80, 1, 0)) as count_three,
+					SUM(IF(`feedback`.`Rating` >= 80 AND `feedback`.`Rating` < 100, 1, 0)) as count_four,
+					SUM(IF(`feedback`.`Rating` = 100, 1, 0)) as count_five
+				FROM `feedback`
+				JOIN `aspects` ON `aspects`.`id` = `feedback`.`AspectID`
+				JOIN `stores` ON `stores`.`id` = `aspects`.`StoreID`
+				JOIN `companies` ON `companies`.`id` = `stores`.`CompanyID`
+				LEFT JOIN `company_keywords_link` ON `company_keywords_link`.`CompanyID` = `companies`.`id`
+				WHERE
+					`aspects`.`Active` = 1 
+					AND `stores`.`Active` = 1
+					AND `companies`.`Active` = 1
+					AND `feedback`.`Date` >= FROM_UNIXTIME(?)
+					AND `feedback`.`Date` < FROM_UNIXTIME(?)
+					AND {$domain_where}
+				LIMIT 1
+			";
+			if(($stmt = Database::prepare($sql)) !== false){
+				$stmt->bind_param('ii', $kFrom, $kTo);
+				
+				$avg_rating = 0; $count_rating = 0;
+				
+				if($stmt->execute()){
+					$stmt->bind_result($avg_rating, $count_rating, $count_one, $count_two, $count_three, $count_four, $count_five);
+					$stmt->fetch();
+				}
+				
+				$avg_rating = round($avg_rating, 2);
+				
+				$avg_date = floor(($kTo + $kFrom)/2);
+				$avgs[] = [self::AVERAGE_RATING => $avg_rating, self::AVERAGE_DATE => $avg_date, self::TOTAL_DATASIZE => $count_rating,
+							self::TOTAL_ONE_STAR => $count_one, self::TOTAL_TWO_STAR => $count_two, self::TOTAL_THREE_STAR => $count_three, 
+							self::TOTAL_FOUR_STAR => $count_four, self::TOTAL_FIVE_STAR => $count_five];
+			}
+			$stmt->close();
+			
+			$kFrom = $kTo;
+			/* Place extra feedback in last partition. */
+			$kTo = $kFrom + $parDuration;
+		}
+		
+		return new DataResult($avgs);
+	}
+	
+	/**
+	* Retrieves data average.
+	*
+	* @param int $numPoints Maximum number of clusters.
+	*
+	* @return DataResult
+	*/
+	public function getAvg($numPoints = 1, $type = self::BY_UNIFORM)
+	{
+		if($type == self::BY_CLUSTER){
+			return $this->getAvgByCluster($numPoints);
+		} else if($type == self::BY_UNIFORM){
+			return $this->getAvgByUniform($numPoints);
+		}
+		return null;
 	}
 	
 	/**

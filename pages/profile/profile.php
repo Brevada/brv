@@ -58,7 +58,7 @@ $this->addResource("<meta property='og:description' content='Give {$name} Feedba
 
 <div id="aspects" class="aspect-container container">
 	<?php
-	$postQuery=Database::query("SELECT aspects.ID, aspect_type.Title, aspect_type.Description as Description FROM aspects LEFT JOIN aspect_type ON aspect_type.ID = aspects.AspectTypeID WHERE aspects.StoreID = {$store_id} AND aspects.`Active` = 1 ORDER BY aspects.ID DESC");
+	$postQuery=Database::query("SELECT aspects.ID, aspect_type.Title, aspect_type.Description as Description FROM aspects LEFT JOIN aspect_type ON aspect_type.ID = aspects.AspectTypeID WHERE aspects.StoreID = {$store_id} AND aspects.`Active` = 1 ORDER BY aspect_type.Title");
 	if($postQuery !== false && $postQuery->num_rows > 0){
 		while($row=$postQuery->fetch_assoc()) {		
 			$this->add(new View('../widgets/profile/post_box.php', array('row' => $row, 'id' => $store_id)));

@@ -145,6 +145,8 @@ div#storeList > div.store-list-item { margin: 0 0 1em 0; padding: 0 0 1em 0; bor
 
 div.attention { border: 3px solid #DDD; padding: 0.5em; }
 
-div.aspect-chart { height: 250px; }
+div.aspect-chart { height: 350px; }
+div.aspect-chart > i.fa { font-size: 14em; opacity: 0.25; color: rgba(255,43,43,1); display: block; margin: 0 auto; text-align: center; }
+div.aspect-chart > p { text-align: center; opacity: 0.5; }
 div.chart-container { height: 98%; width: 100%; }
 canvas.aspect-chart { width: 98%; }

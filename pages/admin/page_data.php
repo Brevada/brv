@@ -41,11 +41,12 @@ if($storeID !== false && $storeName === false){
 
 <h2 class="sub-header"><?php echo $storeID && $storeName ? "#{$storeID}: {$storeName}" : ''; ?></h2>
 
-<div class="table-responsive">
 <?php if(!$storeID){ ?>
 	<p>No store is selected.</p>
-<?php } else {
-echo "<div class='row'>";
+<?php } else { ?>
+<div class='row'>
+<div class='well well-sm'>The past 60 days of data.</div>
+<?php
 if(($stmt = Database::prepare("SELECT `aspects`.`id` as `id`, `AspectTypeID`, `Title` FROM `aspects` JOIN `aspect_type` ON `aspect_type`.`id` = `aspects`.`AspectTypeID` WHERE `Active` = 1 AND `StoreID` = ? ORDER BY `Title`")) !== false){
 	$stmt->bind_param('i', $storeID);
 	if($stmt->execute()){
@@ -56,16 +57,18 @@ if(($stmt = Database::prepare("SELECT `aspects`.`id` as `id`, `AspectTypeID`, `T
 			$id = $row['id']; $aspectTypeID = $row['AspectTypeID'];
 			$title = $row['Title'];
 			
-			$data = (new Data())->store(295)->aspectType($aspectTypeID);
+			$data = (new Data())->store(295)->aspectType($aspectTypeID)->from(time() - (60*24*3600));
 			$result = $data->getAvg(5);
 			
 			$labelArray = [];
 			$dataArray = [];
 			
+			$sum = 0;
+			
 			for($i = 0; $i < 5; $i++){
-				if(empty($result->get($i))){ break; }
-				$dataArray[] = $result->getRating($i);
-				$labelArray[] = "'".date('M jS', $result->getUTC($i))."'";
+				$dataArray[] = $result->getRating($i) ? $result->getRating($i) : 0;
+				$labelArray[] = "'".date('M jS', $result->getUTC($i))." (".$result->getSize($i).")'";
+				$sum += $result->getSize($i);
 			}
 			
 			$labelArray = implode(',', $labelArray);
@@ -75,8 +78,10 @@ if(($stmt = Database::prepare("SELECT `aspects`.`id` as `id`, `AspectTypeID`, `T
 				<div class='panel panel-default'>
 					<div class='panel-heading'>
 						<?php echo $title; ?>
+						<span style='float: right;'><?php echo $data->getAvg(); ?>%</span>
 					</div>
 					<div class='panel-body aspect-chart'>
+						<?php if($sum > 0){ ?>
 						<div class='chart-container'>
 						<canvas id='aspect-<?php echo $id; ?>' class='aspect-chart'></canvas>
 						</div>
@@ -97,8 +102,14 @@ if(($stmt = Database::prepare("SELECT `aspects`.`id` as `id`, `AspectTypeID`, `T
 										data: [<?php echo $dataArray; ?>]
 									}
 								]
-							}, { responsive : true, maintainAspectRatio : false, scaleBeginAtZero: true });
+							}, { responsive : true, maintainAspectRatio : false, scaleBeginAtZero: true,
+								 scaleSteps : 10, scaleStepWidth : 10, scaleStartValue : 0,
+								 scaleOverride: true });
 						</script>
+						<?php } else { ?>
+						<i class='fa fa-ban'></i>
+						<p>No data available.</p>
+						<?php } ?>
 					</div>
 				</div>
 			</div>
@@ -107,6 +118,6 @@ if(($stmt = Database::prepare("SELECT `aspects`.`id` as `id`, `AspectTypeID`, `T
 	}
 	$stmt->close();
 }
-echo "</div>";
-} ?>
+?>
 </div>
+<?php } ?>
