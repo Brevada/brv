@@ -67,7 +67,10 @@ function numericalCSS($i){
 	return $i >= 0 ? 'positive' : 'negative';
 }
 
-$data_overall4W = (new Data())->store($store_id)->from(time()-(4*7*24*3600))->getAvg()->getRating();
+$data_overall4W = DataResult::diffRating(
+	(new Data())->store($store_id)->from(time()-(4*7*24*3600))->getAvg(),
+	(new Data())->store($store_id)->to(time()-(4*7*24*3600))->getAvg()
+);
 $data_overallAll = (new Data())->store($store_id)->getAvg()->getRating();
 $data_relativeBenchmark = DataResult::diffRating(
 	(new Data())->store($store_id)->getAvg(),
@@ -394,12 +397,12 @@ $areasOfLeastConcern = array_diff($areasOfLeastConcern, $areasOfFocus);
 
 				$data_percent24H = DataResult::diffRating(
 					(new Data())->store($store_id)->aspectType($aspectType)->from(time()-(24*3600))->getAvg(),
-					(new Data())->store($store_id)->aspectType($aspectType)->from(time()-(2*24*3600))->to(time()-(24*3600))->getAvg()
+					(new Data())->store($store_id)->aspectType($aspectType)->to(time()-(24*3600))->getAvg()
 				);
 				
 				$data_percent4W = DataResult::diffRating(
 					(new Data())->store($store_id)->aspectType($aspectType)->from(time()-(4*7*24*3600))->getAvg(),
-					(new Data())->store($store_id)->aspectType($aspectType)->from(time()-(2*4*7*24*3600))->to(time()-(4*7*24*3600))->getAvg()
+					(new Data())->store($store_id)->aspectType($aspectType)->to(time()-(4*7*24*3600))->getAvg()
 				);
 				
 				$total_responses = $ratingResult->getSize();
