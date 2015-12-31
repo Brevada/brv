@@ -54,7 +54,6 @@ $this->addResource("<meta property='og:description' content='Give {$name} Feedba
 		<div class="icons"><img class="logo" src="/images/quote.png" /></div>
 	</div>
 </div>
-<div class='push'></div>
 
 <div id="aspects" class="aspect-container container">
 	<?php
