@@ -15,8 +15,10 @@ session_start();
 mb_internal_encoding('UTF-8');
 mb_http_output('UTF-8');
 
-//header("Cache-Control: no-cache, must-revalidate"); // HTTP/1.1
-//header("Expires: Sat, 26 Jul 1997 05:00:00 GMT"); // Date in the past
+if(DEBUG){
+	header("Cache-Control: no-cache, must-revalidate"); // HTTP/1.1
+	header("Expires: Sat, 26 Jul 1997 05:00:00 GMT"); // Date in the past
+}
 
 function __autoload($c){
 	if(file_exists("classes/{$c}.php")){

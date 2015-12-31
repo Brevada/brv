@@ -4,15 +4,17 @@ if($this->getParameter('valid') !== true){ Brevada::Redirect('/404'); }
 <?php
 $this->addResource('/css/layout.css');
 $this->addResource('/css/dashboard.css');
+
+$this->addResource('/js/Brevada.BDFF.js');
 $this->addResource('/js/dashboard/dashboard.js');
 
 $this->addResource('/js/dashboard/aspects/aspects.js');
 
-$this->addResource('/js/dashboard/milestones/milestones.js');
-$this->addResource('/js/dashboard/milestones/milestone.js');
-$this->addResource('/js/dashboard/milestones/aspects.js');
+//$this->addResource('/js/dashboard/milestones/milestones.js');
+//$this->addResource('/js/dashboard/milestones/milestone.js');
+//$this->addResource('/js/dashboard/milestones/aspects.js');
 
-$this->addResource('/js/dashboard/live/live.js');
+//$this->addResource('/js/dashboard/live/live.js');
 $this->addResource('/js/dashboard/support/support.js');
 $this->addResource('/js/dashboard/hoverpod/hoverpod.js');
 
@@ -138,7 +140,7 @@ $areasOfLeastConcern = array_diff($areasOfLeastConcern, $areasOfFocus);
 
 	<div class="mid-banner row" style="">
 	  	<a type="button" class="btn icon-button" href="/<?php echo $url_name; ?>" target="_blank">
-      		Your Page
+      		<?php _e('Your Page'); ?>
       	</a>
       	<a href="/qr/<?php echo $url_name; ?>.png" target="_blank" type="button" class="btn icon-button">
 			<?php _e('QR Code'); ?>
@@ -154,7 +156,7 @@ $areasOfLeastConcern = array_diff($areasOfLeastConcern, $areasOfFocus);
 		<a href="/dashboard" type="button" class="btn icon-button">
 			<?php _e('Corporate'); ?>
 		</a>
-		<?php } ?> -->
+		<?php } ?>
 	</div>
 
 </div>
