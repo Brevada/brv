@@ -22,6 +22,6 @@ $(document).ready(function(){
 	bdff.canvas('#main-container');
 	bdff.faces['hoverpod'].attach('body');
 	
-	bdff.face('aspects');
+	//bdff.face('aspects');
 	bdff.persistent('hoverpod');
 });

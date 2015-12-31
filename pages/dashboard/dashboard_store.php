@@ -10,11 +10,11 @@ $this->addResource('/js/dashboard/dashboard.js');
 
 $this->addResource('/js/dashboard/aspects/aspects.js');
 
-//$this->addResource('/js/dashboard/milestones/milestones.js');
-//$this->addResource('/js/dashboard/milestones/milestone.js');
-//$this->addResource('/js/dashboard/milestones/aspects.js');
+$this->addResource('/js/dashboard/milestones/milestones.js');
+$this->addResource('/js/dashboard/milestones/milestone.js');
+$this->addResource('/js/dashboard/milestones/aspects.js');
 
-//$this->addResource('/js/dashboard/live/live.js');
+$this->addResource('/js/dashboard/live/live.js');
 $this->addResource('/js/dashboard/support/support.js');
 $this->addResource('/js/dashboard/hoverpod/hoverpod.js');
 

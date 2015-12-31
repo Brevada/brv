@@ -107,10 +107,5 @@ function build_line_graph(bucket, id) {
 	var ctx = $pod.find('.line-graph canvas').get(0).getContext("2d");
 	// console.log(data);
 	var myLineChart = new Chart(ctx).Line(data, options);
-	window.onresize = function(event){
-		var width = $('canvas').parent().width();
-		$('canvas').attr("width", width);
-		new Chart(ctx).Line(data, options);
-	};
 }
 

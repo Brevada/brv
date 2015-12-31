@@ -61,7 +61,7 @@
 			face = bdff.faces[face];
 		}
 		
-		if(!settings.face.hasOwnProperty('render')){
+		if(!face.hasOwnProperty('render')){
 			bdff.log('Invalid face.');
 		} else {
 			face.render(settings.canvas);
