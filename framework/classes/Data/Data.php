@@ -189,13 +189,15 @@ class Data
 		}
 		
 		$domain_where = implode(' AND ', $wheres);
+		if(!empty($domain_where)){
+			$domain_where = " AND {$domain_where}";
+		}
 		
 		$table = "
 			(SELECT `data_cache`.* FROM `data_cache`
 			LEFT JOIN `company_keywords_link`
 			ON `company_keywords_link`.`CompanyID` = `data_cache`.`Domain_CompanyID`
-			WHERE {$domain_where}
-			AND `CachedData` IS NOT NULL)
+			WHERE `CachedData` IS NOT NULL {$domain_where})
 		";
 		
 		$upperDaysBack = ceil(time()+1/(3600.0*24.0));
@@ -364,6 +366,9 @@ class Data
 		}
 		
 		$domain_where = implode(' AND ', $wheres);
+		if(!empty($domain_where)){
+			$domain_where = " AND {$domain_where}";
+		}
 		
 		$sql = "
 			SELECT UNIX_TIMESTAMP(MIN(`feedback`.`Date`)) as min_date, UNIX_TIMESTAMP(MAX(`feedback`.`Date`)) as max_date
@@ -379,7 +384,7 @@ class Data
 				AND `companies`.`Active` = 1
 				AND `feedback`.`Date` >= FROM_UNIXTIME(?)
 				AND `feedback`.`Date` <= FROM_UNIXTIME(?)
-				AND {$domain_where}
+				{$domain_where}
 		";
 
 		/* Partition duration i.e. size of each partition */
@@ -433,7 +438,7 @@ class Data
 					AND `companies`.`Active` = 1
 					AND `feedback`.`Date` >= FROM_UNIXTIME(?)
 					AND `feedback`.`Date` < FROM_UNIXTIME(?)
-					AND {$domain_where}
+					{$domain_where}
 				LIMIT 1
 			";
 			if(($stmt = Database::prepare($sql)) !== false){
