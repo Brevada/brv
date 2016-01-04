@@ -21,7 +21,7 @@ bdff.create('hoverpod', function(canvas, face){
 		
 	var renderResponses = function(responses){
 		$('\
-		<div class="number">87</div>\
+		<div class="number"></div>\
 		<div class="text">Hourly Responses</div>\
 		').appendTo(responses);
 	};
@@ -35,7 +35,7 @@ bdff.create('hoverpod', function(canvas, face){
 
 	var renderTablets = function (status) {
 		$('\
-			<div class="number">2</div>\
+			<div class="number"></div>\
 			<div class="text">Active Tablets</div>\
 			').appendTo(status);
 	};
@@ -43,4 +43,31 @@ bdff.create('hoverpod', function(canvas, face){
  	renderStatus(hoverpod.find('.status'));
  	renderResponses(hoverpod.find('.responses'));
  	renderTablets(hoverpod.find('.tablets'));
+	
+	var setResponses = function(num){
+		hoverpod.find('div.responses > div.number').text(num);
+	};
+	
+	var setTablets = function(num){
+		hoverpod.find('div.tablets > div.number').text(num);
+	};
+	
+	var setStatus = function(num){
+		
+	};
+	
+	face.datahook(10000, {
+			url : 'http://localhost:81/api/v1/bdff/hoverpod',
+			data : { 'store' : bdff.storeID() }
+		}, function(data){
+		if(data.hasOwnProperty('error') && data.error.length > 0){
+			bdff.log('Uh oh...');
+		} else if(data.hasOwnProperty('hoverpod')) {
+			setResponses(data.hoverpod.responses);
+			setTablets(data.hoverpod.tablets);
+		} else {
+			bdff.log('Uh oh...');
+		}
+	});	
+	
 });

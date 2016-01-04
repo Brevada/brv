@@ -107,21 +107,24 @@
 				'request' : request,
 				'available' : available
 			};
-			face.append(hook);
+			face.datahooks.push(hook);
 		};
 		
 		face.startHooks = function(){
-			for(var i = 0; i < face.datahooks; i++){
-				var dh = face.datahooks;
+			for(var i = 0; i < face.datahooks.length; i++){
+				var dh = face.datahooks[i];
 				clearTimeout(dh.timer);
 				dh.active = true;
-				startDatahook(dh);
+				
+				dh.timer = setTimeout(function(){
+					bdff.fetch(dh);
+				}, 1);
 			}
 		};
 		
 		face.stopHooks = function(){
-			for(var i = 0; i < face.datahooks; i++){
-				var dh = face.datahooks;
+			for(var i = 0; i < face.datahooks.length; i++){
+				var dh = face.datahooks[i];
 				dh.active = false;
 				clearTimeout(dh.timer);
 			}
@@ -129,6 +132,7 @@
 		
 		face.cleanUp = function(){
 			face.stopHooks();
+			face.datahooks = [];
 		};
 		
 		return bdff.faces[face.label] = face;
@@ -141,9 +145,7 @@
 				dataType: 'json',
 				method: 'GET',
 				timeout: datahook.request.timeout || settings.fetchTimeout,
-				data: $.extend({
-					'localtime' : Math.floor((new Date()).getTime()/1000)
-				}, datahook.request.data)
+				data: $.extend({ 'localtime' : Math.floor((new Date()).getTime()/1000) }, datahook.request.data)
 			}).done(function(resp){
 				if(datahook.hasOwnProperty('available')){
 					datahook.available(resp);
@@ -167,6 +169,28 @@
 				$(this).remove();
 			}, 500);
 		}, 3000);
+	};
+	
+	bdff.mood = function mood(val){
+		var moods = ['positive', 'great', 'neutral', 'bad', 'negative'];
+		var i = Math.ceil((100-val)/20);
+		return i == -1 ? moods[0] : moods[i -  1];
+	};
+	
+	bdff.tickerIcon = function(val){
+		return val == 0 ? 'fa-minus-circle' : (val >= 50 ? 'fa-arrow-circle-up' : 'fa-arrow-circle-down');
+	};
+	
+	bdff.storeID = function(id){
+		if(id){
+			settings.storeID = id;
+		}
+		
+		if(settings.hasOwnProperty('storeID')){
+			return settings.storeID;
+		} else {
+			return undefined;
+		}
 	};
 	
 })( window.bdff = window.bdff || {}, jQuery );

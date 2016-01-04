@@ -1,5 +1,5 @@
 $(document).ready(function(){
-	$('.graph-toggle').change(function() {
+	$('body').on('change', '.graph-toggle', function() {
 		$graphs = $(this).parent().siblings('.graphs');
 	    if( $(this).is(':checked')) {
 	    	$graphs.find('.line-graph').css({'visibility': 'visible'});
@@ -105,7 +105,7 @@ function build_line_graph(bucket, id) {
 		}
 	};
 	var ctx = $pod.find('.line-graph canvas').get(0).getContext("2d");
-	// console.log(data);
-	var myLineChart = new Chart(ctx).Line(data, options);
+
+	return new Chart(ctx).Line(data, options);
 }
 

@@ -185,7 +185,9 @@ class Data
 		
 		if(!empty($this->dKeywords)){
 			$keywords = implode(',', $this->dKeywords);
-			$wheres[] = "`company_keywords_link`.`CompanyKeywordID` IN ({$keywords})";
+			$wheres[] = "EXISTS (SELECT * FROM `company_keywords_link`
+			WHERE `company_keywords_link`.`CompanyKeywordID` IN ({$keywords}) AND
+			`company_keywords_link`.`CompanyID` = `companies`.`id`)";
 		}
 		
 		$domain_where = implode(' AND ', $wheres);
@@ -195,8 +197,7 @@ class Data
 		
 		$table = "
 			(SELECT `data_cache`.* FROM `data_cache`
-			LEFT JOIN `company_keywords_link`
-			ON `company_keywords_link`.`CompanyID` = `data_cache`.`Domain_CompanyID`
+			JOIN `companies` ON `companies`.`id` = `data_cache`.`Domain_CompanyID`
 			WHERE `CachedData` IS NOT NULL {$domain_where})
 		";
 		
@@ -362,7 +363,9 @@ class Data
 		
 		if(!empty($this->dKeywords)){
 			$keywords = implode(',', $this->dKeywords);
-			$wheres[] = "`company_keywords_link`.`CompanyKeywordID` IN ({$keywords})";
+			$wheres[] = "EXISTS (SELECT * FROM `company_keywords_link`
+			WHERE `company_keywords_link`.`CompanyKeywordID` IN ({$keywords}) AND
+			`company_keywords_link`.`CompanyID` = `companies`.`id`)";
 		}
 		
 		$domain_where = implode(' AND ', $wheres);
@@ -377,7 +380,6 @@ class Data
 			JOIN `aspect_type` ON `aspect_type`.`id` = `aspects`.`AspectTypeID`
 			JOIN `stores` ON `stores`.`id` = `aspects`.`StoreID`
 			JOIN `companies` ON `companies`.`id` = `stores`.`CompanyID`
-			LEFT JOIN `company_keywords_link` ON `company_keywords_link`.`CompanyID` = `companies`.`id`
 			WHERE
 				`aspects`.`Active` = 1 
 				AND `stores`.`Active` = 1
@@ -431,7 +433,6 @@ class Data
 				JOIN `aspects` ON `aspects`.`id` = `feedback`.`AspectID`
 				JOIN `stores` ON `stores`.`id` = `aspects`.`StoreID`
 				JOIN `companies` ON `companies`.`id` = `stores`.`CompanyID`
-				LEFT JOIN `company_keywords_link` ON `company_keywords_link`.`CompanyID` = `companies`.`id`
 				WHERE
 					`aspects`.`Active` = 1 
 					AND `stores`.`Active` = 1

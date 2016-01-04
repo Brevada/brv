@@ -18,7 +18,9 @@ abstract class AbstractAPI
 	protected function verifyHeaders($method)
 	{
 		$userAgent = $_SERVER['HTTP_USER_AGENT'];
-		if(stripos($userAgent, TABLET_USERAGENT) !== 0){ return false; }
+		if(stripos($userAgent, TABLET_USERAGENT) === 0){
+			$this->data['tablet'] = true;
+		}
 		
 		return $method !== null && strcasecmp($method, $_SERVER['REQUEST_METHOD']) === 0;
 	}
@@ -88,7 +90,17 @@ class BrevadaAPI extends AbstractAPI
 	protected function executeTask($method, $task)
 	{
 		try {
-			TaskLoader::load($task)->execute(strtolower($method), explode('/', $task), $this->data);
+			$tasks = explode('/', $task);
+			$taskClass = TaskLoader::load($task);
+			$taskClass->execute(strtolower($method), explode('/', $task), $this->data);
+			if(count($tasks) > 1){
+				$userFunc = array($taskClass, 'task'.ucwords($tasks[1]));
+				if(method_exists($userFunc[0], $userFunc[1]) && is_callable($userFunc)){
+					call_user_func($userFunc);
+				} else {
+					$this->addError('Invalid action for '.ucwords($task).'.');
+				}
+			}
 		} catch (Exception $e) {
 			$this->addError($e->getMessage());
 		}

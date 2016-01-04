@@ -4,7 +4,7 @@ class TaskFeedback extends AbstractTask
 	public function execute($method, $tasks, &$data)
 	{
 		if($method == 'post'){
-			if($data['secure'] !== true){
+			if($data['secure'] !== true || !isset($data['tablet'])){
 				throw new Exception("Data integrity compromised.");
 			}
 			

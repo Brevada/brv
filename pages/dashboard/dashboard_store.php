@@ -117,6 +117,7 @@ if($query !== false){
 
 $areasOfLeastConcern = array_diff($areasOfLeastConcern, $areasOfFocus);
 ?>
+<script type='text/javascript'>bdff.storeID(<?php echo $store_id; ?>);</script>
 <div id="alert-holder"></div>
 <div class="top-fixed">
 
@@ -385,106 +386,7 @@ $areasOfLeastConcern = array_diff($areasOfLeastConcern, $areasOfFocus);
 				<div class="sub-message"><?php echo sprintf(__('Or feel free to contact us at %s for any help.'), __('customercare@brevada.com')); ?></div>
 			</div>
 			<?php
-			} else {
-			$rows = $query->fetch_all(MYSQLI_ASSOC);
-			foreach($rows as $row){
-				$title = $row['Title'];
-				$id = $row['AspectID'];
-				$aspectType = @intval($row['AspectTypeID']);
-				
-				$ratingResult = (new Data())->store($store_id)->aspectType($aspectType)->getAvg();
-				
-				$data_ratingPercent = $ratingResult->getRating();
-				$data_ratingPercentOther = (new Data())->store($store_id)->aspectType($aspectType)->keyword($keywords)->getAvg()->getRating();
-
-				$data_percent24H = DataResult::diffRating(
-					(new Data())->store($store_id)->aspectType($aspectType)->from(time()-(24*3600))->getAvg(),
-					(new Data())->store($store_id)->aspectType($aspectType)->to(time()-(24*3600))->getAvg()
-				);
-				
-				$data_percent4W = DataResult::diffRating(
-					(new Data())->store($store_id)->aspectType($aspectType)->from(time()-(4*7*24*3600))->getAvg(),
-					(new Data())->store($store_id)->aspectType($aspectType)->to(time()-(4*7*24*3600))->getAvg()
-				);
-				
-				$total_responses = $ratingResult->getSize();
-
-				if($data_ratingPercent >= 80) {
-					$colour = 'positive';
-				} else if ($data_ratingPercent >= 60) {
-					$colour = 'great';
-				} else if ($data_ratingPercent >= 40) {
-					$colour = 'neutral';
-				} else if ($data_ratingPercent >= 20) {
-					$colour = 'bad';
-				} else {
-					$colour = 'negative';
-				}
-				
-				$bucketSize = 5;
-				
-				$bucket = (new Data())->store($store_id)->aspectType($aspectType)->from(time()-(2*7*24*3600))->getAvg($bucketSize, Data::BY_UNIFORM);
-				
-				$bucketDates = [];
-				$bucketData = [];
-				
-				for($i = 0; $i < $bucketSize; $i++){
-					if(!$bucket->get($i)){ break; }
-					$bucketDates[] = date('M jS', $bucket->getUTC($i));
-					$bucketData[] = $bucket->getRating($i);
-				}
-				
-				$bucketJSON = array('dates' => $bucketDates, 'data' => $bucketData);
-				$bucketJSON = json_encode($bucketJSON);
-			?>
-				<!-- Aspect Box -->
-				<div class="col-sm-6 col-md-4 col-lg-3 pod-holder">
-					<div id="pod<?php echo $id; ?>" class="pod">
-						<div class="body">
-							<div class="header">
-								<span class='aspect-title'><?php _e($title); ?></span>
-							</div>
-							<div class="pull-left col-md-6 pod-body-left">
-								<div class='top'>
-									<i class='pull-left fa <?php echo $data_percent4W >= 0 ? 'fa-arrow-circle-up' : 'fa-arrow-circle-down'; ?>'></i>
-									<span class='pull-left percent'><?php echo abs($data_percent4W)."%"; ?></span>
-									<span class='duration'><?php _e('24H'); ?></span>
-								</div>
-								<div class='top'>
-									<i class='pull-left fa <?php echo $data_percent24H >= 0 ? 'fa-arrow-circle-up' : 'fa-arrow-circle-down'; ?>'></i>
-									<span class='pull-left percent'><?php echo abs($data_percent24H)."%"; ?></span>
-									<span class='duration'><?php _e('4W'); ?></span>
-								</div>
-							</div>
-							<div class="pull-right col-md-6 pod-body-right">
-								<div class='pod-body-rating <?php echo $colour; ?>-text'><?php echo round($data_ratingPercent,1)."%"; ?></div>
-								<div class="rating-text"><?php _e('in'); ?> <?php echo $total_responses; ?> <?php _e('responses'); ?>.</div>
-								<div class='pod-body-rating external'><?php echo round($data_ratingPercentOther,1)."%"; ?></div>
-								<div class="rating-text external"><?php _e('industry average'); ?>.</div>
-							</div>
-							
-							<div class="col-md-12 pod-body-bottom">
-								<input class="graph-toggle" type="checkbox" checked data-toggle="toggle" data-onstyle="default" data-on="Line" data-off="Bar" data-size="mini" data-width="100" data-height="25">
-								<div class='graphs'>
-									<div class="bar-graph">
-										<div class='left-graph graph <?php echo $colour; ?>' data-percent='<?php echo $data_ratingPercent; ?>'>
-											<div class='percent'><?php echo "{$data_ratingPercent}%"; ?></div>
-										</div>
-										<div class='right-graph graph' data-percent='<?php echo $data_ratingPercentOther; ?>' data-tooltip='<?php _e('Market Benchmark'); ?> (<?php echo "{$data_ratingPercentOther}%"; ?>)'>
-										</div>
-									</div>
-
-									<div class="line-graph" data-id="<?php echo $id; ?>" graph-json='<?php echo $bucketJSON; ?>'>
-										<script type='text/javascript'>
-											build_line_graph(<?php echo $bucketJSON; ?>, "pod<?php echo $id; ?>");
-										</script>
-									</div>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-				<?php } if($query !== false){ $query->close(); } } ?>
+			} else { if($query !== false){ $query->close(); } } ?>
 			</div>
 		</div>
     </div>

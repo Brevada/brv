@@ -20,8 +20,12 @@ $(document).ready(function(){
 	};
 	
 	bdff.canvas('#main-container');
-	bdff.faces['hoverpod'].attach('body');
 	
-	//bdff.face('aspects');
+	bdff.faces['hoverpod'].attach('body');
+	bdff.faces['live'].attach();
+	bdff.faces['milestones'].attach();
+	bdff.faces['aspects'].attach();
+	
 	bdff.persistent('hoverpod');
+	bdff.face('aspects');
 });
