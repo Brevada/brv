@@ -66,7 +66,9 @@ bdff.create('aspects', function(canvas, face){
 							)
 						)
 						.append(
-							$('<div>').addClass('line-graph').attr('data-id', id).append('<canvas>')
+							$('<div>').addClass('line-graph').attr('data-id', id).append(
+								$('<canvas>')
+							)
 						)
 					)
 				)
@@ -82,6 +84,8 @@ bdff.create('aspects', function(canvas, face){
 		};
 		
 		aspect.setRating = function(val){
+			val = Math.round(val * 10)/10;
+			
 			aspectDom.find('div.pod-body-rating').first()
 				.removeClass('positive-text great-text neutral-text bad-text negative-text')
 				.addClass(bdff.mood(parseFloat(val))+'-text')
@@ -110,14 +114,22 @@ bdff.create('aspects', function(canvas, face){
 		};
 		
 		aspect.setTopTicker = function(val){
-			aspectDom.find('div.top > span.percent').first().text(val+"%");
+			if(val && val.toString().length > 4){
+				val = Math.round(val * 10) / 10;
+			}
+			
+			aspectDom.find('div.top > span.percent').first().text(val == null ? 'N/A' : val+"%");
 			aspectDom.find('div.top > i').first()
 				.removeClass('fa-arrow-circle-up fa-arrow-circle-down fa-minus-circle')
 				.addClass(bdff.tickerIcon(val));
 		};
 		
 		aspect.setBottomTicker = function(val){
-			aspectDom.find('div.top > span.percent').last().text(val+"%");
+			if(val && val.toString().length > 4){
+				val = Math.round(val * 10) / 10;
+			}
+			
+			aspectDom.find('div.top > span.percent').last().text(val == null ? 'N/A' : val+"%");
 			aspectDom.find('div.top > i').last()
 				.removeClass('fa-arrow-circle-up fa-arrow-circle-down fa-minus-circle')
 				.addClass(bdff.tickerIcon(val));
@@ -131,8 +143,6 @@ bdff.create('aspects', function(canvas, face){
 				$(this).animate({ height : Math.min(Math.floor(original+target), $(this).parent().height()) }, 1500);
 			});
 		};
-		
-		aspect.lineGraph = build_line_graph({"dates":[],"data":[]}, 'pod'+id);
 	
 		return aspect;
 	};
@@ -159,6 +169,9 @@ bdff.create('aspects', function(canvas, face){
 				aspect.setTopTicker(data.aspects[i].change.day);
 				aspect.setBottomTicker(data.aspects[i].change.month);
 				
+				if(aspect.lineGraph){
+					aspect.lineGraph.destroy();
+				}
 				aspect.lineGraph = build_line_graph({"dates": data.aspects[i].bucket.labels, "data": data.aspects[i].bucket.data }, 'pod'+data.aspects[i].id);
 			}
 		} else {

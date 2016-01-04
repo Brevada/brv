@@ -87,24 +87,49 @@ if(($stmt = Database::prepare("SELECT `aspects`.`id` as `id`, `AspectTypeID`, `T
 						</div>
 						<script type='text/javascript'>
 							new Chart(document.getElementById("aspect-<?php echo $id; ?>")
-							.getContext('2d'))
-							.Bar({
-								labels: [<?php echo $labelArray; ?>],
-								datasets: [
-									{
-										label: "<?php echo $title; ?>",
-										fillColor: "rgba(255,43,43,1)",
-										strokeColor: "rgba(220,220,220,1)",
-										pointColor: "rgba(220,220,220,1)",
-										pointStrokeColor: "#fff",
-										pointHighlightFill: "#fff",
-										pointHighlightStroke: "rgba(220,220,220,1)",
-										data: [<?php echo $dataArray; ?>]
+							.getContext('2d'), {
+								type: 'bar',
+								data: {
+									labels: [<?php echo $labelArray; ?>],
+									datasets: [
+										{
+											label: "<?php echo $title; ?>",
+											fill: true,
+											backgroundColor: "rgba(255,43,43,1)",
+											borderColor: "rgba(220,220,220,1)",
+											pointBackgroundColor: "rgba(220,220,220,1)",
+											pointBorderColor: "#fff",
+											pointHoverBackgroundColor: "#fff",
+											pointHoverBorderColor: "rgba(220,220,220,1)",
+											borderWidth: 0.5,
+											data: [<?php echo $dataArray; ?>]
+										}
+									]
+								},
+								options: {
+									responsive : true, maintainAspectRatio : false,
+									scales : {
+										xAxes: [{
+											ticks : {
+												autoSkip: false
+											}
+										}],
+										yAxes: [{
+											ticks : {
+												beginAtZero: true,
+												min: 0,
+												max: 100,
+											}
+										}]
+									},
+									legend : {
+										display: false
+									},
+									title : {
+										display: false
 									}
-								]
-							}, { responsive : true, maintainAspectRatio : false, scaleBeginAtZero: true,
-								 scaleSteps : 10, scaleStepWidth : 10, scaleStartValue : 0,
-								 scaleOverride: true });
+								}
+							});
 						</script>
 						<?php } else { ?>
 						<i class='fa fa-ban'></i>

@@ -63,7 +63,7 @@ if($show != 'overview' && $show != 'companies' && $show != 'stores' && $show != 
         <li data-page='accounts'><a href="?show=accounts">Accounts</a></li>
       </ul>
       <ul class="nav nav-sidebar">
-        <li data-page='companies'><a href="?show=data">Data Analysis</a></li>
+        <li data-page='data'><a href="?show=data">Data Analysis</a></li>
       </ul>
       <ul class="nav nav-sidebar">
 		<li data-page='tablets'><a href="?show=tablets">Tablets</a></li>

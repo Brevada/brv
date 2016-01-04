@@ -178,6 +178,9 @@
 	};
 	
 	bdff.tickerIcon = function(val){
+		if(val == null){
+			return 'fa-times-circle';
+		}
 		return val == 0 ? 'fa-minus-circle' : (val >= 50 ? 'fa-arrow-circle-up' : 'fa-arrow-circle-down');
 	};
 	

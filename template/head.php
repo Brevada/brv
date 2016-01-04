@@ -43,7 +43,7 @@
 <script type='text/javascript' src='/js/jquery-2.1.1.min.js'></script>
 <script type='text/javascript' src='/js/jquery-ui.min.js'></script>
 <!-- ChartJS -->
-<script type='text/javascript' src='/js/chartJS/Chart.js'></script>
+<script type='text/javascript' src='/js/chartJS/Chart.min.js'></script>
 <!-- Bootstrap -->
 <link href="/css/bootstrap.css" rel="stylesheet">
 <script src="/js/bootstrap.min.js"></script>

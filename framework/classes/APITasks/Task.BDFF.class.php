@@ -106,16 +106,20 @@ class TaskBDFF extends AbstractTask
 			
 			$rating = (new Data())->store($store)->aspectType($aspectType)->getAvg();
 			
-			$data_percent24H = DataResult::diffRating(
-				(new Data())->store($store)->aspectType($aspectType)->from(time()-(24*3600))->getAvg(),
-				(new Data())->store($store)->aspectType($aspectType)->to(time()-(24*3600))->getAvg()
-			);
+			$data_percent24H_A = (new Data())->store($store)->aspectType($aspectType)->from(time()-(24*3600))->getAvg();
+			$data_percent24H_B = (new Data())->store($store)->aspectType($aspectType)->to(time()-(24*3600))->getAvg();
+			$data_percent24H = null;
+			if($data_percent24H_A->getSize() > 0){
+				$data_percent24H = $data_percent24H_A->getRating() - $data_percent24H_B->getRating();
+			}
 				
-			$data_percent4W = DataResult::diffRating(
-				(new Data())->store($store)->aspectType($aspectType)->from(time()-(4*7*24*3600))->getAvg(),
-				(new Data())->store($store)->aspectType($aspectType)->to(time()-(4*7*24*3600))->getAvg()
-			);
-			
+			$data_percent4W_A = (new Data())->store($store)->aspectType($aspectType)->from(time()-(4*7*24*3600))->getAvg();
+			$data_percent4W_B = (new Data())->store($store)->aspectType($aspectType)->to(time()-(4*7*24*3600))->getAvg();
+			$data_percent4W = null;
+			if($data_percent4W_A->getSize() > 0){
+				$data_percent4W = $data_percent4W_A->getRating() - $data_percent4W_B->getRating();
+			}
+		
 			$bucketSize = 5;
 				
 			$bucket = (new Data())->store($store)->aspectType($aspectType)->from(time()-(2*7*24*3600))->getAvg($bucketSize, Data::BY_UNIFORM);

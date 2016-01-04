@@ -446,6 +446,7 @@ div.bottom-bar {
 }
 .pod .body .pod-body-left {
     padding: 15px;
+	white-space: nowrap;
 }
 .pod .body .pod-body-left .top {
     font-size: 20px;
@@ -500,20 +501,16 @@ div.bottom-bar {
 }
 
 .pod .body .pod-body-bottom div.graphs div.line-graph {
-    height: 105%;
-	margin: 0;
-    margin-left:-2%;
+    height: 100%;
+	margin: 0 0 0 0;
 	padding: 0;
-    width: 105%;
+    width: 100%;
 	position: relative;
 }
 
 .pod .body .pod-body-bottom div.graphs div.line-graph canvas {
-        width: 100% !important;
-        max-width: 800px;
-        height: 100% !important;
-        position: absolute;
-        bottom: -10px;
+	position: absolute;
+	bottom: 0;
 }
 
 .pod .body .pod-body-bottom div.graphs div.bar-graph {
