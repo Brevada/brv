@@ -138,7 +138,7 @@ bdff.create('aspects', function(canvas, face){
 	};
 	
 	face.datahook(0, {
-			url : 'http://localhost:81/api/v1/bdff/aspects',
+			url : '/api/v1/bdff/aspects',
 			data : { 'store' : bdff.storeID() }
 		}, function(data){
 		if(data.hasOwnProperty('error') && data.error.length > 0){

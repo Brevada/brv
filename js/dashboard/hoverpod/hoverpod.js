@@ -57,7 +57,7 @@ bdff.create('hoverpod', function(canvas, face){
 	};
 	
 	face.datahook(10000, {
-			url : 'http://localhost:81/api/v1/bdff/hoverpod',
+			url : '/api/v1/bdff/hoverpod',
 			data : { 'store' : bdff.storeID() }
 		}, function(data){
 		if(data.hasOwnProperty('error') && data.error.length > 0){
