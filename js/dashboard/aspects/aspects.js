@@ -1,7 +1,7 @@
 /* Overall Aspects Dashboard App */
 
 bdff.create('aspects', function(canvas, face){
-	canvas.empty();
+	canvas.children().not('div.message-container').remove();
 	
 	var aspects = {};
 	
@@ -13,7 +13,7 @@ bdff.create('aspects', function(canvas, face){
 			$('<div>').addClass('pod').attr('id', 'pod'+id).append(
 				$('<div>').addClass('body')
 				.append(
-					$('<div>').addClass('header').append($('<span>').addClass('aspect-title').text('Ambience'))
+					$('<div>').addClass('header').append($('<span>').addClass('aspect-title').text(''))
 				)
 				.append(
 					$('<div>').addClass('pull-left col-md-6 pod-body-left')
@@ -21,7 +21,7 @@ bdff.create('aspects', function(canvas, face){
 						$('<div>').addClass('top').append(
 							$('<i>').addClass('pull-left fa fa-arrow-circle-up')
 						).append(
-							$('<span>').addClass('pull-left percent').text('32%')
+							$('<span>').addClass('pull-left percent').text('')
 						).append(
 							$('<span>').addClass('duration').text('24H')
 						)
@@ -29,7 +29,7 @@ bdff.create('aspects', function(canvas, face){
 						$('<div>').addClass('top').append(
 							$('<i>').addClass('pull-left fa fa-arrow-circle-down')
 						).append(
-							$('<span>').addClass('pull-left percent').text('26%')
+							$('<span>').addClass('pull-left percent').text('')
 						).append(
 							$('<span>').addClass('duration').text('4W')
 						)		
@@ -37,11 +37,11 @@ bdff.create('aspects', function(canvas, face){
 				)
 				.append(
 					$('<div>').addClass('pull-right col-md-6 pod-body-right').append(
-						$('<div>').addClass('pod-body-rating positive-text').text('80%')
+						$('<div>').addClass('pod-body-rating positive-text').text('')
 					).append(
 						$('<div>').addClass('rating-text').text('in 2 responses.')
 					).append(
-						$('<div>').addClass('pod-body-rating external').text('80%')
+						$('<div>').addClass('pod-body-rating external').text('')
 					).append(
 						$('<div>').addClass('rating-text external').text('industry average')
 					)
@@ -62,7 +62,7 @@ bdff.create('aspects', function(canvas, face){
 								)
 							)
 							.append(
-								$('<div>').addClass('right-graph graph').data('percent', '80').data('tooltip', 'Market Benchmark (80%)')
+								$('<div>').addClass('right-graph graph').data('percent', '0').data('tooltip', 'Market Benchmark (0)')
 							)
 						)
 						.append(
@@ -173,6 +173,8 @@ bdff.create('aspects', function(canvas, face){
 					aspect.lineGraph.destroy();
 				}
 				aspect.lineGraph = build_line_graph({"dates": data.aspects[i].bucket.labels, "data": data.aspects[i].bucket.data }, 'pod'+data.aspects[i].id);
+				
+				$('div[data-tooltip]').brevadaTooltip();
 			}
 		} else {
 			bdff.log('Uh oh...');

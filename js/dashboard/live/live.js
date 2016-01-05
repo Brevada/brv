@@ -36,7 +36,7 @@ bdff.create('live', function(canvas, face){
 
 
 	live.render = function (canvas) {
-		canvas.empty();
+		canvas.children().not('div.message-container').remove();
 		/* Template */
 		$('\
 			<div class="square square-1 col-md-6"></div>\

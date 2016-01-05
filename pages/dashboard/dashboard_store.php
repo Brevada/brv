@@ -5,6 +5,9 @@ if($this->getParameter('valid') !== true){ Brevada::Redirect('/404'); }
 $this->addResource('/css/layout.css');
 $this->addResource('/css/dashboard.css');
 
+$this->addResource('/css/brevada.tooltip.css');
+$this->addResource('/js/brevada.tooltip.js');
+
 $this->addResource('/js/Brevada.BDFF.js');
 $this->addResource('/js/dashboard/dashboard.js');
 
@@ -20,9 +23,6 @@ $this->addResource('/js/dashboard/hoverpod/hoverpod.js');
 
 $this->addResource('/js/dashboard/dashboard-slide.js');
 $this->addResource('/js/dashboard/dashboard-graph.js');
-
-$this->addResource('/css/brevada.tooltip.css');
-$this->addResource('/js/brevada.tooltip.js');
 
 if(!Brevada::IsLoggedIn()){
 	Brevada::Redirect('/home/logout');
@@ -65,57 +65,8 @@ while($row = $query->fetch_assoc()){
 	}
 }
 
-function numericalCSS($i){
-	return $i >= 0 ? 'positive' : 'negative';
-}
-
-$data_overall4W = DataResult::diffRating(
-	(new Data())->store($store_id)->from(time()-(4*7*24*3600))->getAvg(),
-	(new Data())->store($store_id)->to(time()-(4*7*24*3600))->getAvg()
-);
-$data_overallAll = (new Data())->store($store_id)->getAvg()->getRating();
-$data_relativeBenchmark = DataResult::diffRating(
-	(new Data())->store($store_id)->getAvg(),
-	(new Data())->keyword($keywords)->getAvg()
-);
-
-
-$areasOfFocus = array();
-$areasOfLeastConcern = array();
-
-$query = Database::query("SELECT aspect_type.Title FROM `data_cache`
-						  JOIN aspect_type ON `data_cache`.Domain_AspectID = aspect_type.`id`
-						  JOIN aspects ON aspects.StoreID = `data_cache`.Domain_StoreID AND aspects.AspectTypeID = aspect_type.`id`
-						  WHERE
-							`data_cache`.Domain_StoreID = {$store_id}
-							AND `data_cache`.`DaysBack` = -1
-							AND `data_cache`.`EndDate` = '0000-00-00 00:00:00'
-							AND aspects.`Active` = 1
-						  ORDER BY `data_cache`.`TotalAverage` ASC LIMIT 2");
-if($query !== false){
-	while($row = $query->fetch_assoc()){
-		$areasOfFocus[] = $row['Title'];
-	}
-	$query->close();
-}
-
-$query = Database::query("SELECT aspect_type.Title FROM `data_cache`
-						  JOIN aspect_type ON `data_cache`.Domain_AspectID = aspect_type.`id`
-						  JOIN aspects ON aspects.StoreID = `data_cache`.Domain_StoreID AND aspects.AspectTypeID = aspect_type.`id`
-						  WHERE
-							`data_cache`.Domain_StoreID = {$store_id}
-							AND `data_cache`.`DaysBack` = -1
-							AND `data_cache`.`EndDate` = '0000-00-00 00:00:00'
-							AND aspects.`Active` = 1
-						  ORDER BY `data_cache`.`TotalAverage` DESC LIMIT 2");
-if($query !== false){
-	while($row = $query->fetch_assoc()){
-		$areasOfLeastConcern[] = $row['Title'];
-	}
-	$query->close();
-}
-
-$areasOfLeastConcern = array_diff($areasOfLeastConcern, $areasOfFocus);
+$qAspects = Database::query("SELECT COUNT(*) as cnt FROM aspects WHERE aspects.StoreID = {$store_id} AND `Active` = 1");
+$aspectCount = $qAspects->fetch_assoc()['cnt'];
 ?>
 <script type='text/javascript'>bdff.storeID(<?php echo $store_id; ?>);</script>
 <div id="alert-holder"></div>
@@ -162,9 +113,7 @@ $areasOfLeastConcern = array_diff($areasOfLeastConcern, $areasOfFocus);
 
 </div>
 
-<div class="spacer">
-
-</div>
+<div class="spacer"></div>
 
 <div id="slide-down" class="slide-down">
 	<div id="email-display-holder">
@@ -173,145 +122,6 @@ $areasOfLeastConcern = array_diff($areasOfLeastConcern, $areasOfFocus);
 		<?php } else { ?>
 		<br /><p><?php _e("You must activate your account to view the email list."); ?> <div id="email-close" class="slide-down-button"><?php _e("Close"); ?></div></p>
 		<?php } ?>
-	</div>
-</div>
-
-<?php
-/* All aspects. */
-	$query = Database::query("SELECT aspect_type.Title, aspects.id as AspectID, aspect_type.id as AspectTypeID
-	FROM aspects LEFT JOIN aspect_type ON aspect_type.ID = aspects.AspectTypeID
-	WHERE aspects.StoreID = {$store_id}
-	AND `Active` = 1 ORDER BY `aspect_type`.Title ASC");
-?>
-
-<!-- Left side -->
-<div class='aspect-area hidden-xs hidden-sm col-md-3 right-bar' style="display: none;">
-	<div class='row'>
-		<div class='col-sm-12 area-title'><i class='fa fa-area-chart'></i> <?php _e('Consultant'); ?></div>
-		<div class="col-sm-12 hidden-xs">		
-
-			<div class='col-sm-12 area-title'><i class='fa fa-area-chart'></i> <?php _e('Consultant'); ?></div>
-
-			<!-- Overall Average -->
-			<?php 
-				if($data_overallAll>=50){
-					$change = 'positive';
-					$icon = 'fa-thumbs-up';
-				} else if ($data_overallAll==0){
-					$change = 'neutral';
-					$icon = 'fa-minus-circle';
-				} else {
-					$change = 'negative';
-					$icon = 'fa-thumbs-down';
-				}
-			?>
-			<div class='col-sm-12 overall-decrease block <?php echo $change; ?>-text'>
-				<div class="block-left hidden-sm">
-					<i class='fa <?php echo $icon; ?>'></i>
-				</div>
-				<div class="block-right">
-					<div class='big-number <?php echo $change; ?>-text'>
-						<?php echo abs($data_overallAll)."%"; ?>
-					</div>
-				</div>
-				<div class="block-bottom">
-					<?php _e('Overall Score'); ?>
-				</div>
-			</div>
-
-
-			<!-- Past 4 weeks -->
-			<?php 
-				if($data_overall4W>=50){
-					$change = 'positive';
-					$icon = 'fa-chevron-circle-up';
-				} else if ($data_overall4W==0){
-					$change = 'neutral';
-					$icon = 'fa-minus-circle';
-				} else {
-					$change = 'negative';
-					$icon = 'fa-chevron-circle-down';
-				}
-			?>
-			<div class='col-sm-12 overall-improvement block <?php echo $change; ?>-text'>
-				<div class="block-left hidden-sm">
-					<i class='fa <?php echo $icon; ?>'></i>
-				</div>
-				<div class="block-right">
-					<div class='big-number <?php echo $change; ?>-text'>
-						<?php echo abs($data_overall4W)."%"; ?>
-					</div>
-				</div>
-				<div class="block-bottom">
-					<?php _e('Change in the Past 4 Weeks'); ?>
-				</div>
-			</div>
-
-			<!-- vs benchmark -->
-			<?php 
-				if($data_relativeBenchmark>=1){
-					$icon = 'fa-chevron-circle-up';
-					$message = 'above the industry average';
-				} else if ($data_relativeBenchmark==0){
-					$icon = 'fa-minus-circle';
-					$message = 'same as industry average';
-				} else {
-					$icon = 'fa-chevron-circle-down';
-					$message = 'below the industry average';
-				}
-			?>
-			<div class='col-sm-12 below-benchmark block <?php echo numericalCSS($data_relativeBenchmark); ?>-text'>
-				<div class="block-left hidden-sm">
-					<i class='fa <?php echo $icon; ?>'></i>
-				</div>
-				<div class="block-right">
-					<div class='big-number <?php echo numericalCSS($data_relativeBenchmark); ?>-text'>
-						<?php echo abs($data_relativeBenchmark)."%"; ?>
-					</div>
-				</div>
-				<div class="block-bottom">
-					<?php 
-						$abs_relative = abs($data_relativeBenchmark);
-						_e($message); 
-					?>
-				</div>
-			</div>
-
-			<div class='col-sm-12 block consultant'>
-				<div class='title'><?php _e('Areas For Improvement'); ?></div>
-					<div class='body'>
-						<?php
-						foreach($areasOfFocus as $aspect){
-							echo "<span class='aspect-title pull-left negative'>".__($aspect)."</span>";
-						}
-						if(empty($areasOfFocus)){
-							echo "<span class='aspect-title placeholder'></span>";
-						}
-						?>
-						<br class="clear: both;" />
-					</div>
-				<br class="clear: both;" />
-			</div>
-
-
-			<div class='col-sm-12 block consultant'>
-				<div class='title'><?php _e('Strengths'); ?></div>
-				<div class='body'>
-					<?php
-					foreach($areasOfLeastConcern as $aspect){
-						echo "<span class='aspect-title pull-left positive'>".__($aspect)."</span>";
-					}
-					if(empty($areasOfLeastConcern)){
-						echo "<span style='color: #BBB;'>None yet.</span>";
-					}
-					?>
-					<br class="clear: both;" />
-				</div>
-				<br class="clear: both;" />
-			</div>
-
-
-		</div>
 	</div>
 </div>
 
@@ -353,7 +163,6 @@ $areasOfLeastConcern = array_diff($areasOfLeastConcern, $areasOfFocus);
     <div id="page-content-wrapper">
     	<div class='aspect-area container'>
 			<div id="main-container" class='row'>
-			<div class='col-sm-12 area-title'><i class='fa fa-comments'></i> <?php _e('Feedback'); ?></div>
 			<?php if(isset($_GET['thanks'])){ ?>
 			<div class="message-container">
 				<div class='close'><i class='fa fa-times'></i></div>
@@ -361,7 +170,7 @@ $areasOfLeastConcern = array_diff($areasOfLeastConcern, $areasOfFocus);
 				<div class="sub-message"><?php echo sprintf(__('Feel free to contact us at %s or 1 (844) BREVADA for any questions regarding your Brevada experience.'), __('customercare@brevada.com')); ?></div>
 			</div>
 			<?php } ?>
-			<?php if($query === false || $query->num_rows == 0){ ?>
+			<?php if($aspectCount == 0){ ?>
 			<div class="message-container">
 				<div class='close'><i class='fa fa-times'></i></div>
 				<div class="message"><?php _e('You can enable and disable aspects on the Settings page, or just click below.'); ?></div>
@@ -386,12 +195,9 @@ $areasOfLeastConcern = array_diff($areasOfLeastConcern, $areasOfFocus);
 				<div class="sub-message"><?php echo sprintf(__('Or feel free to contact us at %s for any help.'), __('customercare@brevada.com')); ?></div>
 			</div>
 			<?php
-			} else { if($query !== false){ $query->close(); } } ?>
+			}
+			?>
 			</div>
 		</div>
     </div>
 </div>
-
-<!-- <div class="bottom-bar">
-	&copy; 2015 Brevada Inc. &nbsp;
-</div> -->

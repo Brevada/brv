@@ -53,7 +53,9 @@ bdff.create('hoverpod', function(canvas, face){
 	};
 	
 	var setStatus = function(num){
-		
+		hoverpod.find('div.status > div.bulb')
+		.removeClass('positive great neutral bad negative')
+		.addClass(bdff.mood(num));
 	};
 	
 	face.datahook(10000, {
@@ -65,6 +67,7 @@ bdff.create('hoverpod', function(canvas, face){
 		} else if(data.hasOwnProperty('hoverpod')) {
 			setResponses(data.hoverpod.responses);
 			setTablets(data.hoverpod.tablets);
+			setStatus(data.hoverpod.mood);
 		} else {
 			bdff.log('Uh oh...');
 		}

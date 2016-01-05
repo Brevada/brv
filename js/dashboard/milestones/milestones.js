@@ -6,7 +6,7 @@ bdff.create('milestones', function(canvas, face){
 	milestones.data = {}
 
 	milestones.render = function (canvas) {
-		canvas.empty();
+		canvas.children().not('div.message-container').remove();
 		// TODO: Create timeline illusion with line in the background
 		milestones.renderForm(canvas);
 		// TODO: Load the static stuff (eg. creation form)

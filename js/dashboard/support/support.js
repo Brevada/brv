@@ -1,7 +1,7 @@
 /* Support Dashboard App */
 
 bdff.create('support', function(canvas, face){
-	canvas.empty();
+	canvas.children().not('div.message-container').remove();
 	
 	var support_form = $('<div>').addClass('support-form col-md-9').appendTo(canvas);
 	
@@ -25,7 +25,4 @@ bdff.create('support', function(canvas, face){
  	support_resources.addClass('support-resources col-md-3').appendTo(canvas);
 
  	$('<div class="dashboard-pod">Dashboard Support, Tablet Support</div>').appendTo(support_resources);
-	
-	
-	face.attach();
 });

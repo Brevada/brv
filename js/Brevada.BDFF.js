@@ -40,7 +40,10 @@
 			face = bdff.faces[face];
 		}
 		
-		if(face !== undefined && settings.face !== face && settings.face !== undefined){
+		if(face !== undefined && settings.face !== undefined){
+			if(settings.face === face){
+				return;
+			}
 			settings.face.cleanUp();
 		}
 		

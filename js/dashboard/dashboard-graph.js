@@ -51,7 +51,13 @@ function build_line_graph(bucket, id) {
 					display: false
 				}],
 				yAxes: [{
-					display: false
+					display: false,
+					ticks : {
+						beginAtZero: true,
+						autoSkip: false,
+						min: 0,
+						max: 100
+					}
 				}]
 			},
 			tooltips: {

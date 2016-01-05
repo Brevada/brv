@@ -41,7 +41,8 @@ class TaskBDFF extends AbstractTask
 		
 		$this->data['hoverpod'] = [
 			'tablets' => $tablets,
-			'responses' => (new Data())->store($store)->from(time()-3600)->getAvg()->getSize()
+			'responses' => (new Data())->store($store)->from(time()-3600)->getAvg()->getSize(),
+			'mood' => (new Data())->store($store)->from(time()-(12*3600))->getAvg()->getRating()
 		];
 	}
 	
@@ -90,7 +91,10 @@ class TaskBDFF extends AbstractTask
 			WHERE
 			`aspects`.`StoreID` = ? AND
 			`aspects`.`Active` = 1 AND
-			`stores`.`CompanyID` = ?
+			`stores`.`CompanyID` = ? AND
+			`companies`.`Active` = 1 AND
+			`companies`.`ExpiryDate` IS NOT NULL AND
+			`companies`.`ExpiryDate` > NOW()
 			ORDER BY `aspect_type`.`Title`")) !== false){
 			$stmt->bind_param('ii', $store, $company);
 			if($stmt->execute()){
@@ -135,7 +139,7 @@ class TaskBDFF extends AbstractTask
 			
 			$aspects[] = [
 				"id" => $row['id'],
-				"title" => $row['Title'],
+				"title" => __($row['Title']),
 				"size" => $rating->getSize(),
 				"rating" => $rating->getRating(),
 				"change" => [
@@ -146,7 +150,7 @@ class TaskBDFF extends AbstractTask
 					"labels" => $bucketDates,
 					"data" => $bucketData
 				],
-				"industry" => (new Data())->store($store)->aspectType($aspectType)->keyword($keywords)->getAvg()->getRating()
+				"industry" => (new Data())->aspectType($aspectType)->keyword($keywords)->getAvg()->getRating()
 			];
 		}
 		

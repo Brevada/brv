@@ -50,51 +50,23 @@ div.top-banner .three-lines {
     border: none;
     font-size: 30px;
 }
-.positive {
-    background: #2ecc0e !important;
-}
-.great {
-    background: #82cc0e !important;
-}
-.neutral {
-    background: #afcc0e !important;
-}
-.bad {
-    background: #ccc10e !important;
-}
-.negative {
-    background: #cc750e !important;
-}
-.positive-text {
-    color: #2ecc0e !important;
-}
-.great-text {
-    color: #82cc0e !important;
-}
-.neutral-text {
-    color: #afcc0e !important;
-}
-.bad-text {
-    color: #ccc10e !important;
-}
-.negative-text {
-    color: #cc750e !important;
-}
-.positive-border {
-    border: 2px solid #2ecc0e;
-}
-.great-border {
-    border: 2px solid #82cc0e;
-}
-.neutral-border {
-    border: 2px solid #afcc0e;
-}
-.bad-border {
-    border: 2px solid #ccc10e;
-}
-.negative-border {
-    border: 2px solid #cc750e;
-}
+
+.positive{ background: #2ecc0e; }
+.great{ background: #82cc0e; }
+.neutral{ background: #afcc0e; }
+.bad{ background: #ccc10e; }
+.negative{ background: #cc750e; }
+.positive-text{ color: #2ecc0e; }
+.great-text{ color: #82cc0e; }
+.neutral-text{ color: #afcc0e; }
+.bad-text{ color: #ccc10e; }
+.negative-text{ color: #cc750e; }
+.positive-border{ border:2pxsolid #2ecc0e; }
+.great-border{ border:2pxsolid #82cc0e; }
+.neutral-border{ border:2pxsolid #afcc0e; }
+.bad-border{ border:2pxsolid #ccc10e; }
+.negative-border{ border:2pxsolid #cc750e; }
+
 span.aspect-title {} span.aspect-title.placeholder {
     visibility: hidden;
 }
@@ -276,11 +248,14 @@ div.aspect-area {
     margin: 1em auto;
 }
 div.aspect-area div.message-container {
-    padding: 30px 30px 10px 30px;
+    padding: 25px 20px 10px 20px;
     background: #EEE;
     color: #454545;
-	margin: 0 0 1em 0;
+	margin: 0 auto 1em auto;
 	border: 1px solid #BBB;
+	position: relative;
+	width: 98%;
+	border-radius: 3px;
 }
 div.aspect-area div.message-container:hover {
 	border: 1px solid #EEE;
@@ -296,12 +271,12 @@ div.aspect-area div.message-container div.message {
 }
 div.aspect-area div.message-container div.sub-message {
     font-size: 15px;
-	margin: 1em 0 1.8em 0;
+	margin: 1em 0 1.1em 0;
 }
 div.aspect-area div.message-container div.close {
 	position: absolute;
-	top: 0.2em;
-	right: 1em;
+	top: 1.9px;
+	right: 8px;
 	cursor: pointer;
 }
 div.aspect-area div.message-container div.close:hover {
@@ -983,7 +958,6 @@ div.email-display-container .email .rating{
     text-align: center;
 }
 .hoverpod .status .bulb {
-    background: #82cc0e;
     width: 30px;
     height: 30px;
     border-radius: 3px;
