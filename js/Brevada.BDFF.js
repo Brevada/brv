@@ -177,7 +177,7 @@
 	bdff.mood = function mood(val){
 		var moods = ['positive', 'great', 'neutral', 'bad', 'negative'];
 		var i = Math.ceil((100-val)/20);
-		return i == -1 ? moods[0] : moods[i -  1];
+		return i == 0 ? moods[0] : moods[i -  1];
 	};
 	
 	bdff.tickerIcon = function(val){
