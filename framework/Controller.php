@@ -14,6 +14,7 @@ session_start();
 
 mb_internal_encoding('UTF-8');
 mb_http_output('UTF-8');
+date_default_timezone_set('America/New_York');
 
 if(DEBUG){
 	header("Cache-Control: no-cache, must-revalidate"); // HTTP/1.1
