@@ -165,13 +165,18 @@
 		}
 	};
 	
-	bdff.notify = function(message, type){
-		$("<div>").addClass('alert').addClass(type).prependTo($('#alert-holder'));
-		setTimeout(function(){
-			$('#alert-holder > div.alert:not(.fading)').first().addClass('fading').fadeOut(function(){
-				$(this).remove();
-			}, 500);
-		}, 3000);
+	bdff.notify = function(message, submessage, type){
+		var msg = $('<div>').addClass('message-container')
+		.append(
+			$('<div>').addClass('close').append($('<i>').addClass('fa fa-times'))
+		)
+		.append($('<div>').addClass('message').text(message));
+		
+		if(submessage){
+			msg.append($('<div>').addClass('sub-message').html(submessage));
+		}
+		
+		msg.prependTo('#main-container');
 	};
 	
 	bdff.mood = function mood(val){

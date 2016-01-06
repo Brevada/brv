@@ -22,12 +22,13 @@ $this->addResource('/js/admin.js');
 	
 	Logs
 */
-
 $show = Brevada::FromGET('show');
-if($show != 'overview' && $show != 'companies' && $show != 'stores' && $show != 'accounts' && $show != 'tablets' && $show != 'finance' && $show != 'promotions' && $show != 'newclient' && $show != 'salesfaq' && $show != 'data'){
+$allowed = ['overview', 'companies', 'stores', 'accounts',
+			'tablets', 'finance', 'promotions', 'newclient',
+			'salesfaq', 'data', 'support'];
+if(!in_array($show, $allowed)){
 	$show = 'overview';
 }
-
 ?>
 <nav class="navbar navbar-inverse navbar-fixed-top">
   <div class="container-fluid">
@@ -72,6 +73,9 @@ if($show != 'overview' && $show != 'companies' && $show != 'stores' && $show != 
       </ul>
       <ul class="nav nav-sidebar">
 		<li data-page='newclient'><a href="?show=newclient">Setup New Client</a></li>
+      </ul>
+	  <ul class="nav nav-sidebar">
+		<li data-page='support'><a href="?show=support">Support</a></li>
       </ul>
       <ul class="nav nav-sidebar">
 		<li data-page='salesfaq'><a href="?show=salesfaq">Sales FAQ</a></li>

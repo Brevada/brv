@@ -256,7 +256,7 @@ bdff.create('live', function(canvas, face){
 	
 	face.datahook(10000, {
 			url : '/api/v1/bdff/live',
-			data : { 'store' : bdff.storeID(), 'hours' : 5 }
+			data : { 'store' : bdff.storeID(), 'hours' : 10 }
 		}, function(data){
 		if(data.hasOwnProperty('error') && data.error.length > 0){
 			bdff.log('Uh oh...');
