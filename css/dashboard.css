@@ -420,8 +420,8 @@ div.bottom-bar {
     font-size: 10px;
 }
 .pod .body .pod-body-left {
-    padding: 15px;
 	white-space: nowrap;
+    padding: 15px 0px 15px 10px;
 }
 .pod .body .pod-body-left .top {
     font-size: 20px;
