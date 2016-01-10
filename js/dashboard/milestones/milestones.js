@@ -14,9 +14,6 @@ bdff.create('milestones', function(canvas, face){
 		//		 renderMilestone on each
 		milestones.milestone.render(canvas, 1);
 		milestones.milestone.render(canvas, 2);
-		milestones.milestone.render(canvas, 3);
-		milestones.milestone.render(canvas, 4);
-		milestones.milestone.render(canvas, 5);
 	}
 
 	milestones.renderForm = function (canvas) {

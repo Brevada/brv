@@ -389,9 +389,9 @@ div.bottom-bar {
 .pod {
     overflow: hidden;
     background: #FFF;
-    -webkit-box-shadow: 0px 0px 5px 0px rgba(50, 50, 50, 0.75);
+/*    -webkit-box-shadow: 0px 0px 5px 0px rgba(50, 50, 50, 0.75);
     -moz-box-shadow: 0px 0px 5px 0px rgba(50, 50, 50, 0.75);
-    box-shadow: 0px 0px 5px 0px rgba(50, 50, 50, 0.75);
+    box-shadow: 0px 0px 5px 0px rgba(50, 50, 50, 0.75);*/
     -webkit-border-radius: 3px;
     -moz-border-radius: 3px;
     border-radius: 3px;
@@ -707,9 +707,9 @@ div.email-display-container .email .rating{
     border-radius: 2px;
     margin-bottom: 20px;
     overflow: hidden;
-    -webkit-box-shadow: 0px 0px 5px 0px rgba(50, 50, 50, 0.75);
+/*    -webkit-box-shadow: 0px 0px 5px 0px rgba(50, 50, 50, 0.75);
     -moz-box-shadow: 0px 0px 5px 0px rgba(50, 50, 50, 0.75);
-    box-shadow: 0px 0px 5px 0px rgba(50, 50, 50, 0.75);
+    box-shadow: 0px 0px 5px 0px rgba(50, 50, 50, 0.75);*/
     -webkit-border-radius: 3px;
     -moz-border-radius: 3px;
     border-radius: 3px;
@@ -741,9 +741,6 @@ div.email-display-container .email .rating{
     border-radius: 2px;
     margin-bottom: 20px;
     overflow: hidden;
-    -webkit-box-shadow: 0px 0px 5px 0px rgba(50, 50, 50, 0.75);
-    -moz-box-shadow: 0px 0px 5px 0px rgba(50, 50, 50, 0.75);
-    box-shadow: 0px 0px 5px 0px rgba(50, 50, 50, 0.75);
     -webkit-border-radius: 3px;
     -moz-border-radius: 3px;
     border-radius: 3px;
@@ -768,10 +765,23 @@ div.email-display-container .email .rating{
     float: left;
     font-weight: bold;
 }
-.milestone-body .date {
+.milestone-body .header .title .complete {
+    font-size: 10px;
+    color: #82cc0e;
+}
+.milestone-body .header .data {
     clear: both;
+}
+.milestone-body .header .data .date {
+    float: left;
     color: #666;
 }
+
+.milestone-body .header .data .completion {
+    float: left;
+    color: #666;
+}
+
 .milestone-body .body {
     max-height: 200px;
 }
@@ -814,7 +824,12 @@ div.email-display-container .email .rating{
     padding: 5px;
     background: #DDD;
 }
+.milestone-body .footer .complete-button {
+    font-weight: bold;
+    display: none; /* Javascript will display if appropriate */
+}
 .milestone-body .footer div {
+    cursor: pointer;
     display: inline-block;
     margin-left: 10px;
 }
