@@ -63,13 +63,12 @@ bdff.create('hoverpod', function(canvas, face){
 			data : { 'store' : bdff.storeID() }
 		}, function(data){
 		if(data.hasOwnProperty('error') && data.error.length > 0){
-			bdff.log('Uh oh...');
+			bdff.log('Logged out.');
+			location.reload();
 		} else if(data.hasOwnProperty('hoverpod')) {
 			setResponses(data.hoverpod.responses);
 			setTablets(data.hoverpod.tablets);
 			setStatus(data.hoverpod.mood);
-		} else {
-			bdff.log('Uh oh...');
 		}
 	});	
 	

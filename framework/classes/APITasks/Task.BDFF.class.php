@@ -239,11 +239,12 @@ class TaskBDFF extends AbstractTask
 		if(($stmt = Database::prepare("INSERT INTO `support` (`AccountID`, `Date`, `Message`) VALUES (?, NOW(), ?)")) !== false){
 			$stmt->bind_param('is', $accountID, $message);
 			if(!$stmt->execute()){
-				$insert_id = $stmt->insert_id;
 				$stmt->close();
 				throw new Exception("Unknown error.");
+			} else {
+				$insert_id = $stmt->insert_id;
+				$stmt->close();
 			}
-			$stmt->close();
 		}
 		
 		$company_name = ''; $company_phone = '';

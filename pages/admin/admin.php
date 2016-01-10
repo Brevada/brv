@@ -6,26 +6,11 @@ $this->addResource('/css/admin.css');
 $this->addResource('/js/jquery.tablesorter.min.js');
 $this->addResource('/js/admin.js');
 
-/*
-	Promo Codes
-	Finance
-	
-	Account (Edit/Link to Corporate)
-	Companies
-	Stores
-	
-	Add/Remove Categories/Keywords/AspectTypes
-	
-	Tablets
-	
-	Stats
-	
-	Logs
-*/
 $show = Brevada::FromGET('show');
 $allowed = ['overview', 'companies', 'stores', 'accounts',
 			'tablets', 'finance', 'promotions', 'newclient',
-			'salesfaq', 'data', 'support'];
+			'salesfaq', 'data', 'support', 'messages',
+			'supportguide', 'search'];
 if(!in_array($show, $allowed)){
 	$show = 'overview';
 }
@@ -76,6 +61,10 @@ if(!in_array($show, $allowed)){
       </ul>
 	  <ul class="nav nav-sidebar">
 		<li data-page='support'><a href="?show=support">Support</a></li>
+		<li data-page='supportguide'><a href="?show=supportguide">Support Guide</a></li>
+      </ul>
+	  <ul class="nav nav-sidebar">
+		<li data-page='messages'><a href="?show=messages">Messages</a></li>
       </ul>
       <ul class="nav nav-sidebar">
 		<li data-page='salesfaq'><a href="?show=salesfaq">Sales FAQ</a></li>

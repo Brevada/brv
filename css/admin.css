@@ -186,3 +186,5 @@ div.issue-pod {
     width: 100%;
     cursor: pointer;
 }
+
+.faq.faq-index li { text-decoration: underline; cursor: pointer; }

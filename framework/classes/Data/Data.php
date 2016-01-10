@@ -405,7 +405,9 @@ class Data
 		$stmt->close();
 		
 		if(empty($from) && empty($to)){
-			return new DataResult([[self::AVERAGE_RATING => 0.0, self::AVERAGE_DATE => 0, self::TOTAL_DATASIZE => 0]]);
+			return new DataResult([[self::AVERAGE_RATING => 0.0, self::AVERAGE_DATE => 0, self::TOTAL_DATASIZE => 0,
+									self::TOTAL_ONE_STAR => 0, self::TOTAL_TWO_STAR => 0, self::TOTAL_THREE_STAR => 0, 
+									self::TOTAL_FOUR_STAR => 0, self::TOTAL_FIVE_STAR => 0]]);
 		}
 		
 		$avgs = [];

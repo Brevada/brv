@@ -3,7 +3,7 @@ $(document).ready(function(){
 		window.location = '/'+$(this).data('link');
 	});
 
-	$('div.message-container div.close').click(function(){
+	$('body').on('click', 'div.message-container div.close', function(){
 		$(this).parent().slideUp();
 	});
 });
