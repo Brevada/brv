@@ -16,5 +16,5 @@ function insertRating(val, id) {
     return false;
 }
 function disappearRating(post_id) {
-	$("#aspect_"+post_id).addClass('rated');
+	$("#aspect_"+post_id).addClass('rated').slideUp(250);
 }

@@ -36,8 +36,6 @@ if($query->num_rows == 0) {
 	Brevada::Redirect('/404');
 }
 
-$_SESSION['SessionCode'] = strval(bin2hex(openssl_random_pseudo_bytes(16)));
-
 $store_id='';
 $name='';
 $user_extension='';

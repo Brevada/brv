@@ -9,19 +9,22 @@ class TaskFeedback extends AbstractTask
 			}
 			
 			/* Ensure all required data is present. */
-			if(TaskLoader::requiresData(['serial', 'now', 'rating', 'aspectID', 'session', 'batteryLevel', 'batteryIsPlugged'], $_POST)){
+			if(TaskLoader::requiresData(['serial', 'now', 'rating', 'aspectID', 'batteryLevel', 'batteryIsPlugged'], $_POST)){
 			
 				$serial = $_POST['serial'];
 				$time = $_POST['now'];
 				$rating = $_POST['rating'];
 				$aspectID = $_POST['aspectID'];
-				$sessionID = $_POST['session'];
+				$sessionID = Brevada::FromPOST('session');
 				$bLevel = $_POST['batteryLevel'];
 				$bPlugged = $_POST['batteryIsPlugged'];
 				
+				if(empty($sessionID)){
+					$sessionID = strval(bin2hex(openssl_random_pseudo_bytes(16)));
+				}
+				
 				/*
 					Insert into Database.
-					Use random string as session id, although it is meaningless in this case.
 				*/
 
 				if(TaskFeedback::insertRating($rating, $aspectID, $sessionID, $time)){
