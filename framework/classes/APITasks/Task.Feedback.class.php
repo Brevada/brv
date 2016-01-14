@@ -9,15 +9,13 @@ class TaskFeedback extends AbstractTask
 			}
 			
 			/* Ensure all required data is present. */
-			if(TaskLoader::requiresData(['serial', 'now', 'rating', 'aspectID', 'batteryLevel', 'batteryIsPlugged'], $_POST)){
+			if(TaskLoader::requiresData(['serial', 'now', 'rating', 'aspectID'], $_POST)){
 			
 				$serial = $_POST['serial'];
 				$time = $_POST['now'];
 				$rating = $_POST['rating'];
 				$aspectID = $_POST['aspectID'];
 				$sessionID = Brevada::FromPOST('session');
-				$bLevel = $_POST['batteryLevel'];
-				$bPlugged = $_POST['batteryIsPlugged'];
 				
 				if(empty($sessionID)){
 					$sessionID = strval(bin2hex(openssl_random_pseudo_bytes(16)));

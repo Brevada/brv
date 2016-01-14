@@ -39,17 +39,17 @@ app.custom.resetAll = function(){
 	$('html, body').scrollTop(0);
 	$('#email_connect').hide();
 	$('.rated').removeClass('rated').show();
+	$('#aspects').randomize('div.aspect');
 	$('#aspects, .fixed-toolbar').fadeIn(300);
 	$('#imdone').hide();
 };
 
-function insertRating(val, id) {	
+function insertRating(val, id) {
 	if(!$('#imdone').is(':visible')){
 		$('#imdone').slideDown(125);
 	}
 
 	var payload = {
-		serial : app.opts.system.uuid,
 		now : Math.floor((new Date()).getTime()/1000),
 		rating : val,
 		aspectID : id,
@@ -59,7 +59,7 @@ function insertRating(val, id) {
 	};
 
 	app.sendPayload(payload);
-	
+
 	$("#aspect_"+id).addClass('rated').slideUp(325, function(){
 		app.custom.inactivity.updateInteraction();
 		if($('div.aspect:not(.rated)').length == 0 && $('#aspects').is(':visible')){
@@ -145,5 +145,17 @@ app.custom.inactivity.inactiveB = function(){
 	}
 	app.custom.inactivity.updateInteraction();
 };
+
+$.fn.randomize = function(childElem) {
+	return this.each(function() {
+		var $this = $(this);
+		var elems = $this.children(childElem);
+		elems.sort(function() { return (Math.round(Math.random())-0.5); });
+		$this.detach(childElem);
+		for(var i=0; i < elems.length; i++){
+			$this.prepend(elems[i]);
+		}
+	});
+}
 
 app.custom.initialize();
