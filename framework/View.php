@@ -48,7 +48,7 @@ class View
 	public function printView()
 	{
 		if($this->DocType){
-			echo '<!DOCTYPE HTML>' . "\n";
+			echo '<!DOCTYPE html PUBLIC "-//WAPFORUM//DTD XHTML Mobile 1.2//EN" "http://www.openmobilealliance.org/tech/DTD/xhtml-mobile12.dtd">' . "\n";
 		}
 		
 		if($this->RootPage){

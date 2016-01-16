@@ -25,17 +25,14 @@
 		
 		var tipElement, tmr;
 		
-		/* TODO: Optimize subClassName assignment. */
-		
-		$(this).on({
+		$(this).not('.brv-tp-enabled').on({
 			mouseenter : function(){
-				opts.text = $(this).data('tooltip');
+				opts.text = $(this).attr('data-tooltip');
 				opts.subClassName = typeof opts.subClassName === 'undefined' ? '' : opts.subClassName;
 				getTipElement().removeClass(opts.subClassName);
-				opts.subClassName = $(this).data('tooltip-class');
+				opts.subClassName = $(this).attr('data-tooltip-class');
 				opts.subClassName = typeof opts.subClassName === 'undefined' ? '' : opts.subClassName;
 				tipElement.addClass(opts.subClassName);
-				
 				$(this).mousemove();
 			},
 			mousemove : function(e){
@@ -45,6 +42,8 @@
 				hide();
 			}
 		});
+		
+		$(this).addClass('brv-tp-enabled');
 		
 		function getTipElement(){
 			if(typeof tipElement !== 'undefined'){
@@ -74,7 +73,11 @@
 		
 		function hide(){
 			if(getTipElement().is(':visible')){
-				tipElement.stop().fadeOut(opts.fadeOutDuration);
+				tipElement.stop().fadeOut(opts.fadeOutDuration, function(){
+					stopTimer();
+					$(this).remove();
+					tipElement = undefined;
+				});
 			}
 		}
 		

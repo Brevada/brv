@@ -1,6 +1,8 @@
 user_data
 framework/logs
 
+*.pyc
+
 # OS generated
 Thumbs.db
 .DS_Store

@@ -1,5 +1,5 @@
 .star {
-	width: 20%; /*40x40*/
+	width: 20%;
 	max-height:60px;
 	margin: 0px;
 	display: inline-block;
@@ -17,7 +17,7 @@
 
 .holder > a:last-child > .star { float: right; }
 
-.star:hover {
+.star:active {
 	opacity:0.5;
 }
 

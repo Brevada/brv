@@ -14,9 +14,12 @@ session_start();
 
 mb_internal_encoding('UTF-8');
 mb_http_output('UTF-8');
+date_default_timezone_set('America/New_York');
 
-//header("Cache-Control: no-cache, must-revalidate"); // HTTP/1.1
-//header("Expires: Sat, 26 Jul 1997 05:00:00 GMT"); // Date in the past
+if(DEBUG){
+	header("Cache-Control: no-cache, must-revalidate"); // HTTP/1.1
+	header("Expires: Sat, 26 Jul 1997 05:00:00 GMT"); // Date in the past
+}
 
 function __autoload($c){
 	if(file_exists("classes/{$c}.php")){
@@ -24,10 +27,11 @@ function __autoload($c){
 	}
 }
 
-require 'classes/Language.php';
-require 'Minify.php';
-require 'Brevada.php';
-require 'View.php';
+require_once 'classes/Language.php';
+require_once 'Minify.php';
+require_once 'Brevada.php';
+require_once 'classes/Data/Data.php';
+require_once 'View.php';
 
 if(!empty($_GET['lang']) || !empty($_COOKIE['lang'])){
 	setLocalization(empty($_GET['lang']) ? $_COOKIE['lang'] : $_GET['lang'], true);
