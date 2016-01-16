@@ -47,7 +47,7 @@ $(document).ready(function() {
 		<span style="font-size:11px;"><?php _e('Toll free'); ?>: 1 (855) 484-7451 <br /> &copy; <?php echo date('Y'); ?> brevada.com</span>
 	</center>
 </div>
-
+<?php if(strstr($_SERVER['HTTP_USER_AGENT'], 'iPhone') || strstr($_SERVER['HTTP_USER_AGENT'], 'iPod')){ ?>
 <div id="download">
 	<div class="message">
 		Download the Brevada mobile app for free.
@@ -59,3 +59,4 @@ $(document).ready(function() {
 		<i class='fa fa-arrow-circle-o-down'></i>
 	</div>
 </div>
+<?php } ?>

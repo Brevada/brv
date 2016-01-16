@@ -13,12 +13,12 @@ $this->addResource('/js/dashboard/dashboard.js');
 
 $this->addResource('/js/dashboard/aspects/aspects.js');
 
-$this->addResource('/js/dashboard/milestones/milestones.js');
-$this->addResource('/js/dashboard/milestones/milestone.js');
-$this->addResource('/js/dashboard/milestones/aspects.js');
+//$this->addResource('/js/dashboard/milestones/milestones.js');
+//$this->addResource('/js/dashboard/milestones/milestone.js');
+//$this->addResource('/js/dashboard/milestones/aspects.js');
 
-$this->addResource('/js/dashboard/live/live.js');
-$this->addResource('/js/dashboard/support/support.js');
+//$this->addResource('/js/dashboard/live/live.js');
+//$this->addResource('/js/dashboard/support/support.js');
 $this->addResource('/js/dashboard/hoverpod/hoverpod.js');
 
 $this->addResource('/js/dashboard/dashboard-slide.js');
@@ -136,7 +136,7 @@ $aspectCount = $qAspects->fetch_assoc()['cnt'];
 				</div>
 				<div class='icon-subtext hidden-xs'><?php _e('Overall'); ?></div>
 			</button>
-
+			<!--
 			 <button data-id="live" class="btn btn-sidebar toggle-button icon-button">
 				<div class="icon">
 					<i class='fa fa-check'></i>
@@ -157,6 +157,7 @@ $aspectCount = $qAspects->fetch_assoc()['cnt'];
 				</div>
 				<div class='icon-subtext hidden-xs'><?php _e('Support'); ?></div>
 			</button>
+			-->
         </div>
     </div>
     <!-- Right Side -->

@@ -73,35 +73,12 @@ $this->add(new View('../template/home_header.php'));
                 </div>
             </div>
         </section>
-
-        <!-- Get Results -->
-        <section id="reviews">
-            <div class="container">
-                <div class="section-heading inverse scrollpoint sp-effect3">
-                <h1><?php _e("Stats"); ?></h1>
-                    <div class="divider"></div>
-                    <p><?php _e("We believe in <b>numbers</b>."); ?></p>
-                </div>
-                <style>
-                    .stat {
-                        display: inline-block;
-                    }
-                </style>
-                <div class="stat">
-                    Hi
-                </div>
-                <div class="stat">
-                    Hi
-                </div>
-
-            </div>
-        </section>
 		
-		<!-- Get Feedback -->
+		<!-- Benefits -->
         <section id="features">
             <div class="container">
                 <div class="section-heading scrollpoint sp-effect3">
-                    <h1><?php _e("Get Feedback"); ?></h1>
+                    <h1><?php _e("Receive Feedback"); ?></h1>
                     <div class="divider"></div>
                     <p><?php _e("We believe in <b>one-click feedback</b>."); ?></p>
                 </div>
@@ -178,7 +155,6 @@ $this->add(new View('../template/home_header.php'));
             </div>
         </section>
 
-        <!-- Get Results -->
         <section id="reviews">
             <div class="container">
                 <div class="section-heading inverse scrollpoint sp-effect3">
@@ -219,7 +195,7 @@ $this->add(new View('../template/home_header.php'));
             </div>
         </section>
 		
-		<!-- Pricing -->
+		<!-- PRICING -->
         <section id="screens">
                 <div class="container scrollpoint sp-effect3">
 					<div class="row">
