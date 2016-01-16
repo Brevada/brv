@@ -40,7 +40,7 @@ function numericalCSS($i){
 	return $i >= 0 ? 'positive' : 'negative';
 }
 
-$keyword_rows = [];
+$keywords = [];
 if(($stmt = Database::prepare("
 	SELECT company_keywords_link.CompanyKeywordID
 	FROM company_keywords_link
@@ -48,16 +48,12 @@ if(($stmt = Database::prepare("
 	company_keywords_link.`CompanyID` = ?")) !== false){
 	$stmt->bind_param('i', $company_id);
 	if($stmt->execute()){
-		$result = $stmt->get_result();
-		$keyword_rows = $result->fetch_all(MYSQLI_ASSOC);
+		$stmt->bind_result($keywordID);
+		while($stmt->fetch()){
+			$keywords[] = @intval($keywordID);
+		}
 	}
 	$stmt->close();
-}
-$keywords = [];
-foreach($keyword_rows as $row){
-	if(!empty($row['CompanyKeywordID'])){
-		$keywords[] = @intval($row['CompanyKeywordID']);
-	}
 }
 
 $data_overall4W = 0;
