@@ -1,5 +1,5 @@
 <?php
-class TaskBDFF extends AbstractTask
+class TaskBdff extends AbstractTask
 {
 	private $data;
 	
@@ -58,7 +58,7 @@ class TaskBDFF extends AbstractTask
 		
 		$company = $_SESSION['CompanyID'];
 		
-		$keyword_rows = [];
+		$keywords = [];
 		if(($stmt = Database::prepare("
 			SELECT company_keywords_link.CompanyKeywordID
 			FROM company_keywords_link
@@ -66,17 +66,12 @@ class TaskBDFF extends AbstractTask
 			company_keywords_link.`CompanyID` = ?")) !== false){
 			$stmt->bind_param('i', $company);
 			if($stmt->execute()){
-				$result = $stmt->get_result();
-				$keyword_rows = $result->fetch_all(MYSQLI_ASSOC);
+				$stmt->bind_result($keywordID);
+				while($stmt->fetch()){
+					$keywords = @intval($keywordID);
+				}
 			}
 			$stmt->close();
-		}
-		
-		$keywords = [];
-		foreach($keyword_rows as $row){
-			if(!empty($row['CompanyKeywordID'])){
-				$keywords[] = @intval($row['CompanyKeywordID']);
-			}
 		}
 		
 		$rows = [];
@@ -98,8 +93,10 @@ class TaskBDFF extends AbstractTask
 			ORDER BY `aspect_type`.`Title`")) !== false){
 			$stmt->bind_param('ii', $store, $company);
 			if($stmt->execute()){
-				$result = $stmt->get_result();
-				$rows = $result->fetch_all(MYSQLI_ASSOC);
+				$stmt->bind_result($a, $b, $c);
+				while($stmt->fetch()){
+					$rows[] = ['id' => $a, 'AspectTypeID' => $b, 'Title' => $c];
+				}
 			}
 			$stmt->close();
 		}
