@@ -51,8 +51,9 @@ if(($stmt = Database::prepare("SELECT `aspects`.`id` as `id`, `AspectTypeID`, `T
 	$stmt->bind_param('i', $storeID);
 	if($stmt->execute()){
 		$stmt->bind_result($id, $aspectTypeID, $title);
-		$res = $stmt->get_result();
-		$rows = $res->fetch_all(MYSQLI_ASSOC);
+		while($stmt->fetch()){
+			$rows[] = ['id' => $id, 'AspectTypeID' => $aspectTypeID, 'Title' => $title];
+		}
 		foreach($rows as $row){
 			$id = $row['id']; $aspectTypeID = $row['AspectTypeID'];
 			$title = $row['Title'];
