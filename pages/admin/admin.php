@@ -6,28 +6,14 @@ $this->addResource('/css/admin.css');
 $this->addResource('/js/jquery.tablesorter.min.js');
 $this->addResource('/js/admin.js');
 
-/*
-	Promo Codes
-	Finance
-	
-	Account (Edit/Link to Corporate)
-	Companies
-	Stores
-	
-	Add/Remove Categories/Keywords/AspectTypes
-	
-	Tablets
-	
-	Stats
-	
-	Logs
-*/
-
 $show = Brevada::FromGET('show');
-if($show != 'overview' && $show != 'companies' && $show != 'stores' && $show != 'accounts' && $show != 'tablets' && $show != 'finance' && $show != 'promotions' && $show != 'newclient' && $show != 'salesfaq' && $show != 'data'){
+$allowed = ['overview', 'companies', 'stores', 'accounts',
+			'tablets', 'finance', 'promotions', 'newclient',
+			'salesfaq', 'data', 'support', 'messages',
+			'supportguide', 'search'];
+if(!in_array($show, $allowed)){
 	$show = 'overview';
 }
-
 ?>
 <nav class="navbar navbar-inverse navbar-fixed-top">
   <div class="container-fluid">
@@ -63,7 +49,7 @@ if($show != 'overview' && $show != 'companies' && $show != 'stores' && $show != 
         <li data-page='accounts'><a href="?show=accounts">Accounts</a></li>
       </ul>
       <ul class="nav nav-sidebar">
-        <li data-page='companies'><a href="?show=data">Data Analysis</a></li>
+        <li data-page='data'><a href="?show=data">Data Analysis</a></li>
       </ul>
       <ul class="nav nav-sidebar">
 		<li data-page='tablets'><a href="?show=tablets">Tablets</a></li>
@@ -72,6 +58,13 @@ if($show != 'overview' && $show != 'companies' && $show != 'stores' && $show != 
       </ul>
       <ul class="nav nav-sidebar">
 		<li data-page='newclient'><a href="?show=newclient">Setup New Client</a></li>
+      </ul>
+	  <ul class="nav nav-sidebar">
+		<li data-page='support'><a href="?show=support">Support</a></li>
+		<li data-page='supportguide'><a href="?show=supportguide">Support Guide</a></li>
+      </ul>
+	  <ul class="nav nav-sidebar">
+		<li data-page='messages'><a href="?show=messages">Messages</a></li>
       </ul>
       <ul class="nav nav-sidebar">
 		<li data-page='salesfaq'><a href="?show=salesfaq">Sales FAQ</a></li>

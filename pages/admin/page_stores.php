@@ -32,6 +32,7 @@ if(!Permissions::has(Permissions::VIEW_ADMIN)){ Brevada::Redirect('/404'); }
 		<td><?php echo empty($phone) ? '' : $phone; ?></td>
 		<td class='options'>
 			<a href='<?php echo URL.$url; ?>' target='_blank'><i class='fa fa-link'></i></a>
+			<a href='admin?show=data&storeID=<?php echo $id; ?>'><i class='fa fa-pie-chart'></i></a>
 		</td>
       </tr>
 	<?php

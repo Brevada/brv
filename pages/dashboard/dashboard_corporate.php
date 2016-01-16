@@ -4,8 +4,11 @@ if($this->getParameter('valid') !== true){ Brevada::Redirect('/404'); }
 <?php
 $this->addResource('/css/layout.css');
 $this->addResource('/css/dashboard.css');
-$this->addResource('/js/dashboard.js');
-$this->addResource('/js/dashboard-slide.js');
+
+$this->addResource('/js/dashboard/dashboard.js');
+
+$this->addResource('/js/dashboard/dashboard-slide.js');
+$this->addResource('/js/dashboard/dashboard-graph.js');
 
 $this->addResource('/css/brevada.tooltip.css');
 $this->addResource('/js/brevada.tooltip.js');
@@ -37,43 +40,73 @@ function numericalCSS($i){
 	return $i >= 0 ? 'positive' : 'negative';
 }
 
-$data_overall4W = 0;
-$data_overallAll = 0;
-$data_relativeBenchmark = 0;
-
-if(($query = Database::prepare("SELECT AVG(dashboard.Data_Overall4W) as Data_Overall4W, AVG(dashboard.Data_OverallAll) as Data_OverallAll, AVG(dashboard.Data_RelativeBenchmark) as Data_RelativeBenchmark FROM `dashboard` LEFT JOIN `stores` ON `stores`.id = `dashboard`.StoreID WHERE `stores`.CompanyID = ?")) !== false){
-	$query->bind_param('i', $company_id);
-	if($query->execute()){
-		$query->bind_result($data_overall4W, $data_overallAll, $data_relativeBenchmark);
-		while($query->fetch()){
-			$data_overall4W = round((float) $data_overall4W + 0, 0);
-			$data_overallAll = round((float) $data_overallAll + 0, 0);
-			$data_relativeBenchmark = round((float) $data_relativeBenchmark + 0, 0);
-		}
+$keyword_rows = [];
+if(($stmt = Database::prepare("
+	SELECT company_keywords_link.CompanyKeywordID
+	FROM company_keywords_link
+	WHERE
+	company_keywords_link.`CompanyID` = ?")) !== false){
+	$stmt->bind_param('i', $company_id);
+	if($stmt->execute()){
+		$result = $stmt->get_result();
+		$keyword_rows = $result->fetch_all(MYSQLI_ASSOC);
 	}
-	$query->close();
+	$stmt->close();
+}
+$keywords = [];
+foreach($keyword_rows as $row){
+	if(!empty($row['CompanyKeywordID'])){
+		$keywords[] = @intval($row['CompanyKeywordID']);
+	}
 }
 
+$data_overall4W = 0;
+$data_overallAll = round((new Data())->company($company_id)->getAvg()->getRating(), 1);
+$data_relativeBenchmark = $data_overallAll - (new Data())->keyword($keywords)->getAvg()->getRating();
+
+$data_percent4W_A = (new Data())->company($company_id)->from(time()-(4*7*24*3600))->getAvg();
+$data_percent4W_B = (new Data())->company($company_id)->to(time()-(4*7*24*3600))->getAvg();
+$data_overall4W = null;
+if($data_percent4W_A->getSize() > 0){
+	$data_overall4W = $data_percent4W_A->getRating() - $data_percent4W_B->getRating();
+}
 
 $areasOfFocus = array();
 $areasOfLeastConcern = array();
-
-$query = Database::query("SELECT `stores`.`Name` FROM `stores` LEFT JOIN `dashboard` ON `dashboard`.StoreID = `stores`.id WHERE `stores`.CompanyID = {$company_id} ORDER BY `dashboard`.Data_OverallAll ASC LIMIT 2");
+$query = Database::query("SELECT `stores`.Name, AVG(`data_cache`.`TotalAverage`) as total_avg FROM `data_cache`
+						  JOIN aspect_type ON `data_cache`.Domain_AspectID = aspect_type.`id`
+						  JOIN aspects ON aspects.StoreID = `data_cache`.Domain_StoreID AND aspects.AspectTypeID = aspect_type.`id`
+						  JOIN `stores` ON `stores`.`id` = aspects.StoreID
+						  WHERE
+							`data_cache`.Domain_CompanyID = {$company_id}
+							AND `data_cache`.`DaysBack` = -1
+							AND `data_cache`.`EndDate` = '0000-00-00 00:00:00'
+							AND aspects.`Active` = 1
+						  GROUP BY `stores`.Name
+						  ORDER BY `data_cache`.`TotalAverage` ASC LIMIT 2");
 if($query !== false){
 	while($row = $query->fetch_assoc()){
 		$areasOfFocus[] = $row['Name'];
 	}
 	$query->close();
 }
-
-$query = Database::query("SELECT `stores`.`Name` FROM `stores` LEFT JOIN `dashboard` ON `dashboard`.StoreID = `stores`.id WHERE `stores`.CompanyID = {$company_id} ORDER BY `dashboard`.Data_OverallAll DESC LIMIT 2");
+$query = Database::query("SELECT `stores`.Name, AVG(`data_cache`.`TotalAverage`) as total_avg FROM `data_cache`
+						  JOIN aspect_type ON `data_cache`.Domain_AspectID = aspect_type.`id`
+						  JOIN aspects ON aspects.StoreID = `data_cache`.Domain_StoreID AND aspects.AspectTypeID = aspect_type.`id`
+						  JOIN `stores` ON `stores`.`id` = aspects.StoreID
+						  WHERE
+							`data_cache`.Domain_CompanyID = {$company_id}
+							AND `data_cache`.`DaysBack` = -1
+							AND `data_cache`.`EndDate` = '0000-00-00 00:00:00'
+							AND aspects.`Active` = 1
+						  GROUP BY `stores`.Name
+						  ORDER BY `data_cache`.`TotalAverage` DESC LIMIT 2");
 if($query !== false){
 	while($row = $query->fetch_assoc()){
 		$areasOfLeastConcern[] = $row['Name'];
 	}
 	$query->close();
 }
-
 $areasOfLeastConcern = array_diff($areasOfLeastConcern, $areasOfFocus);
 ?>
 
@@ -98,12 +131,7 @@ $areasOfLeastConcern = array_diff($areasOfLeastConcern, $areasOfFocus);
 	</div>
 
 	<div class="mid-banner row">
-			<a href="#" id="email-display" class="slide-down-trigger">
-				<div class='pull-left icon-button'>
-					<i class='fa fa-envelope-o'></i>
-					<div class='icon-subtext'><?php _e('Email List'); ?></div>
-				</div>
-			</a>
+		
 	</div>
 
 </div>
@@ -123,13 +151,9 @@ $areasOfLeastConcern = array_diff($areasOfLeastConcern, $areasOfFocus);
 </div>
 
 <?php
-$data_ratingPercentOther = 0;
-$query = Database::query("SELECT AVG(dashboard.Data_OverallAll) as DataAverage FROM `dashboard` LEFT JOIN `stores` ON `stores`.`id` = `dashboard`.StoreID WHERE `stores`.CompanyID = {$company_id}");
-while($row = $query->fetch_assoc()){
-	$data_ratingPercentOther = round((float) $row['DataAverage'] + 0, 1);
-}
+$data_ratingPercentOther = round((new Data())->company($company_id)->keyword($keywords)->getAvg()->getRating(), 1);
 
-$query = Database::query("SELECT `stores`.`id`, `stores`.`Name`, AVG(dashboard.Data_OverallAll) as Data_OverallAll, (SELECT COUNT(*) FROM `feedback` LEFT JOIN `aspects` ON `feedback`.AspectID = `aspects`.id WHERE `aspects`.StoreID = `stores`.`id` AND UNIX_TIMESTAMP(`feedback`.`Date`) < `aspects`.`Data_LastUpdate`) as TotalResponses FROM `stores` LEFT JOIN `dashboard` ON `dashboard`.StoreID = `stores`.id WHERE `stores`.CompanyID = {$company_id} GROUP BY `stores`.`id` ORDER BY `stores`.`Name` ASC");
+$query = Database::query("SELECT `stores`.`id`, `stores`.`Name` FROM `stores` LEFT JOIN `dashboard` ON `dashboard`.StoreID = `stores`.id WHERE `stores`.CompanyID = {$company_id} GROUP BY `stores`.`id` ORDER BY `stores`.`Name` ASC");
 ?>
 
 <!-- Left side -->
@@ -297,11 +321,11 @@ $query = Database::query("SELECT `stores`.`id`, `stores`.`Name`, AVG(dashboard.D
 		$storeID = $row['id'];
 		if(empty($title)){ continue; }
 		
-		/* Adding '0' forces float(0) rather than float(-0). */
+		$data = (new Data())->store($storeID)->getAvg();
 		
-		$data_ratingPercent = round((float) $row['Data_OverallAll'] + 0, 1);
+		$data_ratingPercent = round($data->getRating(), 1);
 		
-		$total_responses = ((int) $row['TotalResponses']);
+		$total_responses = $data->getSize();
 
 		if($data_ratingPercent >= 80) {
 			$colour = 'positive';
@@ -319,7 +343,7 @@ $query = Database::query("SELECT `stores`.`id`, `stores`.`Name`, AVG(dashboard.D
 			<div class="pod">
 				<div class="body">
 					<div class="header">
-						<span class='aspect-title link <?php echo $colour; ?>' data-link='dashboard?s=<?php echo $storeID; ?>'><?php _e($title); ?></span>
+						<span class='aspect-title link' data-link='dashboard?s=<?php echo $storeID; ?>'><?php _e($title); ?></span>
 					</div>
 					<div class="pull-right col-md-6 pod-body-right">
 						<div class='pod-body-rating <?php echo $colour; ?>-text'><?php echo "{$data_ratingPercent}%"; ?></div>
@@ -364,6 +388,11 @@ $query = Database::query("SELECT `stores`.`id`, `stores`.`Name`, AVG(dashboard.D
 	</div>
 </div>
 
-<div class="bottom-bar">
-	&copy; 2015 Brevada Inc. &nbsp;
-</div>
+<script type='text/javascript'>
+$('.graph').each(function(){
+	var percent = $(this).attr('data-percent');
+	var original = $(this).height();
+	var target = (parseFloat(percent)/100)*($(this).parent().height() - original);
+	$(this).animate({ height : Math.min(Math.floor(original+target), $(this).parent().height()) }, 1500);
+});
+</script>

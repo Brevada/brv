@@ -1,5 +1,5 @@
 <?php
-if(!Brevada::IsLoggedIn() || Permissions::has(Permissions::VIEW_STORE)){
+if(!Brevada::IsLoggedIn() || !Permissions::has(Permissions::VIEW_STORE)){
 	Brevada::Redirect('/logout');
 }
 

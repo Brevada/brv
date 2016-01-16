@@ -36,8 +36,6 @@ if($query->num_rows == 0) {
 	Brevada::Redirect('/404');
 }
 
-$_SESSION['SessionCode'] = strval(bin2hex(openssl_random_pseudo_bytes(16)));
-
 $store_id='';
 $name='';
 $user_extension='';
@@ -54,15 +52,16 @@ while($row=$query->fetch_assoc()){
 <div class="topbar">
 	<div class="container">
 		<div class="title">
-			<!-- <i class="fa fa-cutlery"></i>  -->  <?php echo sprintf(__('Give %s Feedback'), "<b>{$name}</b>"); ?>
+			<?php echo sprintf(__('Give %s Feedback'), "<b>{$name}</b>"); ?>
 		</div>
 		<div class="icons"><img class="logo" src="/images/quote.png" /></div>
 	</div>
 </div>
+<div class='push'></div>
 
 <div id="aspects" class="aspect-container container">
 	<?php
-	$postQuery=Database::query("SELECT aspects.ID, aspect_type.Title, aspect_type.Description as Description FROM aspects LEFT JOIN aspect_type ON aspect_type.ID = aspects.AspectTypeID WHERE aspects.StoreID = {$store_id} AND aspects.`Active` = 1 ORDER BY aspects.ID DESC");
+	$postQuery=Database::query("SELECT aspects.ID, aspect_type.Title, aspect_type.Description as Description FROM aspects LEFT JOIN aspect_type ON aspect_type.ID = aspects.AspectTypeID WHERE aspects.StoreID = {$store_id} AND aspects.`Active` = 1 ORDER BY aspect_type.Title");
 	if($postQuery !== false && $postQuery->num_rows > 0){
 		while($row=$postQuery->fetch_assoc()) {		
 			$this->add(new View('../widgets/profile/post_box.php', array('row' => $row, 'id' => $store_id)));
@@ -74,7 +73,6 @@ while($row=$query->fetch_assoc()){
 
 <div class="fixed-toolbar">
 	<div class="container">
-		<!-- <div class="help"><i class="fa fa-question-circle"></i> Help</div> -->
 		<div class="submit" id='imdone'><i class="fa fa-check"></i> <?php _e("I'm Done"); ?></div>
 	</div>
 </div>

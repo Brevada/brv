@@ -4,25 +4,27 @@ class TaskFeedback extends AbstractTask
 	public function execute($method, $tasks, &$data)
 	{
 		if($method == 'post'){
-			if($data['secure'] !== true){
+			if($data['secure'] !== true || !isset($data['tablet'])){
 				throw new Exception("Data integrity compromised.");
 			}
 			
 			/* Ensure all required data is present. */
-			if(TaskLoader::requiresData(['serial', 'now', 'rating', 'aspectID', 'batteryLevel', 'batteryIsPlugged'], $_POST)){
+			if(TaskLoader::requiresData(['serial', 'now', 'rating', 'aspectID'], $_POST)){
 			
 				$serial = $_POST['serial'];
 				$time = $_POST['now'];
 				$rating = $_POST['rating'];
 				$aspectID = $_POST['aspectID'];
-				$bLevel = $_POST['batteryLevel'];
-				$bPlugged = $_POST['batteryIsPlugged'];
+				$sessionID = Brevada::FromPOST('session');
+				
+				if(empty($sessionID)){
+					$sessionID = strval(bin2hex(openssl_random_pseudo_bytes(16)));
+				}
 				
 				/*
 					Insert into Database.
-					Use random string as session id, although it is meaningless in this case.
 				*/
-				$sessionID = bin2hex(openssl_random_pseudo_bytes(16));
+
 				if(TaskFeedback::insertRating($rating, $aspectID, $sessionID, $time)){
 					/* Good. */
 					Logger::info("Rating inserted via API: {$rating}, {$aspectID}, {$sessionID}, {$time}");
