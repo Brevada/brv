@@ -2,6 +2,9 @@
 if($this->getParameter('valid') !== true){ Brevada::Redirect('/404'); }
 ?>
 <?php
+$this->addResource('/css/bootstrap-datetimepicker.css');
+$this->addResource('/js/bootstrap-datetimepicker.min.js');
+
 $this->addResource('/css/layout.css');
 $this->addResource('/css/dashboard.css');
 
@@ -13,9 +16,7 @@ $this->addResource('/js/dashboard/dashboard.js');
 
 $this->addResource('/js/dashboard/aspects/aspects.js');
 
-//$this->addResource('/js/dashboard/milestones/milestones.js');
-//$this->addResource('/js/dashboard/milestones/milestone.js');
-//$this->addResource('/js/dashboard/milestones/aspects.js');
+$this->addResource('/js/dashboard/milestones/milestones.js');
 
 //$this->addResource('/js/dashboard/live/live.js');
 //$this->addResource('/js/dashboard/support/support.js');
@@ -143,14 +144,14 @@ $aspectCount = $qAspects->fetch_assoc()['cnt'];
 				</div>
 				<div class='icon-subtext hidden-xs'><?php _e('Live'); ?></div>
 			</button>
-
+			-->
 			<button type="button" data-id="milestones" class="btn btn-sidebar toggle-button icon-button">
 				<div class="icon">
 					<i class='fa fa-calendar'></i>
 				</div>
 				<div class='icon-subtext hidden-xs'><?php _e('Milestones'); ?></div>
 			</button>
-
+			<!--
 			<button type="button" data-id="support" class="btn btn-sidebar toggle-button icon-button">
 				<div class="icon">
 					<i class='fa fa-support'></i>
@@ -162,7 +163,7 @@ $aspectCount = $qAspects->fetch_assoc()['cnt'];
     </div>
     <!-- Right Side -->
     <div id="page-content-wrapper">
-    	<div class='aspect-area container'>
+    	<div class='aspect-area'>
 			<div id="main-container" class='row'>
 			<?php if(isset($_GET['thanks'])){ ?>
 			<div class="message-container">

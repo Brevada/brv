@@ -16,7 +16,7 @@ bdff.create('support', function(canvas, face){
 		if (message) {
 			canvas.find('textarea, .submit').hide();
 			
-			$.post('/api/v1/bdff/support', { 'message' : message, 'localtime' : Math.ceil(((new Date()).getTime()/1000)) }, function(data){
+			$.post('/api/v1/support/open', { 'message' : message, 'localtime' : Math.ceil(((new Date()).getTime()/1000)) }, function(data){
 				bdff.face('aspects');
 				bdff.notify('Thank you,', 'Your response has been received, you will be contacted shortly.', 'success');
 			}).fail(function(){

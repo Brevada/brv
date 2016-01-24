@@ -104,9 +104,9 @@ div.mid-banner .icon-button {
 
 
 
-@media (max-width:500px) {
+@media (max-width:505px) {
     div.mid-banner .icon-button {
-        width: 72px;
+        width: auto;
         font-size: 9px;
     }
 }
@@ -244,8 +244,8 @@ div.spacer {
 }
 div.aspect-area {
     height: auto;
-    overflow: hidden;
-    margin: 1em auto;
+    overflow: visible;
+    margin: 1em 0;
 }
 div.aspect-area div.message-container {
     padding: 25px 20px 10px 20px;
@@ -287,7 +287,7 @@ div.aspect-area div.row {
     width: 100%;
     max-width: 2000px;
     height: auto;
-    overflow: hidden;
+    overflow: visible;
     margin: 0 auto;
 }
 div.aspect-area div.row div.aspect-container {
@@ -628,14 +628,12 @@ div.email-display-container .email .rating{
 
 
 #wrapper {
-  padding-left: 100px;
   transition: all 0.4s ease 0s;
 }
 
 #sidebar-wrapper {
     padding: 0px 10px;
-    margin-left: -100px;
-    left: 100px;
+    left: 0;
     width: 130px;
     position: fixed;
     height: 100%;
@@ -649,6 +647,9 @@ div.email-display-container .email .rating{
 
 #page-content-wrapper {
     width: 100%;
+	margin: 0 auto;
+	padding: 0 0 0 120px;	
+	transition: all 0.4s ease 0s;
 }
 
 .sidebar-nav {
@@ -665,6 +666,14 @@ div.email-display-container .email .rating{
     #wrapper {
       padding-left: 0;
     }
+	
+	#page-content-wrapper {
+		padding: 0 0 0 60px;
+	}
+	
+	#sidebar-wrapper {
+		width: 60px;
+	}
 
     #sidebar-wrapper .sidebar button {
         width: 50px;
@@ -684,21 +693,12 @@ div.email-display-container .email .rating{
 
     }
 
-    #sidebar-wrapper {
-      left: 100px;
-    }
+}
 
-    #wrapper.active {
-      position: relative;
-      left: 100px;
-    }
-
-    #wrapper.active #sidebar-wrapper {
-      left: 100px;
-      width: 100px;
-      transition: all 0.4s ease 0s;
-    }
-
+@media (max-width:500px) {
+	#page-content-wrapper {
+		padding: 0 0 0 0;
+	}
 }
 
 .dashboard-pod {
@@ -719,22 +719,43 @@ div.email-display-container .email .rating{
     clear: both;
 }
 
-.milestone-form {
-    padding: 0px 0px 10px 15px;
+div.milestone {
+	transition: all 0.4s ease 0s;
 }
 
+.milestone-form {
+    margin-bottom: 1em;
+}
+.milestone-form .form-group:last-child {
+	text-align: center;
+	display: none;
+}
+.milestone-form .submit {
+	margin: 0.8em auto 0.3em auto;
+	background: none;
+	border: 1px solid #999;
+	outline: none;
+}
 .milestone-form input {
-    border: none;
     padding: 5px;
     font-size: 15px;
     outline: none;
     background: none;
+	border-top: 1px solid #999;
+	border-right: 1px solid #999;
+	border-left: 1px solid #999;
     border-bottom: 2px solid #999;
     border-radius: 1px;
 }
-.milestone-form input.title{
-    width: 300px;
+.milestone-form .input-group.date .input-group-addon {
+	outline: none;
+	background: none;
+	border-top: 1px solid #999;
+	border-right: 1px solid #999;
+	border-left: 1px solid #999;
+	border-bottom: 2px solid #999;
 }
+
 .milestone-body {
     padding: 0px;
     background: #EEE;
@@ -751,7 +772,6 @@ div.email-display-container .email .rating{
     cursor: pointer;
 }
 .milestone-body .header .bulb {
-    background: #82cc0e;
     width: 30px;
     height: 30px;
     border-radius: 3px;
@@ -791,7 +811,6 @@ div.email-display-container .email .rating{
 }
 .milestone-body .body .milestone-aspect .bulb {
     display: inline-block;
-    background: #82cc0e;
     width: 10px;
     height: 10px;
     border-radius: 2px;
@@ -810,6 +829,7 @@ div.email-display-container .email .rating{
 .milestone-body .body .milestone-aspect .clear {
     float: right;
     color: #999;
+	cursor: pointer;
 }
 .milestone-body .add {
     line-height: 15px;

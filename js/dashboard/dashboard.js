@@ -23,8 +23,8 @@ if(typeof bdff !== 'undefined'){
 		bdff.canvas('#main-container');
 		
 		bdff.faces['hoverpod'].attach('body');
-		/*bdff.faces['live'].attach();
-		bdff.faces['milestones'].attach();*/
+		/*bdff.faces['live'].attach();*/
+		bdff.faces['milestones'].attach();
 		bdff.faces['aspects'].attach();
 		
 		bdff.persistent('hoverpod');

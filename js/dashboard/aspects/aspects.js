@@ -148,7 +148,7 @@ bdff.create('aspects', function(canvas, face){
 	};
 	
 	face.datahook(0, {
-			url : '/api/v1/bdff/aspects',
+			url : '/api/v1/aspects/list',
 			data : { 'store' : bdff.storeID() }
 		}, function(data){
 		if(data.hasOwnProperty('error') && data.error.length > 0){
@@ -160,6 +160,7 @@ bdff.create('aspects', function(canvas, face){
 					aspect = aspects[data.aspects[i].id];
 				} else {
 					aspect = renderAspect(data.aspects[i].id);
+					aspects[data.aspects[i].id] = aspect;
 				}
 				
 				aspect.setTitle(data.aspects[i].title);
