@@ -1034,3 +1034,12 @@ div.milestone {
     background: #2ecc0e;
 }
 
+.complete-page {
+
+}
+
+/* Range Slider */
+.ui-rangeSlider-leftLabel {
+    background: blue;
+    color: #FFF;
+}

@@ -11,6 +11,11 @@ $this->addResource('/css/dashboard.css');
 $this->addResource('/css/brevada.tooltip.css');
 $this->addResource('/js/brevada.tooltip.js');
 
+$this->addResource('/js/jQRangeSlider/jQRangeSlider-min.js');
+$this->addResource('/js/jQRangeSlider/jQDateRangeSlider-min.js');
+// $this->addResource('/js/jQueryUI/jquery-ui.css');
+// $this->addResource('/js/jQueryUI/jquery-ui.js');
+
 $this->addResource('/js/Brevada.BDFF.js');
 $this->addResource('/js/dashboard/dashboard.js');
 
@@ -18,9 +23,16 @@ $this->addResource('/js/dashboard/aspects/aspects.js');
 
 $this->addResource('/js/dashboard/milestones/milestones.js');
 
-//$this->addResource('/js/dashboard/live/live.js');
-//$this->addResource('/js/dashboard/support/support.js');
+$this->addResource('/js/dashboard/milestones/milestone.js');
+$this->addResource('/js/dashboard/milestones/aspects.js');
+
+$this->addResource('/js/dashboard/live/live.js');
+
+$this->addResource('/js/dashboard/support/support.js');
+
 $this->addResource('/js/dashboard/hoverpod/hoverpod.js');
+
+$this->addResource('/js/dashboard/complete/complete.js');
 
 $this->addResource('/js/dashboard/dashboard-slide.js');
 $this->addResource('/js/dashboard/dashboard-graph.js');
@@ -131,20 +143,27 @@ $aspectCount = $qAspects->fetch_assoc()['cnt'];
     <div id="sidebar-wrapper">
 
         <div class="sidebar btn-group-vertical">
+
+        	<button type="button" data-id="complete" class="btn btn-sidebar toggle-button icon-button">
+				<div class="icon">
+					<i class='fa fa-area-chart'></i>
+				</div>
+				<div class='icon-subtext hidden-xs'><?php _e('Complete'); ?></div>
+			</button>
+
 	        <button type="button" data-id="aspects" class="btn btn-sidebar toggle-button icon-button">
 				<div class="icon">
 					<i class='fa fa-list'></i>
 				</div>
-				<div class='icon-subtext hidden-xs'><?php _e('Overall'); ?></div>
+				<div class='icon-subtext hidden-xs'><?php _e('Details'); ?></div>
 			</button>
-			<!--
+			
 			 <button data-id="live" class="btn btn-sidebar toggle-button icon-button">
 				<div class="icon">
 					<i class='fa fa-check'></i>
 				</div>
 				<div class='icon-subtext hidden-xs'><?php _e('Live'); ?></div>
 			</button>
-			-->
 			<button type="button" data-id="milestones" class="btn btn-sidebar toggle-button icon-button">
 				<div class="icon">
 					<i class='fa fa-calendar'></i>
