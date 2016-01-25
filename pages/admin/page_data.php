@@ -4,12 +4,13 @@ if(!Permissions::has(Permissions::VIEW_ADMIN)){ Brevada::Redirect('/404'); }
 
 $storeName = empty($_GET['storeID']) || is_numeric($_GET['storeID']) ? false : trim($_GET['storeID']);
 $storeID = empty($_GET['storeID']) ? false : @intval($_GET['storeID']);
+$companyID = -1;
 
 if($storeID !== false && $storeName === false){
-	if(($stmt = Database::prepare("SELECT `Name`, `id` FROM `stores` WHERE `stores`.`id` = ? LIMIT 1")) !== false){
+	if(($stmt = Database::prepare("SELECT `Name`, `id`, `CompanyID` FROM `stores` WHERE `stores`.`id` = ? LIMIT 1")) !== false){
 		$stmt->bind_param('i', $storeID);
 		if($stmt->execute()){
-			$stmt->bind_result($storeName, $storeID);
+			$stmt->bind_result($storeName, $storeID, $companyID);
 			$stmt->fetch();
 		}
 		$stmt->close();
@@ -17,12 +18,12 @@ if($storeID !== false && $storeName === false){
 } else if($storeName !== false){
 	$storeNameLike = "%{$storeName}%";
 	if(($stmt = Database::prepare("
-		SELECT `Name`, `id` FROM ((SELECT `Name`, `id` FROM `stores` WHERE `stores`.`Name` = ?)
+		SELECT `Name`, `id` FROM ((SELECT `Name`, `id`, `CompanyID` FROM `stores` WHERE `stores`.`Name` = ?)
 		UNION
 		(SELECT `Name`, `id` FROM `stores` WHERE `stores`.`Name` LIKE ?)) S LIMIT 1")) !== false){
 		$stmt->bind_param('ss', $storeName, $storeNameLike);
 		if($stmt->execute()){
-			$stmt->bind_result($storeName, $storeID);
+			$stmt->bind_result($storeName, $storeID, $companyID);
 			$stmt->fetch();
 		}
 		$stmt->close();
@@ -44,9 +45,24 @@ if($storeID !== false && $storeName === false){
 <?php if(!$storeID){ ?>
 	<p>No store is selected.</p>
 <?php } else { ?>
-<div class='row'>
-<div class='well well-sm'>The past 60 days of data.</div>
 <?php
+$keywords = [];
+if(($stmt = Database::prepare("
+	SELECT company_keywords_link.CompanyKeywordID
+	FROM company_keywords_link
+	WHERE
+	company_keywords_link.`CompanyID` = ?")) !== false){
+	$stmt->bind_param('i', $companyID);
+	if($stmt->execute()){
+		$stmt->bind_result($keywordID);
+		while($stmt->fetch()){
+			$keywords = @intval($keywordID);
+		}
+	}
+	$stmt->close();
+}
+
+$rows = [];
 if(($stmt = Database::prepare("SELECT `aspects`.`id` as `id`, `AspectTypeID`, `Title` FROM `aspects` JOIN `aspect_type` ON `aspect_type`.`id` = `aspects`.`AspectTypeID` WHERE `Active` = 1 AND `StoreID` = ? ORDER BY `Title`")) !== false){
 	$stmt->bind_param('i', $storeID);
 	if($stmt->execute()){
@@ -54,95 +70,221 @@ if(($stmt = Database::prepare("SELECT `aspects`.`id` as `id`, `AspectTypeID`, `T
 		while($stmt->fetch()){
 			$rows[] = ['id' => $id, 'AspectTypeID' => $aspectTypeID, 'Title' => $title];
 		}
+	}
+}
+?>
+<div class='row'>
+<div class='well well-sm'>Breakdown by Aspects</div>
+	<table class='table table-striped tablesorter-default'>
+		<thead>
+			<th>Aspect</th>
+			<th>Responses</th>
+			<th>Rating</th>
+		</thead>
+		<tbody>
+		<?php
 		foreach($rows as $row){
-			$id = $row['id']; $aspectTypeID = $row['AspectTypeID'];
+			$id = $row['id'];
+			$aspectTypeID = $row['AspectTypeID'];
 			$title = $row['Title'];
 			
-			$data = (new Data())->store(295)->aspectType($aspectTypeID)->from(time() - (60*24*3600));
-			$result = $data->getAvg(5);
+			$data = (new Data())->store($storeID)->aspectType($aspectTypeID);
+			$result = $data->getAvg();
 			
-			$labelArray = [];
-			$dataArray = [];
-			
-			$sum = 0;
-			
-			for($i = 0; $i < 5; $i++){
-				$dataArray[] = $result->getRating($i) ? $result->getRating($i) : 0;
-				$labelArray[] = "'".date('M jS', $result->getUTC($i))." (".$result->getSize($i).")'";
-				$sum += $result->getSize($i);
-			}
-			
-			$labelArray = implode(',', $labelArray);
-			$dataArray = implode(',', $dataArray);
-			?>
-			<div class='col-lg-3 col-md-6 col-sm-12'>
-				<div class='panel panel-default'>
-					<div class='panel-heading'>
-						<?php echo $title; ?>
-						<span style='float: right;'><?php echo $data->getAvg(); ?>%</span>
-					</div>
-					<div class='panel-body aspect-chart'>
-						<?php if($sum > 0){ ?>
-						<div class='chart-container'>
-						<canvas id='aspect-<?php echo $id; ?>' class='aspect-chart'></canvas>
-						</div>
-						<script type='text/javascript'>
-							new Chart(document.getElementById("aspect-<?php echo $id; ?>")
-							.getContext('2d'), {
-								type: 'bar',
-								data: {
-									labels: [<?php echo $labelArray; ?>],
-									datasets: [
-										{
-											label: "<?php echo $title; ?>",
-											fill: true,
-											backgroundColor: "rgba(255,43,43,1)",
-											borderColor: "rgba(220,220,220,1)",
-											pointBackgroundColor: "rgba(220,220,220,1)",
-											pointBorderColor: "#fff",
-											pointHoverBackgroundColor: "#fff",
-											pointHoverBorderColor: "rgba(220,220,220,1)",
-											borderWidth: 0.5,
-											data: [<?php echo $dataArray; ?>]
-										}
-									]
-								},
-								options: {
-									responsive : true, maintainAspectRatio : false,
-									scales : {
-										xAxes: [{
-											ticks : {
-												autoSkip: false
-											}
-										}],
-										yAxes: [{
-											ticks : {
-												beginAtZero: true,
-												min: 0,
-												max: 100,
-											}
-										}]
-									},
-									legend : {
-										display: false
-									},
-									title : {
-										display: false
-									}
-								}
-							});
-						</script>
-						<?php } else { ?>
-						<i class='fa fa-ban'></i>
-						<p>No data available.</p>
-						<?php } ?>
-					</div>
-				</div>
-			</div>
-			<?php
+			echo "<tr>";
+			echo "<td>{$title}</td>";
+			echo "<td>".$result->getSize()."</td>";
+			echo "<td>".$result->getRating()."%</td>";
+			echo "</tr>";
 		}
+		?>
+		</tbody>
+	</table>
+</div>
+
+<div class='row'>
+<div class='well well-sm'>60 Days Overall Performance</div>
+<?php
+	$self = (new Data())->store($storeID)->from(time() - (60*24*3600))->getAvg(60);
+	$labelArray_self = [];
+	$dataArray_self = [];
+	for($i = 0; $i < 60; $i++){
+		$dataArray_self[] = $self->getRating($i) ? $self->getRating($i) : 0;
+		$labelArray_self[] = "'".date('M jS', $self->getUTC($i))." (".$self->getSize($i).")'";
 	}
-	$stmt->close();
+	$labelArray_self = implode(',', $labelArray_self);
+	$dataArray_self = implode(',', $dataArray_self);
+	
+	$other = (new Data())->keyword($keywords)->from(time() - (60*24*3600))->getAvg(60);
+	$dataArray_other = [];
+	for($i = 0; $i < 60; $i++){
+		$dataArray_other[] = $other->getRating($i) ? $other->getRating($i) : 0;
+	}
+	$dataArray_other = implode(',', $dataArray_other);
+?>
+	<div class='aspect-chart'>
+		<div class='chart-container'>
+		<canvas id='oneyear_overall' class='aspect-chart'></canvas>
+		</div>
+		<script type='text/javascript'>
+			new Chart(document.getElementById("oneyear_overall")
+			.getContext('2d'), {
+				type: 'line',
+				data: {
+					labels: [<?php echo $labelArray_self; ?>],
+					datasets: [
+						{
+							label: "<?php echo $storeName; ?>",
+							fill: true,
+							backgroundColor: "rgba(255,43,43,1)",
+							borderColor: "rgba(255,43,43,1)",
+							pointBackgroundColor: "rgba(255,43,43,1)",
+							pointBorderColor: "#fff",
+							pointHoverBackgroundColor: "#fff",
+							pointHoverBorderColor: "rgba(220,220,220,1)",
+							borderWidth: 0.5,
+							data: [<?php echo $dataArray_self; ?>]
+						},
+						{
+							label: "Industry",
+							fill: true,
+							backgroundColor: "#428bca",
+							borderColor: "#428bca",
+							pointBackgroundColor: "#428bca",
+							pointBorderColor: "#fff",
+							pointHoverBackgroundColor: "#fff",
+							pointHoverBorderColor: "rgba(220,220,220,1)",
+							borderWidth: 0.5,
+							data: [<?php echo $dataArray_other; ?>]
+						}
+					]
+				},
+				options: {
+					responsive : true, maintainAspectRatio : false,
+					stacked: true,
+					scales : {
+						xAxes: [{
+							ticks : {
+								autoSkip: false,
+								display: false
+							},
+							gridLines: {
+								display: false
+							}
+						}],
+						yAxes: [{
+							ticks : {
+								beginAtZero: true,
+								min: 0,
+								max: 110,
+								display: false
+							},
+							gridLines: {
+								display: false
+							}
+						}]
+					},
+					legend : {
+						display: false
+					},
+					title : {
+						display: false
+					}
+				}
+			});
+		</script>
+	</div>
+</div>
+
+<div class='row'>
+<div class='well well-sm'>The past 60 days of data.</div>
+<?php
+foreach($rows as $row){
+	$id = $row['id']; $aspectTypeID = $row['AspectTypeID'];
+	$title = $row['Title'];
+	
+	$data = (new Data())->store($storeID)->aspectType($aspectTypeID)->from(time() - (60*24*3600));
+	$result = $data->getAvg(5);
+	
+	$labelArray = [];
+	$dataArray = [];
+	
+	$sum = 0;
+	
+	for($i = 0; $i < 5; $i++){
+		$dataArray[] = $result->getRating($i) ? $result->getRating($i) : 0;
+		$labelArray[] = "'".date('M jS', $result->getUTC($i))." (".$result->getSize($i).")'";
+		$sum += $result->getSize($i);
+	}
+	
+	$labelArray = implode(',', $labelArray);
+	$dataArray = implode(',', $dataArray);
+	?>
+	<div class='col-lg-3 col-md-6 col-sm-12'>
+		<div class='panel panel-default'>
+			<div class='panel-heading'>
+				<?php echo $title; ?>
+				<span style='float: right;'><?php echo $data->getAvg(); ?>%</span>
+			</div>
+			<div class='panel-body aspect-chart'>
+				<?php if($sum > 0){ ?>
+				<div class='chart-container'>
+				<canvas id='aspect-<?php echo $id; ?>' class='aspect-chart'></canvas>
+				</div>
+				<script type='text/javascript'>
+					new Chart(document.getElementById("aspect-<?php echo $id; ?>")
+					.getContext('2d'), {
+						type: 'bar',
+						data: {
+							labels: [<?php echo $labelArray; ?>],
+							datasets: [
+								{
+									label: "<?php echo $title; ?>",
+									fill: true,
+									backgroundColor: "rgba(255,43,43,1)",
+									borderColor: "rgba(220,220,220,1)",
+									pointBackgroundColor: "rgba(220,220,220,1)",
+									pointBorderColor: "#fff",
+									pointHoverBackgroundColor: "#fff",
+									pointHoverBorderColor: "rgba(220,220,220,1)",
+									borderWidth: 0.5,
+									data: [<?php echo $dataArray; ?>]
+								}
+							]
+						},
+						options: {
+							responsive : true, maintainAspectRatio : false,
+							scales : {
+								xAxes: [{
+									ticks : {
+										autoSkip: false
+									}
+								}],
+								yAxes: [{
+									ticks : {
+										beginAtZero: true,
+										min: 0,
+										max: 100,
+									}
+								}]
+							},
+							legend : {
+								display: false
+							},
+							title : {
+								display: false
+							}
+						}
+					});
+				</script>
+				<?php } else { ?>
+				<i class='fa fa-ban'></i>
+				<p>No data available.</p>
+				<?php } ?>
+			</div>
+		</div>
+	</div>
+	<?php
 }
 ?>
 </div>

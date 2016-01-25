@@ -17,7 +17,7 @@ if(($query = Database::query("SELECT `company_features`.`MaxTablets` FROM `compa
 	$maxTablets = @intval($query->fetch_assoc()['MaxTablets']);
 }
 
-if(($query = Database::query("SELECT `tablets`.`id`, `tablets`.`Status`, `stores`.`Name` as StoreName FROM `tablets` LEFT JOIN `stores` ON `stores`.id = `tablets`.`StoreID` WHERE `stores`.CompanyID = {$_SESSION['CompanyID']} ORDER BY `tablets`.`id` ASC")) !== false){
+if(($query = Database::query("SELECT `tablets`.`id`, `tablets`.`Status`, `tablets`.`BatteryPercent`, `stores`.`Name` as StoreName FROM `tablets` LEFT JOIN `stores` ON `stores`.id = `tablets`.`StoreID` WHERE `stores`.CompanyID = {$_SESSION['CompanyID']} ORDER BY `tablets`.`id` ASC")) !== false){
 	$numTablets = $query->num_rows;
 }
 
@@ -37,6 +37,7 @@ if(isset($_GET['thanks'])){
 		<thead>
 			<th><?php _e("Tablet ID"); ?></th>
 			<th><?php _e("Store"); ?></th>
+			<th><?php _e("Battery"); ?></th>
 			<th><?php _e("Status"); ?></th>
 		</thead>
 		<tbody>
@@ -46,10 +47,12 @@ if(isset($_GET['thanks'])){
 						$id = $row['id'];
 						$storeName = $row['StoreName'];
 						$status = $row['Status'];
+						$battery = isset($row['BatteryPercent']) ? round($row['BatteryPercent']).'%' : 'N/A';
 			?>
 						<tr>
 							<td>#<?php echo $id; ?></td>
 							<td><?php echo ucwords($storeName); ?></td>
+							<td><?php echo $battery; ?></td>
 							<td><?php _e(ucwords($status)); ?></td>
 						</tr>
 			<?php

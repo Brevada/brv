@@ -19,5 +19,20 @@ if(!isset($_SESSION['Last_ReportTablet'])){
 	$_SESSION['Last_ReportTablet'] = time();
 }
 
+$fields[] = [ 'title' => 'Company', 'value' => htmlentities('#'.$_SESSION['CompanyID']), 'short' => true ];
+$fields[] = [ 'title' => 'Account', 'value' => htmlentities('#'.$_SESSION['AccountID']), 'short' => true ];
+Slack::send([
+	'username' => 'BrevadaSupport',
+	'channel' => '#support',
+	'attachments' => [
+		[
+			'fallback' => "User reported broken tablet.",
+			'pretext' => "User reported broken tablet.",
+			'color' => '#FF2B2B',
+			'fields' => $fields
+		]
+	]
+]);
+
 Brevada::Redirect('/settings?section=tablets&thanks=1');
 ?>
