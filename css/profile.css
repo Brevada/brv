@@ -5,7 +5,6 @@ body{
 	color: #FBFBFB;
 	font-family: 'Roboto', sans-serif;
 	font-weight: 100;
-	margin-top: 60px;
 }
 #loading {
 	width:100%;
@@ -28,14 +27,27 @@ body{
 }
 
 .topbar{
-	position: fixed;
 	z-index: 999;
 	width: 100%;
-	top: 0px;
-	left: 0px;
 	padding: 20px 10px;
 	background: #FFF;
-
+	-webkit-transition: all 0.5s ease;
+    -moz-transition: all 0.5s ease;
+    -o-transition: all 0.5s ease;
+    transition: all 0.5s ease;
+}
+.topbar.fixed {
+	position: fixed;
+	top: 0px;
+	left: 0px;
+	padding: 5px 10px;
+	-webkit-transition: all 0.5s ease;
+    -moz-transition: all 0.5s ease;
+    -o-transition: all 0.5s ease;
+    transition: all 0.5s ease;
+}
+.topbar.fixed .title {
+	font-size: 12px;
 }
 .topbar .title{
 	color: #999;
@@ -43,12 +55,10 @@ body{
 	line-height: 30px;
 	float:left;
 }
-.topbar .icons{
-	float:right;
-}
-.topbar .icons .logo{
-	opacity: 0.9;
+.topbar .logo{
 	height: 30px;
+	margin-right: 15px;
+	float:left;
 }
 .container{
 	width: 100%;
@@ -80,7 +90,7 @@ body{
 }
 .bottom-spacer{
 	width: 100%;
-	height: 75px;
+	height: 25px;
 }
 #communicate_form{
 	padding: 15px 15px;
