@@ -48,10 +48,11 @@ $this->addResource("<meta property='og:description' content='Give {$name} Feedba
 	
 <div class="topbar">
 	<div class="container">
+		<img class="logo" src="/images/quote.png" />
 		<div class="title">
-			<img class="logo" src="/images/quote.png" />
 			<?php echo sprintf(__('Give %s Feedback'), "<b>{$name}</b>"); ?>
 		</div>
+		<i class="fa fa-arrow-circle-down"></i>
 	</div>
 </div>
 

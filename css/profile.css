@@ -26,15 +26,20 @@ body{
 	z-index:100;
 }
 
-.topbar{
+.topbar {
 	z-index: 999;
 	width: 100%;
 	padding: 20px 10px;
 	background: #FFF;
+	text-align: center;
 	-webkit-transition: all 0.5s ease;
     -moz-transition: all 0.5s ease;
     -o-transition: all 0.5s ease;
     transition: all 0.5s ease;
+}
+.topbar i {
+	color: #FF2B2B;
+	font-size: 80px;
 }
 .topbar.fixed {
 	position: fixed;
@@ -46,6 +51,9 @@ body{
     -o-transition: all 0.5s ease;
     transition: all 0.5s ease;
 }
+.topbar.fixed i {
+	display: none;
+}
 .topbar.fixed .title {
 	font-size: 12px;
 }
@@ -53,12 +61,10 @@ body{
 	color: #999;
 	font-size: 20px;
 	line-height: 30px;
-	float:left;
+	margin-top: 10px;
 }
 .topbar .logo{
 	height: 30px;
-	margin-right: 15px;
-	float:left;
 }
 .container{
 	width: 100%;
