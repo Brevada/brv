@@ -55,6 +55,7 @@ $this->addResource("<meta property='og:description' content='Give {$name} Feedba
 		<i class="fa fa-arrow-circle-down"></i>
 	</div>
 </div>
+<div class="top-spacer"></div>
 
 <div id="aspects" class="aspect-container container">
 	<?php

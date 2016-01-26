@@ -39,7 +39,15 @@ body{
 }
 .topbar i {
 	color: #FF2B2B;
-	font-size: 80px;
+	font-size: 100px;
+	cursor: pointer;
+}
+.top-spacer {
+	display: none;
+	height: 175px;
+}
+.top-spacer.fixed {
+	display: block;
 }
 .topbar.fixed {
 	position: fixed;
