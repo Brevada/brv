@@ -7,7 +7,7 @@ $command = trim(Brevada::FromPOST('command'));
 
 if(empty($tablet) || empty($command)){ Brevada::Redirect('/admin?show=tablets&error'); }
 
-if(($stmt = Database::prepare("INSERT INTO `tablet_commands` (`TabletID`, `Command`, `DateIssued`) VALUES (?, ?, NOW())")) !== false){
+if(($stmt = Database::prepare("INSERT INTO `tablet_commands` (`TabletID`, `Command`, `DateIssued`) VALUES (?, ?, UNIX_TIMESTAMP(NOW()))")) !== false){
 	$stmt->bind_param('is', $tablet, $command);
 	if(!$stmt->execute()){
 		Brevada::Redirect('/admin?show=tablets&error');
