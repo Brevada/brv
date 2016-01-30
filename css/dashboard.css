@@ -805,7 +805,7 @@ div.milestone {
 }
 
 .milestone-body .body {
-    max-height: 200px;
+
 }
 .milestone-body .body .milestone-aspect {
     padding: 10px;
@@ -1036,3 +1036,4 @@ div.milestone {
     background: #2ecc0e;
 }
 
+div.full-loader { margin: 0 auto; text-align: center; width: 100%; display: block; font-size: 20em; opacity: 0.05; overflow: hidden; }
