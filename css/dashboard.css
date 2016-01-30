@@ -531,6 +531,8 @@ div.slide-down {
     padding:20px;
     background: #FFF;
     display: none;
+	position: relative;
+	top: -12px;
 }
 div.slide-down .slide-down-button {
     display: inline-block;
