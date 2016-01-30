@@ -16,6 +16,7 @@ app.custom.initialize = function(){
 	$('#reset').click(app.custom.resetAll);
 
 	app.custom.resizestars();
+	$('#aspects').randomize('div.aspect');
 
 	app.custom.inactivity.updateInteraction();
 
