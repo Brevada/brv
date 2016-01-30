@@ -48,16 +48,16 @@ while($row=$query->fetch_assoc()){
 }
 ?>
 
-	
 <div class="topbar">
 	<div class="container">
+		<img class="logo" src="/images/quote.png" />
 		<div class="title">
 			<?php echo sprintf(__('Give %s Feedback'), "<b>{$name}</b>"); ?>
 		</div>
-		<div class="icons"><img class="logo" src="/images/quote.png" /></div>
+		<i class="fa fa-arrow-circle-down"></i>
 	</div>
 </div>
-<div class='push'></div>
+<div class="top-spacer"></div>
 
 <div id="aspects" class="aspect-container container">
 	<?php
