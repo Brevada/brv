@@ -9,6 +9,9 @@ class Data
 	const AVERAGE_RATING = 'AverageRating';
 	const AVERAGE_DATE = 'AverageDate';
 	const TOTAL_DATASIZE = 'TotalDataSize';
+	const FROM_DATE = 'FromDate';
+	const TO_DATE = 'ToDate';
+	
 	const TOTAL_ONE_STAR = 'Total1Star';
 	const TOTAL_TWO_STAR = 'Total2Star';
 	const TOTAL_THREE_STAR = 'Total3Star';
@@ -249,19 +252,31 @@ class Data
 					$sumDate = 0; $sumRating = 0;
 					$count = 0;
 					
+					$minDate = -1;
+					$maxDate = -1;
+					
 					foreach($cluster as $datapoint){
 						$rDate = @intval($datapoint['date']);
 						if($this->dFrom <= $rDate && $rDate <= $this->dTo){
 							$sumRating += floatval($datapoint['rating']);
 							$sumDate += $rDate;
 							$count++;
+							
+							$minDate = $minDate == -1 ? $rDate : min($rDate, $minDate);
+							$maxDate = $maxDate == -1 ? $rDate : max($rDate, $maxDate);
 						}
 					}
 					
 					$avgRating = $count > 0 ? round($sumRating / $count, 2) : 0;
 					$avgDate = $count > 0 ? ceil($sumDate / $count) : null;
 					
-					$clusterAvgs[] = [self::AVERAGE_RATING => $avgRating, self::AVERAGE_DATE => $avgDate, self::TOTAL_DATASIZE => $count];
+					$clusterAvgs[] = [
+						self::AVERAGE_RATING => $avgRating,
+						self::AVERAGE_DATE => $avgDate,
+						self::TOTAL_DATASIZE => $count,
+						self::FROM_DATE => $minDate,
+						self::TO_DATE => $maxDate
+					];
 				}
 				
 				$avgs[] = $clusterAvgs;
@@ -284,7 +299,10 @@ class Data
 		$clusterAvgs = $this->getAveragedClusters();
 
 		if(empty($clusterAvgs)){
-			return new DataResult([[self::AVERAGE_RATING => 0.0, self::AVERAGE_DATE => 0, self::TOTAL_DATASIZE => 0]]);
+			return new DataResult([[
+				self::AVERAGE_RATING => 0.0, self::AVERAGE_DATE => 0, self::TOTAL_DATASIZE => 0,
+				self::FROM_DATE => -1, self::TO_DATE => -1
+			]]);
 		}
 		
 		$result = [];
@@ -318,7 +336,10 @@ class Data
 		
 		/* Squeeze into $numPoints. This damages kMedoid property. */
 		$density = ceil(count($result)/$numPoints);
-		$squeezed = array_fill(0, min($numPoints, max(count($result), 1)), [self::AVERAGE_RATING => 0.0, self::AVERAGE_DATE => 0, self::TOTAL_DATASIZE => 0]);
+		$squeezed = array_fill(0, min($numPoints, max(count($result), 1)), [
+			self::AVERAGE_RATING => 0.0, self::AVERAGE_DATE => 0, self::TOTAL_DATASIZE => 0,
+			self::FROM_DATE => -1, self::TO_DATE => -1
+		]);
 		
 		for($i = 0; $i < count($squeezed); $i++){
 			for($j = 0; $j < $density; $j++){
@@ -407,7 +428,8 @@ class Data
 		if(empty($from) && empty($to)){
 			return new DataResult([[self::AVERAGE_RATING => 0.0, self::AVERAGE_DATE => 0, self::TOTAL_DATASIZE => 0,
 									self::TOTAL_ONE_STAR => 0, self::TOTAL_TWO_STAR => 0, self::TOTAL_THREE_STAR => 0, 
-									self::TOTAL_FOUR_STAR => 0, self::TOTAL_FIVE_STAR => 0]]);
+									self::TOTAL_FOUR_STAR => 0, self::TOTAL_FIVE_STAR => 0,
+									self::FROM_DATE => -1, self::TO_DATE => -1]]);
 		}
 		
 		$avgs = [];
@@ -459,7 +481,8 @@ class Data
 				$avg_date = floor(($kTo + $kFrom)/2);
 				$avgs[] = [self::AVERAGE_RATING => $avg_rating, self::AVERAGE_DATE => $avg_date, self::TOTAL_DATASIZE => $count_rating,
 							self::TOTAL_ONE_STAR => $count_one, self::TOTAL_TWO_STAR => $count_two, self::TOTAL_THREE_STAR => $count_three, 
-							self::TOTAL_FOUR_STAR => $count_four, self::TOTAL_FIVE_STAR => $count_five];
+							self::TOTAL_FOUR_STAR => $count_four, self::TOTAL_FIVE_STAR => $count_five,
+							self::FROM_DATE => $kFrom, self::TO_DATE => $kTo];
 			}
 			$stmt->close();
 			
@@ -501,13 +524,20 @@ class Data
 		$total = $a[self::TOTAL_DATASIZE] + $b[self::TOTAL_DATASIZE];
 		
 		if($total == 0){
-			return [self::AVERAGE_RATING => 0.0, self::AVERAGE_DATE => 0, self::TOTAL_DATASIZE => 0];
+			return [
+				self::AVERAGE_RATING => 0.0, self::AVERAGE_DATE => 0, self::TOTAL_DATASIZE => 0,
+				self::FROM_DATE => -1, self::TO_DATE => -1
+			];
 		}
 		
 		$avgRating = round((($a[self::AVERAGE_RATING]*$a[self::TOTAL_DATASIZE]) + ($b[self::AVERAGE_RATING]*$b[self::TOTAL_DATASIZE]))/$total, 2);
 		$avgDate = ceil((($a[self::AVERAGE_DATE]*$a[self::TOTAL_DATASIZE]) + ($b[self::AVERAGE_DATE]*$b[self::TOTAL_DATASIZE]))/$total);
 		
-		return [self::AVERAGE_RATING => $avgRating, self::AVERAGE_DATE => $avgDate, self::TOTAL_DATASIZE => $total];
+		return [
+			self::AVERAGE_RATING => $avgRating, self::AVERAGE_DATE => $avgDate, self::TOTAL_DATASIZE => $total,
+			self::FROM_DATE => min($a[self::FROM_DATE], $b[self::FROM_DATE]),
+			self::TO_DATE => max($a[self::TO_DATE], $b[self::TO_DATE])
+		];
 	}
 	
 	/**
