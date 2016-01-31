@@ -17,7 +17,7 @@ if(($query = Database::query("SELECT `company_features`.`MaxTablets` FROM `compa
 	$maxTablets = @intval($query->fetch_assoc()['MaxTablets']);
 }
 
-if(($query = Database::query("SELECT `tablets`.`id`, `tablets`.`Status`, `tablets`.`BatteryPercent`, `stores`.`Name` as StoreName FROM `tablets` LEFT JOIN `stores` ON `stores`.id = `tablets`.`StoreID` WHERE `stores`.CompanyID = {$_SESSION['CompanyID']} ORDER BY `tablets`.`id` ASC")) !== false){
+if(($query = Database::query("SELECT `tablets`.`id`, `tablets`.`Status`, `tablets`.`OnlineSince`, `tablets`.`BatteryPercent`, `stores`.`Name` as StoreName FROM `tablets` LEFT JOIN `stores` ON `stores`.id = `tablets`.`StoreID` WHERE `stores`.CompanyID = {$_SESSION['CompanyID']} ORDER BY `tablets`.`id` ASC")) !== false){
 	$numTablets = $query->num_rows;
 }
 
@@ -47,12 +47,14 @@ if(isset($_GET['thanks'])){
 						$id = $row['id'];
 						$storeName = $row['StoreName'];
 						$status = $row['Status'];
-						$battery = isset($row['BatteryPercent']) ? round($row['BatteryPercent']).'%' : 'N/A';
+						$battery = isset($row['BatteryPercent']) ? round($row['BatteryPercent']).'%' : _('N/A');
+						
+						$online = !empty($row['OnlineSince']) && time()-intval($row['OnlineSince']) <= 600;
 			?>
 						<tr>
 							<td>#<?php echo $id; ?></td>
 							<td><?php echo ucwords($storeName); ?></td>
-							<td><?php echo $battery; ?></td>
+							<td><?php echo $online ? $battery : _('Offline'); ?></td>
 							<td><?php _e(ucwords($status)); ?></td>
 						</tr>
 			<?php

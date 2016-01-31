@@ -8,6 +8,11 @@ bdff.create('milestones', function(canvas, face){
 	var render = function (canvas) {
 		canvas.children().not('div.message-container').remove();
 		renderForm(canvas);
+		canvas.append(
+			$('<div>').addClass('full-loader').append(
+				$('<div>').addClass('fa fa-spin fa-gear')
+			)
+		);
 	}
 
 	var renderForm = function (canvas) {
@@ -124,8 +129,6 @@ bdff.create('milestones', function(canvas, face){
 				if(data.error && data.error.length > 0){
 					bdff.notify(data.error[0], '', 'error');
 				} else {
-					milestones = {};
-					render(canvas);
 					face.startHooks();
 				}
 			});
@@ -136,8 +139,6 @@ bdff.create('milestones', function(canvas, face){
 				if(data.error && data.error.length > 0){
 					bdff.notify(data.error[0], '', 'error');
 				} else {
-					milestones = {};
-					render(canvas);
 					face.startHooks();
 				}
 			});
@@ -148,11 +149,10 @@ bdff.create('milestones', function(canvas, face){
 				var sel = $('<select>').addClass('form-control').change(function(){
 					if($(this).val() > 0){
 						$.post('/api/v1/milestones/aspect', { 'store' : bdff.storeID(), 'id' : id, 'aid' : $(this).val(), 'localtime' : Math.ceil(((new Date()).getTime()/1000)) }, function(data){
+							ms.find('div.add').empty().text('+ Add an Aspect');
 							if(data.error && data.error.length > 0){
 								bdff.notify(data.error[0], '', 'error');
 							} else {
-								milestones = {};
-								render(canvas);
 								face.startHooks();
 							}
 						});
@@ -215,12 +215,11 @@ bdff.create('milestones', function(canvas, face){
 			   ').appendTo(dom);
 			
 			dom.find('div.clear > i').click(function(){
+				dom.fadeOut(100, function(){ $(this).remove(); });
 				$.post('/api/v1/milestones/aspect', { 'store' : bdff.storeID(), 'delete' : true, 'id' : id, 'aid' : maID, 'localtime' : Math.ceil(((new Date()).getTime()/1000)) }, function(data){
 					if(data.error && data.error.length > 0){
 						bdff.notify(data.error[0], '', 'error');
 					} else {
-						milestones = {};
-						render(canvas);
 						face.startHooks();
 					}
 				});
@@ -244,6 +243,10 @@ bdff.create('milestones', function(canvas, face){
 			
 			return aspect;
 		};
+		
+		milestone.remove = function(){
+			ms.remove();
+		};
 
 		/* Events */
 		ms.find('.header').click(function () {
@@ -262,39 +265,66 @@ bdff.create('milestones', function(canvas, face){
 		if(data.hasOwnProperty('error') && data.error.length > 0){
 			bdff.log('Uh oh...');
 		} else if(data.hasOwnProperty('milestones')) {
-			if(data.aspects){
-				aspects = data.aspects;
-			}
 			
-			for(var i = 0; i < data.milestones.length; i++){
-				var milestone;
-				if(milestones.hasOwnProperty(data.milestones[i].id)){
-					milestone = milestones[data.milestones[i].id];
-				} else {
-					milestone = renderMilestone(data.milestones[i].id);
-					milestones[data.milestones[i].id] = milestone;
+			var processData = function(data){
+				if(data.aspects){
+					aspects = data.aspects;
 				}
 				
-				milestone.setMood(data.milestones[i].mood)
-				milestone.setTitle(data.milestones[i].title);
-				milestone.setDate(data.milestones[i].date.start, data.milestones[i].date.end);
-				milestone.setCompletion(data.milestones[i].completed);
+				var ids = [];
 				
-				for(var j = 0; j < data.milestones[i].aspects.length; j++){
-					var aspect;
-					if(milestone.aspects.hasOwnProperty(data.milestones[i].aspects[j].id)){
-						aspect = milestone.aspects[data.milestones[i].aspects[j].id];
+				for(var i = 0; i < data.milestones.length; i++){
+					var milestone;
+					if(milestones.hasOwnProperty(data.milestones[i].id)){
+						milestone = milestones[data.milestones[i].id];
 					} else {
-						aspect = milestone.addAspect(data.milestones[i].aspects[j].id);
-						milestone.aspects[data.milestones[i].aspects[j].id] = aspect;
+						milestone = renderMilestone(data.milestones[i].id);
+						milestones[data.milestones[i].id] = milestone;
 					}
 					
-					aspect.setTitle(data.milestones[i].aspects[j].title);
-					aspect.setDetails(data.milestones[i].aspects[j].change, data.milestones[i].aspects[j].responses);
+					ids.push(data.milestones[i].id);
+					
+					milestone.setMood(data.milestones[i].mood)
+					milestone.setTitle(data.milestones[i].title);
+					milestone.setDate(data.milestones[i].date.start, data.milestones[i].date.end);
+					milestone.setCompletion(data.milestones[i].completed);
+					
+					for(var j = 0; j < data.milestones[i].aspects.length; j++){
+						var aspect;
+						if(milestone.aspects.hasOwnProperty(data.milestones[i].aspects[j].id)){
+							aspect = milestone.aspects[data.milestones[i].aspects[j].id];
+						} else {
+							aspect = milestone.addAspect(data.milestones[i].aspects[j].id);
+							milestone.aspects[data.milestones[i].aspects[j].id] = aspect;
+						}
+						
+						aspect.setTitle(data.milestones[i].aspects[j].title);
+						aspect.setDetails(data.milestones[i].aspects[j].change, data.milestones[i].aspects[j].responses);
+					}
+					
+					$('div[data-tooltip]').brevadaTooltip();
 				}
 				
-				$('div[data-tooltip]').brevadaTooltip();
+				/* Check deletes. */
+				var keys = Object.keys(milestones);
+				for(var i = 0; i < keys.length; i++){
+					var key = parseInt(keys[i]);
+					if($.inArray(key, ids) < 0){
+						milestones[key].remove();
+						delete milestones[key];
+					}
+				}
+			};
+			
+			if(canvas.find('.full-loader').length > 0){
+				canvas.find('.full-loader').fadeOut(10, function(){
+					processData(data);
+					$(this).remove();
+				});
+			} else {
+				processData(data);
 			}
+			
 		} else {
 			bdff.log('Uh oh...');
 		}

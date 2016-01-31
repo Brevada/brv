@@ -531,6 +531,8 @@ div.slide-down {
     padding:20px;
     background: #FFF;
     display: none;
+	position: relative;
+	top: -12px;
 }
 div.slide-down .slide-down-button {
     display: inline-block;
@@ -803,7 +805,7 @@ div.milestone {
 }
 
 .milestone-body .body {
-    max-height: 200px;
+
 }
 .milestone-body .body .milestone-aspect {
     padding: 10px;
@@ -1043,3 +1045,4 @@ div.milestone {
     background: blue;
     color: #FFF;
 }
+div.full-loader { margin: 0 auto; text-align: center; width: 100%; display: block; font-size: 20em; opacity: 0.05; overflow: hidden; }
