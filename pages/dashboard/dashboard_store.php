@@ -13,6 +13,7 @@ $this->addResource('/js/brevada.tooltip.js');
 
 $this->addResource('/js/jQRangeSlider/jQRangeSlider-min.js');
 $this->addResource('/js/jQRangeSlider/jQDateRangeSlider-min.js');
+$this->addResource('/js/jQRangeSlider/css/iThing.css');
 // $this->addResource('/js/jQueryUI/jquery-ui.css');
 // $this->addResource('/js/jQueryUI/jquery-ui.js');
 

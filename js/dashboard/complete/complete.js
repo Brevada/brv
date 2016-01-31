@@ -65,7 +65,10 @@ bdff.create('complete', function(canvas, face){
 		complete.serverData = complete.fetch(12, 14);
 		complete.serverData.aspects = complete.styleData(complete.serverData.aspects);
 
-		$('#slider').dateRangeSlider();
+		$('#slider').dateRangeSlider({
+			bounds: {min: new Date(2012, 0, 1), max: new Date(2015, 11, 31, 12, 59, 59)},
+			defaultValues: {min: new Date(2014, 1, 10), max: new Date(2014, 4, 22)}
+		});
 		
 		var data = {
 		    labels: complete.serverData.labels,
@@ -107,8 +110,8 @@ bdff.create('complete', function(canvas, face){
 	
 	complete.el = $('<div>').addClass('complete-page col-md-12').appendTo(canvas);
 	
-	$(' <div class="dashboard-pod settings"><div id="slider"></div>Settings</div>\
-		<div class="dashboard-pod timeline">Timeline</div>\
+	$(' <div class="settings"><div id="slider"></div></div>\
+		<!--<div class="dashboard-pod timeline">Timeline</div>-->\
 		<canvas class="dashboard-pod graph">HI</canvas>\
 	  ').appendTo(complete.el);
 
