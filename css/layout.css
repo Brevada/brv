@@ -866,7 +866,7 @@ div.dropdown-menu div.three-lines i {
     font-size: 2.5em;
     margin-top: 0.25em;
 }
-div.dropdown-menu {
+div.top-fixed div.dropdown-menu {
     position: absolute;
     right: 0;
     top: 0em;
@@ -876,16 +876,16 @@ div.dropdown-menu {
     color: #000000;
     height: 100%;
 }
-div.dropdown-menu:hover {
+div.top-banner div.dropdown-menu:hover {
     height: auto;
 }
-div.dropdown-menu:hover > ul {
+div.top-banner div.dropdown-menu:hover > ul {
     visibility: visible;
 }
-div.dropdown-menu:hover > div.three-lines {
+div.top-banner div.dropdown-menu:hover > div.three-lines {
     background: #E6E6E6;
 }
-div.dropdown-menu ul {
+div.top-banner div.dropdown-menu ul {
     background: #434343;
     list-style: none;
     padding: 0;
@@ -895,13 +895,18 @@ div.dropdown-menu ul {
     border-bottom-right-radius: 0.35em;
     text-align: center;
 }
-div.dropdown-menu ul li {
+div.top-banner div.dropdown-menu ul li {
     padding: 0.6em 1.4em;
     margin: 0;
     font-size: 1.2em;
     cursor: pointer;
     color: #ffffff;
 }
-div.dropdown-menu ul li:hover {
+div.top-banner div.dropdown-menu ul li:hover {
     background: #9F9F9F;
+}
+
+.nopadding {
+	padding: 0 !important;
+	margin: 0 !important;
 }

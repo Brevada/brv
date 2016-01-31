@@ -28,7 +28,7 @@ if(!Permissions::has(Permissions::VIEW_ADMIN)){ Brevada::Redirect('/404'); }
       <tr data-id='<?php echo $id; ?>'>
         <td><?php echo $id; ?></td>
         <td><?php echo $name; ?></td>
-        <td>http://brevada.com/<?php echo $url; ?></td>
+        <td><?php echo URL.$url; ?></td>
 		<td><?php echo empty($phone) ? '' : $phone; ?></td>
 		<td class='options'>
 			<a href='<?php echo URL.$url; ?>' target='_blank'><i class='fa fa-link'></i></a>
@@ -47,7 +47,7 @@ function submitChange(column, id, value){
 	$.post('/admin/update/store.php', {'column' : column, 'id' : id, 'value' : value}, function(data){
 		$('table.editable tr[data-id="'+id+'"] td > i').remove();
 		$('table.editable tr[data-id="'+id+'"] td').removeClass('saving');
-		if(data == 'Invalid' || data.indexOf('Error') !== 0){
+		if(data == 'Invalid' || data.indexOf('Error') !== -1){
 			$('table.editable tr[data-id="'+id+'"] td:eq('+column+')').text($('table.editable tr[data-id="'+id+'"] td:eq('+column+')').data('previous-value'));
 		}
 	});

@@ -11,13 +11,17 @@ if(Brevada::IsMobile()){
 ?>
 
 <script type="text/javascript">
-$(document).ready(function() {
+$(document).ready(function() {	
     $('#logo').each(function(i) {
         if (this.complete) {
-            $('#main_container').fadeIn(2000);
+            $('#main_container').fadeIn(1000, function(){
+				$('#second > form > input').first().select();
+			});
         } else {
             $(this).load(function() {
-                $('#main_container').fadeIn(2000);
+                $('#main_container').fadeIn(1000, function(){
+					$('#second > form > input').first().select()
+				});
             });
         }
     });
@@ -33,6 +37,15 @@ $(document).ready(function() {
 	<a href="/index.php"><img id="logo" src="/images/brevada.png" width="150px" style="outline:none;" /></a>
 	<div id="second"  style="width:100%;">
 		<form method="post" action="process_login.php">
+			<?php
+				if(isset($_GET['login'])){
+					$msg = 'Unknown error.';
+					if($_GET['login'] == 'failed'){
+						$msg = 'Invalid email/password.';
+					}
+					echo "<div class='login-alert'><p>{$msg}</p></div>";
+				}
+			?>
 			<input class="in" type="text" name="email" placeholder="<?php _e('Email'); ?>" style="margin-top:16px;" /> 
 			<input class="in" type="password" name="password" placeholder="<?php _e('Password'); ?>" style="margin-top:6px;" /> 
 			<input class="sub button4" name="submit" type="submit" value="<?php _e('Login'); ?>" />

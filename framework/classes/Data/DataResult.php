@@ -64,6 +64,40 @@ class DataResult
 	}
 	
 	/**
+	* Retrieves cluster from date from result at an index.
+	*
+	* @param int $index Cluster index.
+	*
+	* @return int|boolean From date of cluster if it exists,
+	*     otherwise, false.
+	*/
+	public function getUTCFrom($index = 0){
+		$cluster = $this->get($index);
+		if(isset($cluster[Data::FROM_DATE]) && $cluster[Data::FROM_DATE] > -1){
+			return $cluster[Data::FROM_DATE];
+		} else {
+			return false;
+		}
+	}
+	
+	/**
+	* Retrieves cluster to date from result at an index.
+	*
+	* @param int $index Cluster index.
+	*
+	* @return int|boolean To date of cluster if it exists,
+	*     otherwise, false.
+	*/
+	public function getUTCTo($index = 0){
+		$cluster = $this->get($index);
+		if(isset($cluster[Data::TO_DATE]) && $cluster[Data::TO_DATE] > -1){
+			return $cluster[Data::TO_DATE];
+		} else {
+			return false;
+		}
+	}
+	
+	/**
 	* Retrieves number of data points considered in cluster from result at an index.
 	*
 	* @param int $index Cluster index.

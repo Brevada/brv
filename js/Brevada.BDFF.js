@@ -189,7 +189,7 @@
 		if(val == null){
 			return 'fa-times-circle';
 		}
-		return val == 0 ? 'fa-minus-circle' : (val >= 50 ? 'fa-arrow-circle-up' : 'fa-arrow-circle-down');
+		return val == 0 ? 'fa-minus-circle' : (val > 0 ? 'fa-arrow-circle-up' : 'fa-arrow-circle-down');
 	};
 	
 	bdff.storeID = function(id){
@@ -202,6 +202,17 @@
 		} else {
 			return undefined;
 		}
+	};
+	
+	bdff.equal = function(a, b){
+		if(a === b){ return true; }
+		if(a == null || b == null){ return true; }
+		if(a.length != b.length){ return false; }
+		
+		for (var i = 0; i < a.length; ++i) {
+			if (a[i] !== b[i]) return false;
+		}
+		return true;
 	};
 	
 })( window.bdff = window.bdff || {}, jQuery );

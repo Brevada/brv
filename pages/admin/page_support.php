@@ -131,7 +131,7 @@ $(document).ready(function(){
 		var msg = txtArea.val();
 		if(msg){
 			txtArea.slideUp(function(){
-				$.post('/api/v1/bdff/issue', { 'message' : msg, 'sid' : txtArea.attr('data-sid'), 'localtime' : Math.ceil(((new Date()).getTime()/1000)) }, function(data){
+				$.post('/api/v1/support/reply', { 'message' : msg, 'sid' : txtArea.attr('data-sid'), 'localtime' : Math.ceil(((new Date()).getTime()/1000)) }, function(data){
 					location.reload();
 				});
 			});

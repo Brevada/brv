@@ -123,8 +123,12 @@ if(!Permissions::has(Permissions::VIEW_ADMIN)){ Brevada::Redirect('/404'); }
 		<button class='button' id='btnUpdate'>Update Software</button>
 		</form>
 		<br /><br />
+		<?php if(@intval($row['PositionTimestamp']) == 0){ ?>
+		<p>Cannot retrieve GPS coordinates.</p>
+		<?php } else { ?>
 		<span>GPS coordinates last updated <?php echo $hoursAgo; ?> hours ago.</span><br /><br />
 		<iframe width="300" height="300" frameborder="0" scrolling="no" marginheight="0" marginwidth="0" src="https://maps.google.com/maps?q=<?php echo "{$row['PositionLatitude']},{$row['PositionLongitude']}"; ?>&hl=es;z=14&amp;output=embed"></iframe>
+		<?php } ?>
 		<?php } ?>
 		<?php } else { ?>
 		<br /><p>Device has not been setup.</p>
@@ -141,7 +145,7 @@ function submitChange(column, id, value){
 	$.post('/admin/update/tablet.php', {'column' : column, 'id' : id, 'value' : value}, function(data){
 		$('table.editable tr[data-id="'+id+'"] td > i').remove();
 		$('table.editable tr[data-id="'+id+'"] td').removeClass('saving');
-		if(data != 'Invalid' && data.indexOf('Error') !== 0){
+		if(data != 'Invalid' && data.indexOf('Error') !== -1){
 			if(column == 2){
 				$('table.editable tr[data-id="'+id+'"] td:eq('+column+')').text(data);
 				$('table.editable tr[data-id="'+id+'"] td:eq('+column+')').data('previous-value', data);

@@ -3,6 +3,12 @@
 bdff.create('aspects', function(canvas, face){
 	canvas.children().not('div.message-container').remove();
 	
+	canvas.append(
+		$('<div>').addClass('full-loader').append(
+			$('<div>').addClass('fa fa-spin fa-gear')
+		)
+	);
+	
 	var aspects = {};
 	
 	var renderAspect = function(id){
@@ -75,7 +81,7 @@ bdff.create('aspects', function(canvas, face){
 			)
 		);
 		
-		aspectDom.appendTo(canvas);
+		aspectDom.hide().appendTo(canvas).fadeIn();
 		
 		aspectDom.find('input.graph-toggle').bootstrapToggle();
 		
@@ -143,38 +149,72 @@ bdff.create('aspects', function(canvas, face){
 				$(this).animate({ height : Math.min(Math.floor(original+target), $(this).parent().height()) }, 1500);
 			});
 		};
+		
+		aspect.remove = function(){
+			aspectDom.remove();
+		};
 	
 		return aspect;
 	};
 	
-	face.datahook(0, {
-			url : '/api/v1/bdff/aspects',
+	face.datahook(15000, {
+			url : '/api/v1/aspects/list',
 			data : { 'store' : bdff.storeID() }
 		}, function(data){
 		if(data.hasOwnProperty('error') && data.error.length > 0){
 			bdff.log('Uh oh...');
 		} else if(data.hasOwnProperty('aspects')) {
-			for(var i = 0; i < data.aspects.length; i++){
-				var aspect;
-				if(aspects.hasOwnProperty(data.aspects[i].id)){
-					aspect = aspects[data.aspects[i].id];
-				} else {
-					aspect = renderAspect(data.aspects[i].id);
+			var processData = function(data){
+				var ids = [];
+				for(var i = 0; i < data.aspects.length; i++){
+					var aspect;
+					if(aspects.hasOwnProperty(data.aspects[i].id)){
+						aspect = aspects[data.aspects[i].id];
+					} else {
+						aspect = renderAspect(data.aspects[i].id);
+						aspects[data.aspects[i].id] = aspect;
+					}
+					
+					ids.push(data.aspects[i].id);
+					
+					aspect.setTitle(data.aspects[i].title);
+					aspect.setRating(data.aspects[i].rating);
+					aspect.setIndustryRating(data.aspects[i].industry);
+					aspect.setNumResponses(data.aspects[i]['size']);
+					aspect.setTopTicker(data.aspects[i].change.day);
+					aspect.setBottomTicker(data.aspects[i].change.month);
+					
+					if(!aspect.data){ aspect.data = {}; }
+					
+					if(!aspect.data.data || !bdff.equal(aspect.data.labels, data.aspects[i].bucket.labels) || !bdff.equal(aspect.data.data, data.aspects[i].bucket.data)){
+						if(aspect.lineGraph){
+							aspect.lineGraph.destroy();
+						}
+						aspect.data.labels = data.aspects[i].bucket.labels;
+						aspect.data.data = data.aspects[i].bucket.data;
+						aspect.lineGraph = build_line_graph({"dates": aspect.data.labels, "data": aspect.data.data }, 'pod'+data.aspects[i].id);
+					}
+					
+					$('div[data-tooltip]').brevadaTooltip();
 				}
-				
-				aspect.setTitle(data.aspects[i].title);
-				aspect.setRating(data.aspects[i].rating);
-				aspect.setIndustryRating(data.aspects[i].industry);
-				aspect.setNumResponses(data.aspects[i]['size']);
-				aspect.setTopTicker(data.aspects[i].change.day);
-				aspect.setBottomTicker(data.aspects[i].change.month);
-				
-				if(aspect.lineGraph){
-					aspect.lineGraph.destroy();
+				/* Check deletes. */
+				var keys = Object.keys(aspects);
+				for(var i = 0; i < keys.length; i++){
+					var key = parseInt(keys[i]);
+					if($.inArray(key, ids) < 0){
+						aspects[key].remove();
+						delete aspects[key];
+					}
 				}
-				aspect.lineGraph = build_line_graph({"dates": data.aspects[i].bucket.labels, "data": data.aspects[i].bucket.data }, 'pod'+data.aspects[i].id);
-				
-				$('div[data-tooltip]').brevadaTooltip();
+			};
+			
+			if(canvas.find('.full-loader').length > 0){
+				canvas.find('.full-loader').fadeOut(10, function(){
+					processData(data);
+					$(this).remove();
+				});
+			} else {
+				processData(data);
 			}
 		} else {
 			bdff.log('Uh oh...');

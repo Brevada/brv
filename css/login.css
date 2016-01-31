@@ -86,3 +86,17 @@
 #download .pop-up i {
 	font-size: 30px;
 }
+
+div.login-alert {
+	color: #bc0101;
+	background-color: #f2dede;
+	border-color: #bc0101;
+	padding: 8px;
+	border: 1px solid transparent;
+	border-radius: 4px;
+	margin: 1em 0 0 0;
+}
+div.login-alert p {
+	margin: 0;
+	padding: 0;
+}
