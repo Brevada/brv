@@ -1036,13 +1036,111 @@ div.milestone {
     background: #2ecc0e;
 }
 
-.complete-page {
+.complete-page .main {
+    padding: 0px 10px 0px 0px;
+}
+
+.complete-page .side {
+    padding: 0px;
+}
+
+.complete-page .graph-container {
 
 }
 
+.complete-page .sub-graph-container {
+    padding: 10px 0px 0px 0px;
+}
+
+.complete-page .sub-graph-container .sub-container {
+    padding: 0px;
+}
+
+.complete-page .sub-graph-container .left-sub-graph-container {
+    padding: 0px 15px 0px 0px;
+}
+
+.complete-page .header {
+    background: #FFF;
+    padding: 10px;
+    font-size: 18px;
+}
+
+.complete-page .aspects {
+    margin-top: 10px;
+    max-height: 380px; /*TODO */
+    overflow: scroll;
+    background: #EEE;
+    padding: 10px;
+    border-radius: 2px;
+}
+
+.complete-page .aspect {
+    padding: 3px;
+    color: #333;
+    margin-bottom: 10px;
+    border-bottom: 1px solid #DDD;
+    cursor: pointer;
+}
+
+.complete-page .aspect .aspect-icon {
+    display: inline-block;
+    width: 60px;
+    height: 60px;
+    border-radius: 4px;
+}
+
+.complete-page .aspect .aspect-data {
+    margin-left: 10px;
+    display: inline-block;
+}
+.complete-page .aspect .aspect-data .aspect-info {
+    color: #999;
+}
+
 /* Range Slider */
-.ui-rangeSlider-leftLabel {
-    background: blue;
+.ui-rangeSlider {
+    padding: 0px;
+    height: 30px;
+    overflow: hidden;
+}
+.ui-rangeSlider-arrow {
+    display: none;
+}
+.ui-rangeSlider-withArrows .ui-rangeSlider-container {
+    width: 100%;
+    margin: 0px;
+    background: #666;
+}
+.ui-rangeSlider-bar {
+    background: #333;
     color: #FFF;
+    font-size: 12px;
+    text-align: center;
+    height: 30px;
+}
+.ui-rangeSlider-label {
+    bottom: 0px;
+    font-size: 1px;
+    padding: 0px;
+    color: #333;
+    background: rgba(255,255,255,0.5);
+}
+.ui-rangeSlider-label-inner {
+    top: 20%;
+    left: 110%;
+    border-left: 10px solid #333;
+    border-right: 10px solid transparent;
+    border-top: 10px solid transparent;
+    border-bottom: 10px solid transparent;
+}
+.ui-rangeSlider-rightLabel .ui-rangeSlider-label-inner {
+    top: 20%;
+    left: 0%;
+    border-left: 10px solid transparent;
+    border-right: 10px solid #333;
+    border-top: 10px solid transparent;
+    border-bottom: 10px solid transparent;
+
 }
 div.full-loader { margin: 0 auto; text-align: center; width: 100%; display: block; font-size: 20em; opacity: 0.05; overflow: hidden; }

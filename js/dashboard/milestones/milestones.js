@@ -25,7 +25,7 @@ bdff.create('milestones', function(canvas, face){
 		};
 		
 		canvas.append(
-			$('<form>').addClass('form-horizontal milestone-form col-lg-offset-2 col-lg-8').attr('role', 'form').append(
+			$('<form>').addClass('form-horizontal milestone-form col-lg-12').attr('role', 'form').append(
 				$('<div>').addClass('form-group row').append(
 					$('<div>').addClass('col-lg-6 col-md-6 col-xs-12 nopadding').append(
 						$('<input>').addClass('form-control title').attr({
@@ -98,7 +98,7 @@ bdff.create('milestones', function(canvas, face){
 	var renderMilestone = function (id) {
 		var milestone = { 'id' : id, 'aspects' : {} };
 		
-		var ms = $('<div>').addClass('milestone col-lg-offset-2 col-lg-8 col-md-12').attr('milestone-data-id', id).insertAfter(canvas.find('.milestone-form'));
+		var ms = $('<div>').addClass('milestone col-md-12').attr('milestone-data-id', id).insertAfter(canvas.find('.milestone-form'));
 		
 		$(' \
 			<div class="milestone-body">\
