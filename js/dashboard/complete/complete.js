@@ -29,7 +29,7 @@ bdff.create('complete', function(canvas, face){
 			aspects: [
 				{
 					position: 1,
-					average: 67,
+					average: 89,
 					label: 'Customer Service',
 					data: [86, 77, 90, 83, 89, 67, 78, 89, 80],
 					responses: 45
@@ -43,35 +43,35 @@ bdff.create('complete', function(canvas, face){
 				},
 				{
 					position: 3,
-					average: 67,
+					average: 74,
 					label: 'Pricing',
 					data: [90, 83, 89, 67, 86, 77, 78, 89, 80],
 					responses: 45
 				},
 				{
 					position: 4,
-					average: 67,
+					average: 53,
 					label: 'Food Presentation',
 					data: [86, 77, 90, 67, 78, 89, 83, 89, 80],
 					responses: 45
 				},
 				{
 					position: 5,
-					average: 67,
+					average: 88,
 					label: 'Location',
 					data: [86, 77, 71, 83, 89, 67, 66, 77, 80],
 					responses: 45
 				},
 				{
 					position: 6,
-					average: 67,
+					average: 99,
 					label: 'Authenticity',
 					data: [86, 77, 90, 67, 78, 89, 89, 89, 76],
 					responses: 45
 				},
 				{
 					position: 7,
-					average: 67,
+					average: 22,
 					label: 'Parking',
 					data: [86, 77, 71, 76, 89, 67, 78, 83, 80],
 					responses: 45
@@ -114,11 +114,11 @@ bdff.create('complete', function(canvas, face){
 	    complete.serverData.average[0].backgroundColor = complete.colorFillOptions[0];
 	}
 
-	complete.excludeData = function (excluded) {
-		return complete.serverData.aspects.filter(function( obj ) {
-		    return excluded.indexOf(obj.position) < 0;
-		});
-	}
+	// complete.excludeData = function (excluded) {
+	// 	return complete.serverData.aspects.filter(function( obj ) {
+	// 	    return excluded.indexOf(obj.position) < 0;
+	// 	});
+	// }
 
 	complete.renderAspects = function () {
 		$(complete.el).find('.aspects').html('');
@@ -154,6 +154,7 @@ bdff.create('complete', function(canvas, face){
 		complete.renderDateSlider();
 		complete.renderCompleteGraph(complete.serverData.aspects);
 		complete.renderAverageLineGraph(complete.serverData.average);
+		complete.renderAverageBarGraph(complete.serverData.average);
 		complete.initEvents();
 		
 	}
@@ -255,8 +256,56 @@ bdff.create('complete', function(canvas, face){
 			console.log(ctx);
 	}
 
+	complete.renderAverageBarGraph = function (average) {
+		var labels = [],
+			averages = [];
+		for (var aspects = 0; aspects < complete.serverData.aspects.length; aspects++) {
+			var aspect = complete.serverData.aspects[aspects],
+				label = aspect.label,
+				average = aspect.average,
+				color = aspect.borderColor;
+
+			labels.push(aspect.label);
+			averages.push(average);
+		}
+		var data = {
+		    labels: labels,
+		    datasets: [
+		        {
+		            label: "My Second dataset",
+		            backgroundColor: "rgba(220,220,220,0.2)",
+		            borderColor: "rgba(220,220,220,1)",
+		            borderWidth: 1,
+		            hoverBackgroundColor: "rgba(220,220,220,0.2)",
+		            hoverBorderColor: "rgba(220,220,220,1)",
+		            data: averages
+		        }
+		    ]
+		};
+		var ctx = $(complete.el).find('.average-bar').get(0).getContext("2d");
+		var b = new Chart(ctx,{
+		    type:"bar",
+		    data: data,
+		    options: {
+		        scales: {
+	                xAxes: [{
+	                	// display: false,
+                        stacked: true
+	                }],
+	                yAxes: [{
+	                	display: false,
+                        stacked: true
+	                }]
+		        },
+		        legend: {
+		        	display: false
+		        }
+		    }
+		});
+	}
+
 	complete.initEvents = function () {
-		$(window).resize(complete.sizeGraph);
+		// $(window).resize(complete.sizeGraph);
 		$('#slider').bind('valuesChanging', function (e, data) {
 			var min = data.values.min.toString().split(" "),
 				max = data.values.max.toString().split(" ");
@@ -269,21 +318,21 @@ bdff.create('complete', function(canvas, face){
 		})
 	}
 
-	complete.toggleAspect = function (position) {
-		var excludedPosition = complete.excluded.indexOf(position);
-		if (excludedPosition > -1) {
-			complete.excluded.splice(excludedPosition, 1);	
-		} else {
-			complete.excluded.push(position);
-		}
-		// console.log(complete.excluded);
-		complete.render();
-	}
+	// complete.toggleAspect = function (position) {
+	// 	var excludedPosition = complete.excluded.indexOf(position);
+	// 	if (excludedPosition > -1) {
+	// 		complete.excluded.splice(excludedPosition, 1);	
+	// 	} else {
+	// 		complete.excluded.push(position);
+	// 	}
+	// 	// console.log(complete.excluded);
+	// 	complete.render();
+	// }
 
 	complete.sizeGraph = function () {
-		var available_space = $(window).height()-200;
-		$(complete.el).find('.graph-container').height(available_space*0.7);
-		$(complete.el).find('.sub-graph-container').height(available_space*0.3);
+		var available_space = $(window).height()-260;
+		$(complete.el).find('.graph-container').height(available_space*0.8);
+		$(complete.el).find('.sub-graph-container').height(available_space*0.2);
 	}
 
 	canvas.children().not('div.message-container').remove();
@@ -292,27 +341,27 @@ bdff.create('complete', function(canvas, face){
 	
 	$('<div class="col-md-9 main">\
 			<!--<div class="dashboard-pod timeline">Timeline</div>-->\
-			<div class="graph-container">\
-				<canvas class="dashboard-pod graph"></canvas>\
-			</div>\
-			<div class="sub-graph-container col-md-12">\
-				<div class="sub-container left-sub-graph-container col-md-6">\
-					<canvas class="dashboard-pod average-line"></canvas>\
-				</div>\
-				<div class="sub-container left-sub-graph-container col-md-6">\
-					<canvas class="dashboard-pod average-bar"></canvas>\
-				</div>\
-			</div>\
-		</div>\
-		<div class="col-md-3 side">\
 			<div class="settings">\
 				<div class="header">Text</div>\
 				<div id="slider"></div>\
 			</div>\
+			<div class="graph-container">\
+				<canvas class="dashboard-pod graph"></canvas>\
+			</div>\
+			<div class="sub-graph-container col-md-12">\
+				<div class="sub-graph-container col-md-12">\
+					<canvas class="dashboard-pod average-line"></canvas>\
+				</div>\
+				<div class="sub-graph-container col-md-12">\
+					<canvas class="dashboard-pod average-bar"></canvas>\
+				</div>\
+			</div>\
+		</div>\
+		<div class="col-md-3 side-control">\
 			<div class="aspects"></div>\
 		</div>\
 	  ').appendTo(complete.el);
 	complete.excluded = [2, 3, 4];
-	complete.sizeGraph();
+	// complete.sizeGraph();
 	complete.render();
 });

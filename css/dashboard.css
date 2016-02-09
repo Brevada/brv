@@ -1040,24 +1040,13 @@ div.milestone {
     padding: 0px 10px 0px 0px;
 }
 
-.complete-page .side {
-    padding: 0px;
-}
-
 .complete-page .graph-container {
-
+    height: 400px;
+    padding: 10px 0px 0px 0px;
 }
 
 .complete-page .sub-graph-container {
     padding: 10px 0px 0px 0px;
-}
-
-.complete-page .sub-graph-container .sub-container {
-    padding: 0px;
-}
-
-.complete-page .sub-graph-container .left-sub-graph-container {
-    padding: 0px 15px 0px 0px;
 }
 
 .complete-page .header {
@@ -1067,7 +1056,6 @@ div.milestone {
 }
 
 .complete-page .aspects {
-    margin-top: 10px;
     max-height: 380px; /*TODO */
     overflow: scroll;
     background: #EEE;
@@ -1096,6 +1084,16 @@ div.milestone {
 }
 .complete-page .aspect .aspect-data .aspect-info {
     color: #999;
+}
+
+.complete-page .side-control {
+    right: 0;
+    padding: 0px 30px;
+    position: fixed;
+    height: 100%;
+    overflow-y: auto;
+    z-index: 1000;
+    transition: all 0.4s ease 0s;
 }
 
 /* Range Slider */
