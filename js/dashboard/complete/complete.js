@@ -11,14 +11,9 @@ bdff.create('complete', function(canvas, face){
 	// A timeframe is sent to the server and data points are returned in buckets (we should aim to have 15 buckets per timeframe)
 	// TIMEFRAME: START DATE, END DATE (eg. Feb 1 - Feb 18)
 	complete.fetch = function (start, end, excluded) {
+		// TODO: This should fetch the data excluded the 'excluded' aspects
 		var server_data = {
 			labels: ['Feb 1', 'Feb 3', 'Feb 5', 'Feb 7', 'Feb 9', 'Feb 11', 'Feb 13', 'Feb 15', 'Feb 18'],
-			excluded: [
-				{
-					label: 'Exc Test',
-					id: 23
-				}
-			],
 			average: [
 				{
 					label: 'Average',
@@ -28,53 +23,60 @@ bdff.create('complete', function(canvas, face){
 			],
 			aspects: [
 				{
-					position: 1,
+					id: 1,
 					average: 89,
 					label: 'Customer Service',
 					data: [86, 77, 90, 83, 89, 67, 78, 89, 80],
-					responses: 45
+					responses: 45,
+					excluded: excluded.indexOf(1) > -1
 				},
 				{
-					position: 2,
+					id: 2,
 					average: 67,
 					label: 'Wait Time',
 					data: [86, 77, 90, 83, 80, 89, 67, 78, 89],
-					responses: 45
+					responses: 45,
+					excluded: excluded.indexOf(2) > -1
 				},
 				{
-					position: 3,
+					id: 3,
 					average: 74,
 					label: 'Pricing',
 					data: [90, 83, 89, 67, 86, 77, 78, 89, 80],
-					responses: 45
+					responses: 45,
+					excluded: excluded.indexOf(3) > -1
 				},
 				{
-					position: 4,
+					id: 4,
 					average: 53,
 					label: 'Food Presentation',
 					data: [86, 77, 90, 67, 78, 89, 83, 89, 80],
-					responses: 45
+					responses: 45,
+					excluded: excluded.indexOf(4) > -1
 				},
 				{
-					position: 5,
+					id: 5,
 					average: 88,
 					label: 'Location',
 					data: [86, 77, 71, 83, 89, 67, 66, 77, 80],
-					responses: 45
+					responses: 45,
+					excluded: excluded.indexOf(5) > -1
 				},
 				{
-					position: 6,
+					id: 6,
 					average: 99,
 					label: 'Authenticity',
 					data: [86, 77, 90, 67, 78, 89, 89, 89, 76],
-					responses: 45
+					responses: 45,
+					excluded: excluded.indexOf(6) > -1
 				},
 				{
-					position: 7,
+					id: 7,
 					average: 22,
 					label: 'Parking',
 					data: [86, 77, 71, 76, 89, 67, 78, 83, 80],
-					responses: 45
+					responses: 45,
+					excluded: excluded.indexOf(7) > -1
 				}
 			],
 			minValue: 50,
@@ -94,9 +96,9 @@ bdff.create('complete', function(canvas, face){
 		};
 
 		// Temp: Exclude certain aspects on front-ed
-		server_data.aspects = server_data.aspects.filter(function( obj ) {
-		    return excluded.indexOf(obj.position) < 0;
-		});
+		// server_data.aspects = server_data.aspects.filter(function(obj) {
+		//     return excluded.indexOf(obj.id) < 0;
+		// });
 
 		return server_data;
 	}
@@ -105,33 +107,38 @@ bdff.create('complete', function(canvas, face){
 	complete.colorFillOptions = ['rgba(202,96,242, 0.1)', 'rgba(242,96,182,0.1)', 'rgba(242,96,106,0.1)', 'rgba(96,182,242,0.1)', 'rgba(242,196,96,0.1)', 'rgba(217,141,66,0.1)']
 	complete.styleData = function (data) {
 		for (var p in data) {
-	        complete.serverData.aspects[p].fill = true;
-	        complete.serverData.aspects[p].borderColor = complete.colorOptions[p%5];
-	        complete.serverData.aspects[p].backgroundColor = complete.colorFillOptions[p%5];
-	    	complete.serverData.aspects[p].datasetStrokeWidth = 5;
+			if (complete.serverData.aspects[p].excluded) {
+				complete.serverData.aspects[p].borderColor = '#666';
+			} else {
+				complete.serverData.aspects[p].fill = true;
+		        complete.serverData.aspects[p].borderColor = complete.colorOptions[p%5];
+		        complete.serverData.aspects[p].backgroundColor = complete.colorFillOptions[p%5];
+		    	complete.serverData.aspects[p].datasetStrokeWidth = 5;
+			}
+
 	    }
 	    complete.serverData.average[0].fill = true;
 	    complete.serverData.average[0].backgroundColor = complete.colorFillOptions[0];
 	}
 
-	// complete.excludeData = function (excluded) {
-	// 	return complete.serverData.aspects.filter(function( obj ) {
-	// 	    return excluded.indexOf(obj.position) < 0;
-	// 	});
-	// }
+	complete.excludeData = function () {
+		return complete.serverData.aspects.filter(function( obj ) {
+		    return !obj.excluded;
+		});
+	}
 
-	complete.renderAspects = function () {
+	complete.renderAspects = function (aspect_list) {
 		$(complete.el).find('.aspects').html('');
-		for (var aspects = 0; aspects < complete.serverData.aspects.length; aspects++ ) {
+		for (var aspects = 0; aspects < aspect_list.length; aspects++ ) {
 
-			var aspect = complete.serverData.aspects[aspects],
-				position = aspect.position,
+			var aspect = aspect_list[aspects],
+				id = aspect.id,
 				label = aspect.label,
 				responses = aspect.responses,
 				average = aspect.average,
 				background = aspect.borderColor;
 
-			$('<div class="aspect" data-position="'+position+'" >\
+			$('<div class="aspect" data-id="'+id+'" >\
 					<div class="aspect-icon" style="background: '+background+';"></div>\
 					<div class="aspect-data">\
 						<div class="aspect-title">'+label+'</div>\
@@ -146,15 +153,15 @@ bdff.create('complete', function(canvas, face){
 	complete.render = function () {
 		// Fetch data
 		complete.serverData = complete.fetch(12, 14, complete.excluded);
-		
-		// var	refinedAspects = complete.excludeData(complete.excluded);
+
 		complete.styleData(complete.serverData.aspects);
 
-		complete.renderAspects();
+		var aspects = complete.excludeData();
+		complete.renderAspects(complete.serverData.aspects);
 		complete.renderDateSlider();
-		complete.renderCompleteGraph(complete.serverData.aspects);
+		complete.renderCompleteGraph(aspects);
 		complete.renderAverageLineGraph(complete.serverData.average);
-		complete.renderAverageBarGraph(complete.serverData.average);
+		complete.renderAverageBarGraph(aspects);
 		complete.initEvents();
 		
 	}
@@ -253,14 +260,13 @@ bdff.create('complete', function(canvas, face){
 					}
 			    }
 			});
-			console.log(ctx);
 	}
 
-	complete.renderAverageBarGraph = function (average) {
+	complete.renderAverageBarGraph = function (aspect_list) {
 		var labels = [],
 			averages = [];
-		for (var aspects = 0; aspects < complete.serverData.aspects.length; aspects++) {
-			var aspect = complete.serverData.aspects[aspects],
+		for (var aspects = 0; aspects < aspect_list.length; aspects++) {
+			var aspect = aspect_list[aspects],
 				label = aspect.label,
 				average = aspect.average,
 				color = aspect.borderColor;
@@ -314,20 +320,19 @@ bdff.create('complete', function(canvas, face){
 			$('.settings .header').html(min_date + ' - ' + max_date);
 		});
 		$(complete.el).find('.aspect').click(function () {
-			complete.toggleAspect(parseInt($(this).attr('data-position')));
+			complete.toggleAspect(parseInt($(this).attr('data-id')));
 		})
 	}
 
-	// complete.toggleAspect = function (position) {
-	// 	var excludedPosition = complete.excluded.indexOf(position);
-	// 	if (excludedPosition > -1) {
-	// 		complete.excluded.splice(excludedPosition, 1);	
-	// 	} else {
-	// 		complete.excluded.push(position);
-	// 	}
-	// 	// console.log(complete.excluded);
-	// 	complete.render();
-	// }
+	complete.toggleAspect = function (id) {
+		var aspectPosition = complete.excluded.indexOf(id);
+		if (aspectPosition > -1) {
+			complete.excluded.splice(aspectPosition, 1);
+		} else {
+			complete.excluded.push(id);
+		}
+		complete.render();
+	}
 
 	complete.sizeGraph = function () {
 		var available_space = $(window).height()-260;

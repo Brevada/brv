@@ -1047,6 +1047,7 @@ div.milestone {
 
 .complete-page .sub-graph-container {
     padding: 10px 0px 0px 0px;
+    height: 300px;
 }
 
 .complete-page .header {
@@ -1056,7 +1057,7 @@ div.milestone {
 }
 
 .complete-page .aspects {
-    max-height: 380px; /*TODO */
+    max-height: 480px; /*TODO */
     overflow: scroll;
     background: #EEE;
     padding: 10px;
