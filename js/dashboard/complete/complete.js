@@ -143,7 +143,7 @@ bdff.create('complete', function(canvas, face){
 					<div class="aspect-data">\
 						<div class="aspect-title">'+label+'</div>\
 						<div class="aspect-info">Responses: '+responses+'</div>\
-						<div class="aspect-info">Average: '+average+'</div>\
+						<!-- <div class="aspect-info">Average: '+average+'</div>-->\
 					</div>\
 					</div>\
 					').appendTo($(complete.el).find('.aspects'));
@@ -344,7 +344,7 @@ bdff.create('complete', function(canvas, face){
 	
 	complete.el = $('<div>').addClass('complete-page col-md-12').appendTo(canvas);
 	
-	$('<div class="col-md-9 main">\
+	$('<div class="col-md-10 main">\
 			<!--<div class="dashboard-pod timeline">Timeline</div>-->\
 			<div class="settings">\
 				<div class="header">Text</div>\
@@ -362,7 +362,7 @@ bdff.create('complete', function(canvas, face){
 				</div>\
 			</div>\
 		</div>\
-		<div class="col-md-3 side-control">\
+		<div class="col-md-2 side-control">\
 			<div class="aspects"></div>\
 		</div>\
 	  ').appendTo(complete.el);
