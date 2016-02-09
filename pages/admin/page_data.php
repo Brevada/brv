@@ -104,17 +104,17 @@ if(($stmt = Database::prepare("SELECT `aspects`.`id` as `id`, `AspectTypeID`, `T
 	$cnt_three = 0; $cnt_multiple = 0; $cnt_jan18 = 0;
 	if(($stmt = Database::prepare("SELECT COUNT(*) as cnt_a, (SELECT COUNT(DISTINCT f.`SessionCode`)
 		FROM `feedback` f
-		JOIN `Aspects` asp ON asp.`id` = f.`AspectID`
+		JOIN `aspects` asp ON asp.`id` = f.`AspectID`
 		WHERE asp.Active = 1 AND asp.`StoreID` = ? AND EXISTS (SELECT COUNT(`SessionCode`) as sc FROM `feedback` WHERE `SessionCode` = f.`SessionCode` HAVING sc > 1 )) as cnt_multi, (SELECT COUNT(DISTINCT g.`SessionCode`)
 		FROM `feedback` g
-		JOIN `Aspects` aspp ON aspp.`id` = g.`AspectID`
+		JOIN `aspects` aspp ON aspp.`id` = g.`AspectID`
 		WHERE aspp.Active = 1 AND aspp.`StoreID` = ? AND UNIX_TIMESTAMP(g.`Date`) >= 1453093200) as cnt_session
 		FROM (SELECT DISTINCT
 			(180*round(UNIX_TIMESTAMP(`Date`)/180)) as `DateRange`,
 			`IPAddress`
 		FROM `feedback`
-		JOIN `Aspects` ON `Aspects`.`id` = `feedback`.`AspectID`
-		WHERE `Aspects`.Active = 1 AND `Aspects`.`StoreID` = ?
+		JOIN `aspects` ON `aspects`.`id` = `feedback`.`AspectID`
+		WHERE `aspects`.Active = 1 AND `aspects`.`StoreID` = ?
 		GROUP BY `IPAddress`, `DateRange`) a")) !== false){
 		$stmt->bind_param('iii', $storeID, $storeID, $storeID);
 		if($stmt->execute()){
