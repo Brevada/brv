@@ -1044,14 +1044,47 @@ div.milestone {
     padding: 0px 5px 0px 0px;
 }
 
+.complete-page .section {
+    margin-top: 15px;
+    clear: both;
+}
+
+.complete-page .section canvas {
+    border-radius: 0px;
+}
+
+.complete-page .section .toolbar {
+    padding: 5px;
+    background: #FFF;
+    clear: both;
+}
+
+.complete-page .section .toolbar .title {
+    float: left;
+}
+
+.complete-page .section .toolbar .buttons {
+    float: right;
+}
+
+.complete-page .section .toolbar .buttons div {
+    background: #CCC;
+    color: #FFF;
+    height: 25px;
+    width: 25px;
+    border-radius: 25px;
+    text-align: center;
+    line-height: 25px;
+    display: inline-block;
+}
+
 .complete-page .graph-container {
-    height: 400px;
-    padding: 10px 0px 0px 0px;
+    height: 180px;
 }
 
 .complete-page .sub-graph-container {
-    padding: 10px 0px 0px 0px;
-    height: 300px;
+    height: 150px;
+    padding: 0px;
 }
 
 .complete-page .header {
@@ -1095,7 +1128,7 @@ div.milestone {
 
 .complete-page .side-control {
     right: 0;
-    padding: 0px 30px;
+    padding: 0px 20px 0px 35px;
     position: fixed;
     height: 100%;
     overflow-y: auto;
@@ -1122,7 +1155,7 @@ div.milestone {
     color: #FFF;
     font-size: 12px;
     text-align: center;
-    height: 30px;
+    height: 20px;
 }
 .ui-rangeSlider-label {
     bottom: 0px;

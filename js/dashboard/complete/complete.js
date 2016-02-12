@@ -102,9 +102,10 @@ bdff.create('complete', function(canvas, face){
 
 		return server_data;
 	}
-	complete.colorOptions = ['#ca60f2', '#f260b6', '#f2606a', '#60b6f2', '#f2c460', '#d98d42'];
-	// complete.colorOptions = ['#2ecc0e', '#29b60c', '#30e30c', '#36ff0d', '#24a40a', '#197806'];
-	complete.colorFillOptions = ['rgba(202,96,242, 0.1)', 'rgba(242,96,182,0.1)', 'rgba(242,96,106,0.1)', 'rgba(96,182,242,0.1)', 'rgba(242,196,96,0.1)', 'rgba(217,141,66,0.1)']
+	// complete.colorOptions = ['#ca60f2', '#f260b6', '#f2606a', '#60b6f2', '#f2c460', '#d98d42'];
+	complete.colorOptions = ['#2ecc0e', '#29b60c', '#30e30c', '#36ff0d', '#24a40a', '#197806'];
+	// complete.colorFillOptions = ['rgba(202,96,242, 0.1)', 'rgba(242,96,182,0.1)', 'rgba(242,96,106,0.1)', 'rgba(96,182,242,0.1)', 'rgba(242,196,96,0.1)', 'rgba(217,141,66,0.1)']
+	complete.colorFillOptions = ['rgba(46,204,14, 0.1)', 'rgba(41,182,12,0.1)', 'rgba(48,227,12,0.1)', 'rgba(54,255,13,0.1)', 'rgba(36,164,10,0.1)', 'rgba(217,141,66,0.1)']
 	complete.styleData = function (data) {
 		for (var p in data) {
 			if (complete.serverData.aspects[p].excluded) {
@@ -176,8 +177,8 @@ bdff.create('complete', function(canvas, face){
 		    labels: complete.serverData.labels,
 		    datasets: aspects
 		};
-		var ctx = $(complete.el).find('.graph').get(0).getContext("2d"),
-			chart =  new Chart(ctx, {
+		var ctx = $(complete.el).find('.graph').get(0).getContext("2d");
+			complete.largeChart =  new Chart(ctx, {
 			    type: 'line',
 			    data: data,
 			    options: {
@@ -321,7 +322,17 @@ bdff.create('complete', function(canvas, face){
 		});
 		$(complete.el).find('.aspect').click(function () {
 			complete.toggleAspect(parseInt($(this).attr('data-id')));
-		})
+		});
+		$(complete.el).find('.section .toggle').click(function () {
+			complete.toggleGraph($(this).attr('data-id'));
+		});
+	}
+
+	complete.toggleGraph = function (graph) {
+		graph = $('#'+graph);
+		$(graph).css({
+			height: '500px'
+		});
 	}
 
 	complete.toggleAspect = function (id) {
@@ -350,14 +361,42 @@ bdff.create('complete', function(canvas, face){
 				<div class="header">Text</div>\
 				<div id="slider"></div>\
 			</div>\
-			<div class="graph-container">\
-				<canvas class="dashboard-pod graph"></canvas>\
+			<div class="section">\
+				<div class="toolbar">\
+					<div class="title">Overall Aspect Data</div>\
+					<div class="buttons">\
+						<div class="toggle" data-id="graph-1">+</div>\
+						<div class="toggle" data-id="graph-1"><i class="fa fa-info"></i></div>\
+					</div>\
+					<div class="clear"></div>\
+				</div>\
+				<div id="graph-1" class="graph-container">\
+					<canvas class="dashboard-pod graph"></canvas>\
+				</div>\
 			</div>\
-			<div class="sub-graph-container col-md-12">\
-				<div class="sub-graph-container col-md-12">\
+			<div class="section">\
+				<div class="toolbar">\
+					<div class="title">Overall Aspect Data</div>\
+					<div class="buttons">\
+						<div class="toggle" data-id="graph-2">+</div>\
+						<div class="toggle" data-id="graph-2"><i class="fa fa-info"></i></div>\
+					</div>\
+					<div class="clear"></div>\
+				</div>\
+				<div id="graph-2" class="sub-graph-container">\
 					<canvas class="dashboard-pod average-line"></canvas>\
 				</div>\
-				<div class="sub-graph-container col-md-12">\
+			</div>\
+			<div class="section">\
+				<div class="toolbar">\
+					<div class="title">Overall Aspect Data</div>\
+					<div class="buttons">\
+						<div class="toggle" data-id="graph-3">+</div>\
+						<div class="toggle" data-id="graph-3"><i class="fa fa-info"></i></div>\
+					</div>\
+					<div class="clear"></div>\
+				</div>\
+				<div id="graph-3" class="sub-graph-container">\
 					<canvas class="dashboard-pod average-bar"></canvas>\
 				</div>\
 			</div>\

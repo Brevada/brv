@@ -149,7 +149,7 @@ $aspectCount = $qAspects->fetch_assoc()['cnt'];
 				<div class="icon">
 					<i class='fa fa-area-chart'></i>
 				</div>
-				<div class='icon-subtext hidden-xs'><?php _e('Complete'); ?></div>
+				<div class='icon-subtext hidden-xs'><?php _e('Summary'); ?></div>
 			</button>
 
 	        <button type="button" data-id="aspects" class="btn btn-sidebar toggle-button icon-button">
