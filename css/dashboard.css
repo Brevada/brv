@@ -75,15 +75,16 @@ div.mid-banner {
     min-height: 30px;
     height: auto;
     background: #333;
+    /*border-top: 1px solid #DCDCDC;*/
     margin: 0;
     padding: 0em;
     overflow: hidden;
     -webkit-transform-style: preserve-3d;
     -moz-transform-style: preserve-3d;
     transform-style: preserve-3d;
-    -webkit-box-shadow: 0px 0px 9px 0px rgba(50, 50, 50, 0.75);
-    -moz-box-shadow: 0px 0px 9px 0px rgba(50, 50, 50, 0.75);
-    box-shadow: 0px 0px 9px 0px rgba(50, 50, 50, 0.75);
+    -webkit-box-shadow: 0px 0px 3px 0px rgba(50, 50, 50, 0.75);
+    -moz-box-shadow: 0px 0px 3px 0px rgba(50, 50, 50, 0.75);
+    box-shadow: 0px 0px 3px 0px rgba(50, 50, 50, 0.75);
 }
 
 div.mid-banner .icon-button {
@@ -97,7 +98,7 @@ div.mid-banner .icon-button {
     border-right: 1px solid #666;
     border-radius: 0px;
     overflow: hidden;
-    line-height: 25px;
+    line-height: 15px;
     border-bottom: 0px;
     text-transform: uppercase;
 }
@@ -238,7 +239,7 @@ div.block div.block-bottom {
 }
 div.spacer {
     width: 100%;
-    height: 70px;
+    height: 60px;
     padding: 0;
     margin: 0;
 }
@@ -957,17 +958,19 @@ div.milestone {
 .hoverpod {
     cursor: pointer;
     position: fixed;
-    bottom: 20px;
-    right: 20px;
+    bottom: 0px;
+    right: 0px;
+    z-index: 9;
+    width:100%;
     background: #333;
     color: #FFF;
     -webkit-box-shadow: 0px 0px 5px 0px rgba(50, 50, 50, 0.75);
     -moz-box-shadow: 0px 0px 5px 0px rgba(50, 50, 50, 0.75);
     box-shadow: 0px 0px 5px 0px rgba(50, 50, 50, 0.75);
-    -webkit-border-radius: 3px;
+/*    -webkit-border-radius: 3px;
     -moz-border-radius: 3px;
     border-radius: 3px;
-    opacity: 0.95;
+    opacity: 0.95;*/
 }
 .hoverpod:hover {
     opacity: 1;
@@ -987,16 +990,16 @@ div.milestone {
 
 .hoverpod .body .number {
     text-align: center;
-    font-size: 30px;
+    font-size: 15px;
     font-weight: bold;
 }
 .hoverpod .body .text {
-    font-size: 11px;
+    font-size: 8px;
     text-align: center;
 }
 .hoverpod .status .bulb {
-    width: 30px;
-    height: 30px;
+    width: 15px;
+    height: 15px;
     border-radius: 3px;
     margin: 0 auto;
     margin-bottom: 5px;
@@ -1041,11 +1044,11 @@ div.milestone {
 }
 
 .complete-page .main {
-    padding: 0px 5px 0px 0px;
+    padding: 0px 45px 0px 0px;
 }
 
 .complete-page .section {
-    margin-top: 15px;
+    margin-bottom: 15px;
     clear: both;
 }
 
@@ -1080,19 +1083,19 @@ div.milestone {
 }
 
 .complete-page .graph-container {
-    height: 175px;
+    height: 280px;
 }
 
 .complete-page .sub-graph-container {
-    height: 100px;
+    height: 150px;
     padding: 0px;
 }
 
 .complete-page .header {
     background: #FFF;
     padding: 10px;
-    font-size: 23px;
-    font-weight: bold;
+    font-size: 15px;
+    /*font-weight: bold;*/
 }
 
 .complete-page .aspects {
@@ -1101,6 +1104,7 @@ div.milestone {
     background: #EEE;
     padding: 10px;
     border-radius: 2px;
+    margin-top: 10px;
 }
 
 .complete-page .aspect {
@@ -1114,8 +1118,8 @@ div.milestone {
 .complete-page .aspect .aspect-icon {
     display: inline-block;
     color: #FFF;
-    width: 15px;
-    height: 15px;
+    width: 30px;
+    height: 30px;
     border-radius: 4px;
 }
 
@@ -1129,11 +1133,13 @@ div.milestone {
 
 .complete-page .side-control {
     right: 0;
-    padding: 0px 20px 0px 25px;
+    top: 80px;
+    padding: 0px 5px 0px 0px;
     position: fixed;
+    z-index: 8;
     height: 100%;
     overflow-y: auto;
-    z-index: 1000;
+    background: #EEE;
     transition: all 0.4s ease 0s;
 }
 
@@ -1149,7 +1155,7 @@ div.milestone {
 .ui-rangeSlider-withArrows .ui-rangeSlider-container {
     width: 100%;
     margin: 0px;
-    background: #666;
+    background: #999;
 }
 .ui-rangeSlider-bar {
     background: #333;
@@ -1157,9 +1163,11 @@ div.milestone {
     font-size: 12px;
     text-align: center;
     height: 20px;
+    border-right: 4px solid #FFF;
+    border-left: 4px solid #FFF;
 }
 .ui-rangeSlider-label {
-    bottom: 20px;
+    bottom: 0px;
     font-size: 1px;
     padding: 0px;
     color: #333;

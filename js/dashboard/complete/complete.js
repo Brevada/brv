@@ -13,7 +13,7 @@ bdff.create('complete', function(canvas, face){
 	complete.fetch = function (start, end, excluded) {
 		// TODO: This should fetch the data excluded the 'excluded' aspects
 		var server_data = {
-			labels: ['Feb 1', 'Feb 3', 'Feb 5', 'Feb 7', 'Feb 9', 'Feb 11', 'Feb 13', 'Feb 15', 'Feb 18'],
+			labels: ['', 'Feb 3', 'Feb 5', 'Feb 7', 'Feb 9', 'Feb 11', 'Feb 13', 'Feb 15', ''],
 			average: [
 				{
 					label: 'Average',
@@ -187,7 +187,14 @@ bdff.create('complete', function(canvas, face){
 			    	maintainAspectRatio: false,
 			        scales: {
 						xAxes: [{
-							display: true
+							display: true,
+							ticks: {
+								fontSize: '9',
+								reverse: true
+							},
+							gridLines: {
+								color: 'rgba(0, 0, 0, 0.1)'
+							}
 						}],
 						yAxes: [{
 							display: false,
@@ -197,10 +204,7 @@ bdff.create('complete', function(canvas, face){
 								min: complete.serverData.minValue,
 								max: complete.serverData.maxValue
 							}
-						}],
-						gridLines: {
-							color: 'rgba(0, 0, 0, 0)'
-						}
+						}]
 					},
 			        legend: {
 						display: false,
@@ -398,6 +402,7 @@ bdff.create('complete', function(canvas, face){
 			</div>\
 		</div>\
 		<div class="col-md-3 side-control">\
+			<div class="side-header">Data Options</div>\
 			<div class="settings">\
 				<div class="header">Text</div>\
 				<div id="slider"></div>\
