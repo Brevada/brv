@@ -1061,6 +1061,7 @@ div.milestone {
 
 .complete-page .section .toolbar .title {
     float: left;
+    font-size: 16px;
 }
 
 .complete-page .section .toolbar .buttons {
@@ -1068,22 +1069,22 @@ div.milestone {
 }
 
 .complete-page .section .toolbar .buttons div {
-    background: #CCC;
-    color: #FFF;
+    background: #BBB;
+    color: #EEE;
     height: 25px;
-    width: 25px;
-    border-radius: 25px;
+    padding: 0px 10px;
+    border-radius: 4px;
     text-align: center;
     line-height: 25px;
     display: inline-block;
 }
 
 .complete-page .graph-container {
-    height: 180px;
+    height: 175px;
 }
 
 .complete-page .sub-graph-container {
-    height: 150px;
+    height: 100px;
     padding: 0px;
 }
 
@@ -1113,8 +1114,8 @@ div.milestone {
 .complete-page .aspect .aspect-icon {
     display: inline-block;
     color: #FFF;
-    width: 30px;
-    height: 30px;
+    width: 15px;
+    height: 15px;
     border-radius: 4px;
 }
 
@@ -1128,7 +1129,7 @@ div.milestone {
 
 .complete-page .side-control {
     right: 0;
-    padding: 0px 20px 0px 35px;
+    padding: 0px 20px 0px 25px;
     position: fixed;
     height: 100%;
     overflow-y: auto;
@@ -1158,14 +1159,14 @@ div.milestone {
     height: 20px;
 }
 .ui-rangeSlider-label {
-    bottom: 0px;
+    bottom: 20px;
     font-size: 1px;
     padding: 0px;
     color: #333;
     background: rgba(255,255,255,0.5);
 }
 .ui-rangeSlider-label-inner {
-    top: 20%;
+    top: 0%;
     left: 110%;
     border-left: 10px solid #333;
     border-right: 10px solid transparent;
@@ -1173,7 +1174,7 @@ div.milestone {
     border-bottom: 10px solid transparent;
 }
 .ui-rangeSlider-rightLabel .ui-rangeSlider-label-inner {
-    top: 20%;
+    top: 0%;
     left: 0%;
     border-left: 10px solid transparent;
     border-right: 10px solid #333;

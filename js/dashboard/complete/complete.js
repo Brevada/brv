@@ -119,7 +119,7 @@ bdff.create('complete', function(canvas, face){
 
 	    }
 	    complete.serverData.average[0].fill = true;
-	    complete.serverData.average[0].backgroundColor = complete.colorFillOptions[0];
+	    complete.serverData.average[0].backgroundColor = complete.colorFillOptions[1];
 	}
 
 	complete.excludeData = function () {
@@ -355,17 +355,13 @@ bdff.create('complete', function(canvas, face){
 	
 	complete.el = $('<div>').addClass('complete-page col-md-12').appendTo(canvas);
 	
-	$('<div class="col-md-10 main">\
+	$('<div class="col-md-9 main">\
 			<!--<div class="dashboard-pod timeline">Timeline</div>-->\
-			<div class="settings">\
-				<div class="header">Text</div>\
-				<div id="slider"></div>\
-			</div>\
 			<div class="section">\
 				<div class="toolbar">\
 					<div class="title">Overall Aspect Data</div>\
 					<div class="buttons">\
-						<div class="toggle" data-id="graph-1">+</div>\
+						<div class="toggle" data-id="graph-1">Maximize</div>\
 						<div class="toggle" data-id="graph-1"><i class="fa fa-info"></i></div>\
 					</div>\
 					<div class="clear"></div>\
@@ -401,7 +397,11 @@ bdff.create('complete', function(canvas, face){
 				</div>\
 			</div>\
 		</div>\
-		<div class="col-md-2 side-control">\
+		<div class="col-md-3 side-control">\
+			<div class="settings">\
+				<div class="header">Text</div>\
+				<div id="slider"></div>\
+			</div>\
 			<div class="aspects"></div>\
 		</div>\
 	  ').appendTo(complete.el);
