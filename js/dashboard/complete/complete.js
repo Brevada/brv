@@ -103,7 +103,7 @@ bdff.create('complete', function(canvas, face){
 		return server_data;
 	}
 	complete.colorOptions = ['#ca60f2', '#f260b6', '#f2606a', '#60b6f2', '#f2c460', '#d98d42'];
-	complete.colorFillOptions = ['rgba(202,96,242, 0.1)', 'rgba(242,96,182,0.1)', 'rgba(242,96,106,0.1)', 'rgba(96,182,242,0.1)', 'rgba(242,196,96,0.1)', 'rgba(217,141,66,0.1)']
+	complete.colorFillOptions = ['rgba(202,96,242, 0.4)', 'rgba(242,96,182,0.4)', 'rgba(242,96,106,0.4)', 'rgba(96,182,242,0.4)', 'rgba(242,196,96,0.4)', 'rgba(217,141,66,0.4)']
 	// complete.colorOptions = ['#2ecc0e', '#29b60c', '#30e30c', '#36ff0d', '#24a40a', '#197806'];
 	// complete.colorFillOptions = ['rgba(46,204,14, 0.1)', 'rgba(41,182,12,0.1)', 'rgba(48,227,12,0.1)', 'rgba(54,255,13,0.1)', 'rgba(36,164,10,0.1)', 'rgba(217,141,66,0.1)']
 	complete.styleData = function (data) {
@@ -146,6 +146,7 @@ bdff.create('complete', function(canvas, face){
 						<div class="aspect-info">Responses: '+responses+'</div>\
 						<!-- <div class="aspect-info">Average: '+average+'</div>-->\
 					</div>\
+					<div class="aspect-visibility"><i class="fa fa-eye"></i></div>\
 					</div>\
 					').appendTo($(complete.el).find('.aspects'));
 		}
