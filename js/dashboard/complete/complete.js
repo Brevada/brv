@@ -369,7 +369,6 @@ bdff.create('complete', function(canvas, face){
 				<div class="toolbar">\
 					<div class="title">Overall Aspect Data</div>\
 					<div class="buttons">\
-						<div class="toggle" data-id="graph-1">Maximize</div>\
 						<div class="toggle" data-id="graph-1"><i class="fa fa-info"></i></div>\
 					</div>\
 					<div class="clear"></div>\
@@ -383,7 +382,6 @@ bdff.create('complete', function(canvas, face){
 				<div class="toolbar">\
 					<div class="title">Overall Aspect Data</div>\
 					<div class="buttons">\
-						<div class="toggle" data-id="graph-2">+</div>\
 						<div class="toggle" data-id="graph-2"><i class="fa fa-info"></i></div>\
 					</div>\
 					<div class="clear"></div>\
@@ -397,7 +395,6 @@ bdff.create('complete', function(canvas, face){
 				<div class="toolbar">\
 					<div class="title">Overall Aspect Data</div>\
 					<div class="buttons">\
-						<div class="toggle" data-id="graph-3">+</div>\
 						<div class="toggle" data-id="graph-3"><i class="fa fa-info"></i></div>\
 					</div>\
 					<div class="clear"></div>\
@@ -409,6 +406,7 @@ bdff.create('complete', function(canvas, face){
 		</div>\
 		<div class="col-md-3 side-control">\
 			<div class="header">Data Options</div>\
+			<div class="sub-header">Use this interface to control the data that appears on the graphs.</div>\
 			<div class="settings">\
 				<div class="date">Text</div>\
 				<div id="slider"></div>\

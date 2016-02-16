@@ -94,12 +94,13 @@ $aspectCount = $qAspects->fetch_assoc()['cnt'];
 			<i class='fa fa-qrcode'></i> <?php _e('QR Code'); ?>
 		</a>
       	<a href="hub/includes/marketing/promo_white.php" target="_blank" type="button" class="btn icon-button">
-			<i class='fa fa-area-chart'></i> <?php _e('Printables'); ?>
+			<i class='fa fa-paper-plane'></i> <?php _e('Printables'); ?>
 		</a>
-
+		<!--
 		<a href="#" id="email-display" class="slide-down-trigger btn icon-button" type="button">
 			<i class='fa fa-area-chart'></i> <?php _e('Email List'); ?>
 		</a>
+		-->
 		<?php if(isset($_SESSION['Corporate']) && $_SESSION['Corporate']){ ?>
 		<a href="/dashboard" type="button" class="btn icon-button">
 			<i class='fa fa-area-chart'></i> <?php _e('Corporate'); ?>
