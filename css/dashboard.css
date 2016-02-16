@@ -3,7 +3,7 @@
 }
 body {
     font-family: "helvetica neue", arial, helvetica, freesans, "liberation sans", "numbus sans l", sans-serif;
-    background-color: #EEE;
+    background-color: #FFF;
 }
 div.top-fixed {
     width: 100%;
@@ -126,7 +126,7 @@ div.sidebar .icon-button.selected {
 .btn-sidebar {
     text-transform: uppercase;
     font-size: 11px;
-    background: none;
+    background: #FBFBFB;
     color: #999;
     outline: none;
     border-color: #DDD;
@@ -182,7 +182,7 @@ div.sidebar .icon-button .icon-subtext {
     line-height: 20px;
     margin-top: 5px;
     font-size: 11px;
-    color: #454545;
+    color: #999;
     text-align: center;
     text-transform: uppercase;
 }
@@ -194,7 +194,7 @@ div.sidebar .icon-button:hover {
 }
 
 div.sidebar .icon-button.selected {
-    background: #454545;
+    background: #666;
 }
 
 div.sidebar .icon-button.selected .icon-subtext {
@@ -401,6 +401,7 @@ div.bottom-bar {
     -webkit-border-radius: 3px;
     -moz-border-radius: 3px;
     border-radius: 3px;
+    border: 1px solid #DCDCDC;
 	min-height: 387px;
 	margin: 0px 10px 20px 10px;
 	padding: 0;
@@ -711,7 +712,7 @@ div.email-display-container .email .rating{
 
 .dashboard-pod {
     padding: 0px;
-    background: #FFF;
+    background: #EEE;
     border-radius: 2px;
     margin-bottom: 20px;
     overflow: hidden;
@@ -1067,6 +1068,7 @@ div.milestone {
 .complete-page .section .toolbar {
     padding: 10px;
     background: #FBFBFB;
+    border-bottom: 1px solid #DCDCDC;
     clear: both;
 }
 
@@ -1091,8 +1093,23 @@ div.milestone {
     display: inline-block;
 }
 
+.complete-page .section .graph-button {
+    position: relative;
+    top:-120px;
+    left: 90%;
+    background: rgba(100,100,100,0.8);
+    color: #DDD;
+    height: 55px;
+    width: 55px;
+    line-height: 55px;
+    border-radius: 55px;
+    text-align: center;
+    font-size: 30px;
+}
+
 .complete-page .graph-container {
-    height: 200px;
+    height: 280px;
+    text-align: right;
 }
 
 .complete-page .sub-graph-container {
@@ -1109,7 +1126,7 @@ div.milestone {
 .complete-page .aspects {
     max-height: 480px; /*TODO */
     overflow: scroll;
-    background: #FFF;
+    background: none;
     padding: 10px;
     border-radius: 2px;
     margin-top: 10px;
@@ -1141,15 +1158,19 @@ div.milestone {
 
 .complete-page .side-control {
     right: 0;
-    top: 80px;
-    padding: 0px 5px 0px 0px;
+    /*top: 80px;*/
+    padding: 0px;
     position: fixed;
     z-index: 8;
     height: 100%;
     overflow-y: auto;
-    background: #FFF;
-    border-left: 1px solid #BBB;
+    background: #FBFBFB;
+    /*border-left: 1px solid #EEE;*/
     transition: all 0.4s ease 0s;
+}
+
+.complete-page .side-control .header {
+    font-size: 30px;
 }
 
 /* Range Slider */

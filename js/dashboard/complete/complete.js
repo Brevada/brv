@@ -102,10 +102,10 @@ bdff.create('complete', function(canvas, face){
 
 		return server_data;
 	}
-	// complete.colorOptions = ['#ca60f2', '#f260b6', '#f2606a', '#60b6f2', '#f2c460', '#d98d42'];
-	// complete.colorFillOptions = ['rgba(202,96,242, 0.1)', 'rgba(242,96,182,0.1)', 'rgba(242,96,106,0.1)', 'rgba(96,182,242,0.1)', 'rgba(242,196,96,0.1)', 'rgba(217,141,66,0.1)']
-	complete.colorOptions = ['#2ecc0e', '#29b60c', '#30e30c', '#36ff0d', '#24a40a', '#197806'];
-	complete.colorFillOptions = ['rgba(46,204,14, 0.1)', 'rgba(41,182,12,0.1)', 'rgba(48,227,12,0.1)', 'rgba(54,255,13,0.1)', 'rgba(36,164,10,0.1)', 'rgba(217,141,66,0.1)']
+	complete.colorOptions = ['#ca60f2', '#f260b6', '#f2606a', '#60b6f2', '#f2c460', '#d98d42'];
+	complete.colorFillOptions = ['rgba(202,96,242, 0.1)', 'rgba(242,96,182,0.1)', 'rgba(242,96,106,0.1)', 'rgba(96,182,242,0.1)', 'rgba(242,196,96,0.1)', 'rgba(217,141,66,0.1)']
+	// complete.colorOptions = ['#2ecc0e', '#29b60c', '#30e30c', '#36ff0d', '#24a40a', '#197806'];
+	// complete.colorFillOptions = ['rgba(46,204,14, 0.1)', 'rgba(41,182,12,0.1)', 'rgba(48,227,12,0.1)', 'rgba(54,255,13,0.1)', 'rgba(36,164,10,0.1)', 'rgba(217,141,66,0.1)']
 	complete.styleData = function (data) {
 		for (var p in data) {
 			if (complete.serverData.aspects[p].excluded) {
@@ -361,7 +361,7 @@ bdff.create('complete', function(canvas, face){
 	canvas.children().not('div.message-container').remove();
 	
 	complete.el = $('<div>').addClass('complete-page col-md-12').appendTo(canvas);
-	
+	// TODO: Automate this
 	$('<div class="col-md-9 main">\
 			<!--<div class="dashboard-pod timeline">Timeline</div>-->\
 			<div class="section">\
@@ -375,6 +375,7 @@ bdff.create('complete', function(canvas, face){
 				</div>\
 				<div id="graph-1" class="graph-container">\
 					<canvas class="dashboard-pod graph"></canvas>\
+					<div class="graph-button"><i class="fa fa-expand"></i></div>\
 				</div>\
 			</div>\
 			<div class="section">\
@@ -388,6 +389,7 @@ bdff.create('complete', function(canvas, face){
 				</div>\
 				<div id="graph-2" class="sub-graph-container">\
 					<canvas class="dashboard-pod average-line"></canvas>\
+					<div class="graph-button"><i class="fa fa-expand"></i></div>\
 				</div>\
 			</div>\
 			<div class="section">\
@@ -405,7 +407,7 @@ bdff.create('complete', function(canvas, face){
 			</div>\
 		</div>\
 		<div class="col-md-3 side-control">\
-			<div class="side-header">Data Options</div>\
+			<div class="header">Data Options</div>\
 			<div class="settings">\
 				<div class="date">Text</div>\
 				<div id="slider"></div>\

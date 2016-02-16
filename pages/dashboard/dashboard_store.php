@@ -88,10 +88,10 @@ $aspectCount = $qAspects->fetch_assoc()['cnt'];
 
 	<div class="mid-banner row" style="">
 	  	<a type="button" class="btn icon-button" href="/<?php echo $url_name; ?>" target="_blank">
-      		<i class='fa fa-area-chart'></i> <?php _e('Your Page'); ?>
+      		<i class='fa fa-play-circle'></i> <?php _e('Your Page'); ?>
       	</a>
       	<a href="/qr/<?php echo $url_name; ?>.png" target="_blank" type="button" class="btn icon-button">
-			<i class='fa fa-area-chart'></i> <?php _e('QR Code'); ?>
+			<i class='fa fa-qrcode'></i> <?php _e('QR Code'); ?>
 		</a>
       	<a href="hub/includes/marketing/promo_white.php" target="_blank" type="button" class="btn icon-button">
 			<i class='fa fa-area-chart'></i> <?php _e('Printables'); ?>
@@ -119,7 +119,7 @@ $aspectCount = $qAspects->fetch_assoc()['cnt'];
 				</ul>
 			</div>
 			<div class='name pull-right hidden-xs'>
-				<?php _e('Current User'); ?>: <span class="variable"><?php echo $name; ?></span>
+				<span class="variable"><?php echo $name; ?></span>
 			</div>
 		</div>
 	</div>
