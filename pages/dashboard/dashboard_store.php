@@ -86,9 +86,29 @@ $aspectCount = $qAspects->fetch_assoc()['cnt'];
 <div id="alert-holder"></div>
 <div class="top-fixed">
 
+	<div class="mid-banner row" style="">
+	  	<a type="button" class="btn icon-button" href="/<?php echo $url_name; ?>" target="_blank">
+      		<i class='fa fa-area-chart'></i> <?php _e('Your Page'); ?>
+      	</a>
+      	<a href="/qr/<?php echo $url_name; ?>.png" target="_blank" type="button" class="btn icon-button">
+			<i class='fa fa-area-chart'></i> <?php _e('QR Code'); ?>
+		</a>
+      	<a href="hub/includes/marketing/promo_white.php" target="_blank" type="button" class="btn icon-button">
+			<i class='fa fa-area-chart'></i> <?php _e('Printables'); ?>
+		</a>
+
+		<a href="#" id="email-display" class="slide-down-trigger btn icon-button" type="button">
+			<i class='fa fa-area-chart'></i> <?php _e('Email List'); ?>
+		</a>
+		<?php if(isset($_SESSION['Corporate']) && $_SESSION['Corporate']){ ?>
+		<a href="/dashboard" type="button" class="btn icon-button">
+			<i class='fa fa-area-chart'></i> <?php _e('Corporate'); ?>
+		</a>
+		<?php } ?>
+	</div>
 	<div class='top-banner row'>
 		<div class='col-lg-12'>
-			<img class='logo-quote link pull-left' src='/images/brevada.png' data-link='' />
+			<img class='logo-quote link pull-left' src='/images/logoWhite.png' data-link='' />
 			<div class='dropdown pull-right'>
 				<div class='three-lines btn btn-default dropdown-toggle'  data-toggle='dropdown'>
 					<i class='fa fa-ellipsis-h'></i>
@@ -104,26 +124,7 @@ $aspectCount = $qAspects->fetch_assoc()['cnt'];
 		</div>
 	</div>
 
-	<div class="mid-banner row" style="">
-	  	<a type="button" class="btn icon-button" href="/<?php echo $url_name; ?>" target="_blank">
-      		<?php _e('Your Page'); ?>
-      	</a>
-      	<a href="/qr/<?php echo $url_name; ?>.png" target="_blank" type="button" class="btn icon-button">
-			<?php _e('QR Code'); ?>
-		</a>
-      	<a href="hub/includes/marketing/promo_white.php" target="_blank" type="button" class="btn icon-button">
-			<?php _e('Printables'); ?>
-		</a>
-
-		<a href="#" id="email-display" class="slide-down-trigger btn icon-button" type="button">
-			<?php _e('Email List'); ?>
-		</a>
-		<?php if(isset($_SESSION['Corporate']) && $_SESSION['Corporate']){ ?>
-		<a href="/dashboard" type="button" class="btn icon-button">
-			<?php _e('Corporate'); ?>
-		</a>
-		<?php } ?>
-	</div>
+	
 
 </div>
 

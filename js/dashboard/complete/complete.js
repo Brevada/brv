@@ -103,8 +103,8 @@ bdff.create('complete', function(canvas, face){
 		return server_data;
 	}
 	// complete.colorOptions = ['#ca60f2', '#f260b6', '#f2606a', '#60b6f2', '#f2c460', '#d98d42'];
-	complete.colorOptions = ['#2ecc0e', '#29b60c', '#30e30c', '#36ff0d', '#24a40a', '#197806'];
 	// complete.colorFillOptions = ['rgba(202,96,242, 0.1)', 'rgba(242,96,182,0.1)', 'rgba(242,96,106,0.1)', 'rgba(96,182,242,0.1)', 'rgba(242,196,96,0.1)', 'rgba(217,141,66,0.1)']
+	complete.colorOptions = ['#2ecc0e', '#29b60c', '#30e30c', '#36ff0d', '#24a40a', '#197806'];
 	complete.colorFillOptions = ['rgba(46,204,14, 0.1)', 'rgba(41,182,12,0.1)', 'rgba(48,227,12,0.1)', 'rgba(54,255,13,0.1)', 'rgba(36,164,10,0.1)', 'rgba(217,141,66,0.1)']
 	complete.styleData = function (data) {
 		for (var p in data) {
@@ -193,7 +193,7 @@ bdff.create('complete', function(canvas, face){
 								reverse: true
 							},
 							gridLines: {
-								color: 'rgba(0, 0, 0, 0.1)'
+								color: 'rgba(0, 0, 0, 0.05)'
 							}
 						}],
 						yAxes: [{
@@ -236,7 +236,10 @@ bdff.create('complete', function(canvas, face){
 			    	maintainAspectRatio: false,
 			        scales: {
 						xAxes: [{
-							display: true
+							display: true,
+							gridLines: {
+								color: 'rgba(0, 0, 0, 0.05)'
+							}
 						}],
 						yAxes: [{
 							display: false,
@@ -322,7 +325,7 @@ bdff.create('complete', function(canvas, face){
 				max = data.values.max.toString().split(" ");
 				min_date = min[1] + ' ' + min[2] + ' ' + min[3],
 				max_date = max[1] + ' ' + max[2] + ' ' + max[3];
-			$('.settings .header').html(min_date + ' - ' + max_date);
+			$('.settings .date').html(min_date + ' - ' + max_date);
 		});
 		$(complete.el).find('.aspect').click(function () {
 			complete.toggleAspect(parseInt($(this).attr('data-id')));
@@ -404,7 +407,7 @@ bdff.create('complete', function(canvas, face){
 		<div class="col-md-3 side-control">\
 			<div class="side-header">Data Options</div>\
 			<div class="settings">\
-				<div class="header">Text</div>\
+				<div class="date">Text</div>\
 				<div id="slider"></div>\
 			</div>\
 			<div class="aspects"></div>\

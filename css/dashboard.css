@@ -3,7 +3,7 @@
 }
 body {
     font-family: "helvetica neue", arial, helvetica, freesans, "liberation sans", "numbus sans l", sans-serif;
-    background-color: #BBB;
+    background-color: #EEE;
 }
 div.top-fixed {
     width: 100%;
@@ -13,7 +13,8 @@ div.top-fixed {
     z-index: 9;
 }
 div.top-banner {
-    background: #FFF;
+    background: #454545;
+    color: #FFF;
     padding: 0px 10px;
     line-height: 50px;
 }
@@ -46,7 +47,7 @@ div.top-banner .dropdown-menu li:hover {
 }
 div.top-banner .three-lines {
     background: none;
-    color: #454545;
+    color: #FFF;
     border: none;
     font-size: 30px;
 }
@@ -74,17 +75,18 @@ div.mid-banner {
     width: 100%;
     min-height: 30px;
     height: auto;
-    background: #333;
-    /*border-top: 1px solid #DCDCDC;*/
+    background: #FFF;
+    border-bottom: 1px solid #DCDCDC;
+    border-top: 1px solid #DCDCDC;
     margin: 0;
     padding: 0em;
     overflow: hidden;
-    -webkit-transform-style: preserve-3d;
+/*    -webkit-transform-style: preserve-3d;
     -moz-transform-style: preserve-3d;
     transform-style: preserve-3d;
     -webkit-box-shadow: 0px 0px 3px 0px rgba(50, 50, 50, 0.75);
     -moz-box-shadow: 0px 0px 3px 0px rgba(50, 50, 50, 0.75);
-    box-shadow: 0px 0px 3px 0px rgba(50, 50, 50, 0.75);
+    box-shadow: 0px 0px 3px 0px rgba(50, 50, 50, 0.75);*/
 }
 
 div.mid-banner .icon-button {
@@ -95,7 +97,7 @@ div.mid-banner .icon-button {
     background: none;
     color: #999;
     outline: none;
-    border-right: 1px solid #666;
+    /*border-right: 1px solid #BBB;*/
     border-radius: 0px;
     overflow: hidden;
     line-height: 15px;
@@ -114,7 +116,7 @@ div.mid-banner .icon-button {
 
 div.mid-banner .icon-button i {
     float: left;
-    color: #EEE;
+    color: #BBB;
 }
 
 div.sidebar .icon-button.selected {
@@ -124,10 +126,10 @@ div.sidebar .icon-button.selected {
 .btn-sidebar {
     text-transform: uppercase;
     font-size: 11px;
-    background: #333333;
-    color: #BBB;
+    background: none;
+    color: #999;
     outline: none;
-    border-color: #666;
+    border-color: #DDD;
     width: 80px;
     height: 90px;
     overflow: hidden;
@@ -151,7 +153,7 @@ div.sidebar .icon-button.selected::after {
     width: 50px;
     height: 50px;
     text-align: center;
-    border: 1px solid #444;
+    border: 1px solid #BBB;
     border-radius: 50px;
     margin: 0 auto;
     line-height: 60px;
@@ -180,7 +182,7 @@ div.sidebar .icon-button .icon-subtext {
     line-height: 20px;
     margin-top: 5px;
     font-size: 11px;
-    color: #EEE;
+    color: #454545;
     text-align: center;
     text-transform: uppercase;
 }
@@ -192,8 +194,11 @@ div.sidebar .icon-button:hover {
 }
 
 div.sidebar .icon-button.selected {
-    background: #333;
-    /*color: #FFF;*/
+    background: #454545;
+}
+
+div.sidebar .icon-button.selected .icon-subtext {
+    color: #FFF;
 }
 
 div.sidebar .icon-button.selected .icon {
@@ -706,7 +711,7 @@ div.email-display-container .email .rating{
 
 .dashboard-pod {
     padding: 0px;
-    background: #EEE;
+    background: #FFF;
     border-radius: 2px;
     margin-bottom: 20px;
     overflow: hidden;
@@ -962,7 +967,7 @@ div.milestone {
     right: 0px;
     z-index: 9;
     width:100%;
-    background: #333;
+    background: #454545;
     color: #FFF;
     -webkit-box-shadow: 0px 0px 5px 0px rgba(50, 50, 50, 0.75);
     -moz-box-shadow: 0px 0px 5px 0px rgba(50, 50, 50, 0.75);
@@ -1048,8 +1053,11 @@ div.milestone {
 }
 
 .complete-page .section {
-    margin-bottom: 15px;
+    margin-bottom: 20px;
     clear: both;
+    border: 1px solid #DDD;
+    border-radius: 5px;
+    overflow: hidden;
 }
 
 .complete-page .section canvas {
@@ -1057,14 +1065,14 @@ div.milestone {
 }
 
 .complete-page .section .toolbar {
-    padding: 5px;
-    background: #FFF;
+    padding: 10px;
+    background: #FBFBFB;
     clear: both;
 }
 
 .complete-page .section .toolbar .title {
     float: left;
-    font-size: 16px;
+    font-size: 18px;
 }
 
 .complete-page .section .toolbar .buttons {
@@ -1072,8 +1080,9 @@ div.milestone {
 }
 
 .complete-page .section .toolbar .buttons div {
-    background: #BBB;
-    color: #EEE;
+    background: #EEE;
+    border: 1px solid #dcdcdc;
+    color: #666;
     height: 25px;
     padding: 0px 10px;
     border-radius: 4px;
@@ -1083,7 +1092,7 @@ div.milestone {
 }
 
 .complete-page .graph-container {
-    height: 280px;
+    height: 200px;
 }
 
 .complete-page .sub-graph-container {
@@ -1091,8 +1100,7 @@ div.milestone {
     padding: 0px;
 }
 
-.complete-page .header {
-    background: #FFF;
+.complete-page .settings .date {
     padding: 10px;
     font-size: 15px;
     /*font-weight: bold;*/
@@ -1101,7 +1109,7 @@ div.milestone {
 .complete-page .aspects {
     max-height: 480px; /*TODO */
     overflow: scroll;
-    background: #EEE;
+    background: #FFF;
     padding: 10px;
     border-radius: 2px;
     margin-top: 10px;
@@ -1139,7 +1147,8 @@ div.milestone {
     z-index: 8;
     height: 100%;
     overflow-y: auto;
-    background: #EEE;
+    background: #FFF;
+    border-left: 1px solid #BBB;
     transition: all 0.4s ease 0s;
 }
 
