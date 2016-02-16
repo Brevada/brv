@@ -412,7 +412,7 @@ div.bottom-bar {
 	background: #FFF;
 }
 .pod .body {
-    background: #999;
+    background: #DDD;
 	width: 100%;
 	height: 100%;
 	position: absolute;
@@ -421,7 +421,7 @@ div.bottom-bar {
     text-align: right;
 }
 .pod .body .pod-body-right .rating-text {
-    color: #FBFBFB;
+    color: #999;
 }
 .pod .body .pod-body-right .rating-text.external {
     font-size: 10px;
@@ -436,17 +436,17 @@ div.bottom-bar {
 }
 .pod .body .pod-body-left .top .percent {
     font-weight: bold;
-    color: #FBFBFB;
+    color: #999;
 }
 .pod .body .pod-body-left .top .duration {
     margin-left: 5px;
     font-size: 8px;
-    color: #FBFBFB;
+    color: #999;
     text-transform: uppercase;
 }
 .pod .body .pod-body-left i {
     font-size: 25px;
-    color: #FBFBFB;
+    color: #999;
 }
 .pod .body .pod-body-rating {
     margin-top: 10px;
@@ -457,7 +457,7 @@ div.bottom-bar {
 .pod .body .pod-body-rating.external {
     font-size: 25px;
     line-height: 30px;
-    color: #FBFBFB;
+    color: #999;
 }
 .pod .body .pod-body-bottom {
     clear: both;

@@ -26,9 +26,9 @@ function build_line_graph(bucket, id) {
 	        {
 	            label: "Aspect",
 				fill: true,
-				backgroundColor: "rgba(21,187,75,0.7)",
-	            borderColor: "rgba(21,187,75,0.7)",
-	            pointBackgroundColor: "rgba(151,187,205,1)",
+				backgroundColor: "rgba(242,96,182, 0.7)",
+	            borderColor: "rgba(242,96,182, 0.7)",
+	            pointBackgroundColor: "rgba(242,96,182, 1)",
 	            pointBorderColor: "#FFFFFF",
 	            pointHoverBackgroundColor: "#FFFFFF",
 	            pointHoverBorderColor: "rgba(151,187,205,1)",
