@@ -190,7 +190,8 @@ bdff.create('complete', function(canvas, face){
 						xAxes: [{
 							display: true,
 							ticks: {
-								fontSize: '9',
+								fontSize: '11',
+								fontColor: '#FFFFFF',
 								reverse: true
 							},
 							gridLines: {
@@ -406,7 +407,7 @@ bdff.create('complete', function(canvas, face){
 		</div>\
 		<div class="col-md-3 side-control">\
 			<div class="header">Data Options</div>\
-			<div class="sub-header">Use this interface to control the data that appears on the graphs.</div>\
+			<div class="sub-header">Use this interface to control what data appears on the graphs.</div>\
 			<div class="settings">\
 				<div class="date">Text</div>\
 				<div id="slider"></div>\

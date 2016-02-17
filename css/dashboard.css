@@ -712,7 +712,7 @@ div.email-display-container .email .rating{
 
 .dashboard-pod {
     padding: 0px;
-    background: #999;
+    background: #BBB;
     border-radius: 2px;
     margin-bottom: 20px;
     overflow: hidden;
@@ -1112,7 +1112,7 @@ div.milestone {
 }
 
 .complete-page .graph-container {
-    height: 200px;
+    height: 280px;
     text-align: right;
 }
 
@@ -1182,10 +1182,10 @@ div.milestone {
 }
 
 .complete-page .side-control .header {
-    padding: 10px;
-    background: #FBFBFB;
+    /*padding: 10px;*/
+    /*background: #FBFBFB;*/
     font-size: 18px;
-    border: 1px solid #DCDCDC;
+    /*border: 1px solid #DCDCDC;*/
 }
 
 .complete-page .side-control .sub-header {
@@ -1217,8 +1217,8 @@ div.milestone {
     border-left: 4px solid #FFF;
 }
 .ui-rangeSlider-label {
-    bottom: 0px;
-    font-size: 1px;
+    bottom: 50px;
+    /*font-size: 1px;*/
     padding: 0px;
     color: #333;
     background: rgba(255,255,255,0.5);
