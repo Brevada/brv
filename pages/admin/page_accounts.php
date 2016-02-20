@@ -56,7 +56,8 @@ if(!Permissions::has(Permissions::VIEW_ADMIN)){ Brevada::Redirect('/404'); }
 	</tbody>
   </table>
 </div>
-
+<br /><br />
+<div class='well well-sm'>Want to reset the password for your admin account? <a id='resetAdmin' href='#'>Click Here</a></div>
 
 <script type='text/javascript'>
 function submitChange(column, id, value){
@@ -73,4 +74,24 @@ function submitChange(column, id, value){
 		}
 	});
 }
+
+$(document).ready(function(){
+	$('#resetAdmin').click(function(){
+		var pass = prompt('Enter your new password (must be at least 8 characters).');
+		if(pass && pass.length >= 8){
+			var passConfirm = prompt('Please re-type your password.');
+			if(passConfirm && passConfirm == pass){
+				$.post('/admin/update/admin_password.php', { password : pass }, function(){
+					alert('You will be logged out. Please log back in with your new password.');
+					window.location.href = '/logout';
+				});
+			} else {
+				alert('Passwords do not match.');
+			}
+		} else {
+			alert('Too short.');
+		}
+		return false;
+	});
+});
 </script>

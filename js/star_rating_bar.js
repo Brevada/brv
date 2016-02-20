@@ -17,4 +17,9 @@ function insertRating(val, id) {
 }
 function disappearRating(post_id) {
 	$("#aspect_"+post_id).addClass('rated').slideUp(250);
+	if($('#aspects > div.aspect:not(.rated)').length == 0){
+		$('#aspects, .fixed-toolbar').fadeOut(300, function () {
+			$('#email_connect').show();
+		});
+	}
 }

@@ -43,59 +43,44 @@ class TaskFeedback extends AbstractTask
 	{
 		if($time == 0){ $time = time(); }
 		$time = @intval($time);
-		
-		/* Authorized tablet user agent. */
-		$authUserAgent = TABLET_USERAGENT.'%';
 
 		$geo = Geography::GetGeo();
 
 		$ipAddress = $geo['ip'];
-		$country = $geo['country'];
-		$province = $geo['province'];
-		$city = $geo['city'];
 
 		$userAgent = $_SERVER['HTTP_USER_AGENT'];
 		
-		if(($check = Database::prepare("SELECT `feedback`.id FROM `feedback` LEFT JOIN user_agents ON user_agents.ID = feedback.UserAgentID WHERE `feedback`.AspectID = ? AND `feedback`.IPAddress = ? AND (`feedback`.`Date` > NOW() - INTERVAL 1 HOUR) AND `user_agents`.UserAgent = ? AND `user_agents`.UserAgent NOT LIKE ? LIMIT 1")) !== false){
-			$check->bind_param('isss', $aspectID, $ipAddress, $userAgent, $authUserAgent);
-			if($check->execute()){
-				$check->store_result();
-				if($check->num_rows == 0){
-					if(isset($rating)){
-						if(($stmt = Database::prepare("INSERT INTO `user_agents` (`UserAgent`) VALUES (?)")) !== false){
-							$userAgentID = -1;
-							$stmt->bind_param('s', $userAgent);
-							if($stmt->execute()){
-								$userAgentID = $stmt->insert_id;
-							}
-							$stmt->close();
+		if(!isset($_SESSION['feedback']) || empty($_SESSION['feedback'])){
+			$_SESSION['feedback'] = [];
+		}
+		
+		if(in_array($aspectID, $_SESSION['feedback'])){
+			Logger::info("Repeated feedback by same session detected @ {$time} for aspects.#{$aspectID}.");
+		}
+		
+		if(isset($rating)){
+			if(($stmt = Database::prepare("INSERT INTO `user_agents` (`UserAgent`) VALUES (?)")) !== false){
+				$userAgentID = -1;
+				$stmt->bind_param('s', $userAgent);
+				if($stmt->execute()){
+					$userAgentID = $stmt->insert_id;
+				}
+				$stmt->close();
+				
+				if($userAgentID > 0){
+					if(($stmt = Database::prepare("INSERT INTO `feedback` (`AspectID`, `Date`, `Rating`, `IPAddress`, `UserAgentID`, `SessionCode`) SELECT aspects.ID, FROM_UNIXTIME(?), ?, ?, ?, ? FROM aspects WHERE aspects.ID = ?")) !== false){
+						$stmt->bind_param('idsisi', $time, $rating, $ipAddress, $userAgentID, $sessionCode, $aspectID);
+						if($stmt->execute()){
+							Logger::info("Inserted feedback.#{$stmt->insert_id}. AspectID: {$aspectID}, Rating: {$rating}, IP: {$ipAddress}, Time: {$time}");
 							
-							if(($stmt = Database::prepare("INSERT INTO `locations` (`Country`, `Province`, `City`) VALUES (?, ?, ?)")) !== false){
-								$locationID = -1;
-								$stmt->bind_param('sss', $country, $province, $city);
-								if($stmt->execute()){
-									$locationID = $stmt->insert_id;
-								}
-								$stmt->close();
-								
-								if($userAgentID > 0 && $locationID > 0){
-									if(($stmt = Database::prepare("INSERT INTO `feedback` (`AspectID`, `Date`, `Rating`, `IPAddress`, `UserAgentID`, `LocationID`, `SessionCode`) SELECT aspects.ID, FROM_UNIXTIME(?), ?, ?, ?, ?, ? FROM aspects WHERE aspects.ID = ?")) !== false){
-										$stmt->bind_param('idsiisi', $time, $rating, $ipAddress, $userAgentID, $locationID, $sessionCode, $aspectID);
-										if($stmt->execute()){
-											Logger::info("Inserted feedback.#{$stmt->insert_id}. AspectID: {$aspectID}, Rating: {$rating}, IP: {$ipAddress}, Time: {$time}");
-										}
-										$stmt->close();
-									}
-								}
-							}
+							/* Log in sessions. */
+							$_SESSION['feedback'][] = $aspectID;
 						}
+						$stmt->close();
 					}
 				}
-			} else {
-				return false;
 			}
-			$check->close();
-		} else { return false; }
+		}
 		return true;
 	}
 	

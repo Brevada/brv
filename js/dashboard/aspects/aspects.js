@@ -144,9 +144,9 @@ bdff.create('aspects', function(canvas, face){
 		aspect.animateBarGraphs = function(){
 			aspectDom.find('.graph').each(function(){
 				var percent = $(this).attr('data-percent');
-				var original = $(this).height();
+				var original = $(this).children('div.percent').outerHeight();
 				var target = (parseFloat(percent)/100)*($(this).parent().height() - original);
-				$(this).animate({ height : Math.min(Math.floor(original+target), $(this).parent().height()) }, 1500);
+				$(this).stop().animate({ height : Math.min(Math.floor(original+target), $(this).parent().height()) }, 1500);
 			});
 		};
 		
