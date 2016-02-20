@@ -36,6 +36,7 @@ div.top-banner .dropdown-menu {
 	margin-top: -2px;
 }
 div.top-banner .dropdown-menu li {
+    color: #666;
     padding: 0px 5px;
     border-bottom: 1px solid #dcdcdc;
     cursor: pointer;
