@@ -6,109 +6,21 @@ bdff.create('complete', function(canvas, face){
 	DATA: each aspect, financial (revenue), number of responses
 	have JS timeline with milestones
 	*/
-
-	// 1. Create JS object with all data points (for now)
-	// A timeframe is sent to the server and data points are returned in buckets (we should aim to have 15 buckets per timeframe)
-	// TIMEFRAME: START DATE, END DATE (eg. Feb 1 - Feb 18)
-	complete.fetch = function (start, end, excluded) {
-		// TODO: This should fetch the data excluded the 'excluded' aspects
-		var server_data = {
-			labels: ['', 'Feb 3', 'Feb 5', 'Feb 7', 'Feb 9', 'Feb 11', 'Feb 13', 'Feb 15', ''],
-			average: [
-				{
-					label: 'Average',
-					data: [86, 77, 90, 83, 89, 67, 78, 89, 80],
-					responses: 45
-				}
-			],
-			aspects: [
-				{
-					id: 1,
-					average: 89,
-					label: 'Customer Service',
-					data: [86, 77, 90, 83, 89, 67, 78, 89, 80],
-					responses: 45,
-					excluded: excluded.indexOf(1) > -1
-				},
-				{
-					id: 2,
-					average: 67,
-					label: 'Wait Time',
-					data: [86, 77, 90, 83, 80, 89, 67, 78, 89],
-					responses: 45,
-					excluded: excluded.indexOf(2) > -1
-				},
-				{
-					id: 3,
-					average: 74,
-					label: 'Pricing',
-					data: [90, 83, 89, 67, 86, 77, 78, 89, 80],
-					responses: 45,
-					excluded: excluded.indexOf(3) > -1
-				},
-				{
-					id: 4,
-					average: 53,
-					label: 'Food Presentation',
-					data: [86, 77, 90, 67, 78, 89, 83, 89, 80],
-					responses: 45,
-					excluded: excluded.indexOf(4) > -1
-				},
-				{
-					id: 5,
-					average: 88,
-					label: 'Location',
-					data: [86, 77, 71, 83, 89, 67, 66, 77, 80],
-					responses: 45,
-					excluded: excluded.indexOf(5) > -1
-				},
-				{
-					id: 6,
-					average: 99,
-					label: 'Authenticity',
-					data: [86, 77, 90, 67, 78, 89, 89, 89, 76],
-					responses: 45,
-					excluded: excluded.indexOf(6) > -1
-				},
-				{
-					id: 7,
-					average: 22,
-					label: 'Parking',
-					data: [86, 77, 71, 76, 89, 67, 78, 83, 80],
-					responses: 45,
-					excluded: excluded.indexOf(7) > -1
-				}
-			],
-			minValue: 50,
-			maxValue: 95,
-			financial: [34500, 44500, 2389, 34500, 34500, 38600, 34500, 32940, 33500],
-			// Milestones are for rendering the timeline on top
-			milestones: [
-				{
-					name: 'Hired a new chef',
-					date: 'Feb 13'
-				},
-				{
-					name: 'Hired a new chef',
-					date: 'Feb 13'
-				}
-			]
-		};
-
-		// Temp: Exclude certain aspects on front-ed
-		// server_data.aspects = server_data.aspects.filter(function(obj) {
-		//     return excluded.indexOf(obj.id) < 0;
-		// });
-
-		return server_data;
-	}
+	complete.excluded = [];
+	complete.serverData = {
+		aspects : {},
+		financials : [],
+		milestones : {},
+		average : {}
+	};
+	
 	complete.colorOptions = ['#ca60f2', '#f260b6', '#f2606a', '#60b6f2', '#f2c460', '#d98d42'];
 	complete.colorFillOptions = ['rgba(202,96,242, 0.4)', 'rgba(242,96,182,0.4)', 'rgba(242,96,106,0.4)', 'rgba(96,182,242,0.4)', 'rgba(242,196,96,0.4)', 'rgba(217,141,66,0.4)']
 	// complete.colorOptions = ['#2ecc0e', '#29b60c', '#30e30c', '#36ff0d', '#24a40a', '#197806'];
 	// complete.colorFillOptions = ['rgba(46,204,14, 0.1)', 'rgba(41,182,12,0.1)', 'rgba(48,227,12,0.1)', 'rgba(54,255,13,0.1)', 'rgba(36,164,10,0.1)', 'rgba(217,141,66,0.1)']
-	complete.styleData = function (data) {
-		for (var p in data) {
-			if (complete.serverData.aspects[p].excluded) {
+	complete.styleData = function () {
+		for (var p in complete.serverData.aspects) {
+			if (!complete.serverData.aspects[p].bucket) {
 				complete.serverData.aspects[p].borderColor = '#666';
 			} else {
 				complete.serverData.aspects[p].fill = true;
@@ -118,221 +30,266 @@ bdff.create('complete', function(canvas, face){
 			}
 
 	    }
-	    complete.serverData.average[0].fill = true;
-	    complete.serverData.average[0].backgroundColor = complete.colorFillOptions[1];
 	}
 
-	complete.excludeData = function () {
-		return complete.serverData.aspects.filter(function( obj ) {
-		    return !obj.excluded;
-		});
-	}
+	complete.renderAspects = function () {
+		for (var i in complete.serverData.aspects) {
 
-	complete.renderAspects = function (aspect_list) {
-		$(complete.el).find('.aspects').html('');
-		for (var aspects = 0; aspects < aspect_list.length; aspects++ ) {
-
-			var aspect = aspect_list[aspects],
-				id = aspect.id,
-				label = aspect.label,
-				responses = aspect.responses,
-				average = aspect.average,
+			var aspect = complete.serverData.aspects[i],
 				background = aspect.borderColor;
 
-			$('<div class="aspect" data-id="'+id+'" >\
-					<div class="aspect-icon" style="background: '+background+';"></div>\
+			var aspectDom = $(complete.el).find('.aspects div.aspect[data-id="'+aspect.id+'"]');
+			var add = false;
+			if(aspectDom.length == 0){
+				// Add at right spot.
+				add = true;
+				aspectDom = $('<div class="aspect" data-id="'+aspect.id+'" >\
+					<div class="aspect-icon"></div>\
 					<div class="aspect-data">\
-						<div class="aspect-title">'+label+'</div>\
-						<div class="aspect-info">Responses: '+responses+'</div>\
-						<!-- <div class="aspect-info">Average: '+average+'</div>-->\
+						<div class="aspect-title"></div>\
+						<div class="aspect-info"></div>\
 					</div>\
 					<div class="aspect-visibility"><i class="fa fa-eye"></i></div>\
 					</div>\
-					').appendTo($(complete.el).find('.aspects'));
+					');
+			}
+			
+			aspectDom.children('div.aspect-icon').css({ background: background });
+			aspectDom.find('div.aspect-data > div.aspect-title').text(aspect.title);
+			aspectDom.find('div.aspect-data > div.aspect-info').text(aspect.bucket ? 'Responses: ' + aspect.bucket.size : 'Disabled');
+			
+			if(add){
+				if($(complete.el).find('div.aspect').length > 0){
+					$(complete.el).find('div.aspect').each(function(){
+						var thisTitle = $(this).find('div.aspect-title').text();
+						var nextTitle = $(this).next('div.aspect').length > 0 ? $(this).next().find('div.aspect-title').text() : false;
+						
+						if(!nextTitle || nextTitle > thisTitle){
+							aspectDom.hide().insertAfter($(this)).slideDown(100);
+							return true;
+						}
+					});
+				} else {
+					aspectDom.hide().appendTo($(complete.el).find('.aspects')).slideDown(100);
+				}
+			}
 		}
 	}
 	
 	complete.render = function () {
-		// Fetch data
-		complete.serverData = complete.fetch(12, 14, complete.excluded);
+		complete.styleData();
+		complete.renderAspects();
 
-		complete.styleData(complete.serverData.aspects);
-
-		var aspects = complete.excludeData();
-		complete.renderAspects(complete.serverData.aspects);
-		complete.renderDateSlider();
-		complete.renderCompleteGraph(aspects);
-		complete.renderAverageLineGraph(complete.serverData.average);
-		complete.renderAverageBarGraph(aspects);
-		complete.initEvents();
+		complete.renderCompleteGraph();
+		complete.renderAverageLineGraph();
+		complete.renderAverageBarGraph();
 		
+		complete.renderDateSlider();
 	}
 	complete.renderDateSlider = function () {
-		$('#slider').dateRangeSlider({
-			bounds: {min: new Date(2012, 0, 1), max: new Date(2015, 11, 31, 12, 59, 59)},
-			defaultValues: {min: new Date(2014, 1, 10), max: new Date(2014, 4, 22)}
+		if(complete.dateSlider || !complete.minDate){ return; }
+		
+		var boundMinDate = new Date(0);
+		boundMinDate.setUTCSeconds(complete.minDate);
+		
+		complete.dateSlider = $('#slider').dateRangeSlider({
+			bounds: {min: boundMinDate, max: new Date()},
+			defaultValues: {min: boundMinDate, max: new Date()}
 		});
+		
+		$('.settings .date').html(moment(boundMinDate).format('MMM Do, YYYY') + ' - ' + moment().format('MMM Do, YYYY'));
 	}
-	complete.renderCompleteGraph = function (aspects) {
-		var data = {
-		    labels: complete.serverData.labels,
-		    datasets: aspects
-		};
-		var ctx = $(complete.el).find('.graph').get(0).getContext("2d");
-			complete.largeChart =  new Chart(ctx, {
-			    type: 'line',
-			    data: data,
-			    options: {
-			    	responsive: true,
-			    	fillOpacity: '.3',
-			    	maintainAspectRatio: false,
-			        scales: {
-						xAxes: [{
-							display: true,
-							ticks: {
-								fontSize: '11',
-								fontColor: '#FFFFFF',
-								reverse: true
-							},
-							gridLines: {
-								color: 'rgba(0, 0, 0, 0.05)'
+	complete.renderCompleteGraph = function () {
+		if(!complete.largeChart){
+			var ctx = $(complete.el).find('.graph').get(0).getContext("2d");
+				complete.largeChart = new Chart(ctx, {
+					type: 'line',
+					data: { labels : [], datasets : [] },
+					options: {
+						responsive: true,
+						fillOpacity: '.3',
+						maintainAspectRatio: false,
+						scales: {
+							xAxes: [{
+								display: false,
+								ticks: {
+									fontSize: '11',
+									fontColor: '#FFFFFF',
+									reverse: true
+								},
+								gridLines: {
+									color: 'rgba(0, 0, 0, 0.05)'
+								}
+							}],
+							yAxes: [{
+								display: false,
+								ticks : {
+									beginAtZero: true,
+									autoSkip: false
+								}
+							}]
+						},
+						legend: {
+							display: false,
+							labels: {
+								boxWidth: 20,
+								fontColor: '#333'
 							}
+						},
+						tooltips: {
+							mode : 'label',
+							backgroundColor : '#999',
+							color : '#FFFFFF'
+						}
+					}
+				});
+		}
+		
+		// Update
+		var datasets = [];
+		var labels = [];
+		for(var i in complete.serverData.aspects){
+			var aspect = complete.serverData.aspects[i];
+			if(!aspect.bucket){ continue; }
+			if(labels.length == 0){
+				labels = aspect.bucket.labels;
+			}
+			datasets.push({
+				data : aspect.bucket.data,
+				label : aspect.title,
+				borderColor : aspect.borderColor,
+				fill : aspect.fill,
+				backgroundColor : aspect.backgroundColor,
+				datasetStrokeWidth : 5
+			});
+		}
+		
+		complete.largeChart.data.labels = labels;
+		complete.largeChart.data.datasets = datasets;
+		complete.largeChart.stop();
+		complete.largeChart.update();
+	}
+
+	complete.renderAverageLineGraph = function () {
+		if(!complete.averageChart){
+			var ctx = $(complete.el).find('.average-line').get(0).getContext("2d");
+			complete.averageChart = new Chart(ctx, {
+					type: 'line',
+					data: { labels : [], datasets : [] },
+					options: {
+						responsive: true,
+						maintainAspectRatio: false,
+						scales: {
+							xAxes: [{
+								display: false,
+								gridLines: {
+									color: 'rgba(0, 0, 0, 0.05)'
+								}
+							}],
+							yAxes: [{
+								display: false,
+								ticks : {
+									beginAtZero: true,
+									autoSkip: false
+								}
+							}],
+							gridLines: {
+								color: 'rgba(0, 0, 0, 0)'
+							}
+						},
+						legend: {
+							display: false,
+							labels: {
+								boxWidth: 20,
+								fontColor: '#333'
+							}
+						},
+						tooltips: {
+							mode : 'label',
+							backgroundColor : '#999',
+							color : '#FFFFFF'
+						}
+					}
+				});
+		}
+		
+		// Update
+		complete.averageChart.data.labels = complete.serverData.average.labels || [];
+		complete.averageChart.data.datasets = [{
+			label: "Average",
+			data: complete.serverData.average.bucket || [],
+			backgroundColor: complete.colorFillOptions[1] || '#666',
+			fill: true
+		}];
+		complete.averageChart.stop();
+		complete.averageChart.update();
+	}
+
+	complete.renderAverageBarGraph = function () {
+		if(!complete.aspectBarGraph){
+			var ctx = $(complete.el).find('.average-bar').get(0).getContext("2d");
+			complete.aspectBarGraph = new Chart(ctx,{
+				type:"bar",
+				data: { labels : [], datasets: [] },
+				options: {
+					scales: {
+						xAxes: [{
+							// display: false,
+							stacked: true
 						}],
 						yAxes: [{
 							display: false,
-							ticks : {
-								beginAtZero: true,
-								autoSkip: false,
-								min: complete.serverData.minValue,
-								max: complete.serverData.maxValue
-							}
+							stacked: true
 						}]
 					},
-			        legend: {
-						display: false,
-						labels: {
-							boxWidth: 20,
-							fontColor: '#333'
-						}
-					},
-					tooltips: {
-						mode : 'label',
-						backgroundColor : '#999',
-						color : '#FFFFFF'
+					legend: {
+						display: false
 					}
-			    }
+				}
 			});
-	}
-
-	complete.renderAverageLineGraph = function (average) {
-		var data = {
-		    labels: complete.serverData.labels,
-		    datasets: average
-		};
-		var ctx = $(complete.el).find('.average-line').get(0).getContext("2d"),
-			chart =  new Chart(ctx, {
-			    type: 'line',
-			    data: data,
-			    options: {
-			    	responsive: true,
-			    	maintainAspectRatio: false,
-			        scales: {
-						xAxes: [{
-							display: true,
-							gridLines: {
-								color: 'rgba(0, 0, 0, 0.05)'
-							}
-						}],
-						yAxes: [{
-							display: false,
-							ticks : {
-								beginAtZero: true,
-								autoSkip: false,
-								min: complete.serverData.minValue,
-								max: complete.serverData.maxValue
-							}
-						}],
-						gridLines: {
-							color: 'rgba(0, 0, 0, 0)'
-						}
-					},
-			        legend: {
-						display: false,
-						labels: {
-							boxWidth: 20,
-							fontColor: '#333'
-						}
-					},
-					tooltips: {
-						mode : 'label',
-						backgroundColor : '#999',
-						color : '#FFFFFF'
-					}
-			    }
-			});
-	}
-
-	complete.renderAverageBarGraph = function (aspect_list) {
-		var labels = [],
-			averages = [];
-		for (var aspects = 0; aspects < aspect_list.length; aspects++) {
-			var aspect = aspect_list[aspects],
-				label = aspect.label,
-				average = aspect.average,
-				color = aspect.borderColor;
-
-			labels.push(aspect.label);
-			averages.push(average);
 		}
-		var data = {
-		    labels: labels,
-		    datasets: [
-		        {
-		            label: "My Second dataset",
-		            backgroundColor: "rgba(220,220,220,0.2)",
-		            borderColor: "rgba(220,220,220,1)",
-		            borderWidth: 1,
-		            hoverBackgroundColor: "rgba(220,220,220,0.2)",
-		            hoverBorderColor: "rgba(220,220,220,1)",
-		            data: averages
-		        }
-		    ]
-		};
-		var ctx = $(complete.el).find('.average-bar').get(0).getContext("2d");
-		var b = new Chart(ctx,{
-		    type:"bar",
-		    data: data,
-		    options: {
-		        scales: {
-	                xAxes: [{
-	                	// display: false,
-                        stacked: true
-	                }],
-	                yAxes: [{
-	                	display: false,
-                        stacked: true
-	                }]
-		        },
-		        legend: {
-		        	display: false
-		        }
-		    }
-		});
+		
+		// Update
+		var labels = [], averages = [];
+		for(var i in complete.serverData.aspects){
+			var aspect = complete.serverData.aspects[i];
+			if(!aspect.bucket){ continue; }
+			
+			labels.push(aspect.title);
+			averages.push(aspect.bucket.average);
+		}
+		
+		complete.aspectBarGraph.data.labels = labels;
+		complete.aspectBarGraph.data.datasets = [{
+			label: "Aspects",
+		    backgroundColor: "rgba(220,220,220,0.2)",
+		    borderColor: "rgba(220,220,220,1)",
+		    borderWidth: 1,
+		    hoverBackgroundColor: "rgba(220,220,220,0.2)",
+		    hoverBorderColor: "rgba(220,220,220,1)",
+		    data: averages
+		}];
+		
+		complete.aspectBarGraph.stop();
+		complete.aspectBarGraph.update();
 	}
 
 	complete.initEvents = function () {
 		// $(window).resize(complete.sizeGraph);
-		$('#slider').bind('valuesChanging', function (e, data) {
-			var min = data.values.min.toString().split(" "),
-				max = data.values.max.toString().split(" ");
-				min_date = min[1] + ' ' + min[2] + ' ' + min[3],
-				max_date = max[1] + ' ' + max[2] + ' ' + max[3];
-			$('.settings .date').html(min_date + ' - ' + max_date);
+		$('#slider').bind('valuesChanged', function (e, data) {
+			var min = data.values.min,
+				max = data.values.max;
+			$('.settings .date').html(moment(min).format('MMM Do, YYYY') + ' - ' + moment(max).format('MMM Do, YYYY'));
+			
+			complete.fromDate = Math.floor(data.values.min.getTime()/1000);
+			complete.toDate = Math.ceil(data.values.max.getTime()/1000);
+			
+			complete.update();
 		});
-		$(complete.el).find('.aspect').click(function () {
+		$(complete.el).on('click', '.aspect', function () {
 			complete.toggleAspect(parseInt($(this).attr('data-id')));
 		});
-		$(complete.el).find('.section .toggle').click(function () {
+		$(complete.el).on('click', '.section .toggle', function () {
 			complete.toggleGraph($(this).attr('data-id'));
 		});
 	}
@@ -351,7 +308,8 @@ bdff.create('complete', function(canvas, face){
 		} else {
 			complete.excluded.push(id);
 		}
-		complete.render();
+		
+		complete.update();
 	}
 
 	complete.sizeGraph = function () {
@@ -415,7 +373,40 @@ bdff.create('complete', function(canvas, face){
 			<div class="aspects"></div>\
 		</div>\
 	  ').appendTo(complete.el);
-	complete.excluded = [2, 3, 4];
+	  
+	  complete.update = function(){
+		  face.datahooks[0].request.data.from = complete.fromDate;
+		  face.datahooks[0].request.data.to = complete.toDate;
+		  face.datahooks[0].request.data.excluded = complete.excluded.join(',');
+		  face.startHooks();
+	  };
+	 
+	complete.renderDateSlider();
+	complete.initEvents();
+	 
 	// complete.sizeGraph();
 	complete.render();
+	
+	face.datahook(0, {
+			url : '/api/v1/playground/all',
+			data : { 'store' : bdff.storeID() }
+		}, function(data){
+			if(data.hasOwnProperty('error') && data.error.length > 0){
+				bdff.log('Uh oh...');
+			} else if(data.playground) {
+				if(data.playground.aspects){
+					for(var i = 0; i < data.playground.aspects.length; i++){
+						// Add or Update
+						var remoteAspect = data.playground.aspects[i];
+						complete.serverData.aspects[remoteAspect.id] = remoteAspect;
+					}
+				}
+				complete.serverData.average = data.playground.average;
+				complete.minDate = data.playground.minDate;
+				
+				complete.render();
+			}
+		}
+	);
+		
 });
