@@ -30,7 +30,7 @@ class TaskBdff extends AbstractTask
 		
 		$tablets = 0;
 		if(($stmt = Database::prepare("
-			SELECT COUNT(*) as cnt FROM tablets WHERE StoreID = ?")) !== false){
+			SELECT COUNT(*) as cnt FROM tablets WHERE StoreID = ? AND `Status` = 'At Store'")) !== false){
 			$stmt->bind_param('i', $store);
 			if($stmt->execute()){
 				$stmt->bind_result($tablets);

@@ -56,7 +56,7 @@ function build_line_graph(bucket, id) {
 						beginAtZero: true,
 						autoSkip: false,
 						min: 0,
-						max: 100
+						max: 110
 					}
 				}]
 			},

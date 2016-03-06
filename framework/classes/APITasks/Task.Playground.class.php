@@ -78,7 +78,8 @@ class TaskPlayground extends AbstractTask
 		$from = max(@intval(Brevada::FromGET('from')), 0);
 		$to = @intval(Brevada::FromGET('to'));
 		if($to == 0){ $to = time(); }
-		$excluded = empty($_GET['excluded']) ? [] : explode(',', $_GET['excluded']);
+		$included = empty($_GET['included']) ? [] : array_map('intval', explode(',', $_GET['included']));
+		if(!isset($_GET['included'])){ $included = false; }
 		
 		$dateFormat = 'g:i:s a';
 		$delta = $to - $from;
@@ -94,13 +95,15 @@ class TaskPlayground extends AbstractTask
 			$dateFormat = 'g:i a';
 		}
 		
+		$includedTypes = [];
+		
 		$bucketSize = 12;
 		
 		$aspects = [];
 		foreach($rows as $row){			
 			$aspectType = $row['AspectTypeID'];
 			
-			if(in_array($row['id'], $excluded)){
+			if($included !== false && !in_array(intval($row['id']), $included)){
 				$aspects[] = [
 					"id" => $row['id'],
 					"title" => __($row['Title'])
@@ -108,16 +111,20 @@ class TaskPlayground extends AbstractTask
 				continue;
 			}
 			
+			$includedTypes[] = intval($aspectType);
+			
 			$overall = (new Data())->store($store)->aspectType($aspectType)->getAvg();
 			$minDate = min($overall->getUTCFrom(), $minDate);
 			
 			$rating = (new Data())->store($store)->aspectType($aspectType)->from($from)->to($to)->getAvg();
 			
+			$before_bucket = (new Data())->store($store)->aspectType($aspectType)->from(0)->to($from)->getAvg();
 			$bucket = (new Data())->store($store)->aspectType($aspectType)->from($from)->to($to)->getAvg($bucketSize, Data::BY_UNIFORM);
 			
 			$bucketDates = [];
 			$bucketData = [];
 			
+			$prevVal=$before_bucket;
 			for($i = 0; $i < $bucketSize; $i++){
 				if(!$bucket->get($i)){ break; }
 				if(date($dateFormat, $bucket->getUTCFrom($i)) == date($dateFormat, $bucket->getUTCTo($i)-1)){
@@ -125,7 +132,11 @@ class TaskPlayground extends AbstractTask
 				} else {
 					$bucketDates[] = date($dateFormat, $bucket->getUTCFrom($i)) . ' - ' . date($dateFormat, $bucket->getUTCTo($i)-1);
 				}
-				$bucketData[] = $bucket->getRating($i);
+				
+				if($bucket->getRating($i) != 0){
+					$prevVal = $bucket->getRating($i);
+				}
+				$bucketData[] = $prevVal;
 			}
 			
 			$aspects[] = [
@@ -144,11 +155,13 @@ class TaskPlayground extends AbstractTask
 			];
 		}
 		
-		$bucket = (new Data())->store($store)->from($from)->to($to)->getAvg($bucketSize, Data::BY_UNIFORM);
+		$before_bucket = (new Data())->store($store)->aspectType($includedTypes)->from(0)->to($from)->getAvg();
+		$bucket = (new Data())->store($store)->aspectType($includedTypes)->from($from)->to($to)->getAvg($bucketSize, Data::BY_UNIFORM);
 		
 		$bucketDates = [];
 		$bucketData = [];
 		
+		$prevVal = $before_bucket;
 		for($i = 0; $i < $bucketSize; $i++){
 			if(!$bucket->get($i)){ break; }
 			if(date($dateFormat, $bucket->getUTCFrom($i)) == date($dateFormat, $bucket->getUTCTo($i)-1)){
@@ -156,7 +169,11 @@ class TaskPlayground extends AbstractTask
 			} else {
 				$bucketDates[] = date($dateFormat, $bucket->getUTCFrom($i)) . ' - ' . date($dateFormat, $bucket->getUTCTo($i)-1);
 			}
-			$bucketData[] = $bucket->getRating($i);
+			
+			if($bucket->getRating($i) != 0){
+				$prevVal = $bucket->getRating($i);
+			}
+			$bucketData[] = $prevVal;
 		}
 		
 		$milestones = [];

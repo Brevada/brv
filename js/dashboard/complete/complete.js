@@ -6,7 +6,7 @@ bdff.create('complete', function(canvas, face){
 	DATA: each aspect, financial (revenue), number of responses
 	have JS timeline with milestones
 	*/
-	complete.excluded = [];
+	complete.included = false;
 	complete.serverData = {
 		aspects : {},
 		financials : [],
@@ -20,6 +20,7 @@ bdff.create('complete', function(canvas, face){
 	// complete.colorFillOptions = ['rgba(46,204,14, 0.1)', 'rgba(41,182,12,0.1)', 'rgba(48,227,12,0.1)', 'rgba(54,255,13,0.1)', 'rgba(36,164,10,0.1)', 'rgba(217,141,66,0.1)']
 	complete.styleData = function () {
 		for (var p in complete.serverData.aspects) {
+			complete.serverData.aspects[p].disabled = !complete.serverData.aspects[p].bucket;
 			if (!complete.serverData.aspects[p].bucket) {
 				complete.serverData.aspects[p].borderColor = '#666';
 			} else {
@@ -37,7 +38,7 @@ bdff.create('complete', function(canvas, face){
 
 			var aspect = complete.serverData.aspects[i],
 				background = aspect.borderColor;
-
+				
 			var aspectDom = $(complete.el).find('.aspects div.aspect[data-id="'+aspect.id+'"]');
 			var add = false;
 			if(aspectDom.length == 0){
@@ -52,6 +53,14 @@ bdff.create('complete', function(canvas, face){
 					<div class="aspect-visibility"><i class="fa fa-eye"></i></div>\
 					</div>\
 					');
+			}
+			
+			if(aspect.disabled){
+				aspectDom.addClass('aspect-disabled');
+				aspectDom.find('.aspect-visibility > i').removeClass('fa-eye').addClass('fa-eye-slash');
+			} else {
+				aspectDom.removeClass('aspect-disabled');
+				aspectDom.find('.aspect-visibility > i').removeClass('fa-eye-slash').addClass('fa-eye');
 			}
 			
 			aspectDom.children('div.aspect-icon').css({ background: background });
@@ -125,7 +134,9 @@ bdff.create('complete', function(canvas, face){
 								display: false,
 								ticks : {
 									beginAtZero: true,
-									autoSkip: false
+									autoSkip: false,
+									min: 0,
+									max: 110
 								}
 							}]
 						},
@@ -138,6 +149,14 @@ bdff.create('complete', function(canvas, face){
 						},
 						tooltips: {
 							mode : 'label',
+							callbacks: {
+								title : function(tooltip){
+									return tooltip[0].xLabel;
+								},
+								label : function(tooltip){
+									return ' '+complete.largeChart.legend.legendItems[tooltip.datasetIndex].text+': '+tooltip.yLabel+"%";
+								}
+							},
 							backgroundColor : '#999',
 							color : '#FFFFFF'
 						}
@@ -190,7 +209,9 @@ bdff.create('complete', function(canvas, face){
 								display: false,
 								ticks : {
 									beginAtZero: true,
-									autoSkip: false
+									autoSkip: false,
+									min: 0,
+									max: 110
 								}
 							}],
 							gridLines: {
@@ -205,7 +226,15 @@ bdff.create('complete', function(canvas, face){
 							}
 						},
 						tooltips: {
-							mode : 'label',
+							mode : 'single',
+							callbacks: {
+								title : function(tooltip){
+									return tooltip[0].xLabel;
+								},
+								label : function(tooltip){
+									return 'Combined Average: '+tooltip.yLabel+"%";
+								}
+							},
 							backgroundColor : '#999',
 							color : '#FFFFFF'
 						}
@@ -244,6 +273,17 @@ bdff.create('complete', function(canvas, face){
 					},
 					legend: {
 						display: false
+					},
+					tooltips: {
+						mode : 'single',
+						callbacks: {
+							title : function(tooltip){
+								return tooltip[0].xLabel;
+							},
+							label : function(tooltip){
+								return tooltip.yLabel+"%";
+							}
+						}
 					}
 				}
 			});
@@ -302,11 +342,11 @@ bdff.create('complete', function(canvas, face){
 	}
 
 	complete.toggleAspect = function (id) {
-		var aspectPosition = complete.excluded.indexOf(id);
+		var aspectPosition = complete.included.indexOf(id);
 		if (aspectPosition > -1) {
-			complete.excluded.splice(aspectPosition, 1);
+			complete.included.splice(aspectPosition, 1);
 		} else {
-			complete.excluded.push(id);
+			complete.included.push(id);
 		}
 		
 		complete.update();
@@ -377,7 +417,7 @@ bdff.create('complete', function(canvas, face){
 	  complete.update = function(){
 		  face.datahooks[0].request.data.from = complete.fromDate;
 		  face.datahooks[0].request.data.to = complete.toDate;
-		  face.datahooks[0].request.data.excluded = complete.excluded.join(',');
+		  face.datahooks[0].request.data.included = complete.included.join(',');
 		  face.startHooks();
 	  };
 	 
@@ -395,10 +435,16 @@ bdff.create('complete', function(canvas, face){
 				bdff.log('Uh oh...');
 			} else if(data.playground) {
 				if(data.playground.aspects){
+					var initInclude = complete.included === false;
 					for(var i = 0; i < data.playground.aspects.length; i++){
 						// Add or Update
 						var remoteAspect = data.playground.aspects[i];
 						complete.serverData.aspects[remoteAspect.id] = remoteAspect;
+						
+						if(initInclude){
+							if(!complete.included){ complete.included = []; }
+							complete.included.push(remoteAspect.id);
+						}
 					}
 				}
 				complete.serverData.average = data.playground.average;
@@ -409,4 +455,12 @@ bdff.create('complete', function(canvas, face){
 		}
 	);
 		
+}, function(){
+	if(complete){
+		if(complete.dateSlider){ try { complete.dateSlider.dateRangeSlider("destroy"); complete.dateSlider = undefined; } catch (ex){} }
+		if(complete.largeChart){ try { complete.largeChart.destroy(); complete.largeChart = undefined; } catch (ex){} }
+		if(complete.averageChart){ try { complete.averageChart.destroy(); complete.averageChart = undefined; } catch (ex){} }
+		if(complete.aspectBarGraph){ try { complete.aspectBarGraph.destroy(); complete.aspectBarGraph = undefined; } catch (ex){} }
+		complete = {};
+	}
 });

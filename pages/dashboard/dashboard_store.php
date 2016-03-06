@@ -5,8 +5,6 @@ if($this->getParameter('valid') !== true){ Brevada::Redirect('/404'); }
 $this->addResource('/css/bootstrap-datetimepicker.css');
 $this->addResource('/js/bootstrap-datetimepicker.min.js');
 
-
-
 $this->addResource('/css/brevada.tooltip.css');
 $this->addResource('/js/brevada.tooltip.js');
 
@@ -23,9 +21,6 @@ $this->addResource('/js/dashboard/dashboard.js');
 $this->addResource('/js/dashboard/aspects/aspects.js');
 
 $this->addResource('/js/dashboard/milestones/milestones.js');
-
-$this->addResource('/js/dashboard/milestones/milestone.js');
-$this->addResource('/js/dashboard/milestones/aspects.js');
 
 $this->addResource('/js/dashboard/live/live.js');
 

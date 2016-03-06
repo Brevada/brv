@@ -233,10 +233,18 @@ bdff.create('milestones', function(canvas, face){
 				if(responses == 0){
 					dom.find('.details').text("no responses");
 				} else {
-					dom.find('.details').text(change+'%' + ' after ' + responses + ' responses');
+					if(parseInt(change)==0){
+						dom.find('.details').text('no change after ' + responses + ' response' + (parseInt(change)>1 ? 's' : ''));
+					} else {
+						dom.find('.details').text(change+'%' + ' after ' + responses + ' response' + (parseInt(change)>1 ? 's' : ''));
+					}
 				}
 				
-				dom.find('div.bulb').removeClass('positive great neutral bad negative').addClass(bdff.mood(parseFloat(change)));
+				dom.find('div.bulb')
+				.removeClass('positive great neutral bad negative')
+				.addClass(bdff.mood(parseFloat(
+					(parseInt(change)+80)/2
+				)));
 			};
 			
 			dom.appendTo(ms.find('.body'));
