@@ -92,16 +92,26 @@ class TaskAspects extends AbstractTask
 			}
 		
 			$bucketSize = 5;
-				
+			
+			$beforeBucket = (new Data())->store($store)->aspectType($aspectType)->to(time()-(2*7*24*3600))->getAvg();
 			$bucket = (new Data())->store($store)->aspectType($aspectType)->from(time()-(2*7*24*3600))->getAvg($bucketSize, Data::BY_UNIFORM);
 			
 			$bucketDates = [];
 			$bucketData = [];
 			
+			$prev = $beforeBucket->getRating();
 			for($i = 0; $i < $bucketSize; $i++){
 				if(!$bucket->get($i)){ break; }
-				$bucketDates[] = date('M jS', $bucket->getUTC($i));
-				$bucketData[] = $bucket->getRating($i);
+				
+				$fromDate = date('M jS', $bucket->getUTCFrom($i));
+				$toDate = date('M jS', $bucket->getUTCTo($i)-1);
+				
+				$bucketDates[] = $fromDate == $toDate ? $fromDate : $fromDate . ' - ' . $toDate;
+				
+				if($bucket->getSize($i) > 0){
+					$prev = $bucket->getRating($i);
+				}
+				$bucketData[] = $prev;
 			}
 			
 			$aspects[] = [

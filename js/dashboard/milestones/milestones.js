@@ -160,7 +160,12 @@ bdff.create('milestones', function(canvas, face){
 				});
 				sel.append($('<option>').attr('value', '-1').text('Select an aspect...'));
 				for(var i = 0; i < aspects.length; i++){
-					sel.append($('<option>').attr('value', aspects[i]['id']).text(aspects[i]['title']));
+					console.log(aspects[i]['id']);
+					if(ms.find('div.milestone-aspect div.title').filter(function(){
+						return $(this).text() == aspects[i]['title'];
+					}).length == 0){
+						sel.append($('<option>').attr('value', aspects[i]['id']).text(aspects[i]['title']));
+					}
 				}
 				$(this).empty().append(sel);
 			}
