@@ -198,7 +198,9 @@ bdff.create('milestones', function(canvas, face){
 		};
 		
 		milestone.setMood = function(mood){
-			ms.find('div.header > div.bulb').removeClass('positive great neutral bad negative').addClass(bdff.mood(parseFloat(mood)));
+			ms.find('div.header > div.bulb').removeClass('positive great neutral bad negative').addClass(	
+				bdff.mood(parseFloat((parseInt(mood)+80)/2))
+			);
 		};
 		
 		milestone.addAspect = function(maID){
