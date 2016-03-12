@@ -125,18 +125,13 @@ class TaskPlayground extends AbstractTask
 			$minBucket = 0;
 			$maxBucket = 0;
 			
-			$prevVal = (new Data())->store($store)->aspectType($aspectType)->from($from-$interval)->to($from)->getAvg()->getRating();
+			$prevVal = (new Data())->store($store)->aspectType($aspectType)->from(0)->to($from)->getAvg()->getRating();
 			for($i = 0; $i < $bucketSize; $i++){
-				$intvStart = $from + $i*$interval;
 				$intvEnd = $from + ($i+1)*$interval - 1;
 				
-				if(date($dateFormat, $intvStart) == date($dateFormat, $intvEnd)){
-					$bucketDates[] = date($dateFormat, $intvStart);
-				} else {
-					$bucketDates[] = date($dateFormat, $intvStart) . ' - ' . date($dateFormat, $intvEnd);
-				}
+				$bucketDates[] = date($dateFormat, $intvEnd);
 				
-				$intvRating = (new Data())->store($store)->aspectType($aspectType)->from($intvStart)->to($intvEnd)->getAvg();
+				$intvRating = (new Data())->store($store)->aspectType($aspectType)->from(0)->to($intvEnd)->getAvg();
 				
 				if($intvRating->getSize() > 0){
 					$bucketData[] = $intvRating->getRating() - $prevVal;
@@ -174,18 +169,13 @@ class TaskPlayground extends AbstractTask
 		$maxBucket = 0;
 		
 		if(!empty($includedTypes)){
-			$prevVal = (new Data())->store($store)->aspectType($includedTypes)->from($from-$interval)->to($from)->getAvg()->getRating();
+			$prevVal = (new Data())->store($store)->aspectType($includedTypes)->from(0)->to($from)->getAvg()->getRating();
 			for($i = 0; $i < $bucketSize; $i++){
-				$intvStart = $from + $i*$interval;
 				$intvEnd = $from + ($i+1)*$interval - 1;
 				
-				if(date($dateFormat, $intvStart) == date($dateFormat, $intvEnd)){
-					$bucketDates[] = date($dateFormat, $intvStart);
-				} else {
-					$bucketDates[] = date($dateFormat, $intvStart) . ' - ' . date($dateFormat, $intvEnd);
-				}
+				$bucketDates[] = date($dateFormat, $intvEnd);
 				
-				$intvRating = (new Data())->store($store)->aspectType($includedTypes)->from($intvStart)->to($intvEnd)->getAvg();
+				$intvRating = (new Data())->store($store)->aspectType($includedTypes)->from(0)->to($intvEnd)->getAvg();
 				
 				if($intvRating->getSize() > 0){
 					$bucketData[] = $intvRating->getRating() - $prevVal;

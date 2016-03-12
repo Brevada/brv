@@ -369,7 +369,7 @@ bdff.create('complete', function(canvas, face){
 			<!--<div class="dashboard-pod timeline">Timeline</div>-->\
 			<div class="section">\
 				<div class="toolbar">\
-					<div class="title">Overall Aspect Data</div>\
+					<div class="title">Aspects (% Change)</div>\
 					<div class="buttons">\
 						<div class="toggle" data-id="graph-1"><i class="fa fa-info"></i></div>\
 					</div>\
@@ -382,7 +382,7 @@ bdff.create('complete', function(canvas, face){
 			</div>\
 			<div class="section">\
 				<div class="toolbar">\
-					<div class="title">Overall Aspect Data</div>\
+					<div class="title">Combined Aspect Data</div>\
 					<div class="buttons">\
 						<div class="toggle" data-id="graph-2"><i class="fa fa-info"></i></div>\
 					</div>\
@@ -395,7 +395,7 @@ bdff.create('complete', function(canvas, face){
 			</div>\
 			<div class="section">\
 				<div class="toolbar">\
-					<div class="title">Overall Aspect Data</div>\
+					<div class="title">Overall Averages Per Aspect</div>\
 					<div class="buttons">\
 						<div class="toggle" data-id="graph-3"><i class="fa fa-info"></i></div>\
 					</div>\
