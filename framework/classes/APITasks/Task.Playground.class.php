@@ -75,7 +75,7 @@ class TaskPlayground extends AbstractTask
 		
 		$minDate = time() - $MONTH;
 		
-		$from = max(@intval(Brevada::FromGET('from')), 0);
+		$from = max(@intval(Brevada::FromGET('from')), time()-$MONTH*12*5);
 		$to = @intval(Brevada::FromGET('to'));
 		if($to == 0){ $to = time(); }
 		$included = empty($_GET['included']) ? [] : array_map('intval', explode(',', $_GET['included']));
@@ -98,6 +98,7 @@ class TaskPlayground extends AbstractTask
 		$includedTypes = [];
 		
 		$bucketSize = 12;
+		$interval = floor($delta / $bucketSize);
 		
 		$aspects = [];
 		foreach($rows as $row){			
@@ -118,25 +119,34 @@ class TaskPlayground extends AbstractTask
 			
 			$rating = (new Data())->store($store)->aspectType($aspectType)->from($from)->to($to)->getAvg();
 			
-			$before_bucket = (new Data())->store($store)->aspectType($aspectType)->from(0)->to($from)->getAvg();
-			$bucket = (new Data())->store($store)->aspectType($aspectType)->from($from)->to($to)->getAvg($bucketSize, Data::BY_UNIFORM);
-			
 			$bucketDates = [];
 			$bucketData = [];
 			
-			$prevVal=$before_bucket;
+			$minBucket = 0;
+			$maxBucket = 0;
+			
+			$prevVal = (new Data())->store($store)->aspectType($aspectType)->from($from-$interval)->to($from)->getAvg()->getRating();
 			for($i = 0; $i < $bucketSize; $i++){
-				if(!$bucket->get($i)){ break; }
-				if(date($dateFormat, $bucket->getUTCFrom($i)) == date($dateFormat, $bucket->getUTCTo($i)-1)){
-					$bucketDates[] = date($dateFormat, $bucket->getUTCFrom($i));
+				$intvStart = $from + $i*$interval;
+				$intvEnd = $from + ($i+1)*$interval - 1;
+				
+				if(date($dateFormat, $intvStart) == date($dateFormat, $intvEnd)){
+					$bucketDates[] = date($dateFormat, $intvStart);
 				} else {
-					$bucketDates[] = date($dateFormat, $bucket->getUTCFrom($i)) . ' - ' . date($dateFormat, $bucket->getUTCTo($i)-1);
+					$bucketDates[] = date($dateFormat, $intvStart) . ' - ' . date($dateFormat, $intvEnd);
 				}
 				
-				if($bucket->getRating($i) != 0){
-					$prevVal = $bucket->getRating($i);
+				$intvRating = (new Data())->store($store)->aspectType($aspectType)->from($intvStart)->to($intvEnd)->getAvg();
+				
+				if($intvRating->getSize() > 0){
+					$bucketData[] = $intvRating->getRating() - $prevVal;
+					$prevVal = $intvRating->getRating();
+				} else {
+					$bucketData[] = 0;
 				}
-				$bucketData[] = $prevVal;
+				
+				$minBucket = min($minBucket, $prevVal);
+				$maxBucket = max($maxBucket, $prevVal);
 			}
 			
 			$aspects[] = [
@@ -150,30 +160,43 @@ class TaskPlayground extends AbstractTask
 					"labels" => $bucketDates,
 					"data" => $bucketData,
 					"size" => $rating->getSize(),
-					"average" => $rating->getRating()
+					"average" => $rating->getRating(),
+					"min" => $minBucket,
+					"max" => $maxBucket
 				]
 			];
 		}
 		
-		$before_bucket = (new Data())->store($store)->aspectType($includedTypes)->from(0)->to($from)->getAvg();
-		$bucket = (new Data())->store($store)->aspectType($includedTypes)->from($from)->to($to)->getAvg($bucketSize, Data::BY_UNIFORM);
-		
 		$bucketDates = [];
 		$bucketData = [];
 		
-		$prevVal = $before_bucket;
-		for($i = 0; $i < $bucketSize; $i++){
-			if(!$bucket->get($i)){ break; }
-			if(date($dateFormat, $bucket->getUTCFrom($i)) == date($dateFormat, $bucket->getUTCTo($i)-1)){
-				$bucketDates[] = date($dateFormat, $bucket->getUTCFrom($i));
-			} else {
-				$bucketDates[] = date($dateFormat, $bucket->getUTCFrom($i)) . ' - ' . date($dateFormat, $bucket->getUTCTo($i)-1);
+		$minBucket = 0;
+		$maxBucket = 0;
+		
+		if(!empty($includedTypes)){
+			$prevVal = (new Data())->store($store)->aspectType($includedTypes)->from($from-$interval)->to($from)->getAvg()->getRating();
+			for($i = 0; $i < $bucketSize; $i++){
+				$intvStart = $from + $i*$interval;
+				$intvEnd = $from + ($i+1)*$interval - 1;
+				
+				if(date($dateFormat, $intvStart) == date($dateFormat, $intvEnd)){
+					$bucketDates[] = date($dateFormat, $intvStart);
+				} else {
+					$bucketDates[] = date($dateFormat, $intvStart) . ' - ' . date($dateFormat, $intvEnd);
+				}
+				
+				$intvRating = (new Data())->store($store)->aspectType($includedTypes)->from($intvStart)->to($intvEnd)->getAvg();
+				
+				if($intvRating->getSize() > 0){
+					$bucketData[] = $intvRating->getRating() - $prevVal;
+					$prevVal = $intvRating->getRating();
+				} else {
+					$bucketData[] = 0;
+				}
+				
+				$minBucket = min($minBucket, $prevVal);
+				$maxBucket = max($maxBucket, $prevVal);
 			}
-			
-			if($bucket->getRating($i) != 0){
-				$prevVal = $bucket->getRating($i);
-			}
-			$bucketData[] = $prevVal;
 		}
 		
 		$milestones = [];
@@ -185,7 +208,9 @@ class TaskPlayground extends AbstractTask
 			"financials" => $financials,
 			"average" => [
 				"labels" => $bucketDates,
-				"bucket" => $bucketData
+				"bucket" => $bucketData,
+				"min" => $minBucket,
+				"max" => $maxBucket
 			],
 			"minDate" => $minDate
 		];

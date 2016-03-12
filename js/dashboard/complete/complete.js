@@ -135,8 +135,8 @@ bdff.create('complete', function(canvas, face){
 								ticks : {
 									beginAtZero: true,
 									autoSkip: false,
-									min: 0,
-									max: 110
+									min: -105,
+									max: 105
 								}
 							}]
 						},
@@ -154,7 +154,9 @@ bdff.create('complete', function(canvas, face){
 									return tooltip[0].xLabel;
 								},
 								label : function(tooltip){
-									return ' '+complete.largeChart.legend.legendItems[tooltip.datasetIndex].text+': '+tooltip.yLabel+"%";
+									var percent = Math.round(parseFloat(tooltip.yLabel),2);
+									var sign = percent == 0 ? '' : percent > 0 ? '+' : '-';
+									return ' '+complete.largeChart.legend.legendItems[tooltip.datasetIndex].text+': '+sign+Math.abs(percent)+"%";
 								}
 							},
 							backgroundColor : '#999',
@@ -182,7 +184,6 @@ bdff.create('complete', function(canvas, face){
 				datasetStrokeWidth : 5
 			});
 		}
-		
 		complete.largeChart.data.labels = labels;
 		complete.largeChart.data.datasets = datasets;
 		complete.largeChart.stop();
@@ -210,8 +211,8 @@ bdff.create('complete', function(canvas, face){
 								ticks : {
 									beginAtZero: true,
 									autoSkip: false,
-									min: 0,
-									max: 110
+									min: -105,
+									max: 105
 								}
 							}],
 							gridLines: {
@@ -232,7 +233,9 @@ bdff.create('complete', function(canvas, face){
 									return tooltip[0].xLabel;
 								},
 								label : function(tooltip){
-									return 'Combined Average: '+tooltip.yLabel+"%";
+									var percent = Math.round(parseFloat(tooltip.yLabel),2);
+									var sign = percent == 0 ? '' : percent > 0 ? '+' : '-';
+									return 'Combined Average: '+sign+Math.abs(percent)+"%";
 								}
 							},
 							backgroundColor : '#999',
