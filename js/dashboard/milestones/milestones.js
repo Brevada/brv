@@ -240,10 +240,11 @@ bdff.create('milestones', function(canvas, face){
 				if(responses == 0){
 					dom.find('.details').text("no responses");
 				} else {
+					var sign = parseInt(change) == 0 ? '' : parseInt(change) > 0 ? '+' : '-';
 					if(parseInt(change)==0){
 						dom.find('.details').text('no change after ' + responses + ' response' + (parseInt(change)>1 ? 's' : ''));
 					} else {
-						dom.find('.details').text(change+'%' + ' after ' + responses + ' response' + (parseInt(change)>1 ? 's' : ''));
+						dom.find('.details').text(sign+change+'%' + ' after ' + responses + ' response' + (parseInt(change)>1 ? 's' : ''));
 					}
 				}
 				
