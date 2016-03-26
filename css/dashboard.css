@@ -1148,7 +1148,23 @@ div.milestone {
 .complete-page .settings .date {
     padding: 10px;
     font-size: 15px;
-    /*font-weight: bold;*/
+}
+
+.complete-page .settings .default-options {
+    margin-top: 15px;
+}
+
+.complete-page .settings .custom-options {
+    height: 0px;
+    overflow: hidden;
+}
+
+.complete-page .settings .option {
+    float: left;
+    font-size: 11px;
+    cursor: pointer;
+    text-decoration: underline;
+    margin-right: 10px;
 }
 
 .complete-page .aspects {

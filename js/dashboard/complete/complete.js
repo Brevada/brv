@@ -332,15 +332,29 @@ bdff.create('complete', function(canvas, face){
 		$(complete.el).on('click', '.aspect', function () {
 			complete.toggleAspect(parseInt($(this).attr('data-id')));
 		});
-		$(complete.el).on('click', '.section .toggle', function () {
-			complete.toggleGraph($(this).attr('data-id'));
-		});
 		$(complete.el).on('click', '.graph-button', function () {
 			complete.graphFullScreen($(this).parent());
+		});
+		$(complete.el).on('click', '.default-options .option', function () {
+			var option = $(this).attr('data-value');
+			if (option === 'custom') {
+				$(this).remove();
+				$('.custom-options').animate({
+					height: '75px'
+				});
+			} else {
+				// Set the time indirectly by manipulating the date selector!
+			}
 		});
 	}
 
 	complete.graphFullScreen = function (graph) {
+		$(document).on('keyup.escape', function(e){
+		    if(e.keyCode === 27)
+		        complete.graphExitFullScreen(graph);
+		    $(document).unbind('keyup.escape');
+		});
+
 		$('<div class="screen-overlay"></div>').appendTo($('body'));
 		$(graph).addClass('fullscreen');
 		$(graph).css({
@@ -401,7 +415,7 @@ bdff.create('complete', function(canvas, face){
 				<div class="toolbar">\
 					<div class="title">Aspects (% Change)</div>\
 					<div class="buttons">\
-						<div class="toggle" data-id="graph-1"><i class="fa fa-info"></i></div>\
+						<!--<div class="toggle" data-id="graph-1"><i class="fa fa-info"></i></div>-->\
 					</div>\
 					<div class="clear"></div>\
 				</div>\
@@ -414,7 +428,7 @@ bdff.create('complete', function(canvas, face){
 				<div class="toolbar">\
 					<div class="title">Combined Aspect Data</div>\
 					<div class="buttons">\
-						<div class="toggle" data-id="graph-2"><i class="fa fa-info"></i></div>\
+						<!--<div class="toggle" data-id="graph-2"><i class="fa fa-info"></i></div>-->\
 					</div>\
 					<div class="clear"></div>\
 				</div>\
@@ -427,7 +441,7 @@ bdff.create('complete', function(canvas, face){
 				<div class="toolbar">\
 					<div class="title">Overall Averages Per Aspect</div>\
 					<div class="buttons">\
-						<div class="toggle" data-id="graph-3"><i class="fa fa-info"></i></div>\
+						<!--<div class="toggle" data-id="graph-3"><i class="fa fa-info"></i></div>-->\
 					</div>\
 					<div class="clear"></div>\
 				</div>\
@@ -440,8 +454,17 @@ bdff.create('complete', function(canvas, face){
 			<div class="header">Data Options</div>\
 			<div class="sub-header">Use this interface to control what data appears on the graphs.</div>\
 			<div class="settings">\
-				<div class="date">Text</div>\
-				<div id="slider"></div>\
+				<div class="default-options">\
+					<div class="option" data-value="24">Last 24 Hours</div>\
+					<div class="option" data-value="168">Last Week</div>\
+					<div class="option" data-value="720">Last Month</div>\
+					<div class="option" data-value="custom">Custom Timeframe</div>\
+					<div class="clear"></div>\
+				</div>\
+				<div class="custom-options">\
+					<div class="date">Text</div>\
+					<div id="slider"></div>\
+				</div>\
 			</div>\
 			<div class="aspects"></div>\
 		</div>\
