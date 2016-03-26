@@ -335,6 +335,35 @@ bdff.create('complete', function(canvas, face){
 		$(complete.el).on('click', '.section .toggle', function () {
 			complete.toggleGraph($(this).attr('data-id'));
 		});
+		$(complete.el).on('click', '.graph-button', function () {
+			complete.graphFullScreen($(this).parent());
+		});
+	}
+
+	complete.graphFullScreen = function (graph) {
+		$('<div class="screen-overlay"></div>').appendTo($('body'));
+		$(graph).addClass('fullscreen');
+		$(graph).css({
+			'top': ($(window).height() - $(graph).height())/2 + 'px',
+		});
+		$(graph).find('.graph-button')
+			.html('<i class="fa fa-compress"></i>')
+			.on('click', function () {
+				complete.graphExitFullScreen(graph);
+			});
+	}
+
+	complete.graphExitFullScreen = function (graph) {
+		$('.screen-overlay').remove();
+		$(graph).removeClass('fullscreen');
+		$(graph).css({
+			top: '0px'
+		});
+		$(graph).find('.graph-button')
+			.html('<i class="fa fa-expand"></i>')
+			.on('click', function () {
+				complete.graphFullScreen(graph);
+			});
 	}
 
 	complete.toggleGraph = function (graph) {
