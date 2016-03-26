@@ -120,14 +120,14 @@ bdff.create('complete', function(canvas, face){
 						maintainAspectRatio: false,
 						scales: {
 							xAxes: [{
-								display: false,
+								display: true,
 								ticks: {
 									fontSize: '11',
-									fontColor: '#FFFFFF',
+									fontColor: '#666',
 									reverse: true
 								},
 								gridLines: {
-									color: 'rgba(0, 0, 0, 0.05)'
+									color: 'rgba(0, 0, 0, 0.02)'
 								}
 							}],
 							yAxes: [{
@@ -318,7 +318,7 @@ bdff.create('complete', function(canvas, face){
 	}
 
 	complete.initEvents = function () {
-		// $(window).resize(complete.sizeGraph);
+		$(window).resize(complete.adjustSize);
 		$('#slider').bind('valuesChanged', function (e, data) {
 			var min = data.values.min,
 				max = data.values.max;
@@ -384,10 +384,11 @@ bdff.create('complete', function(canvas, face){
 		complete.update();
 	}
 
-	complete.sizeGraph = function () {
+	complete.adjustSize = function () {
 		var available_space = $(window).height()-260;
-		$(complete.el).find('.graph-container').height(available_space*0.8);
-		$(complete.el).find('.sub-graph-container').height(available_space*0.2);
+		// $(complete.el).find('.graph-container').height(available_space*0.8);
+		// $(complete.el).find('.sub-graph-container').height(available_space*0.2);
+		$(complete.el).find('.side-control .aspects').css({ 'max-height': available_space-50});
 	}
 
 	canvas.children().not('div.message-container').remove();
@@ -456,7 +457,7 @@ bdff.create('complete', function(canvas, face){
 	complete.renderDateSlider();
 	complete.initEvents();
 	 
-	// complete.sizeGraph();
+	complete.adjustSize();
 	complete.render();
 	
 	face.datahook(0, {
