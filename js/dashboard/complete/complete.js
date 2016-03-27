@@ -360,10 +360,10 @@ bdff.create('complete', function(canvas, face){
 			var difference = (Math.round(new Date()/1000) - complete.initialMinDate) / (60)
 			complete.updateDateSlider(difference);
 		} else {
-			$('.default-options .option').removeClass('selected');
-			$(el).addClass('selected');
 			complete.updateDateSlider(option);
 		}
+		$('.default-options .option').removeClass('selected');
+		$(el).addClass('selected');
 	}
 
 	complete.graphFullScreen = function (graph) {
@@ -418,9 +418,7 @@ bdff.create('complete', function(canvas, face){
 
 	complete.adjustSize = function () {
 		var available_space = $(window).height()-260;
-		// $(complete.el).find('.graph-container').height(available_space*0.8);
-		// $(complete.el).find('.sub-graph-container').height(available_space*0.2);
-		$(complete.el).find('.side-control .aspects').css({ 'max-height': available_space-50});
+		$(complete.el).find('.side-control .aspects').css({ 'max-height': available_space-75});
 	}
 
 	canvas.children().not('div.message-container').remove();

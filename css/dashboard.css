@@ -419,7 +419,7 @@ div.bottom-bar {
 }
 .pod .header {
     padding: 10px;
-	background: #FFF;
+	background: #F5F5F5;
 }
 .pod .body {
     background: #F5F5F5;
@@ -1068,7 +1068,7 @@ div.milestone {
     margin-bottom: 20px;
     clear: both;
     border: 1px solid #DDD;
-    border-radius: 5px;
+    border-radius: 3px;
     overflow: hidden;
 }
 
@@ -1078,8 +1078,8 @@ div.milestone {
 
 .complete-page .section .toolbar {
     padding: 10px;
-    background: #FBFBFB;
-    border-bottom: 1px solid #DCDCDC;
+    background: #F5F5F5;
+    /*border-bottom: 1px solid #DCDCDC;*/
     clear: both;
 }
 
