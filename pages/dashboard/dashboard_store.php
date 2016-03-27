@@ -166,7 +166,7 @@ $aspectCount = $qAspects->fetch_assoc()['cnt'];
 				<div class="icon">
 					<i class='fa fa-calendar'></i>
 				</div>
-				<div class='icon-subtext hidden-xs'><?php _e('Milestones'); ?></div>
+				<div class='icon-subtext hidden-xs'><?php _e('Events'); ?></div>
 			</button>
 			<!--
 			<button type="button" data-id="support" class="btn btn-sidebar toggle-button icon-button">

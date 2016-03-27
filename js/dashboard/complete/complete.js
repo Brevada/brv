@@ -425,7 +425,7 @@ bdff.create('complete', function(canvas, face){
 	
 	complete.el = $('<div>').addClass('complete-page col-md-12').appendTo(canvas);
 	// TODO: Automate this
-	$('<div class="col-md-8 main">\
+	$('<div class="col-md-9 main">\
 			<!--<div class="dashboard-pod timeline">Timeline</div>-->\
 			<div class="section">\
 				<div class="toolbar">\
@@ -466,7 +466,7 @@ bdff.create('complete', function(canvas, face){
 				</div>\
 			</div>\
 		</div>\
-		<div class="col-md-4 side-control">\
+		<div class="col-md-3 side-control">\
 			<div class="header">Customize Graph</div>\
 			<div class="sub-header">Select the <strong>timeframe</strong> for the graphs.</div>\
 			<div class="settings">\

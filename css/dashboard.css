@@ -1168,10 +1168,10 @@ div.milestone {
 }
 
 .complete-page .settings .option {
-    width: 30%;
+    width: 45%;
     text-align: center;
     color: #666;
-    background: #F5F5F5;
+    background: #FFF;
     border: 1px solid #DCDCDC;
     padding: 5px;
     float: left;
