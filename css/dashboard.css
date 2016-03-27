@@ -22,15 +22,15 @@ div.top-fixed {
     z-index: 9;
 }
 div.top-banner {
-    background: #454545;
-    color: #FFF;
+    background: #FFF;
+    color: #666;
     padding: 0px 10px;
-    line-height: 50px;
+    line-height: 30px;
 }
 div.top-banner img.logo-quote {
     height: 20px;
     cursor: pointer;
-    margin-top: 15px;
+    margin-top: 10px;
 }
 div.top-banner div.name {
     margin: 0px 5px;
@@ -57,9 +57,9 @@ div.top-banner .dropdown-menu li:hover {
 }
 div.top-banner .three-lines {
     background: none;
-    color: #FFF;
+    color: #666;
     border: none;
-    font-size: 30px;
+    font-size: 20px;
 }
 
 .positive{ background: #2ecc0e; }
@@ -129,6 +129,10 @@ div.mid-banner .icon-button i {
     color: #BBB;
 }
 
+div.sidebar {
+    width: 70px;
+}
+
 div.sidebar .icon-button.selected {
     padding-top: 7px;  
 }
@@ -136,8 +140,8 @@ div.sidebar .icon-button.selected {
 .btn-sidebar {
     text-transform: uppercase;
     font-size: 11px;
-    background: #EEE;
-    color: #999;
+    background: #FFF;
+    color: #666;
     outline: none;
     border-color: #DDD;
     width: 80px;
@@ -146,7 +150,7 @@ div.sidebar .icon-button.selected {
 }
 
 div.sidebar .icon-button.selected::after {
-    border: 30px solid #EEE;
+/*    border: 30px solid #EEE;
     height: 5px;
     width: 5px;
     content: '';
@@ -157,16 +161,16 @@ div.sidebar .icon-button.selected::after {
     left: 80px;
     -webkit-transform: rotate(45deg);
     -ms-transform: rotate(45deg);
-    transform: rotate(45deg);
+    transform: rotate(45deg);*/
 }
 .btn-sidebar .icon {
-    width: 50px;
-    height: 50px;
+    width: 30px;
+    height: 30px;
     text-align: center;
     border: 1px solid #BBB;
     border-radius: 50px;
     margin: 0 auto;
-    line-height: 60px;
+    line-height: 40px;
 }
 
 div.sidebar .icon-button {
@@ -174,8 +178,8 @@ div.sidebar .icon-button {
 }
 
 div.sidebar .icon-button .icon {
-    line-height: 50px;
-    font-size: 25px;
+    line-height: 30px;
+    font-size: 15px;
 }
 
 div.sidebar .icon-button .icon i {
@@ -191,7 +195,7 @@ div.sidebar .icon-button .icon i {
 div.sidebar .icon-button .icon-subtext {
     line-height: 20px;
     margin-top: 5px;
-    font-size: 11px;
+    font-size: 10px;
     color: #999;
     text-align: center;
     text-transform: uppercase;
@@ -204,7 +208,7 @@ div.sidebar .icon-button:hover {
 }
 
 div.sidebar .icon-button.selected {
-    background: #666;
+    background: rgb(242, 96, 106);
 }
 
 div.sidebar .icon-button.selected .icon-subtext {
@@ -254,7 +258,7 @@ div.block div.block-bottom {
 }
 div.spacer {
     width: 100%;
-    height: 86px;
+    height: 70px;
     padding: 0;
     margin: 0;
 }
@@ -667,7 +671,7 @@ div.email-display-container .email .rating{
 #page-content-wrapper {
     width: 100%;
 	margin: 0 auto 44px auto;
-	padding: 0 0 0 120px;	
+	padding: 0 0 0 90px;
 	transition: all 0.4s ease 0s;
 }
 
@@ -979,8 +983,8 @@ div.milestone {
     right: 0px;
     z-index: 9;
     width:100%;
-    background: #454545;
-    color: #FFF;
+    background: #F5F5F5;
+    color: #666;
     -webkit-box-shadow: 0px 0px 5px 0px rgba(50, 50, 50, 0.75);
     -moz-box-shadow: 0px 0px 5px 0px rgba(50, 50, 50, 0.75);
     box-shadow: 0px 0px 5px 0px rgba(50, 50, 50, 0.75);
@@ -997,7 +1001,7 @@ div.milestone {
     padding: 5px;
 }
 .hoverpod .body div {
-    width: 100px;
+    width: 110px;
     margin-right: 10px;
     display: inline-block;
 }
@@ -1011,7 +1015,7 @@ div.milestone {
     font-weight: bold;
 }
 .hoverpod .body .text {
-    font-size: 8px;
+    font-size: 13px;
     text-align: center;
 }
 .hoverpod .status .bulb {
@@ -1136,7 +1140,7 @@ div.milestone {
     left: 0px;
     z-index: 1001;
     width: 100%;
-    height: 60%;
+    height: 75%;
 }
 
 .complete-page .sub-graph-container {
@@ -1164,11 +1168,14 @@ div.milestone {
 }
 
 .complete-page .settings .option {
-    background: #666;
-    color: #FFF;
+    width: 30%;
+    text-align: center;
+    color: #666;
+    background: #F5F5F5;
+    border: 1px solid #DCDCDC;
     padding: 5px;
     float: left;
-    font-size: 11px;
+    font-size: 14px;
     cursor: pointer;
     border-radius: 2px;
     margin-right: 5px;
@@ -1176,6 +1183,7 @@ div.milestone {
 }
 
 .complete-page .settings .option.selected {
+    color: #FFF;
     background: rgb(242, 96, 106);
 }
 

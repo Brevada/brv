@@ -19,7 +19,7 @@ Chart.defaults.global.maintainAspectRatio = false;
 
 function build_line_graph(bucket, id) {
 	$pod = $('#' + id);
-	var graph_color = '#999',
+	var graph_color = 'rgb(242, 96, 106)',
 		data = {
 		    labels: bucket.dates,
 		    datasets: [
