@@ -1145,6 +1145,10 @@ div.milestone {
 	position: relative;
 }
 
+.complete-page .header.after {
+    margin-top: 15px;
+}
+
 .complete-page .settings .date {
     padding: 10px;
     font-size: 15px;
@@ -1160,11 +1164,19 @@ div.milestone {
 }
 
 .complete-page .settings .option {
+    background: #333;
+    color: #FFF;
+    padding: 5px;
     float: left;
     font-size: 11px;
     cursor: pointer;
-    text-decoration: underline;
-    margin-right: 10px;
+    border-radius: 2px;
+    margin-right: 5px;
+    margin-bottom: 5px;
+}
+
+.complete-page .settings .option.selected {
+    background: rgb(242, 96, 106);
 }
 
 .complete-page .aspects {

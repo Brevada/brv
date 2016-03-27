@@ -100,13 +100,18 @@ bdff.create('complete', function(canvas, face){
 		
 		var boundMinDate = new Date(0);
 		boundMinDate.setUTCSeconds(complete.minDate);
-		
 		complete.dateSlider = $('#slider').dateRangeSlider({
 			bounds: {min: boundMinDate, max: new Date()},
 			defaultValues: {min: boundMinDate, max: new Date()}
 		});
 		
 		$('.settings .date').html(moment(boundMinDate).format('MMM Do, YYYY') + ' - ' + moment().format('MMM Do, YYYY'));
+	}
+	complete.updateDateSlider = function (hoursAgo) {
+			var d = new Date();
+			d.setDate(d.getDate() - hoursAgo/24);
+
+			$("#slider").dateRangeSlider("values", d, new Date());
 	}
 	complete.renderCompleteGraph = function () {
 		if(!complete.largeChart){
@@ -343,7 +348,9 @@ bdff.create('complete', function(canvas, face){
 					height: '75px'
 				});
 			} else {
-				// Set the time indirectly by manipulating the date selector!
+				$('.default-options .option').removeClass('selected');
+				$(this).addClass('selected');
+				complete.updateDateSlider(option);
 			}
 		});
 	}
@@ -451,12 +458,14 @@ bdff.create('complete', function(canvas, face){
 			</div>\
 		</div>\
 		<div class="col-md-3 side-control">\
-			<div class="header">Data Options</div>\
-			<div class="sub-header">Use this interface to control what data appears on the graphs.</div>\
+			<div class="header">Timeframe</div>\
+			<div class="sub-header">Select the timeframe for the graphs.</div>\
 			<div class="settings">\
 				<div class="default-options">\
 					<div class="option" data-value="24">Last 24 Hours</div>\
+					<div class="option" data-value="72">Last 3 Days</div>\
 					<div class="option" data-value="168">Last Week</div>\
+					<div class="option" data-value="336">Last 2 Weeks</div>\
 					<div class="option" data-value="720">Last Month</div>\
 					<div class="option" data-value="custom">Custom Timeframe</div>\
 					<div class="clear"></div>\
@@ -466,6 +475,8 @@ bdff.create('complete', function(canvas, face){
 					<div id="slider"></div>\
 				</div>\
 			</div>\
+			<div class="header after">Aspects</div>\
+			<div class="sub-header">Choose which aspects are included in the graphs.</div>\
 			<div class="aspects"></div>\
 		</div>\
 	  ').appendTo(complete.el);
