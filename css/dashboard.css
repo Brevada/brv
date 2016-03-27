@@ -1145,8 +1145,8 @@ div.milestone {
 	position: relative;
 }
 
-.complete-page .header.after {
-    margin-top: 15px;
+.complete-page .sub-header {
+    margin-top: 10px;
 }
 
 .complete-page .settings .date {
@@ -1155,7 +1155,7 @@ div.milestone {
 }
 
 .complete-page .settings .default-options {
-    margin-top: 15px;
+    margin-top: 5px;
 }
 
 .complete-page .settings .custom-options {
@@ -1164,7 +1164,7 @@ div.milestone {
 }
 
 .complete-page .settings .option {
-    background: #333;
+    background: #666;
     color: #FFF;
     padding: 5px;
     float: left;

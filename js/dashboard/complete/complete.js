@@ -100,6 +100,7 @@ bdff.create('complete', function(canvas, face){
 		
 		var boundMinDate = new Date(0);
 		boundMinDate.setUTCSeconds(complete.minDate);
+		// TODO: The initial min and max dates are off (starting from 2011...)
 		complete.dateSlider = $('#slider').dateRangeSlider({
 			bounds: {min: boundMinDate, max: new Date()},
 			defaultValues: {min: boundMinDate, max: new Date()}
@@ -337,22 +338,32 @@ bdff.create('complete', function(canvas, face){
 		$(complete.el).on('click', '.aspect', function () {
 			complete.toggleAspect(parseInt($(this).attr('data-id')));
 		});
+		$(complete.el).on('mousedown', '#slider', function () {
+			$('.default-options .option').removeClass('selected');
+		});
 		$(complete.el).on('click', '.graph-button', function () {
 			complete.graphFullScreen($(this).parent());
 		});
 		$(complete.el).on('click', '.default-options .option', function () {
-			var option = $(this).attr('data-value');
-			if (option === 'custom') {
-				$(this).remove();
-				$('.custom-options').animate({
-					height: '75px'
-				});
-			} else {
-				$('.default-options .option').removeClass('selected');
-				$(this).addClass('selected');
-				complete.updateDateSlider(option);
-			}
+			complete.setPresetTimeframe($(this).attr('data-value'), this);
 		});
+	}
+
+	complete.setPresetTimeframe = function (option, el) {
+		if (option === 'custom') {
+			$(el).remove();
+			$('.custom-options').animate({
+				height: '75px'
+			});
+		}
+		else if (option === 'all') {
+			var difference = (Math.round(new Date()/1000) - complete.initialMinDate) / (60)
+			complete.updateDateSlider(difference);
+		} else {
+			$('.default-options .option').removeClass('selected');
+			$(el).addClass('selected');
+			complete.updateDateSlider(option);
+		}
 	}
 
 	complete.graphFullScreen = function (graph) {
@@ -459,14 +470,17 @@ bdff.create('complete', function(canvas, face){
 		</div>\
 		<div class="col-md-3 side-control">\
 			<div class="header">Timeframe</div>\
-			<div class="sub-header">Select the timeframe for the graphs.</div>\
+			<div class="sub-header">Select the <strong>timeframe</strong> for the graphs.</div>\
 			<div class="settings">\
 				<div class="default-options">\
+					<div class="option" data-value="2">Last 2 Hours</div>\
 					<div class="option" data-value="24">Last 24 Hours</div>\
 					<div class="option" data-value="72">Last 3 Days</div>\
 					<div class="option" data-value="168">Last Week</div>\
 					<div class="option" data-value="336">Last 2 Weeks</div>\
 					<div class="option" data-value="720">Last Month</div>\
+					<div class="option" data-value="1440">Last 2 Months</div>\
+					<div class="option" data-value="all">All Time</div>\
 					<div class="option" data-value="custom">Custom Timeframe</div>\
 					<div class="clear"></div>\
 				</div>\
@@ -475,8 +489,7 @@ bdff.create('complete', function(canvas, face){
 					<div id="slider"></div>\
 				</div>\
 			</div>\
-			<div class="header after">Aspects</div>\
-			<div class="sub-header">Choose which aspects are included in the graphs.</div>\
+			<div class="sub-header after">Choose which <strong>aspects</strong> are included in the graphs.</div>\
 			<div class="aspects"></div>\
 		</div>\
 	  ').appendTo(complete.el);
@@ -515,6 +528,7 @@ bdff.create('complete', function(canvas, face){
 					}
 				}
 				complete.serverData.average = data.playground.average;
+				complete.initialMinDate = data.playground.minDate;
 				complete.minDate = data.playground.minDate;
 				
 				complete.render();
