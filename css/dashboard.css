@@ -25,12 +25,12 @@ div.top-banner {
     background: #FFF;
     color: #666;
     padding: 0px 10px;
-    line-height: 30px;
+    line-height: 40px;
 }
 div.top-banner img.logo-quote {
     height: 20px;
     cursor: pointer;
-    margin-top: 10px;
+    margin-top: 15px;
 }
 div.top-banner div.name {
     margin: 0px 5px;
@@ -140,7 +140,7 @@ div.sidebar .icon-button.selected {
 .btn-sidebar {
     text-transform: uppercase;
     font-size: 11px;
-    background: #FFF;
+    background: #FBFBFB;
     color: #666;
     outline: none;
     border-color: #DDD;
@@ -481,7 +481,7 @@ div.bottom-bar {
     padding: 0px;
 }
 .pod .aspect-title {
-    text-transform: uppercase;
+    /*text-transform: uppercase;*/
     font-size: 18px;
     background: none;
 }
@@ -1170,7 +1170,7 @@ div.milestone {
 }
 
 .complete-page .settings .option {
-    width: 45%;
+    width: 30%;
     text-align: center;
     color: #666;
     background: #FFF;

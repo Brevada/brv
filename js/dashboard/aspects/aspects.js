@@ -117,7 +117,7 @@ bdff.create('aspects', function(canvas, face){
 		};
 		
 		aspect.setNumResponses = function(num){
-			aspectDom.find('div.rating-text').first().text("in " + num.toString() + " responses.");
+			aspectDom.find('div.rating-text').first().text(num.toString() + " responses.");
 		};
 		
 		aspect.setTopTicker = function(val){
