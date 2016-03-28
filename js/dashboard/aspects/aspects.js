@@ -53,11 +53,12 @@ bdff.create('aspects', function(canvas, face){
 					)
 				)
 				.append(
-					$('<div>').addClass('col-md-12 pod-body-bottom').append(
-						$('<input>').addClass('graph-toggle').attr('type', 'checkbox').attr('checked', '')
-						.attr('data-toggle', 'toggle').attr('data-onstyle', 'default').attr('data-on', 'Line')
-						.attr('data-off', 'Bar').attr('data-size', 'mini').attr('data-width', '100').attr('data-height', '25')
-					).append(
+					$('<div>').addClass('col-md-12 pod-body-bottom')
+					// .append(
+						// $('<input>').addClass('graph-toggle').attr('type', 'checkbox').attr('checked', '')
+						// .attr('data-toggle', 'toggle').attr('data-onstyle', 'default').attr('data-on', 'Line')
+						// .attr('data-off', 'Bar').attr('data-size', 'mini').attr('data-width', '100').attr('data-height', '25'))
+					.append(
 						$('<div>').addClass('graphs')
 						.append(
 							$('<div>').addClass('bar-graph')

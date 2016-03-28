@@ -80,23 +80,6 @@ $aspectCount = $qAspects->fetch_assoc()['cnt'];
 <script type='text/javascript'>bdff.storeID(<?php echo $store_id; ?>);</script>
 <div id="alert-holder"></div>
 <div class="top-fixed">
-	<div class='top-banner row'>
-		<div class='col-lg-12'>
-			<img class='logo-quote link pull-left' src='/images/brevada.png' data-link='' />
-			<div class='dropdown pull-right'>
-				<div class='three-lines btn btn-default dropdown-toggle'  data-toggle='dropdown'>
-					<i class='fa fa-ellipsis-h'></i>
-				</div>
-				<ul class='dropdown-menu'>
-					<li class='link' data-link='settings'><?php _e('Settings'); ?></li>
-					<li class='link' data-link='logout' style="border-bottom: none;"><?php _e('Logout'); ?></li>
-				</ul>
-			</div>
-			<div class='name pull-right hidden-xs'>
-				<span class="variable"><?php echo $name; ?></span>
-			</div>
-		</div>
-	</div>
 	<div class="mid-banner row" style="">
 	  	<a type="button" class="btn icon-button" href="/<?php echo $url_name; ?>" target="_blank">
       		<i class='fa fa-play-circle'></i> <?php _e('Your Page'); ?>
@@ -118,10 +101,23 @@ $aspectCount = $qAspects->fetch_assoc()['cnt'];
 		</a>
 		<?php } ?>
 	</div>
-
-
-	
-
+	<div class='top-banner row'>
+		<div class='col-lg-12'>
+			<img class='logo-quote link pull-left' src='/images/brevada.png' data-link='' />
+			<div class='dropdown pull-right'>
+				<div class='three-lines btn btn-default dropdown-toggle'  data-toggle='dropdown'>
+					<i class='fa fa-ellipsis-h'></i>
+				</div>
+				<ul class='dropdown-menu'>
+					<li class='link' data-link='settings'><?php _e('Settings'); ?></li>
+					<li class='link' data-link='logout' style="border-bottom: none;"><?php _e('Logout'); ?></li>
+				</ul>
+			</div>
+			<div class='name pull-right hidden-xs'>
+				<span class="variable"><?php echo $name; ?></span>
+			</div>
+		</div>
+	</div>
 </div>
 
 <div class="spacer"></div>

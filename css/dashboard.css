@@ -12,7 +12,7 @@ div.screen-overlay {
     height: 100%;
     top: 0px;
     left: 0px;
-    background: #F5F5F5;
+    background: #FBFBFB;
 }
 div.top-fixed {
     width: 100%;
@@ -85,7 +85,7 @@ div.mid-banner {
     width: 100%;
     min-height: 30px;
     height: auto;
-    background: #FFF;
+    background: #666;
     border-bottom: 1px solid #DCDCDC;
     border-top: 1px solid #DCDCDC;
     margin: 0;
@@ -105,7 +105,7 @@ div.mid-banner .icon-button {
     text-align: center;
     font-size: 12px;
     background: none;
-    color: #999;
+    color: #BBB;
     outline: none;
     /*border-right: 1px solid #BBB;*/
     border-radius: 0px;
@@ -416,17 +416,17 @@ div.bottom-bar {
     -moz-border-radius: 3px;
     border-radius: 3px;
     border: 1px solid #DCDCDC;
-	min-height: 387px;
+	min-height: 287px;
 	margin: 0px 10px 20px 10px;
 	padding: 0;
 	position: relative;
 }
 .pod .header {
     padding: 10px;
-	background: #F5F5F5;
+	background: #FBFBFB;
 }
 .pod .body {
-    background: #F5F5F5;
+    background: #FBFBFB;
 	width: 100%;
 	height: 100%;
 	position: absolute;
@@ -493,7 +493,7 @@ div.bottom-bar {
     margin: 10px;
 }
 .pod .body .pod-body-bottom div.graphs {
-    height: 200px;
+    height: 120px;
 }
 
 .pod .body .pod-body-bottom div.graphs div.line-graph {
@@ -511,7 +511,7 @@ div.bottom-bar {
 
 .pod .body .pod-body-bottom div.graphs div.bar-graph {
     display: none;
-    height: 200px;
+    height: 120px;
 }
 .pod .body .pod-body-bottom div.graphs div.graph {
     float: left;
@@ -726,7 +726,7 @@ div.email-display-container .email .rating{
 
 .dashboard-pod {
     padding: 0px;
-    background: #F5F5F5;
+    background: #FBFBFB;
     border-radius: 2px;
     margin-bottom: 20px;
     overflow: hidden;
@@ -781,7 +781,7 @@ div.milestone {
 
 .milestone-body {
     padding: 0px;
-    background: #EEE;
+    background: #F5F5F5;
     border-radius: 2px;
     margin-bottom: 20px;
     overflow: hidden;
@@ -866,7 +866,7 @@ div.milestone {
     font-size: 11px;
     color: #666;
     padding: 5px;
-    background: #DDD;
+    background: #F5F5F5;
 }
 .milestone-body .footer .complete-button {
     font-weight: bold;
@@ -983,11 +983,11 @@ div.milestone {
     right: 0px;
     z-index: 9;
     width:100%;
-    background: #F5F5F5;
-    color: #666;
-    -webkit-box-shadow: 0px 0px 5px 0px rgba(50, 50, 50, 0.75);
+    background: #FFF;
+    color: #333;
+/*    -webkit-box-shadow: 0px 0px 5px 0px rgba(50, 50, 50, 0.75);
     -moz-box-shadow: 0px 0px 5px 0px rgba(50, 50, 50, 0.75);
-    box-shadow: 0px 0px 5px 0px rgba(50, 50, 50, 0.75);
+    box-shadow: 0px 0px 5px 0px rgba(50, 50, 50, 0.75);*/
 /*    -webkit-border-radius: 3px;
     -moz-border-radius: 3px;
     border-radius: 3px;
@@ -1082,7 +1082,7 @@ div.milestone {
 
 .complete-page .section .toolbar {
     padding: 10px;
-    background: #F5F5F5;
+    background: #FBFBFB;
     /*border-bottom: 1px solid #DCDCDC;*/
     clear: both;
 }
@@ -1112,21 +1112,23 @@ div.milestone {
     position: absolute;
     bottom: 10px;
 	right: 10px;
-    background: rgba(100,100,100,0.8);
-    color: #DDD;
+    background: rgba(242, 96, 106, 1);
+    opacity: 0.9;
+    /*border: 1px solid rgb(242, 96, 106);*/
+    color: #FFF;
     height: 55px;
     width: 55px;
     line-height: 55px;
     border-radius: 55px;
     text-align: center;
     font-size: 30px;
-    -webkit-box-shadow: 0px 0px 5px 0px rgba(50, 50, 50, 0.75);
+/*    -webkit-box-shadow: 0px 0px 5px 0px rgba(50, 50, 50, 0.75);
     -moz-box-shadow:    0px 0px 5px 0px rgba(50, 50, 50, 0.75);
-    box-shadow:         0px 0px 5px 0px rgba(50, 50, 50, 0.75);
+    box-shadow:         0px 0px 5px 0px rgba(50, 50, 50, 0.75);*/
 	cursor: pointer;
 }
 .complete-page .section .graph-button:hover {
-	opacity: 0.8;
+	opacity: 1;
 }
 
 .complete-page .graph-container {
@@ -1172,7 +1174,7 @@ div.milestone {
     text-align: center;
     color: #666;
     background: #FFF;
-    border: 1px solid #DCDCDC;
+    border: 1px solid #F5F5F5;
     padding: 5px;
     float: left;
     font-size: 14px;
@@ -1180,6 +1182,10 @@ div.milestone {
     border-radius: 2px;
     margin-right: 5px;
     margin-bottom: 5px;
+}
+
+.complete-page .settings .option:hover {
+    background: #F5F5F5;
 }
 
 .complete-page .settings .option.selected {
@@ -1191,7 +1197,6 @@ div.milestone {
     max-height: 480px; /*TODO */
     overflow: scroll;
     background: none;
-    padding: 10px;
     border-radius: 2px;
     margin-top: 10px;
 }

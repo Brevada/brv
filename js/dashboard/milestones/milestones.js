@@ -30,7 +30,7 @@ bdff.create('milestones', function(canvas, face){
 					$('<div>').addClass('col-lg-6 col-md-6 col-xs-12 nopadding').append(
 						$('<input>').addClass('form-control title').attr({
 							type: 'text',
-							placeholder: 'New Milestone Title'
+							placeholder: 'New Event Title'
 						}).keyup(formType).change(formType)
 					)
 				).append(
