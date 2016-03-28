@@ -24,7 +24,7 @@ div.top-fixed {
 div.top-banner {
     background: #FFF;
     color: #666;
-    padding: 0px 10px;
+    padding: 0px 10px 0px 100px;
     line-height: 40px;
 }
 div.top-banner img.logo-quote {
@@ -140,13 +140,16 @@ div.sidebar .icon-button.selected {
 .btn-sidebar {
     text-transform: uppercase;
     font-size: 11px;
-    background: #FBFBFB;
     color: #666;
+    background: #F5F5F5;
     outline: none;
     border-color: #DDD;
+    border: none;
+    border-bottom: 1px solid #DCDCDC;
     width: 80px;
     height: 90px;
     overflow: hidden;
+    border-radius: 0px;
 }
 
 div.sidebar .icon-button.selected::after {
@@ -655,9 +658,11 @@ div.email-display-container .email .rating{
 }
 
 #sidebar-wrapper {
-    padding: 0px 10px;
+    padding: 0px;
     left: 0;
-    width: 130px;
+    top: 30px;
+    background: #F5F5F5;
+    border-right: 1px solid #DCDCDC;
     position: fixed;
     height: 100%;
     overflow-y: auto;
@@ -985,6 +990,7 @@ div.milestone {
     width:100%;
     background: #FFF;
     color: #333;
+    padding-left: 100px;
 /*    -webkit-box-shadow: 0px 0px 5px 0px rgba(50, 50, 50, 0.75);
     -moz-box-shadow: 0px 0px 5px 0px rgba(50, 50, 50, 0.75);
     box-shadow: 0px 0px 5px 0px rgba(50, 50, 50, 0.75);*/
@@ -1172,8 +1178,8 @@ div.milestone {
 .complete-page .settings .option {
     width: 30%;
     text-align: center;
-    color: #666;
-    background: #FFF;
+    color: #BBB;
+    background: #666;
     border: 1px solid #F5F5F5;
     padding: 5px;
     float: left;
@@ -1185,7 +1191,7 @@ div.milestone {
 }
 
 .complete-page .settings .option:hover {
-    background: #F5F5F5;
+    color: #FFF;
 }
 
 .complete-page .settings .option.selected {
