@@ -85,7 +85,7 @@ div.mid-banner {
     width: 100%;
     min-height: 30px;
     height: auto;
-    background: #666;
+    background: #333;
     border-bottom: 1px solid #DCDCDC;
     border-top: 1px solid #DCDCDC;
     margin: 0;
@@ -140,7 +140,7 @@ div.sidebar .icon-button.selected {
 .btn-sidebar {
     text-transform: uppercase;
     font-size: 11px;
-    color: #666;
+    color: #333;
     background: #F5F5F5;
     outline: none;
     border-color: #DDD;
@@ -418,7 +418,7 @@ div.bottom-bar {
     -webkit-border-radius: 3px;
     -moz-border-radius: 3px;
     border-radius: 3px;
-    border: 1px solid #DCDCDC;
+    border: 1px solid #EEE;
 	min-height: 310px;
 	margin: 0px 10px 20px 10px;
 	padding: 0;
@@ -426,10 +426,10 @@ div.bottom-bar {
 }
 .pod .header {
     padding: 10px;
-	background: #FBFBFB;
+	background: #FFF;
 }
 .pod .body {
-    background: #FBFBFB;
+    background: #FFF;
 	width: 100%;
 	height: 100%;
 	position: absolute;
@@ -731,7 +731,7 @@ div.email-display-container .email .rating{
 
 .dashboard-pod {
     padding: 0px;
-    background: #FBFBFB;
+    background: #FFF;
     border-radius: 2px;
     margin-bottom: 20px;
     overflow: hidden;
@@ -1077,7 +1077,7 @@ div.milestone {
 .complete-page .section {
     margin-bottom: 20px;
     clear: both;
-    border: 1px solid #DDD;
+    border: 1px solid #EEE;
     border-radius: 3px;
     overflow: hidden;
 }
@@ -1088,7 +1088,7 @@ div.milestone {
 
 .complete-page .section .toolbar {
     padding: 10px;
-    background: #FBFBFB;
+    background: #FFF;
     /*border-bottom: 1px solid #DCDCDC;*/
     clear: both;
 }
@@ -1179,8 +1179,8 @@ div.milestone {
     width: 30%;
     text-align: center;
     color: #BBB;
-    background: #666;
-    border: 1px solid #F5F5F5;
+    background: #FFF;
+    border: 1px solid #DCDCDC;
     padding: 5px;
     float: left;
     font-size: 14px;
@@ -1191,7 +1191,7 @@ div.milestone {
 }
 
 .complete-page .settings .option:hover {
-    color: #FFF;
+    color: #333;
 }
 
 .complete-page .settings .option.selected {
