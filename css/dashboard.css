@@ -1077,7 +1077,7 @@ div.milestone {
 .complete-page .section {
     margin-bottom: 20px;
     clear: both;
-    border: 1px solid #EEE;
+    /*border: 1px solid #EEE;*/
     border-radius: 3px;
     overflow: hidden;
 }
@@ -1089,7 +1089,7 @@ div.milestone {
 .complete-page .section .toolbar {
     padding: 10px;
     background: #FFF;
-    /*border-bottom: 1px solid #DCDCDC;*/
+    border-bottom: 1px solid #DCDCDC;
     clear: both;
 }
 
