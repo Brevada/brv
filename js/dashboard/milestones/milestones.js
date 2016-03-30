@@ -13,7 +13,7 @@ bdff.create('milestones', function(canvas, face){
 				$('<div>').addClass('fa fa-spin fa-gear')
 			)
 		);
-	}
+	};
 
 	var renderForm = function (canvas) {
 		

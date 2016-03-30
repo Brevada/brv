@@ -883,81 +883,6 @@ div.milestone {
     margin-left: 10px;
 }
 
-/* Live */
-
-.bigticker {
-    /*padding: 10px;*/
-    margin: 0px;
-    background: #F5F5F5;
-}
-
-@media (min-width:750px) {
-    .bigticker {
-        height: 200px;
-    }
-}
-
-.bigticker div {
-    text-align: center;
-    /*color: #FFF;*/
-}
-
-.bigticker.score {
-    color: #000000;
-    /*background-image:;*/
-}
-
-.bigticker.datastatus {
-    background: #333;
-    color: #FFF;
-}
-
-.bigticker.datastatus .data{
-    font-size: 12px;
-
-}
-
-.bigticker .title {
-    color: #333333;
-    font-size: 17px;
-    /*padding: 0px 0px 5px 0px;*/
-}
-
-.bigticker .data {
-    font-size: 100px;
-    font-weight: bold;
-}
-
-.bigticker.breakdown {
-    height: 330px;
-}
-
-.bigticker.breakdown .graph {
-}
-
-.bigticker .bulb {
-    width: 100%;
-    height: 110px;
-    margin: 0 auto;
-    border-radius: 4px;
-    color: #FFF;
-}
-
-.square {
-    padding: 0px;
-}
-
-.square div {
-    padding: 5px;
-}
-
-.bigticker.daily .bulb .all-data {
-    font-size: 20px;
-    font-weight: bold;
-}
-.bigticker.daily .bulb .all-data .data {
-    font-size: 50px;
-}
 .support-form textarea {
     padding: 10px;
     font-size:18px;
@@ -1316,3 +1241,205 @@ div.milestone {
 
 }
 div.full-loader { margin: 0 auto; text-align: center; width: 100%; display: block; font-size: 20em; opacity: 0.05; overflow: hidden; }
+
+/* Live */
+div.snapshot {
+	margin: 0 0 20px 0;
+}
+
+div.snapshot span.header, div.weeks-scores span.header, div.feed span.header {
+	display: block;
+	color: #333;
+	font-size: 22px;
+}
+div.snapshot span.subtitle, div.weeks-scores span.subtitle, div.feed span.subtitle {
+	display: block;
+	color: #aaa;
+	font-size: 16px;
+}
+
+div.snapshot div.snapshot-pod {
+	background: #EEE;
+	padding: 5px;
+	margin: 5px 0 0 0;
+	position: relative;
+}
+div.snapshot div.snapshot-pod:first-child {
+	border-top-left-radius: 3px;
+	border-bottom-left-radius: 3px;
+}div.snapshot div.snapshot-pod:last-child {
+	border-top-right-radius: 3px;
+	border-bottom-right-radius: 3px;
+}
+
+div.snapshot div.snapshot-pod div.snapshot-stats {
+	width: 19%;
+	height: 90%;
+	margin: 20px 0 0 1%;
+	display: inline-block;
+	text-align: center;
+}
+div.snapshot div.snapshot-pod div.snapshot-stats > div {
+	text-align: center;
+	width: 100%;
+	margin: 2px 0 12px 0;
+}
+div.snapshot div.snapshot-pod div.snapshot-stats > div span.number {
+	background: #cfc338;
+	font-size: 18px;
+	font-weight: bold;
+	color: #FFF;
+	padding: 7.5px 2px;
+	display: block;
+	width: 100%;
+	border-radius: 2px;
+}
+div.snapshot div.snapshot-pod div.snapshot-stats > div span.label {
+	color: #888;
+	display: block;
+	width: 100%;
+	font-size: 10px;
+	margin: 2px 0 0 0;
+	padding: 0;
+}
+
+div.snapshot div.snapshot-pod div.snapshot-graph {
+	display: inline-block;
+	width: 75%;
+	height: 65%;
+	margin: 0;
+	padding: 0;
+	position: absolute;
+	top: 6px;
+	right: 2px;
+}
+div.snapshot div.snapshot-pod div.snapshot-graph canvas {
+	display: block;
+	width: 100%;
+	height: 100%;
+}
+
+div.snapshot div.snapshot-pod div.snapshot-best-worst {
+	color: #999;
+	margin: 0 0 0 28.5px;
+	display: inline-block;
+}
+div.snapshot div.snapshot-pod div.snapshot-best-worst > span {
+	display: block;
+	padding: 0;
+	margin: 0;
+}
+div.snapshot div.snapshot-pod div.snapshot-best-worst > span i {
+	margin-right: 4.5px;
+}
+
+div.snapshot div.snapshot-pod span.snapshot-label {
+	text-align: center;
+	display: block;
+	font-weight: bold;
+	color: #777;
+	margin: 5px 0 5px 0;
+	clear: both;
+}
+
+div.feed {
+	margin-bottom: 20px;
+}
+
+div.feed div.feed-list {
+	width: 100%;
+}
+
+div.feed div.feed-list div.feed-item {
+	width: 100%;
+	padding: 6px 1px 10px 1px;
+	margin: 5px 0;
+	border-bottom: 1px solid #eee;
+}
+
+div.feed div.feed-list div.feed-item span {
+	
+}
+
+div.feed div.feed-list div.feed-item span.number {
+	background: #cfc338;
+	font-size: 16px;
+	font-weight: bold;
+	color: #FFF;
+	padding: 2px 4px;
+	display: inline-block;
+	border-radius: 2px;
+}
+
+div.feed div.feed-list div.feed-item span.feed-label {
+	color: #777;
+	margin: 0 0 0 14px;
+}
+
+div.feed div.feed-list div.feed-item span.date {
+	float: right;
+	color: #999;
+	font-size: 12px;
+}
+
+div.feed div.feed-list div.feed-item span.medium {
+	float: right;
+	font: normal normal normal 14px/1 FontAwesome;
+    font-size: inherit;
+    text-rendering: auto;
+    -webkit-font-smoothing: antialiased;
+	font-size: 26px;
+	display: inline-block;
+	margin: -5px 0 5px 30px;
+	width: 30px;
+	text-align: center;
+}
+div.feed div.feed-list div.feed-item span.medium.medium-tablet::before {
+	content: '\f10a';
+	font-size: 30px;
+}
+div.feed div.feed-list div.feed-item span.medium.medium-desktop::before {
+	content: '\f108';
+}
+
+div.weeks-scores {
+	margin: 0 0 20px 0;
+}
+
+div.weeks-scores div.scores-list {
+	width: 100%;
+	padding: 0;
+	margin: 0;
+}
+
+div.weeks-scores div.scores-list div.scores-item {
+	width: 100%;
+	position: relative;
+	margin: 9px 0 0 0;
+}
+
+div.weeks-scores div.scores-list div.scores-item div.score-bar {
+	width: 100%;
+	height: 25px;
+	padding: 0;
+	margin: 0;
+}
+div.weeks-scores div.scores-list div.scores-item div.score-bar > div {
+	height: 100%;
+	width: 10px;
+	background: #cf9b38;
+	display: inline-block;
+	padding: 0;
+	margin: 0;
+	border-radius: 2px;
+}
+div.weeks-scores div.scores-list div.scores-item div.score-bar > span {
+	position: absolute;
+	right: 0;
+	top: 2px;
+}
+
+div.weeks-scores div.scores-list div.scores-item > span {
+	display: block;
+	color: #777;
+}
