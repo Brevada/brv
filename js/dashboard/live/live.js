@@ -1,12 +1,16 @@
 /* 
 	Live Dashboard App
 */
+var live = { };
 
 bdff.create('live', function(canvas, face){
 
 	canvas.children().not('div.message-container').remove();
+	if(live && live.snapshot){
+		live.snapshot.cleanup();
+	}
 	
-	var live = { };
+	live = {};
 
 	var render = function (canvas) {
 		canvas.children().not('div.message-container').remove();
@@ -60,7 +64,7 @@ bdff.create('live', function(canvas, face){
 				return new Chart(ctx, {
 						type: 'doughnut',
 						data: { labels : ['Positive', 'Great', 'Neutral', 'Bad', 'Negative'], datasets : [{
-							data: [30, 20, 40, 23, 8],
+							data: [0, 0, 0, 0, 0],
 							backgroundColor: [
 								"#38cf4a",
 								"#7ccf38",
@@ -103,16 +107,81 @@ bdff.create('live', function(canvas, face){
 				});
 			};
 			
-			return {
-				graph : registerGraph(graph)
+			var obj = {
+				setUp : function(aspects) {
+					var row = bestWorst.find('i.fa-thumbs-up').parent();
+					if(row.is(':visible') && aspects.length == 0){
+						row.slideUp();
+					}
+					
+					if(aspects.length > 0){
+						row.find('span').text(aspects[0] + (aspects.length > 1 ? ", "+(aspects.length-1)+" more" : ''));
+						if(!row.is(':visible')){
+							row.slideDown();
+						}
+					} else {
+						row.find('span').text('');
+					}
+				},
+				setDown : function(aspects) {
+					var row = bestWorst.find('i.fa-thumbs-down').parent();
+					if(row.is(':visible') && aspects.length == 0){
+						row.slideUp();
+					}
+					
+					if(aspects.length > 0){
+						row.find('span').text(aspects[0] + (aspects.length > 1 ? ", "+(aspects.length-1)+" more" : ''));
+						if(!row.is(':visible')){
+							row.slideDown();
+						}
+					} else {
+						row.find('span').text('');
+					}
+				},
+				setAverage : function(avg) {
+					stats.find('div.average').children('span.number').removeClass('positive great neutral bad negative').addClass(bdff.mood(avg)).text(avg+'%');
+				},
+				setChange : function(change) {
+					var sign = change == 0 ? '' : change > 0 ? '+' : '-';
+					stats.find('div.change').children('span.number').removeClass('positive great neutral bad negative').addClass(bdff.mood((parseFloat(Math.abs(change))+100.0))/2).text(sign+Math.abs(change)+'%');
+				},
+				setResponses : function(resp) {
+					var magnitude = Math.floor(Math.log10(parseInt(resp)))+1;
+					stats.find('div.responses').children('span.number').addClass('mag-'+magnitude).text(resp);
+				},
+				graph: undefined
 			};
+			
+			obj.setGraph = function(data) {
+				if(!obj.graph){
+					obj.graph = registerGraph(graph);
+				}
+				
+				// update graoh , update/render
+				obj.graph.data.datasets[0].data = data.data;
+				obj.graph.update();
+			};
+			
+			return obj;
 		};
 		
 		live.snapshot = {
 			day : createPod('day'),
 			week : createPod('week'),
-			all : createPod('all')
+			all : createPod('all'),
+			cleanup : function(){
+				if(live.snapshot.day && live.snapshot.day.graph){
+					live.snapshot.day.graph.destroy();
+				}
+				if(live.snapshot.week && live.snapshot.week.graph){
+					live.snapshot.week.graph.destroy();
+				}
+				if(live.snapshot.all && live.snapshot.all.graph){
+					live.snapshot.all.graph.destroy();
+				}
+			}
 		};
+		
 	};
 	
 	var renderResponseFeed = function(canvas){
@@ -123,68 +192,66 @@ bdff.create('live', function(canvas, face){
 			
 		var feedList = $('<div>').addClass('feed-list').appendTo(feed);
 		
-		live.feed = {};
+		live.feed = { };
 		live.feed.add = function(data){
 			if(data.percent && data.aspect && data.date && data.medium){
-				if(feedList.children('div.feed-item').length > 5){
-					feedList.children('div.feed-item').last().slideUp(100, function(){
-						$(this).remove();
-					});
-				}
-				
 				var feedItem = $('<div>').addClass('feed-item').hide();
 				feedItem.append($('<span>').addClass('number').text(Math.round(data.percent) + '%'));
 				feedItem.append($('<span>').addClass('feed-label').text(data.aspect));
 				feedItem.append($('<span>').addClass('medium').addClass('medium-' + data.medium));
 				feedItem.append($('<span>').addClass('date').text(data.date));
-				feedItem.prependTo(feedList).slideDown();
+				feedItem.prependTo(feedList).slideDown(100, function(){
+					feedList.children('div.feed-item:gt(4)').slideUp(200, function(){
+						$(this).remove();
+					});
+				});
 			}
 		};
-		
-		live.feed.add({ percent: '60', aspect: 'Customer Service', date: 'March 17th, 12:25PM', medium: 'tablet' });
-		live.feed.add({ percent: '80', aspect: 'Pricing', date: 'March 17th, 12:22PM', medium: 'desktop' });
-		live.feed.add({ percent: '20', aspect: 'Customer Service', date: 'March 17th, 12:20PM', medium: 'desktop' });
-		live.feed.add({ percent: '40', aspect: 'Food Quality', date: 'March 17th, 12:18PM', medium: 'tablet' });
-		live.feed.add({ percent: '60', aspect: 'Taste', date: 'March 17th, 12:13PM', medium: 'desktop' });
 		
 	};
 	
 	var renderPastScores = function(canvas){
 		var weeksScores = $("<div>").addClass('weeks-scores col-xs-12 col-md-3').appendTo(canvas);
 		weeksScores
-			.append($('<span>').addClass('header').text('Past Week\'s Scores'))
-			.append($('<span>').addClass('subtitle').text("Scores from the past X days. For more details, use the tabs on the left."));
+			.append($('<span>').addClass('header').text('This Week\'s Scores'))
+			.append($('<span>').addClass('subtitle').text("Scores from the past 7 days. For more details, use the tabs on the left."));
 			
 		var aspectList = $('<div>').addClass('scores-list').appendTo(weeksScores);
 		
-		live.past = {};
-		live.past.update = function(aspectLabel, percent){
-			var aspect = $('<div>').addClass('scores-item').hide().appendTo(aspectList);
-			aspect.append(
-				$('<div>').addClass('score-bar').attr('data-percent', percent)
-					.append($('<div>')).append($('<span>').text(percent+'%'))
-			);
-			aspect.append($('<span>').text(aspectLabel));
+		live.past = { aspects: {} };
+		live.past.update = function(aspectLabel, percent, id){
+			var aspect;
+			
+			if(live.past.aspects.hasOwnProperty(id) && aspectList.children('div[data-id='+id+']').length > 0){
+				// Update
+				aspect = aspectList.children('div[data-id='+id+']');
+				aspect.find('span.scores-label').text(aspectLabel);
+				aspect.find('span.scores-percent').text(percent + '%');
+			} else {
+				aspect = $('<div>').attr('data-id', id).addClass('scores-item').hide().appendTo(aspectList);
+				aspect.append(
+					$('<div>').addClass('score-bar').attr('data-percent', percent)
+						.append($('<div>')).append($('<span>').addClass('scores-percent').text(percent + '%'))
+				);
+				aspect.append($('<span>').addClass('scores-label').text(aspectLabel));
+				aspect.find('div.score-bar > div').width(10);
+			}
+			
 			var targetWidth = percent;
-			aspect.find('div.score-bar > div').width(10);
 			aspect.slideDown(function(){
 				$(this).find('div.score-bar > div').animate({
 					width: targetWidth+'%'
 				}, 1000);
 			});
+			
+			live.past.aspects[id] = {id: id, percent: percent, label: aspectLabel};
 		};
-		
-		live.past.update('Customer Service', 70);
-		live.past.update('Pricing', 98);
-		live.past.update('Taste', 73);
-		live.past.update('Parking', 82);
-		live.past.update('Ambience', 40);
 	};
 	
 	render(canvas);
 	
 	face.datahook(10000, {
-			url : '/api/v1/bdff/live',
+			url : '/api/v1/live/all',
 			data : { 'store' : bdff.storeID(), 'hours' : 10 }
 		}, function(data){
 		if(data.hasOwnProperty('error') && data.error.length > 0){
@@ -192,13 +259,46 @@ bdff.create('live', function(canvas, face){
 		} else if(data.hasOwnProperty('live')) {
 			
 			var processData = function(data){
+				if(data.snapshot){
+					live.snapshot.day.setUp(data.snapshot.day.up);
+					live.snapshot.day.setDown(data.snapshot.day.down);
+					live.snapshot.day.setAverage(data.snapshot.day.average);
+					live.snapshot.day.setChange(data.snapshot.day.change);
+					live.snapshot.day.setResponses(data.snapshot.day.responses);
+					live.snapshot.day.setGraph(data.snapshot.day.bucket);
+					
+					live.snapshot.week.setUp(data.snapshot.week.up);
+					live.snapshot.week.setDown(data.snapshot.week.down);
+					live.snapshot.week.setAverage(data.snapshot.week.average);
+					live.snapshot.week.setChange(data.snapshot.week.change);
+					live.snapshot.week.setResponses(data.snapshot.week.responses);
+					live.snapshot.week.setGraph(data.snapshot.week.bucket);
+					
+					live.snapshot.all.setUp(data.snapshot.all.up);
+					live.snapshot.all.setDown(data.snapshot.all.down);
+					live.snapshot.all.setAverage(data.snapshot.all.average);
+					live.snapshot.all.setResponses(data.snapshot.all.responses);
+					live.snapshot.all.setGraph(data.snapshot.all.bucket);
+				}
+				
+				if(data.feed){
+					for(var i = 0; i < data.feed.length; i++){
+						live.feed.add(data.feed[i]);
+					}
+				}				
+				
+				if(data.scores){
+					for(var i = 0; i < data.scores.length; i++){
+						live.past.update(data.scores[i].title, data.scores[i].percent, data.scores[i].id);
+					}
+				}
 				
 				$('div[data-tooltip]').brevadaTooltip();
 			};
 			
 			if(canvas.find('.full-loader').length > 0){
 				canvas.find('.full-loader').fadeOut(10, function(){
-					processData(data);
+					processData(data.live);
 					$(this).remove();
 				});
 			} else {
