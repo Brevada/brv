@@ -196,7 +196,7 @@ bdff.create('live', function(canvas, face){
 		live.feed.add = function(data){
 			if(data.percent && data.aspect && data.date && data.medium){
 				var feedItem = $('<div>').addClass('feed-item').hide();
-				feedItem.append($('<span>').addClass('number').text(Math.round(data.percent) + '%'));
+				feedItem.append($('<span>').addClass('number').addClass(bdff.mood(data.percent)).text(Math.round(data.percent) + '%'));
 				feedItem.append($('<span>').addClass('feed-label').text(data.aspect));
 				feedItem.append($('<span>').addClass('medium').addClass('medium-' + data.medium));
 				feedItem.append($('<span>').addClass('date').text(data.date));
@@ -302,7 +302,7 @@ bdff.create('live', function(canvas, face){
 					$(this).remove();
 				});
 			} else {
-				processData(data);
+				processData(data.live);
 			}
 		} else {
 			bdff.log('Uh oh...');
