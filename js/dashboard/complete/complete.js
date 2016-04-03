@@ -209,7 +209,7 @@ bdff.create('complete', function(canvas, face){
 						maintainAspectRatio: false,
 						scales: {
 							xAxes: [{
-								display: true,
+								display: false,
 								ticks: {
 									fontSize: '11',
 									fontColor: '#666',
