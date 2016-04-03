@@ -89,7 +89,8 @@ bdff.create('complete', function(canvas, face){
 		complete.styleData();
 		complete.renderAspects();
 
-		complete.renderCompleteGraph();
+		complete.renderAspectRelGraph();
+		complete.renderAspectAbsGraph();
 		complete.renderAverageLineGraph();
 		complete.renderAverageBarGraph();
 		
@@ -114,10 +115,10 @@ bdff.create('complete', function(canvas, face){
 
 			$("#slider").dateRangeSlider("values", d, new Date());
 	}
-	complete.renderCompleteGraph = function () {
-		if(!complete.largeChart){
-			var ctx = $(complete.el).find('.graph').get(0).getContext("2d");
-				complete.largeChart = new Chart(ctx, {
+	complete.renderAspectRelGraph = function () {
+		if(!complete.chartAspectRel){
+			var ctx = $(complete.el).find('.graph-aspect-rel').get(0).getContext("2d");
+				complete.chartAspectRel = new Chart(ctx, {
 					type: 'line',
 					data: { labels : [], datasets : [] },
 					options: {
@@ -162,7 +163,7 @@ bdff.create('complete', function(canvas, face){
 								label : function(tooltip){
 									var percent = Math.round(parseFloat(tooltip.yLabel),2);
 									var sign = percent == 0 ? '' : percent > 0 ? '+' : '-';
-									return ' '+complete.largeChart.legend.legendItems[tooltip.datasetIndex].text+': '+sign+Math.abs(percent)+"%";
+									return ' '+complete.chartAspectRel.legend.legendItems[tooltip.datasetIndex].text+': '+sign+Math.abs(percent)+"%";
 								}
 							},
 							backgroundColor : '#999',
@@ -179,10 +180,10 @@ bdff.create('complete', function(canvas, face){
 			var aspect = complete.serverData.aspects[i];
 			if(!aspect.bucket){ continue; }
 			if(labels.length == 0){
-				labels = aspect.bucket.labels;
+				labels = aspect.bucket.rel.labels;
 			}
 			datasets.push({
-				data : aspect.bucket.data,
+				data : aspect.bucket.rel.data,
 				label : aspect.title,
 				borderColor : aspect.borderColor,
 				fill : aspect.fill,
@@ -190,11 +191,92 @@ bdff.create('complete', function(canvas, face){
 				datasetStrokeWidth : 5
 			});
 		}
-		complete.largeChart.data.labels = labels;
-		complete.largeChart.data.datasets = datasets;
-		complete.largeChart.stop();
-		complete.largeChart.update();
-	}
+		complete.chartAspectRel.data.labels = labels;
+		complete.chartAspectRel.data.datasets = datasets;
+		complete.chartAspectRel.stop();
+		complete.chartAspectRel.update();
+	};
+	
+	complete.renderAspectAbsGraph = function () {
+		if(!complete.chartAspectAbs){
+			var ctx = $(complete.el).find('.graph-aspect-abs').get(0).getContext("2d");
+				complete.chartAspectAbs = new Chart(ctx, {
+					type: 'line',
+					data: { labels : [], datasets : [] },
+					options: {
+						responsive: true,
+						fillOpacity: '.3',
+						maintainAspectRatio: false,
+						scales: {
+							xAxes: [{
+								display: false,
+								ticks: {
+									fontSize: '11',
+									fontColor: '#666',
+									reverse: true
+								},
+								gridLines: {
+									color: 'rgba(0, 0, 0, 0.02)'
+								}
+							}],
+							yAxes: [{
+								display: false,
+								ticks : {
+									beginAtZero: true,
+									autoSkip: false,
+									min: -105,
+									max: 105
+								}
+							}]
+						},
+						legend: {
+							display: false,
+							labels: {
+								boxWidth: 20,
+								fontColor: '#333'
+							}
+						},
+						tooltips: {
+							mode : 'label',
+							callbacks: {
+								title : function(tooltip){
+									return tooltip[0].xLabel;
+								},
+								label : function(tooltip){
+									var percent = Math.round(parseFloat(tooltip.yLabel),2);
+									return ' '+complete.chartAspectAbs.legend.legendItems[tooltip.datasetIndex].text+': '+Math.abs(percent)+"%";
+								}
+							},
+							backgroundColor : '#999',
+							color : '#FFFFFF'
+						}
+					}
+				});
+		}
+		
+		// Update
+		var datasets = [];
+		var labels = [];
+		for(var i in complete.serverData.aspects){
+			var aspect = complete.serverData.aspects[i];
+			if(!aspect.bucket){ continue; }
+			if(labels.length == 0){
+				labels = aspect.bucket.abs.labels;
+			}
+			datasets.push({
+				data : aspect.bucket.abs.data,
+				label : aspect.title,
+				borderColor : aspect.borderColor,
+				fill : aspect.fill,
+				backgroundColor : aspect.backgroundColor,
+				datasetStrokeWidth : 5
+			});
+		}
+		complete.chartAspectAbs.data.labels = labels;
+		complete.chartAspectAbs.data.datasets = datasets;
+		complete.chartAspectAbs.stop();
+		complete.chartAspectAbs.update();
+	};
 
 	complete.renderAverageLineGraph = function () {
 		if(!complete.averageChart){
@@ -437,7 +519,20 @@ bdff.create('complete', function(canvas, face){
 					<div class="clear"></div>\
 				</div>\
 				<div id="graph-1" class="graph-container">\
-					<canvas class="dashboard-pod graph"></canvas>\
+					<canvas class="dashboard-pod graph graph-aspect-rel"></canvas>\
+					<div class="graph-button"><i class="fa fa-expand"></i></div>\
+				</div>\
+			</div>\
+			<div class="section">\
+				<div class="toolbar">\
+					<div class="title">Aspects</div>\
+					<div class="buttons">\
+						<!--<div class="toggle" data-id="graph-2"><i class="fa fa-info"></i></div>-->\
+					</div>\
+					<div class="clear"></div>\
+				</div>\
+				<div id="graph-2" class="graph-container">\
+					<canvas class="dashboard-pod graph graph-aspect-abs"></canvas>\
 					<div class="graph-button"><i class="fa fa-expand"></i></div>\
 				</div>\
 			</div>\
@@ -445,11 +540,11 @@ bdff.create('complete', function(canvas, face){
 				<div class="toolbar">\
 					<div class="title">Combined Aspect Data</div>\
 					<div class="buttons">\
-						<!--<div class="toggle" data-id="graph-2"><i class="fa fa-info"></i></div>-->\
+						<!--<div class="toggle" data-id="graph-3"><i class="fa fa-info"></i></div>-->\
 					</div>\
 					<div class="clear"></div>\
 				</div>\
-				<div id="graph-2" class="sub-graph-container">\
+				<div id="graph-3" class="sub-graph-container">\
 					<canvas class="dashboard-pod average-line"></canvas>\
 					<div class="graph-button"><i class="fa fa-expand"></i></div>\
 				</div>\
@@ -458,11 +553,11 @@ bdff.create('complete', function(canvas, face){
 				<div class="toolbar">\
 					<div class="title">Overall Averages Per Aspect</div>\
 					<div class="buttons">\
-						<!--<div class="toggle" data-id="graph-3"><i class="fa fa-info"></i></div>-->\
+						<!--<div class="toggle" data-id="graph-4"><i class="fa fa-info"></i></div>-->\
 					</div>\
 					<div class="clear"></div>\
 				</div>\
-				<div id="graph-3" class="sub-graph-container">\
+				<div id="graph-4" class="sub-graph-container">\
 					<canvas class="dashboard-pod average-bar"></canvas>\
 				</div>\
 			</div>\
@@ -538,7 +633,8 @@ bdff.create('complete', function(canvas, face){
 }, function(){
 	if(complete){
 		if(complete.dateSlider){ try { complete.dateSlider.dateRangeSlider("destroy"); complete.dateSlider = undefined; } catch (ex){} }
-		if(complete.largeChart){ try { complete.largeChart.destroy(); complete.largeChart = undefined; } catch (ex){} }
+		if(complete.chartAspectRel){ try { complete.chartAspectRel.destroy(); complete.chartAspectRel = undefined; } catch (ex){} }
+		if(complete.chartAspectAbs){ try { complete.chartAspectAbs.destroy(); complete.chartAspectAbs = undefined; } catch (ex){} }
 		if(complete.averageChart){ try { complete.averageChart.destroy(); complete.averageChart = undefined; } catch (ex){} }
 		if(complete.aspectBarGraph){ try { complete.aspectBarGraph.destroy(); complete.aspectBarGraph = undefined; } catch (ex){} }
 		complete = {};

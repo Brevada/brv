@@ -1267,7 +1267,8 @@ div.snapshot div.snapshot-pod {
 div.snapshot div.snapshot-pod:first-child {
 	border-top-left-radius: 3px;
 	border-bottom-left-radius: 3px;
-}div.snapshot div.snapshot-pod:last-child {
+}
+div.snapshot div.snapshot-pod:last-child {
 	border-top-right-radius: 3px;
 	border-bottom-right-radius: 3px;
 }
@@ -1285,7 +1286,6 @@ div.snapshot div.snapshot-pod div.snapshot-stats > div {
 	margin: 2px 0 12px 0;
 }
 div.snapshot div.snapshot-pod div.snapshot-stats > div span.number {
-	background: #cfc338;
 	font-size: 18px;
 	font-weight: bold;
 	color: #FFF;
@@ -1301,6 +1301,10 @@ div.snapshot div.snapshot-pod div.snapshot-stats > div span.label {
 	font-size: 10px;
 	margin: 2px 0 0 0;
 	padding: 0;
+}
+
+div.snapshot div.snapshot-pod div.snapshot-stats > div.responses span.number {
+	background: #38cf4a;
 }
 
 div.snapshot div.snapshot-pod div.snapshot-graph {
@@ -1362,7 +1366,6 @@ div.feed div.feed-list div.feed-item span {
 }
 
 div.feed div.feed-list div.feed-item span.number {
-	background: #cfc338;
 	font-size: 16px;
 	font-weight: bold;
 	color: #FFF;
@@ -1401,6 +1404,9 @@ div.feed div.feed-list div.feed-item span.medium.medium-tablet::before {
 div.feed div.feed-list div.feed-item span.medium.medium-desktop::before {
 	content: '\f108';
 }
+div.feed div.feed-list div.feed-item span.medium.medium-phone::before {
+	content: '\f10b';
+}
 
 div.weeks-scores {
 	margin: 0 0 20px 0;
@@ -1427,7 +1433,7 @@ div.weeks-scores div.scores-list div.scores-item div.score-bar {
 div.weeks-scores div.scores-list div.scores-item div.score-bar > div {
 	height: 100%;
 	width: 10px;
-	background: #cf9b38;
+	background: rgb(242, 96, 106);
 	display: inline-block;
 	padding: 0;
 	margin: 0;
