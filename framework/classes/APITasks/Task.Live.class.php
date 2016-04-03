@@ -47,10 +47,10 @@ class TaskLive extends AbstractTask
 			]]
 		];*/
 		
-		$HOUR = 3600; $DAY = $HOUR * 24; $WEEK = $DAY * 7; $MONTH = 52*$WEEK / 12;
+		$HOUR = 3600; $DAY = $HOUR * 24; $WEEK = $DAY * 7; $MONTH = round(52*$WEEK / 12);
 		
 		/* Scores */
-		$rows = [];
+		$aspects = [];
 		if(($stmt = Database::prepare("
 			SELECT `aspects`.`id`, `aspect_type`.`id` as `AspectTypeID`,
 			`aspect_type`.`Title`
@@ -77,34 +77,88 @@ class TaskLive extends AbstractTask
 		}
 		
 		$scores = [];
-		foreach($rows as $row){
+		
+		$day_up = [];
+		$day_down = [];
+		$week_up = [];
+		$week_down = [];
+		$all_up = [];
+		$all_down = [];
+		
+		foreach($aspects as $row){
 			$score = (new Data())->store($store)->from(time()-$WEEK)->to(time())->aspectType($row['AspectTypeID'])->getAvg();
 			$scores[] = [
 				'title' => $row['Title'],
 				'percent' => round($score->getRating()),
 				'id' => $row['id']
 			];
+			
+			$day_aspect_change = (new Data())->store($store)->from(time()-$DAY)->to(time())->aspectType($row['AspectTypeID'])->getAvg()->getRating() - (new Data())->store($store)->from(time()-($DAY*2))->to(time()-$DAY)->aspectType($row['AspectTypeID'])->getAvg()->getRating();
+			
+			$week_aspect_change = (new Data())->store($store)->from(time()-$WEEK)->to(time())->aspectType($row['AspectTypeID'])->getAvg()->getRating() - (new Data())->store($store)->from(time()-($WEEK*2))->to(time()-$WEEK)->aspectType($row['AspectTypeID'])->getAvg()->getRating();
+			
+			$all_aspect_change = (new Data())->store($store)->from(time()-$MONTH)->to(time())->aspectType($row['AspectTypeID'])->getAvg()->getRating() - (new Data())->store($store)->from(time()-($MONTH*2))->to(time()-$MONTH)->aspectType($row['AspectTypeID'])->getAvg()->getRating();
+			
+			if($day_aspect_change > 0){
+				$day_up[] = $row['Title'];
+			} else if($day_aspect_change < 0){
+				$day_down[] = $row['Title'];
+			}
+			
+			if($week_aspect_change > 0){
+				$week_up[] = $row['Title'];
+			} else if($week_aspect_change < 0){
+				$week_down[] = $row['Title'];
+			}
+			
+			if($all_aspect_change > 0){
+				$all_up[] = $row['Title'];
+			} else if($all_aspect_change < 0){
+				$all_down[] = $row['Title'];
+			}
 		}
 		
-		$day_up = ['Ambience', 'Customer Service'];
-		$day_down = ['Customer Service', 'Food Quality'];
-		$day_average = 40;
-		$day_change = 82;
-		$day_responses = 4520;
-		$day_bucket = ['data'=>[30, 20, 40, 23, 8]];
+		$prev_day = (new Data())->store($store)->from(time()-($DAY*2))->to(time()-$DAY)->getAvg();
+		$day = (new Data())->store($store)->from(time()-$DAY)->to(time())->getAvg();
 		
-		$week_up = ['Ambience', 'Customer Service'];
-		$week_down = ['Customer Service', 'Food Quality'];
-		$week_average = 40;
-		$week_change = 82;
-		$week_responses = 4520;
-		$week_bucket = ['data'=>[30, 20, 40, 23, 8]];
+		$day_average = round($day->getRating());
+		$day_change = round($day->getRating() - $prev_day->getRating());
+		$day_responses = $day->getSize();
+		$day_bucket = ['data'=>[
+			$day->get()[Data::TOTAL_FIVE_STAR],
+			$day->get()[Data::TOTAL_FOUR_STAR],
+			$day->get()[Data::TOTAL_THREE_STAR],
+			$day->get()[Data::TOTAL_TWO_STAR],
+			$day->get()[Data::TOTAL_ONE_STAR]
+		]];
 		
-		$all_up = ['Ambience', 'Customer Service'];
-		$all_down = ['Customer Service', 'Food Quality'];
-		$all_average = 40;
-		$all_responses = 4520;
-		$all_bucket = ['data'=>[30, 20, 40, 23, 8]];
+		$prev_week = (new Data())->store($store)->from(time()-($WEEK*2))->to(time()-$WEEK)->getAvg();
+		$week = (new Data())->store($store)->from(time()-$WEEK)->to(time())->getAvg();
+		
+		$week_average = round($week->getRating());
+		$week_change = round($week->getRating() - $prev_week->getRating());
+		$week_responses = $week->getSize();
+		$week_bucket = ['data'=>[
+			$week->get()[Data::TOTAL_FIVE_STAR],
+			$week->get()[Data::TOTAL_FOUR_STAR],
+			$week->get()[Data::TOTAL_THREE_STAR],
+			$week->get()[Data::TOTAL_TWO_STAR],
+			$week->get()[Data::TOTAL_ONE_STAR]
+		]];
+		
+		$all = (new Data())->store($store)->to(time())->getAvg();
+		
+		$all_average = round($all->getRating());
+		$all_responses = $all->getSize();
+		$all_bucket = ['data'=>[
+			$all->get()[Data::TOTAL_FIVE_STAR],
+			$all->get()[Data::TOTAL_FOUR_STAR],
+			$all->get()[Data::TOTAL_THREE_STAR],
+			$all->get()[Data::TOTAL_TWO_STAR],
+			$all->get()[Data::TOTAL_ONE_STAR]
+		]];
+		
+		
 		
 		$feed = [
 			['percent' => rand(20,100), 'aspect' => 'Customer Service', 'date' => 'March 17th, 12:25pm', 'medium' => rand(0,1) == 1 ? 'desktop' : 'tablet']
@@ -117,6 +171,7 @@ class TaskLive extends AbstractTask
 					'down' => $day_down,
 					'average' => $day_average,
 					'change' => $day_change,
+					'prevResponses' => $prev_day->getSize(),
 					'responses' => $day_responses,
 					'bucket' => $day_bucket
 				],
@@ -125,6 +180,7 @@ class TaskLive extends AbstractTask
 					'down' => $week_down,
 					'average' => $week_average,
 					'change' => $week_change,
+					'prevResponses' => $prev_week->getSize(),
 					'responses' => $week_responses,
 					'bucket' => $week_bucket
 				],
