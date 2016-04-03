@@ -39,8 +39,23 @@ class TaskBdff extends AbstractTask
 			$stmt->close();
 		}
 		
+		$online_tablets = 0;
+		$since = time()-(60*15);
+		if(($stmt = Database::prepare("
+			SELECT COUNT(*) as cnt FROM tablets WHERE StoreID = ? AND `Status` = 'At Store' AND `OnlineSince` > ?")) !== false){
+			$stmt->bind_param('ii', $store, $since);
+			if($stmt->execute()){
+				$stmt->bind_result($online_tablets);
+				$stmt->fetch();
+			}
+			$stmt->close();
+		}
+		
 		$this->data['hoverpod'] = [
-			'tablets' => $tablets,
+			'tablets' => [
+				'online' => $online_tablets,
+				'total' => $tablets
+			],
 			'responses' => (new Data())->store($store)->from(time()-3600)->getAvg()->getSize(),
 			'mood' => (new Data())->store($store)->from(time()-(12*3600))->getAvg()->getRating()
 		];
