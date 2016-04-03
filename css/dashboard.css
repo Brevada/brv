@@ -1286,7 +1286,6 @@ div.snapshot div.snapshot-pod div.snapshot-stats > div {
 	margin: 2px 0 12px 0;
 }
 div.snapshot div.snapshot-pod div.snapshot-stats > div span.number {
-	background: #cfc338;
 	font-size: 18px;
 	font-weight: bold;
 	color: #FFF;
