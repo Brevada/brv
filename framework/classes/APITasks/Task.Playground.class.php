@@ -119,29 +119,47 @@ class TaskPlayground extends AbstractTask
 			
 			$rating = (new Data())->store($store)->aspectType($aspectType)->from($from)->to($to)->getAvg();
 			
-			$bucketDates = [];
-			$bucketData = [];
+			$bucketDates_rel = [];
+			$bucketData_rel = [];
 			
-			$minBucket = 0;
-			$maxBucket = 0;
+			$minBucket_rel = 0;
+			$maxBucket_rel = 0;
 			
 			$prevVal = (new Data())->store($store)->aspectType($aspectType)->from(0)->to($from)->getAvg()->getRating();
 			for($i = 0; $i < $bucketSize; $i++){
 				$intvEnd = $from + ($i+1)*$interval - 1;
 				
-				$bucketDates[] = date($dateFormat, $intvEnd);
+				$bucketDates_rel[] = date($dateFormat, $intvEnd);
 				
 				$intvRating = (new Data())->store($store)->aspectType($aspectType)->from(0)->to($intvEnd)->getAvg();
 				
 				if($intvRating->getSize() > 0){
-					$bucketData[] = $intvRating->getRating() - $prevVal;
+					$bucketData_rel[] = $intvRating->getRating() - $prevVal;
 					$prevVal = $intvRating->getRating();
 				} else {
-					$bucketData[] = 0;
+					$bucketData_rel[] = 0;
 				}
 				
-				$minBucket = min($minBucket, $prevVal);
-				$maxBucket = max($maxBucket, $prevVal);
+				$minBucket_rel = min($minBucket_rel, $prevVal);
+				$maxBucket_rel = max($maxBucket_rel, $prevVal);
+			}
+			
+			$bucketDates_abs = [];
+			$bucketData_abs = [];
+			
+			$minBucket_abs = 0;
+			$maxBucket_abs = 0;
+			
+			if(!empty($includedTypes)){
+				$aspectAvg = (new Data())->store($store)->aspectType($aspectType)->from($from)->to($to)->getAvg($bucketSize);
+				for($i = 0; $i < $bucketSize; $i++){
+					$bucketDates_abs[] = date($dateFormat, $aspectAvg->getUTCFrom($i)) == date($dateFormat, $aspectAvg->getUTCTo($i)-1) ? date($dateFormat, $aspectAvg->getUTCFrom($i)) : date($dateFormat, $aspectAvg->getUTCFrom($i)) . ' - ' . date($dateFormat, $aspectAvg->getUTCTo($i)-1);
+					
+					$bucketData_abs[] = $aspectAvg->getRating($i);
+					
+					$minBucket_abs = min($minBucket_abs, $aspectAvg->getRating($i));
+					$maxBucket_abs = max($maxBucket_abs, $aspectAvg->getRating($i));
+				}
 			}
 			
 			$aspects[] = [
@@ -152,12 +170,20 @@ class TaskPlayground extends AbstractTask
 					"percent" => $overall->getRating()
 				],
 				"bucket" => [
-					"labels" => $bucketDates,
-					"data" => $bucketData,
 					"size" => $rating->getSize(),
 					"average" => $rating->getRating(),
-					"min" => $minBucket,
-					"max" => $maxBucket
+					"rel" => [
+						"labels" => $bucketDates_rel,
+						"data" => $bucketData_rel,
+						"min" => $minBucket_rel,
+						"max" => $maxBucket_rel
+					],
+					"abs" => [
+						"labels" => $bucketDates_abs,
+						"data" => $bucketData_abs,
+						"min" => $minBucket_abs,
+						"max" => $maxBucket_abs
+					]
 				]
 			];
 		}
@@ -169,23 +195,14 @@ class TaskPlayground extends AbstractTask
 		$maxBucket = 0;
 		
 		if(!empty($includedTypes)){
-			$prevVal = (new Data())->store($store)->aspectType($includedTypes)->from(0)->to($from)->getAvg()->getRating();
+			$combined = (new Data())->store($store)->aspectType($includedTypes)->from($from)->to($to)->getAvg($bucketSize);
 			for($i = 0; $i < $bucketSize; $i++){
-				$intvEnd = $from + ($i+1)*$interval - 1;
+				$bucketDates[] = date($dateFormat, $combined->getUTCFrom($i)) == date($dateFormat, $combined->getUTCTo($i)-1) ? date($dateFormat, $combined->getUTCFrom($i)) : date($dateFormat, $combined->getUTCFrom($i)) . ' - ' . date($dateFormat, $combined->getUTCTo($i)-1);
 				
-				$bucketDates[] = date($dateFormat, $intvEnd);
+				$bucketData[] = $combined->getRating($i);
 				
-				$intvRating = (new Data())->store($store)->aspectType($includedTypes)->from(0)->to($intvEnd)->getAvg();
-				
-				if($intvRating->getSize() > 0){
-					$bucketData[] = $intvRating->getRating() - $prevVal;
-					$prevVal = $intvRating->getRating();
-				} else {
-					$bucketData[] = 0;
-				}
-				
-				$minBucket = min($minBucket, $prevVal);
-				$maxBucket = max($maxBucket, $prevVal);
+				$minBucket = min($minBucket, $combined->getRating($i));
+				$maxBucket = max($maxBucket, $combined->getRating($i));
 			}
 		}
 		
