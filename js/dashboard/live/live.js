@@ -15,9 +15,12 @@ bdff.create('live', function(canvas, face){
 	var render = function (canvas) {
 		canvas.children().not('div.message-container').remove();
 		
-		renderSnapshot(canvas);
-		renderPastScores(canvas);
-		renderResponseFeed(canvas);
+		var left = $('<div>').addClass('col-xs-12 col-md-9').appendTo(canvas);
+		var right = $('<div>').addClass('col-xs-12 col-md-3').appendTo(canvas);
+		
+		renderSnapshot(left);
+		renderPastScores(right);
+		renderResponseFeed(left);
 		
 		canvas.append(
 			$('<div>').addClass('full-loader').append(
@@ -27,7 +30,7 @@ bdff.create('live', function(canvas, face){
 	};
 	
 	var renderSnapshot = function(canvas){
-		var snapshot = $("<div>").addClass('snapshot col-xs-12 col-md-9').appendTo(canvas);
+		var snapshot = $("<div>").addClass('snapshot col-xs-12').appendTo(canvas);
 		snapshot
 			.append($('<span>').addClass('header').text('Snapshot'))
 			.append($('<span>').addClass('subtitle').text("Here's an overview of where you stand."));
@@ -185,7 +188,7 @@ bdff.create('live', function(canvas, face){
 	};
 	
 	var renderResponseFeed = function(canvas){
-		var feed = $("<div>").addClass('feed col-xs-12 col-md-9').appendTo(canvas);
+		var feed = $("<div>").addClass('feed col-xs-12').appendTo(canvas);
 		feed
 			.append($('<span>').addClass('header').text('Live Response Feed'))
 			.append($('<span>').addClass('subtitle').text("Responses will appear as they come in."));
@@ -211,18 +214,18 @@ bdff.create('live', function(canvas, face){
 	};
 	
 	var renderPastScores = function(canvas){
-		var weeksScores = $("<div>").addClass('weeks-scores col-xs-12 col-md-3').appendTo(canvas);
+		var weeksScores = $("<div>").addClass('weeks-scores col-xs-12').appendTo(canvas);
 		weeksScores
 			.append($('<span>').addClass('header').text('This Week\'s Scores'))
 			.append($('<span>').addClass('subtitle').text("Scores from the past 7 days. For more details, use the tabs on the left."));
 			
 		var aspectList = $('<div>').addClass('scores-list').appendTo(weeksScores);
 		
-		live.past = { aspects: {} };
-		live.past.update = function(aspectLabel, percent, id){
+		live.scores = { aspects: {} };
+		live.scores.update = function(aspectLabel, percent, id){
 			var aspect;
 			
-			if(live.past.aspects.hasOwnProperty(id) && aspectList.children('div[data-id='+id+']').length > 0){
+			if(live.scores.aspects.hasOwnProperty(id) && aspectList.children('div[data-id='+id+']').length > 0){
 				// Update
 				aspect = aspectList.children('div[data-id='+id+']');
 				aspect.find('span.scores-label').text(aspectLabel);
@@ -244,7 +247,7 @@ bdff.create('live', function(canvas, face){
 				}, 1000);
 			});
 			
-			live.past.aspects[id] = {id: id, percent: percent, label: aspectLabel};
+			live.scores.aspects[id] = {id: id, percent: percent, label: aspectLabel};
 		};
 	};
 	
@@ -289,7 +292,7 @@ bdff.create('live', function(canvas, face){
 				
 				if(data.scores){
 					for(var i = 0; i < data.scores.length; i++){
-						live.past.update(data.scores[i].title, data.scores[i].percent, data.scores[i].id);
+						live.scores.update(data.scores[i].title, data.scores[i].percent, data.scores[i].id);
 					}
 				}
 				

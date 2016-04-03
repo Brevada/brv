@@ -70,7 +70,7 @@ class TaskLive extends AbstractTask
 			if($stmt->execute()){
 				$stmt->bind_result($a, $b, $c);
 				while($stmt->fetch()){
-					$rows[] = ['id' => $a, 'AspectTypeID' => $b, 'Title' => $c];
+					$aspects[] = ['id' => $a, 'AspectTypeID' => $b, 'Title' => $c];
 				}
 			}
 			$stmt->close();
