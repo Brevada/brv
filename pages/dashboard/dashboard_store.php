@@ -138,6 +138,13 @@ $aspectCount = $qAspects->fetch_assoc()['cnt'];
 
         <div class="sidebar btn-group-vertical">
 
+			<button data-id="live" class="btn-sidebar toggle-button icon-button">
+				<div class="icon">
+					<i class='fa fa-check'></i>
+				</div>
+				<div class='icon-subtext hidden-xs'><?php _e('Summary'); ?></div>
+			</button>
+
         	<button type="button" data-id="complete" class="btn-sidebar toggle-button icon-button">
 				<div class="icon">
 					<i class='fa fa-area-chart'></i>
@@ -151,13 +158,7 @@ $aspectCount = $qAspects->fetch_assoc()['cnt'];
 				</div>
 				<div class='icon-subtext hidden-xs'><?php _e('Details'); ?></div>
 			</button>
-			
-			 <button data-id="live" class="btn-sidebar toggle-button icon-button">
-				<div class="icon">
-					<i class='fa fa-check'></i>
-				</div>
-				<div class='icon-subtext hidden-xs'><?php _e('Live'); ?></div>
-			</button>
+
 			<button type="button" data-id="milestones" class="btn-sidebar toggle-button icon-button">
 				<div class="icon">
 					<i class='fa fa-calendar'></i>
