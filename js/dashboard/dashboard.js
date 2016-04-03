@@ -51,8 +51,7 @@ if(typeof bdff !== 'undefined'){
 		if(window.location.hash.length > 1 && hashMappings.hasOwnProperty(window.location.hash.substring(1))){
 			bdff.face(hashMappings[window.location.hash.substring(1)]);
 		} else {
-			bdff.face('aspects');
+			bdff.face('live');
 		}
-		
 	});
 }

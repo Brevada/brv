@@ -1245,6 +1245,7 @@ div.full-loader { margin: 0 auto; text-align: center; width: 100%; display: bloc
 /* Live */
 div.snapshot {
 	margin: 0 0 20px 0;
+    padding: 0px;
 }
 
 div.snapshot span.header, div.weeks-scores span.header, div.feed span.header {
@@ -1259,7 +1260,7 @@ div.snapshot span.subtitle, div.weeks-scores span.subtitle, div.feed span.subtit
 }
 
 div.snapshot div.snapshot-pod {
-	background: #EEE;
+	background: #FFF;
 	padding: 5px;
 	margin: 5px 0 0 0;
 	position: relative;
@@ -1286,7 +1287,7 @@ div.snapshot div.snapshot-pod div.snapshot-stats > div {
 	margin: 2px 0 12px 0;
 }
 div.snapshot div.snapshot-pod div.snapshot-stats > div span.number {
-	font-size: 18px;
+	font-size: 13px;
 	font-weight: bold;
 	color: #FFF;
 	padding: 7.5px 2px;
@@ -1447,5 +1448,7 @@ div.weeks-scores div.scores-list div.scores-item div.score-bar > span {
 
 div.weeks-scores div.scores-list div.scores-item > span {
 	display: block;
-	color: #777;
+	color: #666;
+    font-size: 12px;
+    text-transform: uppercase;
 }
