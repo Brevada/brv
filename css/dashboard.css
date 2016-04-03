@@ -140,13 +140,13 @@ div.sidebar .icon-button.selected {
 .btn-sidebar {
     text-transform: uppercase;
     font-size: 11px;
-    color: #333;
-    background: #F5F5F5;
+    color: #666;
+    background: #EEE;
     outline: none;
-    border-color: #DDD;
+    border-color: #EEE;
     border: none;
-    border-bottom: 1px solid #DCDCDC;
-    width: 80px;
+    border-bottom: 1px solid #BBB;
+    width: 70px;
     height: 90px;
     overflow: hidden;
     border-radius: 0px;
@@ -661,7 +661,7 @@ div.email-display-container .email .rating{
     padding: 0px;
     left: 0;
     top: 30px;
-    background: #F5F5F5;
+    background: #EEE;
     border-right: 1px solid #DCDCDC;
     position: fixed;
     height: 100%;

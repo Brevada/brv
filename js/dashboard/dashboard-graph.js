@@ -55,8 +55,8 @@ function build_line_graph(bucket, id) {
 					ticks : {
 						beginAtZero: true,
 						autoSkip: false,
-						min: 0,
-						max: 110
+						min: 40,
+						max: 90
 					}
 				}]
 			},

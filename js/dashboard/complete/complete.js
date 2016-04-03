@@ -342,7 +342,8 @@ bdff.create('complete', function(canvas, face){
 			$('.default-options .option').removeClass('selected');
 		});
 		$(complete.el).on('click', '.graph-button', function () {
-			complete.graphFullScreen($(this).parent());
+			complete.graphFullScreen($(this).parent()); 
+			// TODO: Show legend here
 		});
 		$(complete.el).on('click', '.default-options .option', function () {
 			complete.setPresetTimeframe($(this).attr('data-value'), this);
