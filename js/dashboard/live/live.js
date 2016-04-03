@@ -255,7 +255,7 @@ bdff.create('live', function(canvas, face){
 	
 	face.datahook(10000, {
 			url : '/api/v1/live/all',
-			data : { 'store' : bdff.storeID(), 'hours' : 10 }
+			data : { 'store' : bdff.storeID(), 'latest': 0 }
 		}, function(data){
 		if(data.hasOwnProperty('error') && data.error.length > 0){
 			bdff.log('Uh oh...');
@@ -286,6 +286,7 @@ bdff.create('live', function(canvas, face){
 				
 				if(data.feed){
 					for(var i = 0; i < data.feed.length; i++){
+						face.datahooks[0].request.data.latest = Math.max(face.datahooks[0].request.data.latest, data.feed[i].id);
 						live.feed.add(data.feed[i]);
 					}
 				}				

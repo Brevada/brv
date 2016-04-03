@@ -28,24 +28,7 @@ class TaskLive extends AbstractTask
 		
 		$company = $_SESSION['CompanyID'];
 		
-		
-		/*$breakdown = [
-			'labels' => [
-				'Positive', 'Great', 'Neutral', 'Bad', 'Negative'
-			],
-			'datasets' => [[
-				'data' => [
-					$current->get()[Data::TOTAL_FIVE_STAR],
-					$current->get()[Data::TOTAL_FOUR_STAR],
-					$current->get()[Data::TOTAL_THREE_STAR],
-					$current->get()[Data::TOTAL_TWO_STAR],
-					$current->get()[Data::TOTAL_ONE_STAR]
-				],
-				'backgroundColor' => [
-					'#2ecc0e', '#82cc0e', '#afcc0e', '#ccc10e', '#cc750e'
-				]
-			]]
-		];*/
+		$feedLatest = max(@intval(Brevada::FromGET('latest')), 0);		
 		
 		$HOUR = 3600; $DAY = $HOUR * 24; $WEEK = $DAY * 7; $MONTH = round(52*$WEEK / 12);
 		
@@ -158,11 +141,50 @@ class TaskLive extends AbstractTask
 			$all->get()[Data::TOTAL_ONE_STAR]
 		]];
 		
+		$feed = [];
 		
-		
-		$feed = [
-			['percent' => rand(20,100), 'aspect' => 'Customer Service', 'date' => 'March 17th, 12:25pm', 'medium' => rand(0,1) == 1 ? 'desktop' : 'tablet']
-		];
+		if(($stmt = Database::prepare("
+			SELECT
+				`feedback`.`id`, `aspect_type`.`Title`, `feedback`.`Rating`,
+				UNIX_TIMESTAMP(`feedback`.`Date`) as `Date`,
+				`user_agents`.`UserAgent`
+			FROM `feedback`
+			JOIN `user_agents` ON `user_agents`.`id` = `feedback`.`UserAgentID`
+			JOIN `aspects` ON `aspects`.`id` = `feedback`.`AspectID`
+			JOIN `aspect_type` ON `aspect_type`.`id` = `aspects`.`AspectTypeID`
+			JOIN `stores` ON `stores`.`id` = `aspects`.`StoreID`
+			JOIN companies ON companies.`id` = stores.`CompanyID`
+			WHERE
+			`aspects`.`StoreID` = ? AND
+			`aspects`.`Active` = 1 AND
+			`stores`.`CompanyID` = ? AND
+			`companies`.`Active` = 1 AND
+			`companies`.`ExpiryDate` IS NOT NULL AND
+			`companies`.`ExpiryDate` > NOW() AND
+			`feedback`.`id` > ?
+			ORDER BY `feedback`.`id` DESC LIMIT 5")) !== false){
+			$stmt->bind_param('iii', $store, $company, $feedLatest);
+			if($stmt->execute()){
+				$stmt->bind_result($feedbackID, $aspectTitle, $feedbackRating, $feedbackDate, $userAgent);
+				while($stmt->fetch()){
+					$medium = 'desktop';
+					if(preg_match('/'.TABLET_USERAGENT.'/', $userAgent)){
+						$medium = 'tablet';
+					} else if(preg_match('/mobile/i', $userAgent)){
+						$medium = 'phone';
+					}
+					
+					$feed[] = [
+						'id' => $feedbackID,
+						'percent' => round($feedbackRating),
+						'aspect' => $aspectTitle,
+						'date' => date('M jS, g:ia', $feedbackDate),
+						'medium' => $medium
+					];
+				}
+			}
+			$stmt->close();
+		}
 		
 		$this->data['live'] = [
 			'snapshot' => [

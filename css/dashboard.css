@@ -1404,6 +1404,9 @@ div.feed div.feed-list div.feed-item span.medium.medium-tablet::before {
 div.feed div.feed-list div.feed-item span.medium.medium-desktop::before {
 	content: '\f108';
 }
+div.feed div.feed-list div.feed-item span.medium.medium-phone::before {
+	content: '\f10b';
+}
 
 div.weeks-scores {
 	margin: 0 0 20px 0;
