@@ -99,6 +99,9 @@ class TaskAspects extends AbstractTask
 			$bucketDates = [];
 			$bucketData = [];
 			
+			$minValue = 100;
+			$maxValue = 0;
+			
 			$prev = $beforeBucket->getRating();
 			for($i = 0; $i < $bucketSize; $i++){
 				if(!$bucket->get($i)){ break; }
@@ -112,6 +115,9 @@ class TaskAspects extends AbstractTask
 					$prev = $bucket->getRating($i);
 				}
 				$bucketData[] = $prev;
+				
+				$minValue = min($minValue, $prev);
+				$maxValue = max($maxValue, $prev);
 			}
 			
 			$aspects[] = [
@@ -125,7 +131,9 @@ class TaskAspects extends AbstractTask
 				],
 				"bucket" => [
 					"labels" => $bucketDates,
-					"data" => $bucketData
+					"data" => $bucketData,
+					"min" => $minValue,
+					"max" => $maxValue
 				],
 				"industry" => (new Data())->aspectType($aspectType)->keyword($keywords)->getAvg()->getRating()
 			];

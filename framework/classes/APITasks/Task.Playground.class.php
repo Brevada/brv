@@ -122,7 +122,7 @@ class TaskPlayground extends AbstractTask
 			$bucketDates_rel = [];
 			$bucketData_rel = [];
 			
-			$minBucket_rel = 0;
+			$minBucket_rel = 100;
 			$maxBucket_rel = 0;
 			
 			$prevVal = (new Data())->store($store)->aspectType($aspectType)->from(0)->to($from)->getAvg()->getRating();
@@ -147,7 +147,7 @@ class TaskPlayground extends AbstractTask
 			$bucketDates_abs = [];
 			$bucketData_abs = [];
 			
-			$minBucket_abs = 0;
+			$minBucket_abs = 100;
 			$maxBucket_abs = 0;
 			
 			if(!empty($includedTypes)){
@@ -191,7 +191,7 @@ class TaskPlayground extends AbstractTask
 		$bucketDates = [];
 		$bucketData = [];
 		
-		$minBucket = 0;
+		$minBucket = 100;
 		$maxBucket = 0;
 		
 		if(!empty($includedTypes)){
