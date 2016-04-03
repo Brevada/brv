@@ -47,15 +47,15 @@ bdff.create('live', function(canvas, face){
 			);
 			
 			bestWorst
-				.append($('<span>').append($('<i>').addClass('fa fa-thumbs-up')).append($('<span>').text("Food Quality, 3 more")))
-				.append($('<span>').append($('<i>').addClass('fa fa-thumbs-down')).append($('<span>').text("Pricing, 3 more")));
+				.append($('<span>').append($('<i>').addClass('fa fa-thumbs-up')).append($('<span>').text("")))
+				.append($('<span>').append($('<i>').addClass('fa fa-thumbs-down')).append($('<span>').text("")));
 				
-			stats.append($('<div>').addClass('average').append($('<span>').addClass('number').text('50%')).append($('<span>').addClass('label').text('Average')));
+			stats.append($('<div>').addClass('average').append($('<span>').addClass('number').text('')).append($('<span>').addClass('label').text('Average')));
 			
 			
-			stats.append($('<div>').addClass('change').append($('<span>').addClass('number').text('+76%')).append($('<span>').addClass('label').text('Change')));
+			stats.append($('<div>').addClass('change').append($('<span>').addClass('number').text('')).append($('<span>').addClass('label').text('Change')));
 			
-			stats.append($('<div>').addClass('responses').append($('<span>').addClass('number').text('2543')).append($('<span>').addClass('label').text('Responses')));
+			stats.append($('<div>').addClass('responses').append($('<span>').addClass('number').text('')).append($('<span>').addClass('label').text('Responses')));
 			
 			if(type == 'all'){
 				stats.find('div.change').css('visibility', 'hidden'); //Easier to hide then not add
@@ -204,7 +204,7 @@ bdff.create('live', function(canvas, face){
 				feedItem.append($('<span>').addClass('medium').addClass('medium-' + data.medium));
 				feedItem.append($('<span>').addClass('date').text(data.date));
 				feedItem.prependTo(feedList).slideDown(100, function(){
-					feedList.children('div.feed-item:gt(4)').slideUp(200, function(){
+					feedList.children('div.feed-item:gt(14)').slideUp(200, function(){
 						$(this).remove();
 					});
 				});

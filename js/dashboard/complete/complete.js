@@ -140,7 +140,7 @@ bdff.create('complete', function(canvas, face){
 							yAxes: [{
 								display: false,
 								ticks : {
-									beginAtZero: true,
+									beginAtZero: false,
 									autoSkip: false,
 									min: -105,
 									max: 105
@@ -176,6 +176,7 @@ bdff.create('complete', function(canvas, face){
 		// Update
 		var datasets = [];
 		var labels = [];
+		var min = 100; var max = -100;
 		for(var i in complete.serverData.aspects){
 			var aspect = complete.serverData.aspects[i];
 			if(!aspect.bucket){ continue; }
@@ -190,10 +191,14 @@ bdff.create('complete', function(canvas, face){
 				backgroundColor : aspect.backgroundColor,
 				datasetStrokeWidth : 5
 			});
+			
+			min = Math.min(min, aspect.bucket.rel.min);
+			max = Math.max(max, aspect.bucket.rel.max);
 		}
 		complete.chartAspectRel.data.labels = labels;
 		complete.chartAspectRel.data.datasets = datasets;
-		complete.chartAspectRel.stop();
+		complete.chartAspectRel.options.scales.yAxes[0].ticks.min = Math.round(min) - 5;
+		complete.chartAspectRel.options.scales.yAxes[0].ticks.max = Math.round(max) + 5;
 		complete.chartAspectRel.update();
 	};
 	
@@ -222,7 +227,7 @@ bdff.create('complete', function(canvas, face){
 							yAxes: [{
 								display: false,
 								ticks : {
-									beginAtZero: true,
+									beginAtZero: false,
 									autoSkip: false,
 									min: -105,
 									max: 105
@@ -257,6 +262,7 @@ bdff.create('complete', function(canvas, face){
 		// Update
 		var datasets = [];
 		var labels = [];
+		var min = 100; var max = 0;
 		for(var i in complete.serverData.aspects){
 			var aspect = complete.serverData.aspects[i];
 			if(!aspect.bucket){ continue; }
@@ -271,10 +277,14 @@ bdff.create('complete', function(canvas, face){
 				backgroundColor : aspect.backgroundColor,
 				datasetStrokeWidth : 5
 			});
+			
+			min = Math.min(min, aspect.bucket.abs.min);
+			max = Math.max(max, aspect.bucket.abs.max);
 		}
 		complete.chartAspectAbs.data.labels = labels;
 		complete.chartAspectAbs.data.datasets = datasets;
-		complete.chartAspectAbs.stop();
+		complete.chartAspectAbs.options.scales.yAxes[0].ticks.min = min - 5;
+		complete.chartAspectAbs.options.scales.yAxes[0].ticks.max = max + 5;
 		complete.chartAspectAbs.update();
 	};
 
@@ -297,7 +307,7 @@ bdff.create('complete', function(canvas, face){
 							yAxes: [{
 								display: false,
 								ticks : {
-									beginAtZero: true,
+									beginAtZero: false,
 									autoSkip: false,
 									min: -105,
 									max: 105
@@ -341,7 +351,8 @@ bdff.create('complete', function(canvas, face){
 			backgroundColor: complete.colorFillOptions[1] || '#666',
 			fill: true
 		}];
-		complete.averageChart.stop();
+		complete.averageChart.options.scales.yAxes[0].ticks.min = complete.serverData.average.min - 5;
+		complete.averageChart.options.scales.yAxes[0].ticks.max = complete.serverData.average.max + 5;
 		complete.averageChart.update();
 	}
 

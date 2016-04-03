@@ -162,7 +162,7 @@ class TaskLive extends AbstractTask
 			`companies`.`ExpiryDate` IS NOT NULL AND
 			`companies`.`ExpiryDate` > NOW() AND
 			`feedback`.`id` > ?
-			ORDER BY `feedback`.`id` DESC LIMIT 5")) !== false){
+			ORDER BY `feedback`.`id` DESC LIMIT 15")) !== false){
 			$stmt->bind_param('iii', $store, $company, $feedLatest);
 			if($stmt->execute()){
 				$stmt->bind_result($feedbackID, $aspectTitle, $feedbackRating, $feedbackDate, $userAgent);
