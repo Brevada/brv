@@ -12,7 +12,7 @@ div.screen-overlay {
     height: 100%;
     top: 0px;
     left: 0px;
-    background: #FBFBFB;
+    background: #FFF;
 }
 div.top-fixed {
     width: 100%;
@@ -769,19 +769,13 @@ div.milestone {
     font-size: 15px;
     outline: none;
     background: none;
-	border-top: 1px solid #999;
-	border-right: 1px solid #999;
-	border-left: 1px solid #999;
-    border-bottom: 2px solid #999;
+    border: 1px solid #DCDCDC;
     border-radius: 1px;
 }
 .milestone-form .input-group.date .input-group-addon {
 	outline: none;
 	background: none;
-	border-top: 1px solid #999;
-	border-right: 1px solid #999;
-	border-left: 1px solid #999;
-	border-bottom: 2px solid #999;
+	border: 1px solid #DCDCDC;
 }
 
 .milestone-body {
@@ -1261,6 +1255,7 @@ div.snapshot span.subtitle, div.weeks-scores span.subtitle, div.feed span.subtit
 
 div.snapshot div.snapshot-pod {
 	background: #FFF;
+    border-bottom: 1px solid #DCDCDC;
 	padding: 5px;
 	margin: 5px 0 0 0;
 	position: relative;
@@ -1277,7 +1272,7 @@ div.snapshot div.snapshot-pod:last-child {
 div.snapshot div.snapshot-pod div.snapshot-stats {
 	width: 19%;
 	height: 90%;
-	margin: 20px 0 0 1%;
+	margin: 10px 0 0 1%;
 	display: inline-block;
 	text-align: center;
 }
@@ -1287,7 +1282,7 @@ div.snapshot div.snapshot-pod div.snapshot-stats > div {
 	margin: 2px 0 12px 0;
 }
 div.snapshot div.snapshot-pod div.snapshot-stats > div span.number {
-	font-size: 13px;
+    font-size: 13px;
 	font-weight: bold;
 	color: #FFF;
 	padding: 7.5px 2px;
@@ -1311,10 +1306,10 @@ div.snapshot div.snapshot-pod div.snapshot-stats > div.responses span.number {
 div.snapshot div.snapshot-pod div.snapshot-graph {
 	display: inline-block;
 	width: 75%;
-	height: 65%;
+	height: 150px;
 	margin: 0;
 	padding: 0;
-	position: absolute;
+	/*position: absolute;*/
 	top: 6px;
 	right: 2px;
 }
@@ -1326,7 +1321,7 @@ div.snapshot div.snapshot-pod div.snapshot-graph canvas {
 
 div.snapshot div.snapshot-pod div.snapshot-best-worst {
 	color: #999;
-	margin: 0 0 0 28.5px;
+	margin: 10px 0 0 28.5px;
 	display: inline-block;
 }
 div.snapshot div.snapshot-pod div.snapshot-best-worst > span {
@@ -1342,7 +1337,7 @@ div.snapshot div.snapshot-pod span.snapshot-label {
 	text-align: center;
 	display: block;
 	font-weight: bold;
-	color: #777;
+	color: #666;
 	margin: 5px 0 5px 0;
 	clear: both;
 }
@@ -1367,7 +1362,9 @@ div.feed div.feed-list div.feed-item span {
 }
 
 div.feed div.feed-list div.feed-item span.number {
-	font-size: 16px;
+	width: 50px;
+    text-align: center;
+    font-size: 12px;
 	font-weight: bold;
 	color: #FFF;
 	padding: 2px 4px;
@@ -1397,6 +1394,7 @@ div.feed div.feed-list div.feed-item span.medium {
 	margin: -5px 0 5px 30px;
 	width: 30px;
 	text-align: center;
+    color: rgb(242, 96, 106);
 }
 div.feed div.feed-list div.feed-item span.medium.medium-tablet::before {
 	content: '\f10a';
@@ -1410,6 +1408,7 @@ div.feed div.feed-list div.feed-item span.medium.medium-phone::before {
 }
 
 div.weeks-scores {
+    position: fixed;
 	margin: 0 0 20px 0;
 }
 
@@ -1442,13 +1441,15 @@ div.weeks-scores div.scores-list div.scores-item div.score-bar > div {
 }
 div.weeks-scores div.scores-list div.scores-item div.score-bar > span {
 	position: absolute;
-	right: 0;
+	left: 2px;
 	top: 2px;
+    color: #FFF;
+    font-weight: bold;
+    background: rgba(255,255,255,0);
 }
 
 div.weeks-scores div.scores-list div.scores-item > span {
 	display: block;
 	color: #666;
     font-size: 12px;
-    text-transform: uppercase;
 }

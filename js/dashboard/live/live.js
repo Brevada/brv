@@ -66,7 +66,7 @@ bdff.create('live', function(canvas, face){
 				var ctx = el.children('canvas').get(0).getContext("2d");
 				return new Chart(ctx, {
 						type: 'doughnut',
-						data: { labels : ['Positive', 'Great', 'Neutral', 'Bad', 'Negative'], datasets : [{
+						data: { labels : ['Amazing', 'Great', 'Neutral', 'Poor', 'Bad'], datasets : [{
 							data: [0, 0, 0, 0, 0],
 							backgroundColor: [
 								"#38cf4a",
@@ -214,7 +214,7 @@ bdff.create('live', function(canvas, face){
 	};
 	
 	var renderPastScores = function(canvas){
-		var weeksScores = $("<div>").addClass('weeks-scores col-xs-12').appendTo(canvas);
+		var weeksScores = $("<div>").addClass('weeks-scores col-xs-2').appendTo(canvas);
 		weeksScores
 			.append($('<span>').addClass('header').text('This Week\'s Scores'))
 			.append($('<span>').addClass('subtitle').text("Scores from the past 7 days. For more details, use the tabs on the left."));
