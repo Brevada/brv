@@ -38,7 +38,7 @@ bdff.create('live', function(canvas, face){
 		var createPod = function(type){
 			var pod = $("<div>").addClass('snapshot-pod col-xs-12 col-md-4 type-' + type).appendTo(snapshot);
 			var stats = $("<div>").addClass('snapshot-stats').appendTo(pod);
-			var graph = $("<div>").addClass('snapshot-graph').append("<canvas>").appendTo(pod);
+			var graph = $("<div>").addClass('snapshot-graph').append($('<div>').addClass('no-data').append($('<i>').addClass('fa fa-pie-chart').attr({ 'data-tooltip': "There's not enough data<br/>to make a meaningful graph." }))).append("<canvas>").appendTo(pod);
 			var bestWorst = $("<div>").addClass('snapshot-best-worst').appendTo(pod);
 			
 			pod.append(
@@ -58,7 +58,7 @@ bdff.create('live', function(canvas, face){
 			stats.append($('<div>').addClass('responses').append($('<span>').addClass('number').text('')).append($('<span>').addClass('label').text('Responses')));
 			
 			if(type == 'all'){
-				stats.find('div.change').css('visibility', 'hidden'); //Easier to hide then not add
+				stats.find('div.change').css('visibility', 'hidden').children('span.number').text('0'); //Easier to hide then not add
 				stats.find('div.change').insertAfter(stats.find('div.responses'));
 			}
 			
@@ -111,34 +111,30 @@ bdff.create('live', function(canvas, face){
 			};
 			
 			var obj = {
-				setUp : function(aspects) {
+				setUp : function(aspect) {
 					var row = bestWorst.find('i.fa-thumbs-up').parent();
-					if(row.is(':visible') && aspects.length == 0){
-						row.slideUp();
+					
+					if(aspect.title){
+						row.find('span').text(aspect.title + ', up ' + (Math.round(Math.abs(aspect.percent) * 10)/10) + '%');
+					} else {
+						row.find('span').text('No Positive Performance');
 					}
 					
-					if(aspects.length > 0){
-						row.find('span').text(aspects[0] + (aspects.length > 1 ? ", "+(aspects.length-1)+" more" : ''));
-						if(!row.is(':visible')){
-							row.slideDown();
-						}
-					} else {
-						row.find('span').text('');
+					if(!row.is(':visible')){
+						row.fadeTo(100,1);
 					}
 				},
-				setDown : function(aspects) {
+				setDown : function(aspect) {
 					var row = bestWorst.find('i.fa-thumbs-down').parent();
-					if(row.is(':visible') && aspects.length == 0){
-						row.slideUp();
+					
+					if(aspect.title){
+						row.find('span').text(aspect.title + ', down ' + (Math.round(Math.abs(aspect.percent)*10)/10) + '%');
+					} else {
+						row.find('span').text('No Negative Performance');
 					}
 					
-					if(aspects.length > 0){
-						row.find('span').text(aspects[0] + (aspects.length > 1 ? ", "+(aspects.length-1)+" more" : ''));
-						if(!row.is(':visible')){
-							row.slideDown();
-						}
-					} else {
-						row.find('span').text('');
+					if(!row.is(':visible')){
+						row.fadeTo(100,1);
 					}
 				},
 				setAverage : function(avg) {
@@ -163,6 +159,12 @@ bdff.create('live', function(canvas, face){
 				// update graoh , update/render
 				obj.graph.data.datasets[0].data = data.data;
 				obj.graph.update();
+				
+				if(data.data.reduce(function(p,n){return parseInt(p)+parseInt(n);}) == 0){
+					graph.addClass('no-data');
+				} else {
+					graph.removeClass('no-data');
+				}
 			};
 			
 			return obj;
@@ -216,8 +218,8 @@ bdff.create('live', function(canvas, face){
 	var renderPastScores = function(canvas){
 		var weeksScores = $("<div>").addClass('weeks-scores col-xs-2').appendTo(canvas);
 		weeksScores
-			.append($('<span>').addClass('header').text('This Week\'s Scores'))
-			.append($('<span>').addClass('subtitle').text("Scores from the past 7 days. For more details, use the tabs on the left."));
+			.append($('<span>').addClass('header').text('Loading...'))
+			.append($('<span>').addClass('subtitle').text("Loading..."));
 			
 		var aspectList = $('<div>').addClass('scores-list').appendTo(weeksScores);
 		
@@ -229,18 +231,23 @@ bdff.create('live', function(canvas, face){
 				// Update
 				aspect = aspectList.children('div[data-id='+id+']');
 				aspect.find('span.scores-label').text(aspectLabel);
-				aspect.find('span.scores-percent').text(percent + '%');
 			} else {
 				aspect = $('<div>').attr('data-id', id).addClass('scores-item').hide().appendTo(aspectList);
 				aspect.append(
 					$('<div>').addClass('score-bar').attr('data-percent', percent)
-						.append($('<div>')).append($('<span>').addClass('scores-percent').text(percent + '%'))
+						.append($('<div>')).append($('<span>').addClass('scores-percent'))
 				);
 				aspect.append($('<span>').addClass('scores-label').text(aspectLabel));
 				aspect.find('div.score-bar > div').width(10);
 			}
 			
-			var targetWidth = percent;
+			if(percent > 0){
+				aspect.find('span.scores-percent').removeClass('no-data').text(percent + '%').parent().removeClass('no-data');
+			} else {
+				aspect.find('span.scores-percent').addClass('no-data').text('No responses').parent().addClass('no-data');
+			}
+			
+			var targetWidth = Math.round(percent);
 			aspect.slideDown(function(){
 				$(this).find('div.score-bar > div').animate({
 					width: targetWidth+'%'
@@ -249,13 +256,23 @@ bdff.create('live', function(canvas, face){
 			
 			live.scores.aspects[id] = {id: id, percent: percent, label: aspectLabel};
 		};
+		
+		live.scores.updateType = function(type){
+			if(type == 'weekly'){
+				weeksScores.find('span.header').text("This Week's Scores");
+				weeksScores.find('span.subtitle').text("Scores from the past 7 days. For more details, use the tabs on the left.");
+			} else if(type == 'daily'){
+				weeksScores.find('span.header').text("Last 24 Hours");
+				weeksScores.find('span.subtitle').text("Scores from the past 24 hours. For more details, use the tabs on the left.");
+			}
+		};
 	};
 	
 	render(canvas);
 	
 	face.datahook(10000, {
 			url : '/api/v1/live/all',
-			data : { 'store' : bdff.storeID(), 'latest': 0 }
+			data : { 'store' : bdff.storeID(), 'latest': 0, 'scores': 'weekly' }
 		}, function(data){
 		if(data.hasOwnProperty('error') && data.error.length > 0){
 			bdff.log('Uh oh...');
@@ -291,13 +308,14 @@ bdff.create('live', function(canvas, face){
 					}
 				}				
 				
-				if(data.scores){
+				if(data.scores && data.scoresType){
+					live.scores.updateType(data.scoresType);
 					for(var i = 0; i < data.scores.length; i++){
 						live.scores.update(data.scores[i].title, data.scores[i].percent, data.scores[i].id);
 					}
 				}
 				
-				$('div[data-tooltip]').brevadaTooltip();
+				$('[data-tooltip]').brevadaTooltip();
 			};
 			
 			if(canvas.find('.full-loader').length > 0){

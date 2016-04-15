@@ -1275,6 +1275,7 @@ div.snapshot div.snapshot-pod div.snapshot-stats {
 	margin: 10px 0 0 1%;
 	display: inline-block;
 	text-align: center;
+	float: left;
 }
 div.snapshot div.snapshot-pod div.snapshot-stats > div {
 	text-align: center;
@@ -1309,10 +1310,28 @@ div.snapshot div.snapshot-pod div.snapshot-graph {
 	height: 150px;
 	margin: 0;
 	padding: 0;
-	/*position: absolute;*/
-	top: 6px;
-	right: 2px;
+	float: right;
 }
+
+div.snapshot div.snapshot-pod div.snapshot-graph:not(.no-data) > div.no-data {
+	display: none;
+}
+div.snapshot div.snapshot-pod div.snapshot-graph.no-data > div.no-data {
+    margin: 0 auto 0 auto;
+    display: inline-block;
+    width: 100%;
+	height: 100%;
+    text-align: center;
+}
+div.snapshot div.snapshot-pod div.snapshot-graph.no-data > div.no-data i {
+	font-size: 10.25em;
+	color: rgb(242, 96, 106);
+	opacity: 0.6;
+}
+div.snapshot div.snapshot-pod div.snapshot-graph.no-data canvas {
+	display: none;
+}
+
 div.snapshot div.snapshot-pod div.snapshot-graph canvas {
 	display: block;
 	width: 100%;
@@ -1321,8 +1340,10 @@ div.snapshot div.snapshot-pod div.snapshot-graph canvas {
 
 div.snapshot div.snapshot-pod div.snapshot-best-worst {
 	color: #999;
-	margin: 10px 0 0 28.5px;
+	margin: 0px 0 5px 28.5px;
 	display: inline-block;
+	width: 100%;
+	clear: both;
 }
 div.snapshot div.snapshot-pod div.snapshot-best-worst > span {
 	display: block;
@@ -1348,6 +1369,8 @@ div.feed {
 
 div.feed div.feed-list {
 	width: 100%;
+	overflow-y: scroll;
+	max-height: 260px;
 }
 
 div.feed div.feed-list div.feed-item {
@@ -1405,6 +1428,9 @@ div.feed div.feed-list div.feed-item span.medium.medium-desktop::before {
 }
 div.feed div.feed-list div.feed-item span.medium.medium-phone::before {
 	content: '\f10b';
+	font-size: 39px;
+    top: -5px;
+    position: relative;
 }
 
 div.weeks-scores {
@@ -1439,6 +1465,9 @@ div.weeks-scores div.scores-list div.scores-item div.score-bar > div {
 	margin: 0;
 	border-radius: 2px;
 }
+div.weeks-scores div.scores-list div.scores-item div.score-bar.no-data > div {
+	background: rgba(255,255,255,0);
+}
 div.weeks-scores div.scores-list div.scores-item div.score-bar > span {
 	position: absolute;
 	left: 2px;
@@ -1446,6 +1475,17 @@ div.weeks-scores div.scores-list div.scores-item div.score-bar > span {
     color: #FFF;
     font-weight: bold;
     background: rgba(255,255,255,0);
+}
+div.weeks-scores div.scores-list div.scores-item div.score-bar > span.no-data {
+	background: rgb(242, 96, 106);
+	border-radius: 2px;
+	padding: 0 2px;
+	left: 0;
+	opacity: 0.5;
+	transition: opacity 0.5s ease-in-out;
+}
+div.weeks-scores div.scores-list div.scores-item div.score-bar > span.no-data:hover {
+	opacity: 1;
 }
 
 div.weeks-scores div.scores-list div.scores-item > span {

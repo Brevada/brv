@@ -123,7 +123,6 @@ bdff.create('complete', function(canvas, face){
 					data: { labels : [], datasets : [] },
 					options: {
 						responsive: true,
-						fillOpacity: '.3',
 						maintainAspectRatio: false,
 						scales: {
 							xAxes: [{
@@ -187,7 +186,7 @@ bdff.create('complete', function(canvas, face){
 				data : aspect.bucket.rel.data,
 				label : aspect.title,
 				borderColor : aspect.borderColor,
-				fill : aspect.fill,
+				fill : false,
 				backgroundColor : aspect.backgroundColor,
 				datasetStrokeWidth : 5
 			});
@@ -210,7 +209,6 @@ bdff.create('complete', function(canvas, face){
 					data: { labels : [], datasets : [] },
 					options: {
 						responsive: true,
-						fillOpacity: '.3',
 						maintainAspectRatio: false,
 						scales: {
 							xAxes: [{
@@ -273,7 +271,7 @@ bdff.create('complete', function(canvas, face){
 				data : aspect.bucket.abs.data,
 				label : aspect.title,
 				borderColor : aspect.borderColor,
-				fill : aspect.fill,
+				fill : false,
 				backgroundColor : aspect.backgroundColor,
 				datasetStrokeWidth : 5
 			});
@@ -349,7 +347,7 @@ bdff.create('complete', function(canvas, face){
 			label: "Average",
 			data: complete.serverData.average.bucket || [],
 			backgroundColor: complete.colorFillOptions[1] || '#666',
-			fill: true
+			fill: false
 		}];
 		complete.averageChart.options.scales.yAxes[0].ticks.min = complete.serverData.average.min - 5;
 		complete.averageChart.options.scales.yAxes[0].ticks.max = complete.serverData.average.max + 5;

@@ -107,6 +107,8 @@ bdff.create('aspects', function(canvas, face){
 		};
 		
 		aspect.setIndustryRating = function(val){
+			val = Math.round(val * 10) / 10;
+			
 			aspectDom.find('div.pod-body-rating.external').text(val + "%");
 			
 			aspectDom.find('div.right-graph').attr('data-percent', val)

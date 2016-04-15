@@ -16,8 +16,8 @@
 			subClassName : '',
 			fadeInDuration : 10,
 			fadeOutDuration : 500,
-			duration : 1250,
-			offset : 15,
+			duration : 1550,
+			offset : 10,
 			text : ''
 		};
 		
@@ -59,8 +59,8 @@
 		
 		function show(e){
 			resetTimer();
-			var x = e.pageX + opts.offset;
-			var y = e.pageY + opts.offset;
+			var x = calcX(e.pageX);
+			var y = calcY(e.pageY);
 			getTipElement().css({ 'top' : y, 'left' : x });
 			if(!tipElement.is(':visible')){
 				tipElement.children('span').html(opts.text);
@@ -68,6 +68,26 @@
 				tipElement.stop().fadeIn(opts.fadeInDuration, function(){
 					resetTimer();
 				});
+			}
+		}
+		
+		function calcX(x){
+			var w = getTipElement().outerWidth();
+			
+			if (x + w + opts.offset > $(window).width()) {
+				return Math.max(0, x - opts.offset - w);
+			} else {
+				return x + opts.offset;
+			}
+		}
+		
+		function calcY(y){
+			var h = getTipElement().outerHeight();
+			
+			if (y + h + opts.offset > $(window).height()) {
+				return y - h - opts.offset;
+			} else {
+				return y + opts.offset;
 			}
 		}
 		
@@ -94,5 +114,5 @@
 }(jQuery));
 
 $(document).ready(function(){
-	$('div[data-tooltip]').brevadaTooltip();
+	$('[data-tooltip]').brevadaTooltip();
 });

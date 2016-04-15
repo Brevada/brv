@@ -153,13 +153,20 @@ class TaskPlayground extends AbstractTask
 			
 			if(!empty($includedTypes)){
 				$aspectAvg = (new Data())->store($store)->aspectType($aspectType)->from($from)->to($to)->getAvg($bucketSize);
+				$prevVal = (new Data())->store($store)->aspectType($aspectType)->from($from - ($MONTH*12))->to($from)->getAvg()->getRating();
 				for($i = 0; $i < $bucketSize; $i++){
 					$bucketDates_abs[] = date($dateFormat, $aspectAvg->getUTCFrom($i)) == date($dateFormat, $aspectAvg->getUTCTo($i)-1) ? date($dateFormat, $aspectAvg->getUTCFrom($i)) : date($dateFormat, $aspectAvg->getUTCFrom($i)) . ' - ' . date($dateFormat, $aspectAvg->getUTCTo($i)-1);
 					
-					$bucketData_abs[] = $aspectAvg->getRating($i);
+					$value = $aspectAvg->getRating($i);
+					if($aspectAvg->getSize($i) == 0){
+						$value = $prevVal;
+					} else {
+						$prevVal = $value;
+					}
+					$bucketData_abs[] = $value;
 					
-					$minBucket_abs = min($minBucket_abs, $aspectAvg->getRating($i));
-					$maxBucket_abs = max($maxBucket_abs, $aspectAvg->getRating($i));
+					$minBucket_abs = min($minBucket_abs, $value);
+					$maxBucket_abs = max($maxBucket_abs, $value);
 				}
 			}
 			
@@ -197,13 +204,20 @@ class TaskPlayground extends AbstractTask
 		
 		if(!empty($includedTypes)){
 			$combined = (new Data())->store($store)->aspectType($includedTypes)->from($from)->to($to)->getAvg($bucketSize);
+			$prevVal = (new Data())->store($store)->aspectType($includedTypes)->from($from - ($MONTH*12))->to($from)->getAvg()->getRating();
 			for($i = 0; $i < $bucketSize; $i++){
 				$bucketDates[] = date($dateFormat, $combined->getUTCFrom($i)) == date($dateFormat, $combined->getUTCTo($i)-1) ? date($dateFormat, $combined->getUTCFrom($i)) : date($dateFormat, $combined->getUTCFrom($i)) . ' - ' . date($dateFormat, $combined->getUTCTo($i)-1);
 				
-				$bucketData[] = $combined->getRating($i);
+				$value = $combined->getRating($i);
+				if($combined->getSize($i) == 0){
+					$value = $prevVal;
+				} else {
+					$prevVal = $value;
+				}
+				$bucketData[] = $value;
 				
-				$minBucket = min($minBucket, $combined->getRating($i));
-				$maxBucket = max($maxBucket, $combined->getRating($i));
+				$minBucket = min($minBucket, $value);
+				$maxBucket = max($maxBucket, $value);
 			}
 		}
 		

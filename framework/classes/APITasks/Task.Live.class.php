@@ -29,6 +29,7 @@ class TaskLive extends AbstractTask
 		$company = $_SESSION['CompanyID'];
 		
 		$feedLatest = max(@intval(Brevada::FromGET('latest')), 0);		
+		$weeklyScores = Brevada::FromGET('scores') != 'daily';
 		
 		$HOUR = 3600; $DAY = $HOUR * 24; $WEEK = $DAY * 7; $MONTH = round(52*$WEEK / 12);
 		
@@ -69,7 +70,7 @@ class TaskLive extends AbstractTask
 		$all_down = [];
 		
 		foreach($aspects as $row){
-			$score = (new Data())->store($store)->from(time()-$WEEK)->to(time())->aspectType($row['AspectTypeID'])->getAvg();
+			$score = (new Data())->store($store)->from(time()-($weeklyScores ? $WEEK : $DAY))->to(time())->aspectType($row['AspectTypeID'])->getAvg();
 			$scores[] = [
 				'title' => $row['Title'],
 				'percent' => round($score->getRating()),
@@ -82,22 +83,40 @@ class TaskLive extends AbstractTask
 			
 			$all_aspect_change = (new Data())->store($store)->from(time()-$MONTH)->to(time())->aspectType($row['AspectTypeID'])->getAvg()->getRating() - (new Data())->store($store)->from(time()-($MONTH*2))->to(time()-$MONTH)->aspectType($row['AspectTypeID'])->getAvg()->getRating();
 			
-			if($day_aspect_change > 0){
-				$day_up[] = $row['Title'];
-			} else if($day_aspect_change < 0){
-				$day_down[] = $row['Title'];
+			if($day_aspect_change > 0 && (empty($day_up) || $day_aspect_change > $day_up['percent'])){
+				$day_up = [
+					'title' => $row['Title'],
+					'percent' => $day_aspect_change
+				];
+			} else if($day_aspect_change < 0 && (empty($day_down) || $day_aspect_change > $day_down['percent'])){
+				$day_down = [
+					'title' => $row['Title'],
+					'percent' => $day_aspect_change
+				];
 			}
 			
-			if($week_aspect_change > 0){
-				$week_up[] = $row['Title'];
-			} else if($week_aspect_change < 0){
-				$week_down[] = $row['Title'];
+			if($week_aspect_change > 0 && (empty($week_up) || $week_aspect_change > $week_up['percent'])){
+				$week_up = [
+					'title' => $row['Title'],
+					'percent' => $week_aspect_change
+				];
+			} else if($week_aspect_change < 0 && (empty($week_down) || $week_aspect_change > $week_down['percent'])){
+				$week_down = [
+					'title' => $row['Title'],
+					'percent' => $week_aspect_change
+				];
 			}
 			
-			if($all_aspect_change > 0){
-				$all_up[] = $row['Title'];
-			} else if($all_aspect_change < 0){
-				$all_down[] = $row['Title'];
+			if($all_aspect_change > 0 && (empty($all_up) || $all_aspect_change > $all_up['percent'])){
+				$all_up = [
+					'title' => $row['Title'],
+					'percent' => $all_aspect_change
+				];
+			} else if($all_aspect_change < 0 && (empty($all_down) || $all_aspect_change > $all_down['percent'])){
+				$all_down = [
+					'title' => $row['Title'],
+					'percent' => $all_aspect_change
+				];
 			}
 		}
 		
@@ -215,6 +234,7 @@ class TaskLive extends AbstractTask
 				]
 			],
 			'scores' => $scores,
+			'scoresType' => $weeklyScores ? 'weekly' : 'daily',
 			'feed' => $feed
 		];
 	}
