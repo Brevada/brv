@@ -302,7 +302,7 @@ bdff.create('live', function(canvas, face){
 				}
 				
 				if(data.feed){
-					for(var i = 0; i < data.feed.length; i++){
+					for(var i = data.feed.length-1; i > 0; i--){
 						face.datahooks[0].request.data.latest = Math.max(face.datahooks[0].request.data.latest, data.feed[i].id);
 						live.feed.add(data.feed[i]);
 					}
