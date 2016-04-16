@@ -48,14 +48,15 @@ bdff.create('hoverpod', function(canvas, face){
 		hoverpod.find('div.responses > div.number').text(num);
 	};
 	
-	var setTablets = function(num){
-		hoverpod.find('div.tablets > div.number').text(num);
+	var setTablets = function(num, denom){
+		hoverpod.find('div.tablets > div.number').text(denom == 0 ? '0' : num + ' / ' + denom);
 	};
 	
 	var setStatus = function(num){
 		hoverpod.find('div.status > div.bulb')
 		.removeClass('positive great neutral bad negative')
-		.addClass(bdff.mood(num));
+		.addClass(bdff.mood(num))
+		.attr({'data-tooltip': (num == 0 ? "No Responses" : "Last Hour: " + Math.round(num) + '%')});
 	};
 	
 	face.datahook(10000, {
@@ -67,7 +68,7 @@ bdff.create('hoverpod', function(canvas, face){
 			location.reload();
 		} else if(data.hasOwnProperty('hoverpod')) {
 			setResponses(data.hoverpod.responses);
-			setTablets(data.hoverpod.tablets);
+			setTablets(data.hoverpod.tablets.online, data.hoverpod.tablets.total);
 			setStatus(data.hoverpod.mood);
 		}
 	});	

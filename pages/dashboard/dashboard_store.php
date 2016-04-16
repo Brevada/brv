@@ -5,11 +5,15 @@ if($this->getParameter('valid') !== true){ Brevada::Redirect('/404'); }
 $this->addResource('/css/bootstrap-datetimepicker.css');
 $this->addResource('/js/bootstrap-datetimepicker.min.js');
 
-$this->addResource('/css/layout.css');
-$this->addResource('/css/dashboard.css');
-
 $this->addResource('/css/brevada.tooltip.css');
 $this->addResource('/js/brevada.tooltip.js');
+
+$this->addResource('/js/jQRangeSlider/jQRangeSlider-min.js');
+$this->addResource('/js/jQRangeSlider/jQDateRangeSlider-min.js');
+$this->addResource('/js/jQRangeSlider/css/iThing.css');
+
+$this->addResource('/css/layout.css');
+$this->addResource('/css/dashboard.css');
 
 $this->addResource('/js/Brevada.BDFF.js');
 $this->addResource('/js/dashboard/dashboard.js');
@@ -18,9 +22,13 @@ $this->addResource('/js/dashboard/aspects/aspects.js');
 
 $this->addResource('/js/dashboard/milestones/milestones.js');
 
-//$this->addResource('/js/dashboard/live/live.js');
-//$this->addResource('/js/dashboard/support/support.js');
+$this->addResource('/js/dashboard/live/live.js');
+
+$this->addResource('/js/dashboard/support/support.js');
+
 $this->addResource('/js/dashboard/hoverpod/hoverpod.js');
+
+$this->addResource('/js/dashboard/complete/complete.js');
 
 $this->addResource('/js/dashboard/dashboard-slide.js');
 $this->addResource('/js/dashboard/dashboard-graph.js');
@@ -72,7 +80,27 @@ $aspectCount = $qAspects->fetch_assoc()['cnt'];
 <script type='text/javascript'>bdff.storeID(<?php echo $store_id; ?>);</script>
 <div id="alert-holder"></div>
 <div class="top-fixed">
-
+	<div class="mid-banner row" style="">
+	  	<a type="button" class="btn icon-button" href="/<?php echo $url_name; ?>" target="_blank">
+      		<i class='fa fa-play-circle'></i> <?php _e('Your Page'); ?>
+      	</a>
+      	<a href="/qr/<?php echo $url_name; ?>.png" target="_blank" type="button" class="btn icon-button">
+			<i class='fa fa-qrcode'></i> <?php _e('QR Code'); ?>
+		</a>
+      	<a href="hub/includes/marketing/promo_white.php" target="_blank" type="button" class="btn icon-button">
+			<i class='fa fa-paper-plane'></i> <?php _e('Printables'); ?>
+		</a>
+		<!--
+		<a href="#" id="email-display" class="slide-down-trigger btn icon-button" type="button">
+			<i class='fa fa-area-chart'></i> <?php _e('Email List'); ?>
+		</a>
+		-->
+		<?php if(isset($_SESSION['Corporate']) && $_SESSION['Corporate']){ ?>
+		<a href="/dashboard" type="button" class="btn icon-button">
+			<i class='fa fa-area-chart'></i> <?php _e('Corporate'); ?>
+		</a>
+		<?php } ?>
+	</div>
 	<div class='top-banner row'>
 		<div class='col-lg-12'>
 			<img class='logo-quote link pull-left' src='/images/brevada.png' data-link='' />
@@ -86,32 +114,10 @@ $aspectCount = $qAspects->fetch_assoc()['cnt'];
 				</ul>
 			</div>
 			<div class='name pull-right hidden-xs'>
-				<?php _e('Current User'); ?>: <span class="variable"><?php echo $name; ?></span>
+				<span class="variable"><?php echo $name; ?></span>
 			</div>
 		</div>
 	</div>
-
-	<div class="mid-banner row" style="">
-	  	<a type="button" class="btn icon-button" href="/<?php echo $url_name; ?>" target="_blank">
-      		<?php _e('Your Page'); ?>
-      	</a>
-      	<a href="/qr/<?php echo $url_name; ?>.png" target="_blank" type="button" class="btn icon-button">
-			<?php _e('QR Code'); ?>
-		</a>
-      	<a href="hub/includes/marketing/promo_white.php" target="_blank" type="button" class="btn icon-button">
-			<?php _e('Printables'); ?>
-		</a>
-
-		<a href="#" id="email-display" class="slide-down-trigger btn icon-button" type="button">
-			<?php _e('Email List'); ?>
-		</a>
-		<?php if(isset($_SESSION['Corporate']) && $_SESSION['Corporate']){ ?>
-		<a href="/dashboard" type="button" class="btn icon-button">
-			<?php _e('Corporate'); ?>
-		</a>
-		<?php } ?>
-	</div>
-
 </div>
 
 <div class="spacer"></div>
@@ -131,25 +137,33 @@ $aspectCount = $qAspects->fetch_assoc()['cnt'];
     <div id="sidebar-wrapper">
 
         <div class="sidebar btn-group-vertical">
-	        <button type="button" data-id="aspects" class="btn btn-sidebar toggle-button icon-button">
-				<div class="icon">
-					<i class='fa fa-list'></i>
-				</div>
-				<div class='icon-subtext hidden-xs'><?php _e('Overall'); ?></div>
-			</button>
-			<!--
-			 <button data-id="live" class="btn btn-sidebar toggle-button icon-button">
+
+			<button data-id="live" class="btn-sidebar toggle-button icon-button">
 				<div class="icon">
 					<i class='fa fa-check'></i>
 				</div>
-				<div class='icon-subtext hidden-xs'><?php _e('Live'); ?></div>
+				<div class='icon-subtext hidden-xs'><?php _e('Summary'); ?></div>
 			</button>
-			-->
-			<button type="button" data-id="milestones" class="btn btn-sidebar toggle-button icon-button">
+
+        	<button type="button" data-id="complete" class="btn-sidebar toggle-button icon-button">
+				<div class="icon">
+					<i class='fa fa-area-chart'></i>
+				</div>
+				<div class='icon-subtext hidden-xs'><?php _e('Play'); ?></div>
+			</button>
+
+	        <button type="button" data-id="aspects" class="btn-sidebar toggle-button icon-button">
+				<div class="icon">
+					<i class='fa fa-list'></i>
+				</div>
+				<div class='icon-subtext hidden-xs'><?php _e('Totals'); ?></div>
+			</button>
+
+			<button type="button" data-id="milestones" class="btn-sidebar toggle-button icon-button">
 				<div class="icon">
 					<i class='fa fa-calendar'></i>
 				</div>
-				<div class='icon-subtext hidden-xs'><?php _e('Milestones'); ?></div>
+				<div class='icon-subtext hidden-xs'><?php _e('Events'); ?></div>
 			</button>
 			<!--
 			<button type="button" data-id="support" class="btn btn-sidebar toggle-button icon-button">

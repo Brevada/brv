@@ -28,7 +28,7 @@ class Data
 	private $dStore = [];
 	private $dCompany = [];
 	private $dIndustry = []; /* not significant */
-	private $dKeywords = []; /* TODO: not implemented yet */
+	private $dKeywords = [];
 	
 	function __construct()
 	{
@@ -422,7 +422,7 @@ class Data
 			while($stmt->fetch()){
 				$parDuration = floor(($to - $from) / floatval($numPoints));
 			}
-		} else { exit(Database::getCon()->error); }
+		}
 		$stmt->close();
 		
 		if(empty($from) && empty($to)){

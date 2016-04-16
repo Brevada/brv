@@ -64,7 +64,7 @@ while($row=$query->fetch_assoc()){
 	$postQuery=Database::query("SELECT aspects.ID, aspect_type.Title, aspect_type.Description as Description FROM aspects LEFT JOIN aspect_type ON aspect_type.ID = aspects.AspectTypeID WHERE aspects.StoreID = {$store_id} AND aspects.`Active` = 1 ORDER BY aspect_type.Title");
 	if($postQuery !== false && $postQuery->num_rows > 0){
 		while($row=$postQuery->fetch_assoc()) {		
-			$this->add(new View('../widgets/profile/post_box.php', array('row' => $row, 'id' => $store_id)));
+			$this->add(new View('../widgets/profile/post_box.php', array('row' => $row, 'id' => $store_id, 'tablet' => true)));
 		}
 	}
 	?>	
@@ -78,5 +78,5 @@ while($row=$query->fetch_assoc()){
 </div>
 
 <div id="email_connect"  class="aspect-container container" style="display: none;">
-	<?php $this->add(new View('../widgets/profile/email_connect.php', array('store_id' => $store_id))); ?>
+	<?php $this->add(new View('../widgets/profile/email_connect.php', array('store_id' => $store_id, 'tablet' => true))); ?>
 </div>

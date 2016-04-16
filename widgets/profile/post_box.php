@@ -7,7 +7,10 @@ $post_id = $r['ID'];
 $post_name = $r['Title'];
 $post_description = $r['Description'];
 
-$alreadyRated = isset($_SESSION['feedback']) && !empty($_SESSION['feedback']) && in_array($post_id, $_SESSION['feedback']);
+$alreadyRated = false;
+if($this->getParameter('tablet') !== true){
+	$alreadyRated = isset($_SESSION['feedback']) && !empty($_SESSION['feedback']) && in_array($post_id, $_SESSION['feedback']);
+}
 ?>
 
 <div id="aspect_<?php echo $post_id; ?>" class="aspect<?php echo $alreadyRated ? ' rated' : ''; ?>">

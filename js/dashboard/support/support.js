@@ -1,6 +1,6 @@
 /* Support Dashboard App */
 
-bdff.create('support', function(canvas, face){
+bdff.create('complete', function(canvas, face){
 	canvas.children().not('div.message-container').remove();
 	
 	var support_form = $('<div>').addClass('support-form col-md-9').appendTo(canvas);
