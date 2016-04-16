@@ -8,13 +8,48 @@ bdff.create('milestones', function(canvas, face){
 	var render = function (canvas) {
 		canvas.children().not('div.message-container').remove();
 		renderForm(canvas);
+		renderDialog(canvas);
 		canvas.append(
 			$('<div>').addClass('full-loader').append(
 				$('<div>').addClass('fa fa-spin fa-gear')
 			)
 		);
-	}
+	};
 
+	var renderDialog = function (canvas) {
+		var dialog = $('<div>')
+					.addClass('modal fade')
+					.attr({
+						id: 'confirm-delete',
+						tabindex: '-1',
+						role: 'dialog'
+					})
+					.appendTo(canvas);
+					
+		dialog.append(
+			$('<div>').addClass('modal-dialog').append(
+				$('<div>').addClass('modal-content').append($('<div>').addClass('modal-header').html('<h2>Delete <b><span></span></b></h2>')).append($('<div>').addClass('modal-body').html("<p>Are you sure you want to delete this event?</p>")).append(
+					$('<div>').addClass('modal-footer').append(
+						$('<button>').addClass('btn btn-default').attr({ type: 'button', 'data-dismiss':'modal' }).text('Cancel')
+					).append(
+						$('<button>').addClass('btn btn-danger btn-ok').attr({ type: 'button', 'data-dismiss':'modal' }).text('Delete')
+					)
+				)
+			)
+		);
+		
+		dialog.find('.btn-ok').click(function(){
+			$.post('/api/v1/milestones/delete', { 'store' : bdff.storeID(), 'id' : $(this).attr('data-ms-id'), 'localtime' : Math.ceil(((new Date()).getTime()/1000)) }, function(data){
+				if(data.error && data.error.length > 0){
+					bdff.notify(data.error[0], '', 'error');
+				} else {
+					face.startHooks();
+				}
+			});
+		});
+		
+	};
+	
 	var renderForm = function (canvas) {
 		
 		var formType = function(e){
@@ -25,12 +60,12 @@ bdff.create('milestones', function(canvas, face){
 		};
 		
 		canvas.append(
-			$('<form>').addClass('form-horizontal milestone-form col-lg-offset-2 col-lg-8').attr('role', 'form').append(
+			$('<form>').addClass('form-horizontal milestone-form col-lg-12').attr('role', 'form').append(
 				$('<div>').addClass('form-group row').append(
 					$('<div>').addClass('col-lg-6 col-md-6 col-xs-12 nopadding').append(
 						$('<input>').addClass('form-control title').attr({
 							type: 'text',
-							placeholder: 'New Milestone Title'
+							placeholder: 'New Event Title'
 						}).keyup(formType).change(formType)
 					)
 				).append(
@@ -64,7 +99,7 @@ bdff.create('milestones', function(canvas, face){
 				$('<div>').addClass('form-group').append(
 					$('<button>').addClass('btn btn-default submit').attr({
 						'type': 'button'
-					}).text('Add Milestone').click(function(){
+					}).text('Add Event').click(function(){
 						var title = canvas.find('.milestone-form .title').val();
 						var dateFrom = canvas.find('#dtpFrom > input').val();
 						var dateTo = canvas.find('#dtpTo > input').val();
@@ -98,7 +133,7 @@ bdff.create('milestones', function(canvas, face){
 	var renderMilestone = function (id) {
 		var milestone = { 'id' : id, 'aspects' : {} };
 		
-		var ms = $('<div>').addClass('milestone col-lg-offset-2 col-lg-8 col-md-12').attr('milestone-data-id', id).insertAfter(canvas.find('.milestone-form'));
+		var ms = $('<div>').addClass('milestone col-md-12').attr('milestone-data-id', id).insertAfter(canvas.find('.milestone-form'));
 		
 		$(' \
 			<div class="milestone-body">\
@@ -118,20 +153,17 @@ bdff.create('milestones', function(canvas, face){
 			</div>\
 			<div class="add">+ Add an Aspect</div>\
 			<div class="footer">\
-				<div class="delete">Delete</div>\
+				<div class="delete" data-toggle="modal" data-target="#confirm-delete">Delete</div>\
 				<div class="complete-button" >Complete Milestone</div>\
 			</div>\
 			</div>\
 			').appendTo(ms);
 
+		ms.find('div.delete').attr('data-ms-id', id);
+			
 		ms.find('div.delete').click(function(){
-			$.post('/api/v1/milestones/delete', { 'store' : bdff.storeID(), 'id' : id, 'localtime' : Math.ceil(((new Date()).getTime()/1000)) }, function(data){
-				if(data.error && data.error.length > 0){
-					bdff.notify(data.error[0], '', 'error');
-				} else {
-					face.startHooks();
-				}
-			});
+			$('#confirm-delete').find('.btn-ok').attr('data-ms-id', $(this).attr('data-ms-id'));
+			$('#confirm-delete').find('div.modal-header h2 span').text(ms.find('div.header-content div.title').text());
 		});
 		
 		ms.find('div.complete-button').click(function(){
@@ -160,7 +192,11 @@ bdff.create('milestones', function(canvas, face){
 				});
 				sel.append($('<option>').attr('value', '-1').text('Select an aspect...'));
 				for(var i = 0; i < aspects.length; i++){
-					sel.append($('<option>').attr('value', aspects[i]['id']).text(aspects[i]['title']));
+					if(ms.find('div.milestone-aspect div.title').filter(function(){
+						return $(this).text() == aspects[i]['title'];
+					}).length == 0){
+						sel.append($('<option>').attr('value', aspects[i]['id']).text(aspects[i]['title']));
+					}
 				}
 				$(this).empty().append(sel);
 			}
@@ -193,7 +229,9 @@ bdff.create('milestones', function(canvas, face){
 		};
 		
 		milestone.setMood = function(mood){
-			ms.find('div.header > div.bulb').removeClass('positive great neutral bad negative').addClass(bdff.mood(parseFloat(mood)));
+			ms.find('div.header > div.bulb').removeClass('positive great neutral bad negative').addClass(	
+				bdff.mood(parseFloat((parseInt(mood)+80)/2))
+			);
 		};
 		
 		milestone.addAspect = function(maID){
@@ -233,10 +271,19 @@ bdff.create('milestones', function(canvas, face){
 				if(responses == 0){
 					dom.find('.details').text("no responses");
 				} else {
-					dom.find('.details').text(change+'%' + ' after ' + responses + ' responses');
+					var sign = parseInt(change) == 0 ? '' : parseInt(change) > 0 ? '+' : '-';
+					if(parseInt(change)==0){
+						dom.find('.details').text('no change after ' + responses + ' response' + (parseInt(change)>1 ? 's' : ''));
+					} else {
+						dom.find('.details').text(sign+change+'%' + ' after ' + responses + ' response' + (parseInt(change)>1 ? 's' : ''));
+					}
 				}
 				
-				dom.find('div.bulb').removeClass('positive great neutral bad negative').addClass(bdff.mood(parseFloat(change)));
+				dom.find('div.bulb')
+				.removeClass('positive great neutral bad negative')
+				.addClass(bdff.mood(parseFloat(
+					(parseInt(change)+80)/2
+				)));
 			};
 			
 			dom.appendTo(ms.find('.body'));

@@ -34,7 +34,7 @@ app.custom.initialize = function(){
 };
 
 app.custom.imdone = function(){
-	$('#aspects, .fixed-toolbar').fadeOut(300, function () {
+	$('#aspects, .fixed-toolbar').stop().fadeOut(300, function () {
 		$('#email_connect').show();
 	});
 };
@@ -51,13 +51,13 @@ app.custom.resetAll = function(){
 	$('#email_connect').hide();
 	$('.rated').removeClass('rated').show();
 	$('#aspects').randomize('div.aspect');
-	$('#aspects, .fixed-toolbar').fadeIn(300);
+	$('#aspects, .fixed-toolbar').stop().fadeIn(300);
 	$('#imdone').hide();
 };
 
 function insertRating(val, id) {
 	if(!$('#imdone').is(':visible')){
-		$('#imdone').slideDown(125);
+		$('#imdone').stop().slideDown(125);
 	}
 
 	var payload = {
@@ -71,7 +71,7 @@ function insertRating(val, id) {
 
 	app.sendPayload(payload);
 
-	$("#aspect_"+id).addClass('rated').slideUp(325, function(){
+	$("#aspect_"+id).addClass('rated').stop().slideUp(325, function(){
 		app.custom.inactivity.updateInteraction();
 		if($('div.aspect:not(.rated)').length == 0 && $('#aspects').is(':visible')){
 			app.custom.imdone();
@@ -123,15 +123,15 @@ app.custom.inactivity.showInactivityWarning = function(){
 
 		$('#inactivity-overlay, #inactivity').click(function(){
 			app.custom.inactivity.updateInteraction();
-			$('#inactivity').fadeOut(225, function(){
-				$('#inactivity-overlay').fadeOut(125, function(){
+			$('#inactivity').stop().fadeOut(225, function(){
+				$('#inactivity-overlay').stop().fadeOut(125, function(){
 					$('html, body').removeClass('locked');
 				});
 			});
 		});
 	}
-	$('#inactivity-overlay').fadeIn(200, function(){
-		$('#inactivity').fadeIn(350);
+	$('#inactivity-overlay').stop().fadeIn(200, function(){
+		$('#inactivity').stop().fadeIn(350);
 	});
 	app.log('Inactivity Warning shown.');
 }
@@ -145,8 +145,8 @@ app.custom.inactivity.inactiveA = function(){
 app.custom.inactivity.inactiveB = function(){
 	if($('div.aspect.rated').length > 0){
 		if($('.inactivity').length > 0){
-			$('#inactivity').fadeOut(225, function(){
-				$('#inactivity-overlay').fadeOut(125, function(){
+			$('#inactivity').stop().fadeOut(225, function(){
+				$('#inactivity-overlay').stop().fadeOut(125, function(){
 					$('html, body').removeClass('locked');
 				});
 			});

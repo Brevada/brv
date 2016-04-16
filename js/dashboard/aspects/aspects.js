@@ -53,11 +53,12 @@ bdff.create('aspects', function(canvas, face){
 					)
 				)
 				.append(
-					$('<div>').addClass('col-md-12 pod-body-bottom').append(
-						$('<input>').addClass('graph-toggle').attr('type', 'checkbox').attr('checked', '')
-						.attr('data-toggle', 'toggle').attr('data-onstyle', 'default').attr('data-on', 'Line')
-						.attr('data-off', 'Bar').attr('data-size', 'mini').attr('data-width', '100').attr('data-height', '25')
-					).append(
+					$('<div>').addClass('col-md-12 pod-body-bottom')
+					// .append(
+						// $('<input>').addClass('graph-toggle').attr('type', 'checkbox').attr('checked', '')
+						// .attr('data-toggle', 'toggle').attr('data-onstyle', 'default').attr('data-on', 'Line')
+						// .attr('data-off', 'Bar').attr('data-size', 'mini').attr('data-width', '100').attr('data-height', '25'))
+					.append(
 						$('<div>').addClass('graphs')
 						.append(
 							$('<div>').addClass('bar-graph')
@@ -106,6 +107,8 @@ bdff.create('aspects', function(canvas, face){
 		};
 		
 		aspect.setIndustryRating = function(val){
+			val = Math.round(val * 10) / 10;
+			
 			aspectDom.find('div.pod-body-rating.external').text(val + "%");
 			
 			aspectDom.find('div.right-graph').attr('data-percent', val)
@@ -116,7 +119,7 @@ bdff.create('aspects', function(canvas, face){
 		};
 		
 		aspect.setNumResponses = function(num){
-			aspectDom.find('div.rating-text').first().text("in " + num.toString() + " responses.");
+			aspectDom.find('div.rating-text').first().text(num.toString() + " responses.");
 		};
 		
 		aspect.setTopTicker = function(val){
@@ -187,12 +190,17 @@ bdff.create('aspects', function(canvas, face){
 					if(!aspect.data){ aspect.data = {}; }
 					
 					if(!aspect.data.data || !bdff.equal(aspect.data.labels, data.aspects[i].bucket.labels) || !bdff.equal(aspect.data.data, data.aspects[i].bucket.data)){
-						if(aspect.lineGraph){
-							aspect.lineGraph.destroy();
-						}
 						aspect.data.labels = data.aspects[i].bucket.labels;
 						aspect.data.data = data.aspects[i].bucket.data;
-						aspect.lineGraph = build_line_graph({"dates": aspect.data.labels, "data": aspect.data.data }, 'pod'+data.aspects[i].id);
+						if(!aspect.lineGraph){
+							aspect.lineGraph = build_line_graph({"dates": aspect.data.labels, "data": aspect.data.data }, 'pod'+data.aspects[i].id);
+						}
+						
+						aspect.lineGraph.data.labels = aspect.data.labels;
+						aspect.lineGraph.data.datasets[0].data = aspect.data.data;
+						aspect.lineGraph.options.scales.yAxes[0].ticks.min = data.aspects[i].bucket.min;
+						aspect.lineGraph.options.scales.yAxes[0].ticks.max = data.aspects[i].bucket.max;
+						aspect.lineGraph.update();
 					}
 					
 					$('div[data-tooltip]').brevadaTooltip();

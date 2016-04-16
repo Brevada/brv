@@ -1,278 +1,331 @@
 /* 
 	Live Dashboard App
 */
+var live = { };
 
 bdff.create('live', function(canvas, face){
 
-	live = { data: {} };
-	live.datastatus = { data: {} };
-	live.responses = { data: {} };
-	live.score = { data: {} };
-	live.change = { data: {} };
-	live.blank1 = { data: {} };
-	live.blank2 = { data: {} };
-	live.breakdown = { data: {} };
-	live.newsfeed = { data: {} };
-	live.daily = { data: {} };
-
-	live.render = function (mcanvas) {
-		mcanvas.children().not('div.message-container').remove();
-		
-		var square_1 = $('<div>').addClass('square square-1 col-md-6').appendTo(mcanvas);
-		var square_2 = $('<div>').addClass('square square-2 col-md-6').appendTo(mcanvas);
-		var square_3 = $('<div>').addClass('square square-3 col-md-12').appendTo(mcanvas);
-
-		// Square 1
-		live.datastatus.render(square_1);
-		live.score.render(square_1);
-		live.responses.render(square_1);
-		live.change.render(square_1);
-		live.blank1.render(square_1);
-		live.blank2.render(square_1);
-
-		// Square 2
-		live.breakdown.render(square_2);
-		live.newsfeed.render(square_2);
-		
-		// Square 3
-		live.daily.render(square_3);
-	}
-
-	live.createTicker = function (canvas, size) {
-		var ticker = $('<div>').addClass('col-md-'+size).append(
-				$('<div>').addClass('bigticker dashboard-pod')
-			).appendTo(canvas).children('div');
-			
-		return ticker;
-	}
-
-	/* Data Status */
-
-	live.datastatus.render = function (canvas) {
-		live.datastatus.element = live.createTicker(canvas, 6);
-		$(live.datastatus.element).addClass('datastatus');
-
-		$('\
-			<div class="timeframe">Current Dataset: <span class="data"></span></div>\
-			<div class="current-time">As of <span class="data"></span></div>\
-			').appendTo(live.datastatus.element);
-	}
-
-	live.datastatus.update = function (data) {
-		var timeframe = data['timeframe'],
-			current_time = data['current_time'];
-		live.datastatus.element.find('.timeframe .data').html(timeframe);
-		live.datastatus.element.find('.current-time .data').html(current_time);
-	}
-
-	/* Responses */
-
-	live.responses.render = function (canvas) {
-		live.responses.element = live.createTicker(canvas, 6);
-		live.responses.element.addClass('responses');
-		
-		$('\
-			<div class="data"></div>\
-			<div class="text">Responses</div>\
-			').appendTo(live.responses.element);
-	}
-
-	live.responses.update = function (data) {
-		var responses = data['responses'];
-		live.responses.element.find('.data').html(responses);
-	}
-
-	/* Score */
-
-	live.score.render = function (canvas) {
-		live.score.element = live.createTicker(canvas, 6);
-		live.score.element.addClass('score');
-		live.score.element.addClass('bad');
-
-		/* Template */
-		$('\
-			<div class="data"></div>\
-			<div class="text">Average</div>\
-			').appendTo(live.score.element);
-	}
-
-	live.score.update = function (data) {
-		var score = data['score'];
-		live.score.element.find('.data')
-		.removeClass('positive-text great-text neutral-text bad-text negative-text')
-		.addClass(bdff.mood(parseFloat(score))+'-text')
-		.text(score + "%");
-	}
-
-	/* Tablet Status */
-
-	live.blank1.render = function (canvas) {
-		live.blank1.element = live.createTicker(canvas, 6);
-		live.blank1.element.addClass('blank1');
-
-		/* Template */
-		$('\
-			<div class="data"></div>\
-			<div class="text">Responses</div>\
-			').appendTo(live.blank1.element);
-	}
-
-	live.blank1.update = function (data) {
-		var blank1 = data['responses'];
-		live.blank1.element.find('.data').html(blank1);
-	}
-
-	/* Blank2 */
-
-	live.blank2.render = function (canvas) {
-		live.blank2.element = live.createTicker(canvas, 6);
-		live.blank2.element.addClass('blank2');
-
-		/* Template */
-		$('\
-			<div class="data"></div>\
-			<div class="text">Responses</div>\
-			').appendTo(live.blank2.element);
-	}
-
-	live.blank2.update = function (data) {
-		var blank2 = data['responses'];
-		live.blank2.element.find('.data').html(blank2);
-	}
-
-	/* Change */
-
-	live.change.render = function (canvas) {
-		live.change.element = live.createTicker(canvas, 6);
-		live.change.element.addClass('score');
-		live.change.element.addClass('bad-text');
-
-		/* Template */
-		$('\
-			<div class="data"><span class="parity"></span><span class="change"></span></div>\
-			<div class="text">Change</div>\
-			').appendTo(live.change.element);
-	}
-
-	live.change.update = function (data) {
-		var parity = data['parity'],
-			change = data['change'];
-		live.change.element.find('.parity').html(parity);
-		live.change.element.find('.change').html(change);
-	}
-
-	/* Breakdown */
-
-	live.breakdown.render = function (canvas) {
-		live.breakdown.element = live.createTicker(canvas, 12);
-		live.breakdown.element.addClass('breakdown');
-
-		/* Template */
-		$('\
-			<div class="pie-graph"></div>\
-			<div class="bar-graph"></div>\
-			<div class="text">Breakdown</div>\
-			').appendTo(live.breakdown.element);
-	}
-
-	live.breakdown.update = function (data) {
-		if(!live.breakdown.chart){
-			live.breakdown.element.find('.pie-graph').html('<canvas></canvas>');
-			var doughnutData = data;
-			var ctx = live.breakdown.element.find(".pie-graph canvas").get(0).getContext("2d");
-			
-			live.breakdown.chart = new Chart(ctx, {
-				type: 'doughnut',
-				data: doughnutData,
-				options: {
-					responsive: true,
-					maintainAspectRatio: false,
-					legend: {
-						display: false
-					}
-				}
-			});
-		} else {
-			live.breakdown.chart.data.datasets[0].data = data.datasets[0].data;
-			live.breakdown.chart.update();
-		}
-	}
-
-	/* Newsfeed */
-
-	live.newsfeed.render = function (canvas) {
-		live.newsfeed.element = live.createTicker(canvas, 12);
-		live.newsfeed.element.addClass('newsfeed');
-
-		/* Template */
-		$('\
-			<div class="header"></div>\
-			<div class="text">Breakdown</div>\
-			').appendTo(live.newsfeed.element);
-	}
-
-	live.newsfeed.update = function (data) {
-		live.newsfeed.element.find('.header').html(data);
-	}
-
-
-	/* Daily */
-
-	live.daily.render = function (canvas) {
-		live.daily.element = live.createTicker(canvas, 12);
-		live.daily.element.addClass('daily');
-
-		/* Template */
-		$('\
-			<div class="title">Last 24 Hours</div>\
-			<div class="col-md-4 score">\
-				<div class="bulb positive"><div class="all-data"><span class="data"></span>%</div> Average</div>\
-			</div>\
-			<div class="col-md-4 change">\
-				<div class="bulb great"><div class="all-data"><span class="data"></span>%</div> Change</div>\
-			</div>\
-			<div class="col-md-4 responses">\
-				<div class="bulb neutral"><div class="all-data"><span class="data"></span></div> Responses</div>\
-			</div>\
-			').appendTo(live.daily.element);
-	}
-
-	live.daily.update = function (data) {
-		var score = data['score'],
-			change = data['change'],
-			responses = data['responses'];
-
-		live.daily.element.find('.score > div')
-		.removeClass('positive great neutral bad negative')
-		.addClass(bdff.mood(parseFloat(score)))
-		.find('.data').text(score);
-		
-		live.daily.element.find('.responses .data').text(responses);
-		
-		live.daily.element.find('.change .data').text(change);
+	canvas.children().not('div.message-container').remove();
+	if(live && live.snapshot){
+		live.snapshot.cleanup();
 	}
 	
-	live.render(canvas);
+	live = {};
+
+	var render = function (canvas) {
+		canvas.children().not('div.message-container').remove();
+		
+		var left = $('<div>').addClass('col-xs-12 col-md-9').appendTo(canvas);
+		var right = $('<div>').addClass('col-xs-12 col-md-3').appendTo(canvas);
+		
+		renderSnapshot(left);
+		renderPastScores(right);
+		renderResponseFeed(left);
+		
+		canvas.append(
+			$('<div>').addClass('full-loader').append(
+				$('<div>').addClass('fa fa-spin fa-gear')
+			)
+		);
+	};
+	
+	var renderSnapshot = function(canvas){
+		var snapshot = $("<div>").addClass('snapshot col-xs-12').appendTo(canvas);
+		snapshot
+			.append($('<span>').addClass('header').text('Snapshot'))
+			.append($('<span>').addClass('subtitle').text("Here's an overview of where you stand."));
+		
+		var createPod = function(type){
+			var pod = $("<div>").addClass('snapshot-pod col-xs-12 col-md-4 type-' + type).appendTo(snapshot);
+			var stats = $("<div>").addClass('snapshot-stats').appendTo(pod);
+			var graph = $("<div>").addClass('snapshot-graph').append($('<div>').addClass('no-data').append($('<i>').addClass('fa fa-pie-chart').attr({ 'data-tooltip': "There's not enough data<br/>to make a meaningful graph." }))).append("<canvas>").appendTo(pod);
+			var bestWorst = $("<div>").addClass('snapshot-best-worst').appendTo(pod);
+			
+			pod.append(
+				$('<span>').addClass('snapshot-label')
+				.text(type == 'day' ? 'Last 24 Hours' : (type == 'week' ? 'Last Week' : 'All Time'))
+			);
+			
+			bestWorst
+				.append($('<span>').append($('<i>').addClass('fa fa-thumbs-up')).append($('<span>').text("")))
+				.append($('<span>').append($('<i>').addClass('fa fa-thumbs-down')).append($('<span>').text("")));
+				
+			stats.append($('<div>').addClass('average').append($('<span>').addClass('number').text('')).append($('<span>').addClass('label').text('Average')));
+			
+			
+			stats.append($('<div>').addClass('change').append($('<span>').addClass('number').text('')).append($('<span>').addClass('label').text('Change')));
+			
+			stats.append($('<div>').addClass('responses').append($('<span>').addClass('number').text('')).append($('<span>').addClass('label').text('Responses')));
+			
+			if(type == 'all'){
+				stats.find('div.change').css('visibility', 'hidden').children('span.number').text('0'); //Easier to hide then not add
+				stats.find('div.change').insertAfter(stats.find('div.responses'));
+			}
+			
+			var registerGraph = function(el){
+				var ctx = el.children('canvas').get(0).getContext("2d");
+				return new Chart(ctx, {
+						type: 'doughnut',
+						data: { labels : ['Amazing', 'Great', 'Neutral', 'Poor', 'Bad'], datasets : [{
+							data: [0, 0, 0, 0, 0],
+							backgroundColor: [
+								"#38cf4a",
+								"#7ccf38",
+								"#bbcf38",
+								"#cfc338",
+								"#cf9b38"
+							],
+							hoverBackgroundColor: [
+								"#38cf4a",
+								"#7ccf38",
+								"#bbcf38",
+								"#cfc338",
+								"#cf9b38"
+							]
+						}] },
+						options: {
+							responsive: true,
+							maintainAspectRatio: false,
+							legend: {
+								display: false,
+								labels: {
+									boxWidth: 20,
+									fontColor: '#333'
+								}
+							},
+							tooltips: {
+								mode : 'single',
+								callbacks: {
+									title : function(tooltip, data){
+										return data.labels[tooltip[0].index];
+									},
+									label : function(tooltip, data){
+										return data.datasets[0].data[tooltip.index] + ' responses';
+									}
+								},
+								backgroundColor : '#999',
+								color : '#FFFFFF'
+							}
+						}
+				});
+			};
+			
+			var obj = {
+				setUp : function(aspect) {
+					var row = bestWorst.find('i.fa-thumbs-up').parent();
+					
+					if(aspect.title){
+						row.find('span').text(aspect.title + ', up ' + (Math.round(Math.abs(aspect.percent) * 10)/10) + '%');
+					} else {
+						row.find('span').text('No Positive Performance');
+					}
+					
+					if(!row.is(':visible')){
+						row.fadeTo(100,1);
+					}
+				},
+				setDown : function(aspect) {
+					var row = bestWorst.find('i.fa-thumbs-down').parent();
+					
+					if(aspect.title){
+						row.find('span').text(aspect.title + ', down ' + (Math.round(Math.abs(aspect.percent)*10)/10) + '%');
+					} else {
+						row.find('span').text('No Negative Performance');
+					}
+					
+					if(!row.is(':visible')){
+						row.fadeTo(100,1);
+					}
+				},
+				setAverage : function(avg) {
+					stats.find('div.average').children('span.number').removeClass('positive great neutral bad negative').addClass(bdff.mood(avg)).text(avg+'%');
+				},
+				setChange : function(change) {
+					var sign = change == 0 ? '' : change > 0 ? '+' : '-';
+					stats.find('div.change').children('span.number').removeClass('positive great neutral bad negative').addClass(bdff.mood((parseFloat(Math.abs(change))+100.0)/2)).text(sign+Math.abs(change)+'%');
+				},
+				setResponses : function(resp) {
+					var magnitude = Math.floor(Math.log10(parseInt(resp)))+1;
+					stats.find('div.responses').children('span.number').addClass('mag-'+magnitude).text(resp);
+				},
+				graph: undefined
+			};
+			
+			obj.setGraph = function(data) {
+				if(!obj.graph){
+					obj.graph = registerGraph(graph);
+				}
+				
+				// update graoh , update/render
+				obj.graph.data.datasets[0].data = data.data;
+				obj.graph.update();
+				
+				if(data.data.reduce(function(p,n){return parseInt(p)+parseInt(n);}) == 0){
+					graph.addClass('no-data');
+				} else {
+					graph.removeClass('no-data');
+				}
+			};
+			
+			return obj;
+		};
+		
+		live.snapshot = {
+			day : createPod('day'),
+			week : createPod('week'),
+			all : createPod('all'),
+			cleanup : function(){
+				if(live.snapshot.day && live.snapshot.day.graph){
+					live.snapshot.day.graph.destroy();
+				}
+				if(live.snapshot.week && live.snapshot.week.graph){
+					live.snapshot.week.graph.destroy();
+				}
+				if(live.snapshot.all && live.snapshot.all.graph){
+					live.snapshot.all.graph.destroy();
+				}
+			}
+		};
+		
+	};
+	
+	var renderResponseFeed = function(canvas){
+		var feed = $("<div>").addClass('feed col-xs-12').appendTo(canvas);
+		feed
+			.append($('<span>').addClass('header').text('Live Response Feed'))
+			.append($('<span>').addClass('subtitle').text("Responses will appear as they come in."));
+			
+		var feedList = $('<div>').addClass('feed-list').appendTo(feed);
+		
+		live.feed = { };
+		live.feed.add = function(data){
+			if(data.percent && data.aspect && data.date && data.medium){
+				var feedItem = $('<div>').addClass('feed-item').hide();
+				feedItem.append($('<span>').addClass('number').addClass(bdff.mood(data.percent)).text(Math.round(data.percent) + '%'));
+				feedItem.append($('<span>').addClass('feed-label').text(data.aspect));
+				feedItem.append($('<span>').addClass('medium').addClass('medium-' + data.medium));
+				feedItem.append($('<span>').addClass('date').text(data.date));
+				feedItem.prependTo(feedList).slideDown(100, function(){
+					feedList.children('div.feed-item:gt(14)').slideUp(200, function(){
+						$(this).remove();
+					});
+				});
+			}
+		};
+		
+	};
+	
+	var renderPastScores = function(canvas){
+		var weeksScores = $("<div>").addClass('weeks-scores col-xs-2').appendTo(canvas);
+		weeksScores
+			.append($('<span>').addClass('header').text('Loading...'))
+			.append($('<span>').addClass('subtitle').text("Loading..."));
+			
+		var aspectList = $('<div>').addClass('scores-list').appendTo(weeksScores);
+		
+		live.scores = { aspects: {} };
+		live.scores.update = function(aspectLabel, percent, id){
+			var aspect;
+			
+			if(live.scores.aspects.hasOwnProperty(id) && aspectList.children('div[data-id='+id+']').length > 0){
+				// Update
+				aspect = aspectList.children('div[data-id='+id+']');
+				aspect.find('span.scores-label').text(aspectLabel);
+			} else {
+				aspect = $('<div>').attr('data-id', id).addClass('scores-item').hide().appendTo(aspectList);
+				aspect.append(
+					$('<div>').addClass('score-bar').attr('data-percent', percent)
+						.append($('<div>')).append($('<span>').addClass('scores-percent'))
+				);
+				aspect.append($('<span>').addClass('scores-label').text(aspectLabel));
+				aspect.find('div.score-bar > div').width(10);
+			}
+			
+			if(percent > 0){
+				aspect.find('span.scores-percent').removeClass('no-data').text(percent + '%').parent().removeClass('no-data');
+			} else {
+				aspect.find('span.scores-percent').addClass('no-data').text('No responses').parent().addClass('no-data');
+			}
+			
+			var targetWidth = Math.round(percent);
+			aspect.slideDown(function(){
+				$(this).find('div.score-bar > div').animate({
+					width: targetWidth+'%'
+				}, 1000);
+			});
+			
+			live.scores.aspects[id] = {id: id, percent: percent, label: aspectLabel};
+		};
+		
+		live.scores.updateType = function(type){
+			if(type == 'weekly'){
+				weeksScores.find('span.header').text("This Week's Scores");
+				weeksScores.find('span.subtitle').text("Scores from the past 7 days. For more details, use the tabs on the left.");
+			} else if(type == 'daily'){
+				weeksScores.find('span.header').text("Last 24 Hours");
+				weeksScores.find('span.subtitle').text("Scores from the past 24 hours. For more details, use the tabs on the left.");
+			}
+		};
+	};
+	
+	render(canvas);
 	
 	face.datahook(10000, {
-			url : '/api/v1/bdff/live',
-			data : { 'store' : bdff.storeID(), 'hours' : 10 }
+			url : '/api/v1/live/all',
+			data : { 'store' : bdff.storeID(), 'latest': 0, 'scores': 'weekly' }
 		}, function(data){
 		if(data.hasOwnProperty('error') && data.error.length > 0){
 			bdff.log('Uh oh...');
 		} else if(data.hasOwnProperty('live')) {
 			
-			live.datastatus.update(data.live.datastatus);
-			live.responses.update(data.live);
-			live.score.update(data.live);
-			live.change.update(data.live.change);
-			//live.blank1.update();
-			//live.blank2.update();
-			live.breakdown.update(data.live.breakdown);
-			live.newsfeed.update(data.live.newsfeed);
-			live.daily.update(data.live.daily);
+			var processData = function(data){
+				if(data.snapshot){
+					live.snapshot.day.setUp(data.snapshot.day.up);
+					live.snapshot.day.setDown(data.snapshot.day.down);
+					live.snapshot.day.setAverage(data.snapshot.day.average);
+					live.snapshot.day.setChange(data.snapshot.day.change);
+					live.snapshot.day.setResponses(data.snapshot.day.responses);
+					live.snapshot.day.setGraph(data.snapshot.day.bucket);
+					
+					live.snapshot.week.setUp(data.snapshot.week.up);
+					live.snapshot.week.setDown(data.snapshot.week.down);
+					live.snapshot.week.setAverage(data.snapshot.week.average);
+					live.snapshot.week.setChange(data.snapshot.week.change);
+					live.snapshot.week.setResponses(data.snapshot.week.responses);
+					live.snapshot.week.setGraph(data.snapshot.week.bucket);
+					
+					live.snapshot.all.setUp(data.snapshot.all.up);
+					live.snapshot.all.setDown(data.snapshot.all.down);
+					live.snapshot.all.setAverage(data.snapshot.all.average);
+					live.snapshot.all.setResponses(data.snapshot.all.responses);
+					live.snapshot.all.setGraph(data.snapshot.all.bucket);
+				}
+				
+				if(data.feed){
+					for(var i = 0; i < data.feed.length; i++){
+						face.datahooks[0].request.data.latest = Math.max(face.datahooks[0].request.data.latest, data.feed[i].id);
+						live.feed.add(data.feed[i]);
+					}
+				}				
+				
+				if(data.scores && data.scoresType){
+					live.scores.updateType(data.scoresType);
+					for(var i = 0; i < data.scores.length; i++){
+						live.scores.update(data.scores[i].title, data.scores[i].percent, data.scores[i].id);
+					}
+				}
+				
+				$('[data-tooltip]').brevadaTooltip();
+			};
 			
-			$('div[data-tooltip]').brevadaTooltip();
+			if(canvas.find('.full-loader').length > 0){
+				canvas.find('.full-loader').fadeOut(10, function(){
+					processData(data.live);
+					$(this).remove();
+				});
+			} else {
+				processData(data.live);
+			}
 		} else {
 			bdff.log('Uh oh...');
 		}

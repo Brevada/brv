@@ -19,25 +19,25 @@ Chart.defaults.global.maintainAspectRatio = false;
 
 function build_line_graph(bucket, id) {
 	$pod = $('#' + id);
-	
-	var data = {
-	    labels: bucket.dates,
-	    datasets: [
-	        {
-	            label: "Aspect",
-				fill: true,
-				backgroundColor: "rgba(21,187,75,0.7)",
-	            borderColor: "rgba(21,187,75,0.7)",
-	            pointBackgroundColor: "rgba(151,187,205,1)",
-	            pointBorderColor: "#FFFFFF",
-	            pointHoverBackgroundColor: "#FFFFFF",
-	            pointHoverBorderColor: "rgba(151,187,205,1)",
-				borderWidth: 0.5,
-				tension: 0.3,
-	            data: bucket.data
-	        }
-	    ]
-	};
+	var graph_color = 'rgb(242, 96, 106)',
+		data = {
+		    labels: bucket.dates,
+		    datasets: [
+		        {
+		            label: "Aspect",
+					fill: true,
+					backgroundColor: graph_color,
+		            borderColor: graph_color,
+		            pointBackgroundColor: graph_color,
+		            pointBorderColor: "#FFFFFF",
+		            pointHoverBackgroundColor: "#FFFFFF",
+		            pointHoverBorderColor: graph_color,
+					borderWidth: 0.5,
+					tension: 0.3,
+		            data: bucket.data
+		        }
+		    ]
+		};
 	var ctx = $pod.find('.line-graph canvas').get(0).getContext("2d");
 	return new Chart(ctx, {
 		type: 'line',

@@ -80,7 +80,7 @@
 		}
 	};
 	
-	bdff.create = function(label, render){
+	bdff.create = function(label, render, cleanup){
 		var face = {
 			'label' : label,
 			'canvas' : undefined,
@@ -136,6 +136,9 @@
 		face.cleanUp = function(){
 			face.stopHooks();
 			face.datahooks = [];
+			if(cleanup !== undefined){
+				cleanup.call(face);
+			}
 		};
 		
 		return bdff.faces[face.label] = face;

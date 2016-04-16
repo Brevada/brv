@@ -3,7 +3,16 @@
 }
 body {
     font-family: "helvetica neue", arial, helvetica, freesans, "liberation sans", "numbus sans l", sans-serif;
-    background-color: #BBB;
+    background-color: #FFF;
+}
+div.screen-overlay {
+    position: fixed;
+    z-index: 1000;
+    width: 100%;
+    height: 100%;
+    top: 0px;
+    left: 0px;
+    background: #FFF;
 }
 div.top-fixed {
     width: 100%;
@@ -14,8 +23,9 @@ div.top-fixed {
 }
 div.top-banner {
     background: #FFF;
-    padding: 0px 10px;
-    line-height: 50px;
+    color: #666;
+    padding: 0px 10px 0px 100px;
+    line-height: 40px;
 }
 div.top-banner img.logo-quote {
     height: 20px;
@@ -35,6 +45,7 @@ div.top-banner .dropdown-menu {
 	margin-top: -2px;
 }
 div.top-banner .dropdown-menu li {
+    color: #666;
     padding: 0px 5px;
     border-bottom: 1px solid #dcdcdc;
     cursor: pointer;
@@ -46,9 +57,9 @@ div.top-banner .dropdown-menu li:hover {
 }
 div.top-banner .three-lines {
     background: none;
-    color: #454545;
+    color: #666;
     border: none;
-    font-size: 30px;
+    font-size: 20px;
 }
 
 .positive{ background: #2ecc0e; }
@@ -75,15 +86,17 @@ div.mid-banner {
     min-height: 30px;
     height: auto;
     background: #333;
+    border-bottom: 1px solid #DCDCDC;
+    border-top: 1px solid #DCDCDC;
     margin: 0;
     padding: 0em;
     overflow: hidden;
-    -webkit-transform-style: preserve-3d;
+/*    -webkit-transform-style: preserve-3d;
     -moz-transform-style: preserve-3d;
     transform-style: preserve-3d;
-    -webkit-box-shadow: 0px 0px 9px 0px rgba(50, 50, 50, 0.75);
-    -moz-box-shadow: 0px 0px 9px 0px rgba(50, 50, 50, 0.75);
-    box-shadow: 0px 0px 9px 0px rgba(50, 50, 50, 0.75);
+    -webkit-box-shadow: 0px 0px 3px 0px rgba(50, 50, 50, 0.75);
+    -moz-box-shadow: 0px 0px 3px 0px rgba(50, 50, 50, 0.75);
+    box-shadow: 0px 0px 3px 0px rgba(50, 50, 50, 0.75);*/
 }
 
 div.mid-banner .icon-button {
@@ -92,12 +105,12 @@ div.mid-banner .icon-button {
     text-align: center;
     font-size: 12px;
     background: none;
-    color: #999;
+    color: #BBB;
     outline: none;
-    border-right: 1px solid #666;
+    /*border-right: 1px solid #BBB;*/
     border-radius: 0px;
     overflow: hidden;
-    line-height: 25px;
+    line-height: 15px;
     border-bottom: 0px;
     text-transform: uppercase;
 }
@@ -113,7 +126,11 @@ div.mid-banner .icon-button {
 
 div.mid-banner .icon-button i {
     float: left;
-    color: #EEE;
+    color: #BBB;
+}
+
+div.sidebar {
+    width: 70px;
 }
 
 div.sidebar .icon-button.selected {
@@ -123,17 +140,20 @@ div.sidebar .icon-button.selected {
 .btn-sidebar {
     text-transform: uppercase;
     font-size: 11px;
-    background: #333333;
-    color: #BBB;
+    color: #666;
+    background: #EEE;
     outline: none;
-    border-color: #666;
-    width: 80px;
+    border-color: #EEE;
+    border: none;
+    border-bottom: 1px solid #BBB;
+    width: 70px;
     height: 90px;
     overflow: hidden;
+    border-radius: 0px;
 }
 
 div.sidebar .icon-button.selected::after {
-    border: 30px solid #EEE;
+/*    border: 30px solid #EEE;
     height: 5px;
     width: 5px;
     content: '';
@@ -144,16 +164,16 @@ div.sidebar .icon-button.selected::after {
     left: 80px;
     -webkit-transform: rotate(45deg);
     -ms-transform: rotate(45deg);
-    transform: rotate(45deg);
+    transform: rotate(45deg);*/
 }
 .btn-sidebar .icon {
-    width: 50px;
-    height: 50px;
+    width: 30px;
+    height: 30px;
     text-align: center;
-    border: 1px solid #444;
+    border: 1px solid #BBB;
     border-radius: 50px;
     margin: 0 auto;
-    line-height: 60px;
+    line-height: 40px;
 }
 
 div.sidebar .icon-button {
@@ -161,8 +181,8 @@ div.sidebar .icon-button {
 }
 
 div.sidebar .icon-button .icon {
-    line-height: 50px;
-    font-size: 25px;
+    line-height: 30px;
+    font-size: 15px;
 }
 
 div.sidebar .icon-button .icon i {
@@ -178,8 +198,8 @@ div.sidebar .icon-button .icon i {
 div.sidebar .icon-button .icon-subtext {
     line-height: 20px;
     margin-top: 5px;
-    font-size: 11px;
-    color: #EEE;
+    font-size: 10px;
+    color: #999;
     text-align: center;
     text-transform: uppercase;
 }
@@ -191,8 +211,11 @@ div.sidebar .icon-button:hover {
 }
 
 div.sidebar .icon-button.selected {
-    background: #333;
-    /*color: #FFF;*/
+    background: rgb(242, 96, 106);
+}
+
+div.sidebar .icon-button.selected .icon-subtext {
+    color: #FFF;
 }
 
 div.sidebar .icon-button.selected .icon {
@@ -238,7 +261,7 @@ div.block div.block-bottom {
 }
 div.spacer {
     width: 100%;
-    height: 100px;
+    height: 70px;
     padding: 0;
     margin: 0;
 }
@@ -395,7 +418,8 @@ div.bottom-bar {
     -webkit-border-radius: 3px;
     -moz-border-radius: 3px;
     border-radius: 3px;
-	min-height: 387px;
+    border: 1px solid #EEE;
+	min-height: 310px;
 	margin: 0px 10px 20px 10px;
 	padding: 0;
 	position: relative;
@@ -405,7 +429,7 @@ div.bottom-bar {
 	background: #FFF;
 }
 .pod .body {
-    background: #eaeaea;
+    background: #FFF;
 	width: 100%;
 	height: 100%;
 	position: absolute;
@@ -460,7 +484,7 @@ div.bottom-bar {
     padding: 0px;
 }
 .pod .aspect-title {
-    text-transform: uppercase;
+    /*text-transform: uppercase;*/
     font-size: 18px;
     background: none;
 }
@@ -472,7 +496,7 @@ div.bottom-bar {
     margin: 10px;
 }
 .pod .body .pod-body-bottom div.graphs {
-    height: 200px;
+    height: 120px;
 }
 
 .pod .body .pod-body-bottom div.graphs div.line-graph {
@@ -490,7 +514,7 @@ div.bottom-bar {
 
 .pod .body .pod-body-bottom div.graphs div.bar-graph {
     display: none;
-    height: 200px;
+    height: 120px;
 }
 .pod .body .pod-body-bottom div.graphs div.graph {
     float: left;
@@ -518,7 +542,7 @@ div.bottom-bar {
     opacity: 0.5;
 }
 .pod .body .pod-body-bottom div.right-graph {
-    background: #999;
+    background: #EEE;
     width: 15%;
     height: 15%;
     left: 30%;
@@ -634,9 +658,11 @@ div.email-display-container .email .rating{
 }
 
 #sidebar-wrapper {
-    padding: 0px 10px;
+    padding: 0px;
     left: 0;
-    width: 130px;
+    top: 30px;
+    background: #EEE;
+    border-right: 1px solid #DCDCDC;
     position: fixed;
     height: 100%;
     overflow-y: auto;
@@ -649,8 +675,8 @@ div.email-display-container .email .rating{
 
 #page-content-wrapper {
     width: 100%;
-	margin: 0 auto;
-	padding: 0 0 0 120px;	
+	margin: 0 auto 44px auto;
+	padding: 0 0 0 90px;
 	transition: all 0.4s ease 0s;
 }
 
@@ -705,7 +731,7 @@ div.email-display-container .email .rating{
 
 .dashboard-pod {
     padding: 0px;
-    background: #EEE;
+    background: #FFF;
     border-radius: 2px;
     margin-bottom: 20px;
     overflow: hidden;
@@ -743,30 +769,25 @@ div.milestone {
     font-size: 15px;
     outline: none;
     background: none;
-	border-top: 1px solid #999;
-	border-right: 1px solid #999;
-	border-left: 1px solid #999;
-    border-bottom: 2px solid #999;
+    border: 1px solid #DCDCDC;
     border-radius: 1px;
 }
 .milestone-form .input-group.date .input-group-addon {
 	outline: none;
 	background: none;
-	border-top: 1px solid #999;
-	border-right: 1px solid #999;
-	border-left: 1px solid #999;
-	border-bottom: 2px solid #999;
+	border: 1px solid #DCDCDC;
 }
 
 .milestone-body {
     padding: 0px;
-    background: #EEE;
+    background: #F5F5F5;
     border-radius: 2px;
     margin-bottom: 20px;
     overflow: hidden;
     -webkit-border-radius: 3px;
     -moz-border-radius: 3px;
     border-radius: 3px;
+    border: 1px solid #DCDCDC;
 }
 .milestone-body .header {
     padding: 10px;
@@ -844,7 +865,7 @@ div.milestone {
     font-size: 11px;
     color: #666;
     padding: 5px;
-    background: #DDD;
+    background: #F5F5F5;
 }
 .milestone-body .footer .complete-button {
     font-weight: bold;
@@ -856,81 +877,6 @@ div.milestone {
     margin-left: 10px;
 }
 
-/* Live */
-
-.bigticker {
-    /*padding: 10px;*/
-    margin: 0px;
-    background: #F5F5F5;
-}
-
-@media (min-width:750px) {
-    .bigticker {
-        height: 200px;
-    }
-}
-
-.bigticker div {
-    text-align: center;
-    /*color: #FFF;*/
-}
-
-.bigticker.score {
-    color: #000000;
-    /*background-image:;*/
-}
-
-.bigticker.datastatus {
-    background: #333;
-    color: #FFF;
-}
-
-.bigticker.datastatus .data{
-    font-size: 12px;
-
-}
-
-.bigticker .title {
-    color: #333333;
-    font-size: 17px;
-    /*padding: 0px 0px 5px 0px;*/
-}
-
-.bigticker .data {
-    font-size: 100px;
-    font-weight: bold;
-}
-
-.bigticker.breakdown {
-    height: 330px;
-}
-
-.bigticker.breakdown .graph {
-}
-
-.bigticker .bulb {
-    width: 100%;
-    height: 110px;
-    margin: 0 auto;
-    border-radius: 4px;
-    color: #FFF;
-}
-
-.square {
-    padding: 0px;
-}
-
-.square div {
-    padding: 5px;
-}
-
-.bigticker.daily .bulb .all-data {
-    font-size: 20px;
-    font-weight: bold;
-}
-.bigticker.daily .bulb .all-data .data {
-    font-size: 50px;
-}
 .support-form textarea {
     padding: 10px;
     font-size:18px;
@@ -957,17 +903,20 @@ div.milestone {
 .hoverpod {
     cursor: pointer;
     position: fixed;
-    bottom: 20px;
-    right: 20px;
-    background: #333;
-    color: #FFF;
-    -webkit-box-shadow: 0px 0px 5px 0px rgba(50, 50, 50, 0.75);
+    bottom: 0px;
+    right: 0px;
+    z-index: 9;
+    width:100%;
+    background: #FFF;
+    color: #333;
+    padding-left: 100px;
+/*    -webkit-box-shadow: 0px 0px 5px 0px rgba(50, 50, 50, 0.75);
     -moz-box-shadow: 0px 0px 5px 0px rgba(50, 50, 50, 0.75);
-    box-shadow: 0px 0px 5px 0px rgba(50, 50, 50, 0.75);
-    -webkit-border-radius: 3px;
+    box-shadow: 0px 0px 5px 0px rgba(50, 50, 50, 0.75);*/
+/*    -webkit-border-radius: 3px;
     -moz-border-radius: 3px;
     border-radius: 3px;
-    opacity: 0.95;
+    opacity: 0.95;*/
 }
 .hoverpod:hover {
     opacity: 1;
@@ -977,7 +926,7 @@ div.milestone {
     padding: 5px;
 }
 .hoverpod .body div {
-    width: 100px;
+    width: 110px;
     margin-right: 10px;
     display: inline-block;
 }
@@ -987,16 +936,16 @@ div.milestone {
 
 .hoverpod .body .number {
     text-align: center;
-    font-size: 30px;
+    font-size: 15px;
     font-weight: bold;
 }
 .hoverpod .body .text {
-    font-size: 11px;
+    font-size: 13px;
     text-align: center;
 }
 .hoverpod .status .bulb {
-    width: 30px;
-    height: 30px;
+    width: 15px;
+    height: 15px;
     border-radius: 3px;
     margin: 0 auto;
     margin-bottom: 5px;
@@ -1036,4 +985,511 @@ div.milestone {
     background: #2ecc0e;
 }
 
+.complete-page {
+    padding: 0px 7px;
+}
+
+.complete-page .main {
+    padding: 0px 45px 0px 0px;
+}
+
+.complete-page .section {
+    margin-bottom: 20px;
+    clear: both;
+    /*border: 1px solid #EEE;*/
+    border-radius: 3px;
+    overflow: hidden;
+}
+
+.complete-page .section canvas {
+    border-radius: 0px;
+}
+
+.complete-page .section .toolbar {
+    padding: 10px;
+    background: #FFF;
+    border-bottom: 1px solid #DCDCDC;
+    clear: both;
+}
+
+.complete-page .section .toolbar .title {
+    float: left;
+    font-size: 18px;
+}
+
+.complete-page .section .toolbar .buttons {
+    float: right;
+}
+
+.complete-page .section .toolbar .buttons div {
+    background: #EEE;
+    border: 1px solid #dcdcdc;
+    color: #666;
+    height: 25px;
+    padding: 0px 10px;
+    border-radius: 4px;
+    text-align: center;
+    line-height: 25px;
+    display: inline-block;
+}
+
+.complete-page .section .graph-button {
+    position: absolute;
+    bottom: 10px;
+	right: 10px;
+    background: rgba(242, 96, 106, 1);
+    opacity: 0.9;
+    /*border: 1px solid rgb(242, 96, 106);*/
+    color: #FFF;
+    height: 55px;
+    width: 55px;
+    line-height: 55px;
+    border-radius: 55px;
+    text-align: center;
+    font-size: 30px;
+/*    -webkit-box-shadow: 0px 0px 5px 0px rgba(50, 50, 50, 0.75);
+    -moz-box-shadow:    0px 0px 5px 0px rgba(50, 50, 50, 0.75);
+    box-shadow:         0px 0px 5px 0px rgba(50, 50, 50, 0.75);*/
+	cursor: pointer;
+}
+.complete-page .section .graph-button:hover {
+	opacity: 1;
+}
+
+.complete-page .graph-container {
+    height: 280px;
+    text-align: right;
+	position: relative;
+}
+
+.complete-page .section .fullscreen {
+    position: fixed;
+    left: 0px;
+    z-index: 1001;
+    width: 100%;
+    height: 75%;
+}
+
+.complete-page .sub-graph-container {
+    height: 150px;
+    padding: 0px;
+	position: relative;
+}
+
+.complete-page .sub-header {
+    margin-top: 10px;
+}
+
+.complete-page .settings .date {
+    padding: 10px;
+    font-size: 15px;
+}
+
+.complete-page .settings .default-options {
+    margin-top: 5px;
+}
+
+.complete-page .settings .custom-options {
+    height: 0px;
+    overflow: hidden;
+}
+
+.complete-page .settings .option {
+    width: 30%;
+    text-align: center;
+    color: #BBB;
+    background: #FFF;
+    border: 1px solid #DCDCDC;
+    padding: 5px;
+    float: left;
+    font-size: 14px;
+    cursor: pointer;
+    border-radius: 2px;
+    margin-right: 5px;
+    margin-bottom: 5px;
+}
+
+.complete-page .settings .option:hover {
+    color: #333;
+}
+
+.complete-page .settings .option.selected {
+    color: #FFF;
+    background: rgb(242, 96, 106);
+}
+
+.complete-page .aspects {
+    max-height: 480px; /*TODO */
+    overflow: scroll;
+    background: none;
+    border-radius: 2px;
+    margin-top: 10px;
+}
+
+.complete-page .aspect {
+    padding: 3px;
+    color: #333;
+    margin-bottom: 5px;
+    border-bottom: 1px solid #EEE;
+    cursor: pointer;
+}
+
+.complete-page .aspect .aspect-icon {
+    display: inline-block;
+    color: #FFF;
+    width: 30px;
+    height: 30px;
+    border-radius: 4px;
+    -webkit-box-shadow: 0px 0px 5px 0px rgba(50, 50, 50, 0.75);
+    -moz-box-shadow:    0px 0px 5px 0px rgba(50, 50, 50, 0.75);
+    box-shadow:         0px 0px 5px 0px rgba(50, 50, 50, 0.75);
+}
+
+.complete-page .aspect .aspect-data {
+    margin-left: 4px;
+    display: inline-block;
+}
+.complete-page .aspect .aspect-visibility {
+    float: right;
+    margin-left: 4px;
+    display: inline-block;
+}
+.complete-page .aspect.aspect-disabled .aspect-visibility {
+	opacity: 0.8;
+}
+
+.complete-page .aspect .aspect-data .aspect-info {
+    color: #999;
+}
+
+.complete-page .side-control {
+    right: 0;
+    /*top: 80px;*/
+    padding: 0px;
+    position: fixed;
+    z-index: 8;
+    height: 100%;
+    overflow-y: auto;
+    /*background: #FBFBFB;*/
+    /*border-left: 1px solid #EEE;*/
+    transition: all 0.4s ease 0s;
+}
+
+.complete-page .side-control .header {
+    /*padding: 10px;*/
+    /*background: #FBFBFB;*/
+    font-size: 18px;
+    /*border: 1px solid #DCDCDC;*/
+}
+
+.complete-page .side-control .sub-header {
+    font-size: 12px;
+    color: #999;
+}
+
+/* Range Slider */
+.ui-rangeSlider {
+    padding: 0px;
+    height: 30px;
+    overflow: hidden;
+}
+.ui-rangeSlider-arrow {
+    display: none;
+}
+.ui-rangeSlider-withArrows .ui-rangeSlider-container {
+    width: 100%;
+    margin: 0px;
+    background: #999;
+}
+.ui-rangeSlider-bar {
+    background: #333;
+    color: #FFF;
+    font-size: 12px;
+    text-align: center;
+    height: 20px;
+    border-right: 4px solid #FFF;
+    border-left: 4px solid #FFF;
+}
+.ui-rangeSlider-label {
+    bottom: 50px;
+    /*font-size: 1px;*/
+    padding: 0px;
+    color: #333;
+    background: rgba(255,255,255,0.5);
+}
+.ui-rangeSlider-label-inner {
+    top: 0%;
+    left: 110%;
+    border-left: 10px solid #333;
+    border-right: 10px solid transparent;
+    border-top: 10px solid transparent;
+    border-bottom: 10px solid transparent;
+}
+.ui-rangeSlider-rightLabel .ui-rangeSlider-label-inner {
+    top: 0%;
+    left: 0%;
+    border-left: 10px solid transparent;
+    border-right: 10px solid #333;
+    border-top: 10px solid transparent;
+    border-bottom: 10px solid transparent;
+
+}
 div.full-loader { margin: 0 auto; text-align: center; width: 100%; display: block; font-size: 20em; opacity: 0.05; overflow: hidden; }
+
+/* Live */
+div.snapshot {
+	margin: 0 0 20px 0;
+    padding: 0px;
+}
+
+div.snapshot span.header, div.weeks-scores span.header, div.feed span.header {
+	display: block;
+	color: #333;
+	font-size: 22px;
+}
+div.snapshot span.subtitle, div.weeks-scores span.subtitle, div.feed span.subtitle {
+	display: block;
+	color: #aaa;
+	font-size: 16px;
+}
+
+div.snapshot div.snapshot-pod {
+	background: #FFF;
+    border-bottom: 1px solid #DCDCDC;
+	padding: 5px;
+	margin: 5px 0 0 0;
+	position: relative;
+}
+div.snapshot div.snapshot-pod:first-child {
+	border-top-left-radius: 3px;
+	border-bottom-left-radius: 3px;
+}
+div.snapshot div.snapshot-pod:last-child {
+	border-top-right-radius: 3px;
+	border-bottom-right-radius: 3px;
+}
+
+div.snapshot div.snapshot-pod div.snapshot-stats {
+	width: 19%;
+	height: 90%;
+	margin: 10px 0 0 1%;
+	display: inline-block;
+	text-align: center;
+	float: left;
+}
+div.snapshot div.snapshot-pod div.snapshot-stats > div {
+	text-align: center;
+	width: 100%;
+	margin: 2px 0 12px 0;
+}
+div.snapshot div.snapshot-pod div.snapshot-stats > div span.number {
+    font-size: 13px;
+	font-weight: bold;
+	color: #FFF;
+	padding: 7.5px 2px;
+	display: block;
+	width: 100%;
+	border-radius: 2px;
+}
+div.snapshot div.snapshot-pod div.snapshot-stats > div span.label {
+	color: #888;
+	display: block;
+	width: 100%;
+	font-size: 10px;
+	margin: 2px 0 0 0;
+	padding: 0;
+}
+
+div.snapshot div.snapshot-pod div.snapshot-stats > div.responses span.number {
+	background: #38cf4a;
+}
+
+div.snapshot div.snapshot-pod div.snapshot-graph {
+	display: inline-block;
+	width: 75%;
+	height: 150px;
+	margin: 0;
+	padding: 0;
+	float: right;
+}
+
+div.snapshot div.snapshot-pod div.snapshot-graph:not(.no-data) > div.no-data {
+	display: none;
+}
+div.snapshot div.snapshot-pod div.snapshot-graph.no-data > div.no-data {
+    margin: 0 auto 0 auto;
+    display: inline-block;
+    width: 100%;
+	height: 100%;
+    text-align: center;
+}
+div.snapshot div.snapshot-pod div.snapshot-graph.no-data > div.no-data i {
+	font-size: 10.25em;
+	color: rgb(242, 96, 106);
+	opacity: 0.6;
+}
+div.snapshot div.snapshot-pod div.snapshot-graph.no-data canvas {
+	display: none;
+}
+
+div.snapshot div.snapshot-pod div.snapshot-graph canvas {
+	display: block;
+	width: 100%;
+	height: 100%;
+}
+
+div.snapshot div.snapshot-pod div.snapshot-best-worst {
+	color: #999;
+	margin: 0px 0 5px 28.5px;
+	display: inline-block;
+	width: 100%;
+	clear: both;
+}
+div.snapshot div.snapshot-pod div.snapshot-best-worst > span {
+	display: block;
+	padding: 0;
+	margin: 0;
+}
+div.snapshot div.snapshot-pod div.snapshot-best-worst > span i {
+	margin-right: 4.5px;
+}
+
+div.snapshot div.snapshot-pod span.snapshot-label {
+	text-align: center;
+	display: block;
+	font-weight: bold;
+	color: #666;
+	margin: 5px 0 5px 0;
+	clear: both;
+}
+
+div.feed {
+	margin-bottom: 20px;
+}
+
+div.feed div.feed-list {
+	width: 100%;
+	overflow-y: scroll;
+	max-height: 260px;
+}
+
+div.feed div.feed-list div.feed-item {
+	width: 100%;
+	padding: 6px 1px 10px 1px;
+	margin: 5px 0;
+	border-bottom: 1px solid #eee;
+}
+
+div.feed div.feed-list div.feed-item span {
+	
+}
+
+div.feed div.feed-list div.feed-item span.number {
+	width: 50px;
+    text-align: center;
+    font-size: 12px;
+	font-weight: bold;
+	color: #FFF;
+	padding: 2px 4px;
+	display: inline-block;
+	border-radius: 2px;
+}
+
+div.feed div.feed-list div.feed-item span.feed-label {
+	color: #777;
+	margin: 0 0 0 14px;
+}
+
+div.feed div.feed-list div.feed-item span.date {
+	float: right;
+	color: #999;
+	font-size: 12px;
+}
+
+div.feed div.feed-list div.feed-item span.medium {
+	float: right;
+	font: normal normal normal 14px/1 FontAwesome;
+    font-size: inherit;
+    text-rendering: auto;
+    -webkit-font-smoothing: antialiased;
+	font-size: 26px;
+	display: inline-block;
+	margin: -5px 0 5px 30px;
+	width: 30px;
+	text-align: center;
+    color: rgb(242, 96, 106);
+}
+div.feed div.feed-list div.feed-item span.medium.medium-tablet::before {
+	content: '\f10a';
+	font-size: 30px;
+}
+div.feed div.feed-list div.feed-item span.medium.medium-desktop::before {
+	content: '\f108';
+}
+div.feed div.feed-list div.feed-item span.medium.medium-phone::before {
+	content: '\f10b';
+	font-size: 39px;
+    top: -5px;
+    position: relative;
+}
+
+div.weeks-scores {
+    position: fixed;
+	margin: 0 0 20px 0;
+}
+
+div.weeks-scores div.scores-list {
+	width: 100%;
+	padding: 0;
+	margin: 0;
+}
+
+div.weeks-scores div.scores-list div.scores-item {
+	width: 100%;
+	position: relative;
+	margin: 9px 0 0 0;
+}
+
+div.weeks-scores div.scores-list div.scores-item div.score-bar {
+	width: 100%;
+	height: 25px;
+	padding: 0;
+	margin: 0;
+}
+div.weeks-scores div.scores-list div.scores-item div.score-bar > div {
+	height: 100%;
+	width: 10px;
+	background: rgb(242, 96, 106);
+	display: inline-block;
+	padding: 0;
+	margin: 0;
+	border-radius: 2px;
+}
+div.weeks-scores div.scores-list div.scores-item div.score-bar.no-data > div {
+	background: rgba(255,255,255,0);
+}
+div.weeks-scores div.scores-list div.scores-item div.score-bar > span {
+	position: absolute;
+	left: 2px;
+	top: 2px;
+    color: #FFF;
+    font-weight: bold;
+    background: rgba(255,255,255,0);
+}
+div.weeks-scores div.scores-list div.scores-item div.score-bar > span.no-data {
+	background: rgb(242, 96, 106);
+	border-radius: 2px;
+	padding: 0 2px;
+	left: 0;
+	opacity: 0.5;
+	transition: opacity 0.5s ease-in-out;
+}
+div.weeks-scores div.scores-list div.scores-item div.score-bar > span.no-data:hover {
+	opacity: 1;
+}
+
+div.weeks-scores div.scores-list div.scores-item > span {
+	display: block;
+	color: #666;
+    font-size: 12px;
+}

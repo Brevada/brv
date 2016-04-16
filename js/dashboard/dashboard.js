@@ -9,7 +9,21 @@ $(document).ready(function(){
 });
 
 if(typeof bdff !== 'undefined'){
-	$(document).ready(function(){	
+	$(document).ready(function(){
+		var hashMappings = {
+			play: 'complete',
+			details: 'aspects',
+			live: 'live',
+			events: 'milestones'
+		};
+		
+		var mappingsToHash = {
+			complete: 'play',
+			aspects: 'details',
+			live: 'live',
+			milestones: 'events'
+		};
+		
 		$('.toggle-button').click(function(){
 			bdff.face($(this).attr('data-id'));
 		});
@@ -18,16 +32,26 @@ if(typeof bdff !== 'undefined'){
 			$('.toggle-button').removeClass('selected');
 			$('.toggle-button[data-id=' + face.label + "]").addClass('selected');
 			$(window).scrollTop(0);
+			
+			if(face.label && face.label != 'hoverpod'){
+				window.location.hash = '#' + mappingsToHash[face.label];
+			}
 		};
 		
 		bdff.canvas('#main-container');
 		
 		bdff.faces['hoverpod'].attach('body');
-		/*bdff.faces['live'].attach();*/
+		bdff.faces['complete'].attach();
+		bdff.faces['live'].attach();
 		bdff.faces['milestones'].attach();
 		bdff.faces['aspects'].attach();
 		
 		bdff.persistent('hoverpod');
-		bdff.face('aspects');
+		
+		if(window.location.hash.length > 1 && hashMappings.hasOwnProperty(window.location.hash.substring(1))){
+			bdff.face(hashMappings[window.location.hash.substring(1)]);
+		} else {
+			bdff.face('live');
+		}
 	});
 }
