@@ -147,15 +147,20 @@ class TaskPlayground extends AbstractTask
 			
 			$bucketDates_abs = [];
 			$bucketData_abs = [];
+			$bucketData_responses = [];
 			
 			$minBucket_abs = 100;
 			$maxBucket_abs = 0;
+			$responses_max = 0;
 			
 			if(!empty($includedTypes)){
 				$aspectAvg = (new Data())->store($store)->aspectType($aspectType)->from($from)->to($to)->getAvg($bucketSize);
 				$prevVal = (new Data())->store($store)->aspectType($aspectType)->from($from - ($MONTH*12))->to($from)->getAvg()->getRating();
 				for($i = 0; $i < $bucketSize; $i++){
 					$bucketDates_abs[] = date($dateFormat, $aspectAvg->getUTCFrom($i)) == date($dateFormat, $aspectAvg->getUTCTo($i)-1) ? date($dateFormat, $aspectAvg->getUTCFrom($i)) : date($dateFormat, $aspectAvg->getUTCFrom($i)) . ' - ' . date($dateFormat, $aspectAvg->getUTCTo($i)-1);
+					
+					$bucketData_responses[] = $aspectAvg->getSize($i);
+					$responses_max = max($responses_max, $aspectAvg->getSize($i));
 					
 					$value = $aspectAvg->getRating($i);
 					if($aspectAvg->getSize($i) == 0){
@@ -189,6 +194,10 @@ class TaskPlayground extends AbstractTask
 					"abs" => [
 						"labels" => $bucketDates_abs,
 						"data" => $bucketData_abs,
+						"responses" => [
+							"data" => $bucketData_responses,
+							"max" => $responses_max
+						],
 						"min" => $minBucket_abs,
 						"max" => $maxBucket_abs
 					]

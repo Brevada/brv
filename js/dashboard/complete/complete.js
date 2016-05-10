@@ -90,6 +90,7 @@ bdff.create('complete', function(canvas, face){
 		complete.renderAspects();
 
 		complete.renderAspectRelGraph();
+		complete.renderResponseAbsGraph();
 		complete.renderAspectAbsGraph();
 		complete.renderAverageLineGraph();
 		complete.renderAverageBarGraph();
@@ -115,6 +116,87 @@ bdff.create('complete', function(canvas, face){
 
 			$("#slider").dateRangeSlider("values", d, new Date());
 	}
+	
+	complete.renderResponseAbsGraph = function () {
+		if(!complete.chartResponseAbs){
+			var ctx = $(complete.el).find('.graph-response-abs').get(0).getContext("2d");
+				complete.chartResponseAbs = new Chart(ctx, {
+					type: 'line',
+					data: { labels : [], datasets : [] },
+					options: {
+						responsive: true,
+						maintainAspectRatio: false,
+						scales: {
+							xAxes: [{
+								display: false,
+								ticks: {
+									fontSize: '11',
+									fontColor: '#666',
+									reverse: true
+								},
+								gridLines: {
+									color: 'rgba(0, 0, 0, 0.02)'
+								}
+							}],
+							yAxes: [{
+								display: false,
+								ticks : {
+									beginAtZero: false,
+									autoSkip: false,
+									min: -105,
+									max: 105
+								}
+							}]
+						},
+						legend: {
+							display: false,
+							labels: {
+								boxWidth: 20,
+								fontColor: '#333'
+							}
+						},
+						tooltips: {
+							mode : 'label',
+							callbacks: {
+								title : function(tooltip){
+									return tooltip[0].xLabel;
+								}
+							},
+							backgroundColor : '#999',
+							color : '#FFFFFF'
+						}
+					}
+				});
+		}
+		
+		// Update
+		var datasets = [];
+		var labels = [];
+		var max = 0;
+		for(var i in complete.serverData.aspects){
+			var aspect = complete.serverData.aspects[i];
+			if(!aspect.bucket){ continue; }
+			if(labels.length == 0){
+				labels = aspect.bucket.abs.labels;
+			}
+			datasets.push({
+				data : aspect.bucket.abs.responses.data,
+				label : aspect.title,
+				borderColor : aspect.borderColor,
+				fill : false,
+				backgroundColor : aspect.backgroundColor,
+				datasetStrokeWidth : 5
+			});
+			
+			max = Math.max(max, aspect.bucket.abs.responses.max);
+		}
+		complete.chartResponseAbs.data.labels = labels;
+		complete.chartResponseAbs.data.datasets = datasets;
+		complete.chartResponseAbs.options.scales.yAxes[0].ticks.min = 0;
+		complete.chartResponseAbs.options.scales.yAxes[0].ticks.max = Math.round(max) + 5;
+		complete.chartResponseAbs.update();
+	};
+	
 	complete.renderAspectRelGraph = function () {
 		if(!complete.chartAspectRel){
 			var ctx = $(complete.el).find('.graph-aspect-rel').get(0).getContext("2d");
@@ -529,6 +611,19 @@ bdff.create('complete', function(canvas, face){
 				</div>\
 				<div id="graph-1" class="graph-container">\
 					<canvas class="dashboard-pod graph graph-aspect-rel"></canvas>\
+					<div class="graph-button"><i class="fa fa-expand"></i></div>\
+				</div>\
+			</div>\
+			<div class="section">\
+				<div class="toolbar">\
+					<div class="title">Responses</div>\
+					<div class="buttons">\
+						<!--<div class="toggle" data-id="graph-5"><i class="fa fa-info"></i></div>-->\
+					</div>\
+					<div class="clear"></div>\
+				</div>\
+				<div id="graph-5" class="graph-container">\
+					<canvas class="dashboard-pod graph graph-response-abs"></canvas>\
 					<div class="graph-button"><i class="fa fa-expand"></i></div>\
 				</div>\
 			</div>\
