@@ -738,6 +738,7 @@ bdff.create('complete', function(canvas, face){
 	if(complete){
 		if(complete.dateSlider){ try { complete.dateSlider.dateRangeSlider("destroy"); complete.dateSlider = undefined; } catch (ex){} }
 		if(complete.chartAspectRel){ try { complete.chartAspectRel.destroy(); complete.chartAspectRel = undefined; } catch (ex){} }
+		if(complete.chartResponseAbs){ try { complete.chartResponseAbs.destroy(); complete.chartResponseAbs = undefined; } catch (ex){} }
 		if(complete.chartAspectAbs){ try { complete.chartAspectAbs.destroy(); complete.chartAspectAbs = undefined; } catch (ex){} }
 		if(complete.averageChart){ try { complete.averageChart.destroy(); complete.averageChart = undefined; } catch (ex){} }
 		if(complete.aspectBarGraph){ try { complete.aspectBarGraph.destroy(); complete.aspectBarGraph = undefined; } catch (ex){} }
