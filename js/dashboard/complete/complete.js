@@ -14,6 +14,8 @@ bdff.create('complete', function(canvas, face){
 		average : {}
 	};
 	
+	complete.graphs = {};
+	
 	complete.colorOptions = ['#ca60f2', '#f260b6', '#f2606a', '#60b6f2', '#f2c460', '#d98d42'];
 	complete.colorFillOptions = ['rgba(202,96,242, 0.4)', 'rgba(242,96,182,0.4)', 'rgba(242,96,106,0.4)', 'rgba(96,182,242,0.4)', 'rgba(242,196,96,0.4)', 'rgba(217,141,66,0.4)']
 	// complete.colorOptions = ['#2ecc0e', '#29b60c', '#30e30c', '#36ff0d', '#24a40a', '#197806'];
@@ -118,9 +120,9 @@ bdff.create('complete', function(canvas, face){
 	}
 	
 	complete.renderResponseAbsGraph = function () {
-		if(!complete.chartResponseAbs){
+		if(!complete.graphs.responseAbs){
 			var ctx = $(complete.el).find('.graph-response-abs').get(0).getContext("2d");
-				complete.chartResponseAbs = new Chart(ctx, {
+				complete.graphs.responseAbs = new Chart(ctx, {
 					type: 'line',
 					data: { labels : [], datasets : [] },
 					options: {
@@ -147,6 +149,14 @@ bdff.create('complete', function(canvas, face){
 									max: 105
 								}
 							}]
+						},
+						title: {
+							display: false,
+							text: 'Responses',
+							fontColor: '#000',
+							fontSize: 28,
+							fontFamily: 'helvetica neue, arial',
+							padding: 30
 						},
 						legend: {
 							display: false,
@@ -190,17 +200,17 @@ bdff.create('complete', function(canvas, face){
 			
 			max = Math.max(max, aspect.bucket.abs.responses.max);
 		}
-		complete.chartResponseAbs.data.labels = labels;
-		complete.chartResponseAbs.data.datasets = datasets;
-		complete.chartResponseAbs.options.scales.yAxes[0].ticks.min = 0;
-		complete.chartResponseAbs.options.scales.yAxes[0].ticks.max = Math.round(max) + 5;
-		complete.chartResponseAbs.update();
+		complete.graphs.responseAbs.data.labels = labels;
+		complete.graphs.responseAbs.data.datasets = datasets;
+		complete.graphs.responseAbs.options.scales.yAxes[0].ticks.min = 0;
+		complete.graphs.responseAbs.options.scales.yAxes[0].ticks.max = Math.round(max) + 5;
+		complete.graphs.responseAbs.update();
 	};
 	
 	complete.renderAspectRelGraph = function () {
-		if(!complete.chartAspectRel){
+		if(!complete.graphs.aspectRel){
 			var ctx = $(complete.el).find('.graph-aspect-rel').get(0).getContext("2d");
-				complete.chartAspectRel = new Chart(ctx, {
+				complete.graphs.aspectRel = new Chart(ctx, {
 					type: 'line',
 					data: { labels : [], datasets : [] },
 					options: {
@@ -228,12 +238,21 @@ bdff.create('complete', function(canvas, face){
 								}
 							}]
 						},
+						title: {
+							display: false,
+							text: 'Aspects (% Change)',
+							fontColor: '#000',
+							fontSize: 28,
+							fontFamily: 'helvetica neue, arial',
+							padding: 30
+						},
 						legend: {
 							display: false,
 							labels: {
 								boxWidth: 20,
 								fontColor: '#333'
-							}
+							},
+							onClick: function(){}
 						},
 						tooltips: {
 							mode : 'label',
@@ -244,7 +263,7 @@ bdff.create('complete', function(canvas, face){
 								label : function(tooltip){
 									var percent = Math.round(parseFloat(tooltip.yLabel),2);
 									var sign = percent == 0 ? '' : percent > 0 ? '+' : '-';
-									return ' '+complete.chartAspectRel.legend.legendItems[tooltip.datasetIndex].text+': '+sign+Math.abs(percent)+"%";
+									return ' '+complete.graphs.aspectRel.legend.legendItems[tooltip.datasetIndex].text+': '+sign+Math.abs(percent)+"%";
 								}
 							},
 							backgroundColor : '#999',
@@ -276,17 +295,17 @@ bdff.create('complete', function(canvas, face){
 			min = Math.min(min, aspect.bucket.rel.min);
 			max = Math.max(max, aspect.bucket.rel.max);
 		}
-		complete.chartAspectRel.data.labels = labels;
-		complete.chartAspectRel.data.datasets = datasets;
-		complete.chartAspectRel.options.scales.yAxes[0].ticks.min = Math.round(min) - 5;
-		complete.chartAspectRel.options.scales.yAxes[0].ticks.max = Math.round(max) + 5;
-		complete.chartAspectRel.update();
+		complete.graphs.aspectRel.data.labels = labels;
+		complete.graphs.aspectRel.data.datasets = datasets;
+		complete.graphs.aspectRel.options.scales.yAxes[0].ticks.min = Math.round(min) - 5;
+		complete.graphs.aspectRel.options.scales.yAxes[0].ticks.max = Math.round(max) + 5;
+		complete.graphs.aspectRel.update();
 	};
 	
 	complete.renderAspectAbsGraph = function () {
-		if(!complete.chartAspectAbs){
+		if(!complete.graphs.aspectsAbs){
 			var ctx = $(complete.el).find('.graph-aspect-abs').get(0).getContext("2d");
-				complete.chartAspectAbs = new Chart(ctx, {
+				complete.graphs.aspectsAbs = new Chart(ctx, {
 					type: 'line',
 					data: { labels : [], datasets : [] },
 					options: {
@@ -314,12 +333,21 @@ bdff.create('complete', function(canvas, face){
 								}
 							}]
 						},
+						title: {
+							display: false,
+							text: 'Aspects',
+							fontColor: '#000',
+							fontSize: 28,
+							fontFamily: 'helvetica neue, arial',
+							padding: 30
+						},
 						legend: {
 							display: false,
 							labels: {
 								boxWidth: 20,
 								fontColor: '#333'
-							}
+							},
+							onClick: function(){}
 						},
 						tooltips: {
 							mode : 'label',
@@ -329,7 +357,7 @@ bdff.create('complete', function(canvas, face){
 								},
 								label : function(tooltip){
 									var percent = Math.round(parseFloat(tooltip.yLabel),2);
-									return ' '+complete.chartAspectAbs.legend.legendItems[tooltip.datasetIndex].text+': '+Math.abs(percent)+"%";
+									return ' '+complete.graphs.aspectsAbs.legend.legendItems[tooltip.datasetIndex].text+': '+Math.abs(percent)+"%";
 								}
 							},
 							backgroundColor : '#999',
@@ -361,17 +389,17 @@ bdff.create('complete', function(canvas, face){
 			min = Math.min(min, aspect.bucket.abs.min);
 			max = Math.max(max, aspect.bucket.abs.max);
 		}
-		complete.chartAspectAbs.data.labels = labels;
-		complete.chartAspectAbs.data.datasets = datasets;
-		complete.chartAspectAbs.options.scales.yAxes[0].ticks.min = min - 5;
-		complete.chartAspectAbs.options.scales.yAxes[0].ticks.max = max + 5;
-		complete.chartAspectAbs.update();
+		complete.graphs.aspectsAbs.data.labels = labels;
+		complete.graphs.aspectsAbs.data.datasets = datasets;
+		complete.graphs.aspectsAbs.options.scales.yAxes[0].ticks.min = min - 5;
+		complete.graphs.aspectsAbs.options.scales.yAxes[0].ticks.max = max + 5;
+		complete.graphs.aspectsAbs.update();
 	};
 
 	complete.renderAverageLineGraph = function () {
-		if(!complete.averageChart){
+		if(!complete.graphs.average){
 			var ctx = $(complete.el).find('.average-line').get(0).getContext("2d");
-			complete.averageChart = new Chart(ctx, {
+			complete.graphs.average = new Chart(ctx, {
 					type: 'line',
 					data: { labels : [], datasets : [] },
 					options: {
@@ -396,6 +424,14 @@ bdff.create('complete', function(canvas, face){
 							gridLines: {
 								color: 'rgba(0, 0, 0, 0)'
 							}
+						},
+						title: {
+							display: false,
+							text: 'Combined Aspect Data',
+							fontColor: '#000',
+							fontSize: 28,
+							fontFamily: 'helvetica neue, arial',
+							padding: 30
 						},
 						legend: {
 							display: false,
@@ -424,22 +460,22 @@ bdff.create('complete', function(canvas, face){
 		}
 		
 		// Update
-		complete.averageChart.data.labels = complete.serverData.average.labels || [];
-		complete.averageChart.data.datasets = [{
+		complete.graphs.average.data.labels = complete.serverData.average.labels || [];
+		complete.graphs.average.data.datasets = [{
 			label: "Average",
 			data: complete.serverData.average.bucket || [],
 			backgroundColor: complete.colorFillOptions[1] || '#666',
 			fill: false
 		}];
-		complete.averageChart.options.scales.yAxes[0].ticks.min = complete.serverData.average.min - 5;
-		complete.averageChart.options.scales.yAxes[0].ticks.max = complete.serverData.average.max + 5;
-		complete.averageChart.update();
+		complete.graphs.average.options.scales.yAxes[0].ticks.min = complete.serverData.average.min - 5;
+		complete.graphs.average.options.scales.yAxes[0].ticks.max = complete.serverData.average.max + 5;
+		complete.graphs.average.update();
 	}
 
 	complete.renderAverageBarGraph = function () {
-		if(!complete.aspectBarGraph){
+		if(!complete.graphs.aspectBar){
 			var ctx = $(complete.el).find('.average-bar').get(0).getContext("2d");
-			complete.aspectBarGraph = new Chart(ctx,{
+			complete.graphs.aspectBar = new Chart(ctx,{
 				type:"bar",
 				data: { labels : [], datasets: [] },
 				options: {
@@ -481,8 +517,8 @@ bdff.create('complete', function(canvas, face){
 			averages.push(aspect.bucket.average);
 		}
 		
-		complete.aspectBarGraph.data.labels = labels;
-		complete.aspectBarGraph.data.datasets = [{
+		complete.graphs.aspectBar.data.labels = labels;
+		complete.graphs.aspectBar.data.datasets = [{
 			label: "Aspects",
 		    backgroundColor: "rgba(220,220,220,0.2)",
 		    borderColor: "rgba(220,220,220,1)",
@@ -492,8 +528,8 @@ bdff.create('complete', function(canvas, face){
 		    data: averages
 		}];
 		
-		complete.aspectBarGraph.stop();
-		complete.aspectBarGraph.update();
+		complete.graphs.aspectBar.stop();
+		complete.graphs.aspectBar.update();
 	}
 
 	complete.initEvents = function () {
@@ -540,36 +576,65 @@ bdff.create('complete', function(canvas, face){
 		$(el).addClass('selected');
 	}
 
-	complete.graphFullScreen = function (graph) {
+	complete.graphFullScreen = function ($graph) {
+		$('body').addClass('noscroll');
+		
 		$(document).on('keyup.escape', function(e){
 		    if(e.keyCode === 27)
-		        complete.graphExitFullScreen(graph);
+		        complete.graphExitFullScreen($graph);
 		    $(document).unbind('keyup.escape');
 		});
 
 		$('<div class="screen-overlay"></div>').appendTo($('body'));
-		$(graph).addClass('fullscreen');
-		$(graph).css({
-			'top': ($(window).height() - $(graph).height())/2 + 'px',
+		$graph.addClass('fullscreen');
+		$graph.css({
+			'top': ($(window).height() - $graph.height())/2 + 'px',
 		});
-		$(graph).find('.graph-button')
+		$graph.find('.graph-button')
 			.html('<i class="fa fa-compress"></i>')
 			.on('click', function () {
-				complete.graphExitFullScreen(graph);
+				complete.graphExitFullScreen($graph);
 			});
+			
+		var chart = complete.getGraphObj($graph);
+		if(chart){
+			if(chart != complete.graphs.average){
+				chart.legend.options.display = true;
+			}
+			chart.titleBlock.options.display = true;
+			chart.update();
+		}
 	}
 
-	complete.graphExitFullScreen = function (graph) {
+	complete.getGraphObj = function($graph){
+		var name = $graph.attr('data-graph');
+		if(name && complete.graphs[name]){
+			return complete.graphs[name];
+		}
+		
+		return undefined;
+	};
+	
+	complete.graphExitFullScreen = function ($graph) {
+		$('body').removeClass('noscroll');
+		
 		$('.screen-overlay').remove();
-		$(graph).removeClass('fullscreen');
-		$(graph).css({
+		$graph.removeClass('fullscreen');
+		$graph.css({
 			top: '0px'
 		});
-		$(graph).find('.graph-button')
+		$graph.find('.graph-button')
 			.html('<i class="fa fa-expand"></i>')
 			.on('click', function () {
-				complete.graphFullScreen(graph);
+				complete.graphFullScreen($graph);
 			});
+			
+		var chart = complete.getGraphObj($graph);
+		if(chart){
+			chart.legend.options.display = false;
+			chart.titleBlock.options.display = false;
+			chart.update();
+		}
 	}
 
 	complete.toggleGraph = function (graph) {
@@ -609,7 +674,7 @@ bdff.create('complete', function(canvas, face){
 					</div>\
 					<div class="clear"></div>\
 				</div>\
-				<div id="graph-1" class="graph-container">\
+				<div id="graph-1" data-graph="aspectRel" class="graph-container">\
 					<canvas class="dashboard-pod graph graph-aspect-rel"></canvas>\
 					<div class="graph-button"><i class="fa fa-expand"></i></div>\
 				</div>\
@@ -622,7 +687,7 @@ bdff.create('complete', function(canvas, face){
 					</div>\
 					<div class="clear"></div>\
 				</div>\
-				<div id="graph-5" class="graph-container">\
+				<div id="graph-5" data-graph="responseAbs" class="graph-container">\
 					<canvas class="dashboard-pod graph graph-response-abs"></canvas>\
 					<div class="graph-button"><i class="fa fa-expand"></i></div>\
 				</div>\
@@ -635,7 +700,7 @@ bdff.create('complete', function(canvas, face){
 					</div>\
 					<div class="clear"></div>\
 				</div>\
-				<div id="graph-2" class="graph-container">\
+				<div id="graph-2" data-graph="aspectsAbs" class="graph-container">\
 					<canvas class="dashboard-pod graph graph-aspect-abs"></canvas>\
 					<div class="graph-button"><i class="fa fa-expand"></i></div>\
 				</div>\
@@ -648,7 +713,7 @@ bdff.create('complete', function(canvas, face){
 					</div>\
 					<div class="clear"></div>\
 				</div>\
-				<div id="graph-3" class="sub-graph-container">\
+				<div id="graph-3" data-graph="average" class="sub-graph-container">\
 					<canvas class="dashboard-pod average-line"></canvas>\
 					<div class="graph-button"><i class="fa fa-expand"></i></div>\
 				</div>\
@@ -661,7 +726,7 @@ bdff.create('complete', function(canvas, face){
 					</div>\
 					<div class="clear"></div>\
 				</div>\
-				<div id="graph-4" class="sub-graph-container">\
+				<div id="graph-4" data-graph="aspectBar" class="sub-graph-container">\
 					<canvas class="dashboard-pod average-bar"></canvas>\
 				</div>\
 			</div>\
@@ -735,13 +800,17 @@ bdff.create('complete', function(canvas, face){
 	);
 		
 }, function(){
-	if(complete){
+	if(complete && complete.graphs){
 		if(complete.dateSlider){ try { complete.dateSlider.dateRangeSlider("destroy"); complete.dateSlider = undefined; } catch (ex){} }
-		if(complete.chartAspectRel){ try { complete.chartAspectRel.destroy(); complete.chartAspectRel = undefined; } catch (ex){} }
-		if(complete.chartResponseAbs){ try { complete.chartResponseAbs.destroy(); complete.chartResponseAbs = undefined; } catch (ex){} }
-		if(complete.chartAspectAbs){ try { complete.chartAspectAbs.destroy(); complete.chartAspectAbs = undefined; } catch (ex){} }
-		if(complete.averageChart){ try { complete.averageChart.destroy(); complete.averageChart = undefined; } catch (ex){} }
-		if(complete.aspectBarGraph){ try { complete.aspectBarGraph.destroy(); complete.aspectBarGraph = undefined; } catch (ex){} }
+		var graphs = Object.keys(complete.graphs);
+		for(var i = 0; i < graphs.length; i++){
+			try {
+				if(complete.graphs[graphs[i]]){
+					complete.graphs[graphs[i]].destroy();
+				}
+				complete.graphs[graphs[i]] = undefined;
+			} catch (ex){}
+		}
 		complete = {};
 	}
 });
