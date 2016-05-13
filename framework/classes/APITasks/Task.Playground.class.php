@@ -75,11 +75,23 @@ class TaskPlayground extends AbstractTask
 		
 		$minDate = time() - $MONTH;
 		
-		$from = max(@intval(Brevada::FromGET('from')), time()-$MONTH*12*5);
+		$from = @intval(Brevada::FromGET('from'));
 		$to = @intval(Brevada::FromGET('to'));
 		if($to == 0){ $to = time(); }
+		
 		$included = empty($_GET['included']) ? [] : array_map('intval', explode(',', $_GET['included']));
 		if(!isset($_GET['included'])){ $included = false; }
+		
+		if($from == 0){
+			foreach($rows as $row){
+				if($included !== false && !in_array(intval($row['id']), $included)){
+					continue;
+				}
+				$overall = (new Data())->store($store)->aspectType($row['AspectTypeID'])->getAvg();
+				$minDate = min($overall->getUTCFrom(), $minDate);
+			}
+			$from = $minDate;
+		}
 		
 		$dateFormat = 'g:i:s a';
 		$delta = $to - $from;
