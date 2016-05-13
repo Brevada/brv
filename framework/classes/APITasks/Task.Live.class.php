@@ -81,14 +81,15 @@ class TaskLive extends AbstractTask
 			
 			$week_aspect_change = (new Data())->store($store)->from(time()-$WEEK)->to(time())->aspectType($row['AspectTypeID'])->getAvg()->getRating() - (new Data())->store($store)->from(time()-($WEEK*2))->to(time()-$WEEK)->aspectType($row['AspectTypeID'])->getAvg()->getRating();
 			
-			$all_aspect_change = (new Data())->store($store)->from(time()-$MONTH)->to(time())->aspectType($row['AspectTypeID'])->getAvg()->getRating() - (new Data())->store($store)->from(time()-($MONTH*2))->to(time()-$MONTH)->aspectType($row['AspectTypeID'])->getAvg()->getRating();
+			// Change does not make sense when dealing with all time. Instead, we consider absolute.
+			$all_aspect = (new Data())->store($store)->from(0)->to(time())->aspectType($row['AspectTypeID'])->getAvg()->getRating();
 			
 			if($day_aspect_change > 0 && (empty($day_up) || $day_aspect_change > $day_up['percent'])){
 				$day_up = [
 					'title' => $row['Title'],
 					'percent' => $day_aspect_change
 				];
-			} else if($day_aspect_change < 0 && (empty($day_down) || $day_aspect_change > $day_down['percent'])){
+			} else if($day_aspect_change < 0 && (empty($day_down) || $day_aspect_change < $day_down['percent'])){
 				$day_down = [
 					'title' => $row['Title'],
 					'percent' => $day_aspect_change
@@ -100,22 +101,22 @@ class TaskLive extends AbstractTask
 					'title' => $row['Title'],
 					'percent' => $week_aspect_change
 				];
-			} else if($week_aspect_change < 0 && (empty($week_down) || $week_aspect_change > $week_down['percent'])){
+			} else if($week_aspect_change < 0 && (empty($week_down) || $week_aspect_change < $week_down['percent'])){
 				$week_down = [
 					'title' => $row['Title'],
 					'percent' => $week_aspect_change
 				];
 			}
 			
-			if($all_aspect_change > 0 && (empty($all_up) || $all_aspect_change > $all_up['percent'])){
+			if(empty($all_up) || $all_aspect > $all_up['percent']){
 				$all_up = [
 					'title' => $row['Title'],
-					'percent' => $all_aspect_change
+					'percent' => $all_aspect
 				];
-			} else if($all_aspect_change < 0 && (empty($all_down) || $all_aspect_change > $all_down['percent'])){
+			} else if(empty($all_down) || $all_aspect < $all_down['percent']){
 				$all_down = [
 					'title' => $row['Title'],
-					'percent' => $all_aspect_change
+					'percent' => $all_aspect
 				];
 			}
 		}

@@ -137,6 +137,32 @@ bdff.create('live', function(canvas, face){
 						row.fadeTo(100,1);
 					}
 				},
+				setUpAbs : function(aspect) {
+					var row = bestWorst.find('i.fa-thumbs-up').parent();
+					
+					if(aspect.title){
+						row.find('span').text(aspect.title + ', at ' + (Math.round(Math.abs(aspect.percent) * 10)/10) + '%');
+					} else {
+						row.find('span').text('No Positive Performance');
+					}
+					
+					if(!row.is(':visible')){
+						row.fadeTo(100,1);
+					}
+				},
+				setDownAbs : function(aspect) {
+					var row = bestWorst.find('i.fa-thumbs-down').parent();
+					
+					if(aspect.title){
+						row.find('span').text(aspect.title + ', at ' + (Math.round(Math.abs(aspect.percent)*10)/10) + '%');
+					} else {
+						row.find('span').text('No Negative Performance');
+					}
+					
+					if(!row.is(':visible')){
+						row.fadeTo(100,1);
+					}
+				},
 				setAverage : function(avg) {
 					stats.find('div.average').children('span.number').removeClass('positive great neutral bad negative').addClass(bdff.mood(avg)).text(avg+'%');
 				},
@@ -294,8 +320,8 @@ bdff.create('live', function(canvas, face){
 					live.snapshot.week.setResponses(data.snapshot.week.responses);
 					live.snapshot.week.setGraph(data.snapshot.week.bucket);
 					
-					live.snapshot.all.setUp(data.snapshot.all.up);
-					live.snapshot.all.setDown(data.snapshot.all.down);
+					live.snapshot.all.setUpAbs(data.snapshot.all.up);
+					live.snapshot.all.setDownAbs(data.snapshot.all.down);
 					live.snapshot.all.setAverage(data.snapshot.all.average);
 					live.snapshot.all.setResponses(data.snapshot.all.responses);
 					live.snapshot.all.setGraph(data.snapshot.all.bucket);
