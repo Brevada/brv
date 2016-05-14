@@ -944,11 +944,18 @@ div.milestone {
     text-align: center;
 }
 .hoverpod .status .bulb {
-    width: 15px;
-    height: 15px;
+    width: 35px;
+	height: 20px;
+	padding: 0;
+	
     border-radius: 3px;
     margin: 0 auto;
-    margin-bottom: 5px;
+    margin-bottom: 3px;
+	
+	text-align: center;
+	font-size: 12px;
+	padding-top: 2px;
+	color: #fff;
 }
 
 @media (max-width:767px) {

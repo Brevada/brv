@@ -57,7 +57,7 @@ class TaskBdff extends AbstractTask
 				'total' => $tablets
 			],
 			'responses' => (new Data())->store($store)->from(time()-3600)->getAvg()->getSize(),
-			'mood' => (new Data())->store($store)->from(time()-(12*3600))->getAvg()->getRating()
+			'mood' => (new Data())->store($store)->from(time()-(3600))->getAvg()->getRating()
 		];
 	}
 }

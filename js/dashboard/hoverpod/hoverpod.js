@@ -29,7 +29,7 @@ bdff.create('hoverpod', function(canvas, face){
 	var renderStatus = function (status) {
 		$('\
 			<div class="bulb"></div>\
-			<div class="text">Current Status</div>\
+			<div class="text">Last Hour</div>\
 			').appendTo(status);
 	};
 
@@ -56,7 +56,8 @@ bdff.create('hoverpod', function(canvas, face){
 		hoverpod.find('div.status > div.bulb')
 		.removeClass('positive great neutral bad negative')
 		.addClass(bdff.mood(num))
-		.attr({'data-tooltip': (num == 0 ? "No Responses" : "Last Hour: " + Math.round(num) + '%')});
+		.attr({'data-tooltip': (num == 0 ? "No Responses" : "Last Hour: " + Math.round(num) + '%')})
+		.text(num == 0 ? 'N/A' : Math.round(num) + '%');
 	};
 	
 	face.datahook(10000, {
