@@ -141,7 +141,11 @@ bdff.create('live', function(canvas, face){
 					var row = bestWorst.find('i.fa-thumbs-up').parent();
 					
 					if(aspect.title){
-						row.find('span').text(aspect.title + ', at ' + (Math.round(Math.abs(aspect.percent) * 10)/10) + '%');
+						if(aspect.percent == 0){
+							row.find('span').text(aspect.title + ', No Responses');
+						} else {
+							row.find('span').text(aspect.title + ', at ' + (Math.round(Math.abs(aspect.percent) * 10)/10) + '%');
+						}
 					} else {
 						row.find('span').text('No Positive Performance');
 					}
@@ -154,9 +158,13 @@ bdff.create('live', function(canvas, face){
 					var row = bestWorst.find('i.fa-thumbs-down').parent();
 					
 					if(aspect.title){
-						row.find('span').text(aspect.title + ', at ' + (Math.round(Math.abs(aspect.percent)*10)/10) + '%');
+						if(aspect.percent == 0){
+							row.find('span').text(aspect.title + ', No Responses');
+						} else {
+							row.find('span').text(aspect.title + ', at ' + (Math.round(Math.abs(aspect.percent) * 10)/10) + '%');
+						}
 					} else {
-						row.find('span').text('No Negative Performance');
+						row.find('span').text('No Positive Performance');
 					}
 					
 					if(!row.is(':visible')){
@@ -242,7 +250,7 @@ bdff.create('live', function(canvas, face){
 	};
 	
 	var renderPastScores = function(canvas){
-		var weeksScores = $("<div>").addClass('weeks-scores col-xs-2').appendTo(canvas);
+		var weeksScores = $("<div>").addClass('weeks-scores').appendTo(canvas);
 		weeksScores
 			.append($('<span>').addClass('header').text('Loading...'))
 			.append($('<span>').addClass('subtitle').text("Loading..."));

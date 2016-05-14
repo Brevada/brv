@@ -538,11 +538,18 @@ bdff.create('complete', function(canvas, face){
 			var min = data.values.min,
 				max = data.values.max;
 			$('.settings .date').html(moment(min).format('MMM Do, YYYY') + ' - ' + moment(max).format('MMM Do, YYYY'));
+			$('.settings .date-label i').hide();
 			
 			complete.fromDate = Math.floor(data.values.min.getTime()/1000);
 			complete.toDate = Math.ceil(data.values.max.getTime()/1000);
 			
 			complete.update();
+		});
+		$('#slider').bind('valuesChanging', function (e, data) {
+			var min = data.values.min,
+				max = data.values.max;
+			$('.settings .date').html(moment(min).format('MMM Do, YYYY') + ' - ' + moment(max).format('MMM Do, YYYY'));
+			$('.settings .date-label i').show();
 		});
 		$(complete.el).on('click', '.aspect', function () {
 			complete.toggleAspect(parseInt($(this).attr('data-id')));
@@ -748,7 +755,7 @@ bdff.create('complete', function(canvas, face){
 					<div class="clear"></div>\
 				</div>\
 				<div class="custom-options">\
-					<div class="date">Text</div>\
+					<div class="date-label"><i class="fa fa-circle-o-notch fa-spin" style="display:none;"></i><span class="date"><span></div>\
 					<div id="slider"></div>\
 				</div>\
 			</div>\
@@ -778,6 +785,10 @@ bdff.create('complete', function(canvas, face){
 				bdff.log('Uh oh...');
 			} else if(data.playground) {
 				if(data.playground.aspects){
+					if(!complete.serverData.aspects){
+						complete.serverData.aspects = {};
+					}
+					
 					var initInclude = complete.included === false;
 					for(var i = 0; i < data.playground.aspects.length; i++){
 						// Add or Update

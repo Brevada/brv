@@ -1136,9 +1136,17 @@ div.milestone {
     margin-top: 10px;
 }
 
-.complete-page .settings .date {
+.complete-page .settings .date-label {
     padding: 10px;
     font-size: 15px;
+}
+.complete-page .settings .date-label .date {
+	
+}
+.complete-page .settings .date-label i {
+	display: inline-block;
+	color: rgb(242, 96, 106);
+	margin-right: 10px;
 }
 
 .complete-page .settings .default-options {
@@ -1175,8 +1183,9 @@ div.milestone {
 }
 
 .complete-page .aspects {
-    max-height: 480px; /*TODO */
-    overflow: scroll;
+    max-height: 480px;
+    overflow-x: hidden;
+	overflow-y: scroll;
     background: none;
     border-radius: 2px;
     margin-top: 10px;
@@ -1246,7 +1255,7 @@ div.milestone {
 /* Range Slider */
 .ui-rangeSlider {
     padding: 0px;
-    height: 30px;
+    height: 24px;
     overflow: hidden;
 }
 .ui-rangeSlider-arrow {
@@ -1268,7 +1277,6 @@ div.milestone {
 }
 .ui-rangeSlider-label {
     bottom: 50px;
-    /*font-size: 1px;*/
     padding: 0px;
     color: #333;
     background: rgba(255,255,255,0.5);
@@ -1398,8 +1406,13 @@ div.snapshot div.snapshot-pod div.snapshot-best-worst {
 	color: #999;
 	margin: 0px 0 5px 28.5px;
 	display: inline-block;
-	width: 100%;
+	width: 95%;
 	clear: both;
+	background: #f7f7f7;
+	padding: 5px;
+	border-radius: 3px;
+	
+	word-wrap: break-word;	
 }
 div.snapshot div.snapshot-pod div.snapshot-best-worst > span {
 	display: block;
@@ -1490,12 +1503,12 @@ div.feed div.feed-list div.feed-item span.medium.medium-phone::before {
 }
 
 div.weeks-scores {
-    position: fixed;
 	margin: 0 0 20px 0;
+	max-width: 300px;
 }
 
 div.weeks-scores div.scores-list {
-	width: 100%;
+	width: 95%;
 	padding: 0;
 	margin: 0;
 }
@@ -1535,7 +1548,7 @@ div.weeks-scores div.scores-list div.scores-item div.score-bar > span {
 div.weeks-scores div.scores-list div.scores-item div.score-bar > span.no-data {
 	background: rgb(242, 96, 106);
 	border-radius: 2px;
-	padding: 0 2px;
+	padding: 0 5px 0 2px;
 	left: 0;
 	opacity: 0.5;
 	transition: opacity 0.5s ease-in-out;
