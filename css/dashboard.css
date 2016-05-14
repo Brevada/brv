@@ -809,6 +809,8 @@ div.milestone {
 	background: none;
 	border: 1px solid #999;
 	outline: none;
+	padding-left: 3em;
+	padding-right: 3em;
 }
 .milestone-form input {
     padding: 5px;
@@ -857,6 +859,7 @@ div.milestone {
 .milestone-body .header .title .complete {
     font-size: 10px;
     color: #82cc0e;
+	margin-left: 10px;
 }
 .milestone-body .header .data {
     clear: both;
@@ -915,7 +918,7 @@ div.milestone {
 }
 .milestone-body .footer .complete-button {
     font-weight: bold;
-    display: none; /* Javascript will display if appropriate */
+    display: inline-block;
 }
 .milestone-body .footer div {
     cursor: pointer;
