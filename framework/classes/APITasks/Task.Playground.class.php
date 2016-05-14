@@ -88,7 +88,7 @@ class TaskPlayground extends AbstractTask
 					continue;
 				}
 				$overall = (new Data())->store($store)->aspectType($row['AspectTypeID'])->getAvg();
-				$minDate = min($overall->getUTCFrom(), $minDate);
+				$minDate = min($overall->getSize() > 0 ? $overall->getUTCFrom() : $minDate, $minDate);
 			}
 			$from = $minDate;
 		}
@@ -127,7 +127,7 @@ class TaskPlayground extends AbstractTask
 			$includedTypes[] = intval($aspectType);
 			
 			$overall = (new Data())->store($store)->aspectType($aspectType)->getAvg();
-			$minDate = min($overall->getUTCFrom(), $minDate);
+			$minDate = min($overall->getSize() > 0 ? $overall->getUTCFrom() : $minDate, $minDate);
 			
 			$rating = (new Data())->store($store)->aspectType($aspectType)->from($from)->to($to)->getAvg();
 			

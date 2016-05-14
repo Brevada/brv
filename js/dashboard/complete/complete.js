@@ -113,10 +113,12 @@ bdff.create('complete', function(canvas, face){
 		$('.settings .date').html(moment(boundMinDate).format('MMM Do, YYYY') + ' - ' + moment().format('MMM Do, YYYY'));
 	}
 	complete.updateDateSlider = function (hoursAgo) {
-			var d = new Date();
-			d.setDate(d.getDate() - hoursAgo/24);
+		var d = new Date();
+		d.setDate(d.getDate() - hoursAgo/24);
 
+		if(complete.dateSlider){
 			$("#slider").dateRangeSlider("values", d, new Date());
+		}
 	}
 	
 	complete.renderResponseAbsGraph = function () {
