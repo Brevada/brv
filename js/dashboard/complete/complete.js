@@ -668,6 +668,19 @@ bdff.create('complete', function(canvas, face){
 			<!--<div class="dashboard-pod timeline">Timeline</div>-->\
 			<div class="section">\
 				<div class="toolbar">\
+					<div class="title">Aspects</div>\
+					<div class="buttons">\
+						<!--<div class="toggle" data-id="graph-2"><i class="fa fa-info"></i></div>-->\
+					</div>\
+					<div class="clear"></div>\
+				</div>\
+				<div id="graph-2" data-graph="aspectsAbs" class="graph-container">\
+					<canvas class="dashboard-pod graph graph-aspect-abs"></canvas>\
+					<div class="graph-button"><i class="fa fa-expand"></i></div>\
+				</div>\
+			</div>\
+			<div class="section">\
+				<div class="toolbar">\
 					<div class="title">Aspects (% Change)</div>\
 					<div class="buttons">\
 						<!--<div class="toggle" data-id="graph-1"><i class="fa fa-info"></i></div>-->\
@@ -689,19 +702,6 @@ bdff.create('complete', function(canvas, face){
 				</div>\
 				<div id="graph-5" data-graph="responseAbs" class="graph-container">\
 					<canvas class="dashboard-pod graph graph-response-abs"></canvas>\
-					<div class="graph-button"><i class="fa fa-expand"></i></div>\
-				</div>\
-			</div>\
-			<div class="section">\
-				<div class="toolbar">\
-					<div class="title">Aspects</div>\
-					<div class="buttons">\
-						<!--<div class="toggle" data-id="graph-2"><i class="fa fa-info"></i></div>-->\
-					</div>\
-					<div class="clear"></div>\
-				</div>\
-				<div id="graph-2" data-graph="aspectsAbs" class="graph-container">\
-					<canvas class="dashboard-pod graph graph-aspect-abs"></canvas>\
 					<div class="graph-button"><i class="fa fa-expand"></i></div>\
 				</div>\
 			</div>\
