@@ -510,7 +510,7 @@ div.bottom-bar {
 .pod .body .pod-body-bottom div.graphs div.line-graph:not(.no-data)::after {
 	content: 'Last 2 Weeks';
 	background: rgb(242, 96, 106);
-	padding: 0;
+	padding: 0 3px;
 	margin: 0;
 	color: #fff;
 	font-size: 12px;

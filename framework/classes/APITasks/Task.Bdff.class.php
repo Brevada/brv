@@ -51,13 +51,15 @@ class TaskBdff extends AbstractTask
 			$stmt->close();
 		}
 		
+		$hour = (new Data())->store($store)->from(time()-(3600))->getAvg();
+		
 		$this->data['hoverpod'] = [
 			'tablets' => [
 				'online' => $online_tablets,
 				'total' => $tablets
 			],
-			'responses' => (new Data())->store($store)->from(time()-3600)->getAvg()->getSize(),
-			'mood' => (new Data())->store($store)->from(time()-(3600))->getAvg()->getRating()
+			'responses' => $hour->getSize(),
+			'mood' => $hour->getRating()
 		];
 	}
 }
