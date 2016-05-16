@@ -55,7 +55,7 @@ bdff.create('hoverpod', function(canvas, face){
 	var setStatus = function(num){
 		hoverpod.find('div.status > div.bulb')
 		.removeClass('positive great neutral bad negative')
-		.addClass(bdff.mood(5*(num-20)/4))
+		.addClass(bdff.mood(5*((num == 0 ? 20 : num)-20)/4))
 		.attr({'data-tooltip': (num == 0 ? "No Responses" : "Last Hour: " + Math.round(num) + '%')})
 		.text(num == 0 ? 'N/A' : Math.round(num) + '%');
 	};
