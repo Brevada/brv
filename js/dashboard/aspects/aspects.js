@@ -219,7 +219,9 @@ bdff.create('aspects', function(canvas, face){
 						}
 					}
 					
-					$('div[data-tooltip]').brevadaTooltip();
+					$('[data-tooltip]').each(function(){
+						$(this).brevadaTooltip();
+					});
 				}
 				/* Check deletes. */
 				var keys = Object.keys(aspects);

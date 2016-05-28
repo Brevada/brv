@@ -174,8 +174,7 @@ bdff.create('complete', function(canvas, face){
 									return tooltip[0].xLabel;
 								}
 							},
-							backgroundColor : '#999',
-							color : '#FFFFFF'
+							enabled: false
 						}
 					}
 				});
@@ -268,8 +267,7 @@ bdff.create('complete', function(canvas, face){
 									return ' '+complete.graphs.aspectRel.legend.legendItems[tooltip.datasetIndex].text+': '+sign+Math.abs(percent)+"%";
 								}
 							},
-							backgroundColor : '#999',
-							color : '#FFFFFF'
+							enabled: false
 						}
 					}
 				});
@@ -353,6 +351,7 @@ bdff.create('complete', function(canvas, face){
 						},
 						tooltips: {
 							mode : 'label',
+							enabled: false,
 							callbacks: {
 								title : function(tooltip){
 									return tooltip[0].xLabel;
@@ -361,9 +360,7 @@ bdff.create('complete', function(canvas, face){
 									var percent = Math.round(parseFloat(tooltip.yLabel),2);
 									return ' '+complete.graphs.aspectsAbs.legend.legendItems[tooltip.datasetIndex].text+': '+Math.abs(percent)+"%";
 								}
-							},
-							backgroundColor : '#999',
-							color : '#FFFFFF'
+							}
 						}
 					}
 				});
@@ -454,8 +451,7 @@ bdff.create('complete', function(canvas, face){
 									return 'Combined Average: '+sign+Math.abs(percent)+"%";
 								}
 							},
-							backgroundColor : '#999',
-							color : '#FFFFFF'
+							enabled: false
 						}
 					}
 				});
@@ -503,7 +499,8 @@ bdff.create('complete', function(canvas, face){
 							label : function(tooltip){
 								return tooltip.yLabel+"%";
 							}
-						}
+						},
+						enabled: false
 					}
 				}
 			});

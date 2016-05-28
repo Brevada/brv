@@ -8,7 +8,18 @@
 */
 
 (function($){
-	$.fn.brevadaTooltip = function(opts){
+	var currentMouse = { x: -1, y: -1 };
+	$(document).mousemove(function(e){
+		currentMouse.x = e.pageX;
+		currentMouse.y = e.pageY;
+	}).mouseover();
+	
+	$.fn.brevadaTooltip = function(action, opts){
+		if (typeof action !== 'string'){
+			opts = action;
+			action = false;
+		}
+		
 		opts = typeof opts === 'undefined' ? {} : opts;
 		
 		var defaults = {
@@ -18,52 +29,98 @@
 			fadeOutDuration : 500,
 			duration : 1550,
 			offset : 10,
-			text : ''
+			text : '',
+			bind: true,
+			keepalive: false,
+			one: false
 		};
 		
 		opts = $.extend(true, defaults, opts);
 		
+		var that = this;
+		
 		var tipElement, tmr;
 		
-		$(this).not('.brv-tp-enabled').on({
-			mouseenter : function(){
-				opts.text = $(this).attr('data-tooltip');
-				opts.subClassName = typeof opts.subClassName === 'undefined' ? '' : opts.subClassName;
-				getTipElement().removeClass(opts.subClassName);
-				opts.subClassName = $(this).attr('data-tooltip-class');
-				opts.subClassName = typeof opts.subClassName === 'undefined' ? '' : opts.subClassName;
-				tipElement.addClass(opts.subClassName);
-				$(this).mousemove();
-			},
-			mousemove : function(e){
-				show(e);
-			},
-			mouseleave : function(){
-				hide();
-			}
-		});
+		var textChanged = false;
+		
+		if(opts.bind && opts.action != 'hide'){
+			$(this).not('.brv-tp-enabled').on({
+				mouseenter : function(){
+					opts.text = $(this).attr('data-tooltip');
+					opts.subClassName = typeof opts.subClassName === 'undefined' ? '' : opts.subClassName;
+					getTipElement().removeClass(opts.subClassName);
+					opts.subClassName = $(this).attr('data-tooltip-class');
+					opts.subClassName = typeof opts.subClassName === 'undefined' ? '' : opts.subClassName;
+					tipElement.addClass(opts.subClassName);
+					$(this).mousemove();
+				},
+				mousemove : function(e){
+					show(e);
+				},
+				mouseleave : function(){
+					hide();
+				}
+			});
+		}
 		
 		$(this).addClass('brv-tp-enabled');
 		
+		if (action == 'show'){
+			if(opts.text != opts.content){
+				textChanged = true;
+			}
+			opts.text = opts.content;
+			show({
+				x: opts.x === 'mouse' ? currentMouse.x : opts.x,
+				y: opts.y === 'mouse' ? currentMouse.y : opts.y
+			});
+			
+			if(!opts.bind){
+				$(document).mousemove(followMouse);
+			}
+		} else if(action == 'hide'){
+			hide();
+			
+			if(!opts.bind){
+				$(document).unbind('mousemove', followMouse);
+			}
+		}
+		
+		function followMouse(e){
+			show(e);
+		}
+		
 		function getTipElement(){
+			tipElement = tipElement || $(that).data('tipElement') || undefined;
+			
 			if(typeof tipElement !== 'undefined'){
 				return tipElement;
 			} else {
-				tipElement = $('<div>').addClass(opts.className).hide();
-				tipElement.css('position', 'absolute');
-				tipElement.append($('<span>'));
-				tipElement.appendTo($('body'));
+				if(opts.one && $('div.'+opts.className).length > 0){
+					tipElement = $('div.'+opts.className).first().hide();
+				} else {
+					tipElement = $('<div>').addClass(opts.className)
+										   .addClass(opts.subClassName).hide();
+					tipElement.css('position', 'absolute');
+					tipElement.append($('<span>'));
+					tipElement.appendTo($('body'));
+				}
+				
+				$(that).data('tipElement', tipElement);
 				return tipElement;
 			}
 		}
 		
 		function show(e){
 			resetTimer();
-			var x = calcX(e.pageX);
-			var y = calcY(e.pageY);
+			var x = calcX(e.pageX || e.x);
+			var y = calcY(e.pageY || e.y);
 			getTipElement().css({ 'top' : y, 'left' : x });
-			if(!tipElement.is(':visible')){
+			if(!tipElement.is(':visible') || (opts.one && textChanged)){
 				tipElement.children('span').html(opts.text);
+				textChanged = false;
+			}
+			if(!tipElement.is(':visible')){
 				stopTimer();
 				tipElement.stop().fadeIn(opts.fadeInDuration, function(){
 					resetTimer();
@@ -85,17 +142,20 @@
 			var h = getTipElement().outerHeight();
 			
 			if (y + h + opts.offset > $(window).height()) {
+				//getTipElement().removeClass('above').addClass('below');
 				return y - h - opts.offset;
 			} else {
+				//getTipElement().removeClass('below').addClass('above');
 				return y + opts.offset;
 			}
 		}
 		
 		function hide(){
 			if(getTipElement().is(':visible')){
+				$(that).removeData('tipElement');
 				tipElement.stop().fadeOut(opts.fadeOutDuration, function(){
 					stopTimer();
-					$(this).remove();
+					tipElement.remove();
 					tipElement = undefined;
 				});
 			}
@@ -103,7 +163,9 @@
 		
 		function resetTimer(){
 			stopTimer();
-			tmr = setTimeout(hide, opts.duration);
+			if(!opts.keepalive){
+				tmr = setTimeout(hide, opts.duration);
+			}
 		}
 		
 		function stopTimer(){
@@ -114,5 +176,7 @@
 }(jQuery));
 
 $(document).ready(function(){
-	$('[data-tooltip]').brevadaTooltip();
+	$('[data-tooltip]').each(function(){
+		$(this).brevadaTooltip();
+	});
 });

@@ -103,8 +103,7 @@ bdff.create('live', function(canvas, face){
 										return data.datasets[0].data[tooltip.index] + ' responses';
 									}
 								},
-								backgroundColor : '#999',
-								color : '#FFFFFF'
+								enabled: false
 							}
 						}
 				});
@@ -349,7 +348,9 @@ bdff.create('live', function(canvas, face){
 					}
 				}
 				
-				$('[data-tooltip]').brevadaTooltip();
+				$('[data-tooltip]').each(function(){
+					$(this).brevadaTooltip();
+				});
 			};
 			
 			if(canvas.find('.full-loader').length > 0){

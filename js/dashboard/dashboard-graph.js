@@ -17,6 +17,53 @@ Chart.Scale.prototype.buildYLabels = function () {
 
 Chart.defaults.global.maintainAspectRatio = false;
 
+Chart.defaults.global.pointHitDetectionRadius = 3;
+Chart.defaults.global.tooltips.enabled = true;
+Chart.defaults.global.tooltips.custom = function(tooltip){	
+	$(document).mouseover();
+	
+	var el = $('#chartjs-tooltip');
+	if (el.length == 0){
+		el = $("<div id='chartjs-tooltip'></div>").appendTo($('body'));
+	}
+	
+	if(!tooltip || !tooltip.opacity){
+		el.brevadaTooltip('hide', {
+			className: 'chart-tooltip',
+			bind: false,
+			keepalive: true,
+			one: true
+		});
+		return;
+	}
+	
+	var content = tooltip.title && tooltip.title.length > 0 ? "<span>" + tooltip.title[0] + "</span>" : '';
+	for(var i = 0; i < tooltip.body.length; i++){
+		var colour = '';
+		if(tooltip.labelColors && i < tooltip.labelColors.length){
+			var col = tooltip.labelColors[i];
+			if(col.borderColor){
+				colour = "<div class='label-colour' style='background-color:"+col.borderColor+"'></div>";
+			}
+		}
+		
+		content += '<span>' + colour + tooltip.body[i] + '</span>';
+	}
+	
+	el.brevadaTooltip('show', {
+		className: 'chart-tooltip',
+		x: 'mouse',
+		y: 'mouse',
+		content: content,
+		bind: false,
+		keepalive: true,
+		one: true
+	});
+	
+};
+
+
+
 function build_line_graph(bucket, id) {
 	$pod = $('#' + id);
 	var graph_color = 'rgb(242, 96, 106)',
@@ -70,8 +117,7 @@ function build_line_graph(bucket, id) {
 						return tooltip.yLabel+"%";
 					}
 				},
-				backgroundColor : '#999',
-				color : '#FFFFFF'
+				enabled: false
 			}
 		}
 	});

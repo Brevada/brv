@@ -22,3 +22,70 @@ div.brevada-tooltip {
 }
 div.brevada-tooltip > span { color: #FFF; }
 .brv-tp-enabled { }
+
+div.chart-tooltip {
+	width: auto;
+	height: auto;
+	border-radius: 3px;
+	opacity: 0.95;
+	background: #333;
+	padding: 0.8em 0.5em;
+	margin: 0;
+	z-index: 999999;
+	-webkit-touch-callout: none;
+	-webkit-user-select: none;
+	-khtml-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+	-webkit-box-shadow: 0px 0px 5px 0px rgba(50, 50, 50, 0.75);
+    -moz-box-shadow: 0px 0px 5px 0px rgba(50, 50, 50, 0.75);
+    box-shadow: 0px 0px 5px 0px rgba(50, 50, 50, 0.75);
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+	box-sizing: border-box;
+}
+div.chart-tooltip > span span:first-child {
+	font-size: 13px;
+	font-weight: bold;
+	margin-bottom: 2px;
+}
+div.chart-tooltip > span span {
+	color: #FFF;
+	display: block;
+	padding: 0;
+	margin: 0;
+	font-size: 11.5px;
+}
+
+div.chart-tooltip::before {
+	content: '';
+	display: block;
+	width: 0;
+	height: 0;
+	border-left: 7px solid transparent;
+	border-right: 7px solid transparent;
+	
+	position: absolute;
+	left: 50%;
+	-webkit-transform: translateX(-50%);
+	transform: translateX(-50%);
+}
+
+div.chart-tooltip.above::before {	
+	border-bottom: 8px solid rgba(51, 51, 51, 0.95);
+	top: -8px;
+}
+div.chart-tooltip.below::before {	
+	border-top: 8px solid rgba(51, 51, 51, 0.95);
+	bottom: -8px;
+}
+
+div.chart-tooltip div.label-colour {
+	display: inline-block;
+	width: 11.5px;
+	height: 11.5px;
+	border-radius: 2px;
+	padding: 0;
+	margin: 1px 1px 0 0;
+}
