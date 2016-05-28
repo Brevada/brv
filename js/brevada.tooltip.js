@@ -7,14 +7,25 @@
 	A human-readable summary can be found at http://creativecommons.org/licenses/by/4.0/
 */
 
+var currentTooltip = false;
+var currentTooltipOpts = false;
+
 (function($){
 	var currentMouse = { x: -1, y: -1 };
 	$(document).mousemove(function(e){
 		currentMouse.x = e.pageX;
 		currentMouse.y = e.pageY;
+		
+		if(currentTooltip && currentTooltipOpts){
+			if(currentTooltip.is(':visible')){
+				var x = calcX(e.pageX || e.x, currentTooltip, currentTooltipOpts);
+				var y = calcY(e.pageY || e.y, currentTooltip, currentTooltipOpts);
+				currentTooltip.css({ 'top' : y, 'left' : x });
+			}
+		}
 	}).mouseover();
 	
-	$.fn.brevadaTooltip = function(action, opts){
+	$.fn.brevadaTooltip = function(action, opts, tipEl){
 		if (typeof action !== 'string'){
 			opts = action;
 			action = false;
@@ -40,6 +51,7 @@
 		var that = this;
 		
 		var tipElement, tmr;
+		tipElement = tipEl;
 		
 		var textChanged = false;
 		
@@ -70,20 +82,18 @@
 				textChanged = true;
 			}
 			opts.text = opts.content;
+			
 			show({
 				x: opts.x === 'mouse' ? currentMouse.x : opts.x,
 				y: opts.y === 'mouse' ? currentMouse.y : opts.y
 			});
 			
 			if(!opts.bind){
-				$(document).mousemove(followMouse);
+				currentTooltip = tipElement;
+				currentTooltipOpts = opts;
 			}
 		} else if(action == 'hide'){
 			hide();
-			
-			if(!opts.bind){
-				$(document).unbind('mousemove', followMouse);
-			}
 		}
 		
 		function followMouse(e){
@@ -113,40 +123,21 @@
 		
 		function show(e){
 			resetTimer();
-			var x = calcX(e.pageX || e.x);
-			var y = calcY(e.pageY || e.y);
+			var x = calcX(e.pageX || e.x, getTipElement(), opts);
+			var y = calcY(e.pageY || e.y, getTipElement(), opts);
 			getTipElement().css({ 'top' : y, 'left' : x });
-			if(!tipElement.is(':visible') || (opts.one && textChanged)){
+			
+			var invisible = !tipElement.is(':visible');
+			if(invisible || (opts.one && textChanged)){
 				tipElement.children('span').html(opts.text);
 				textChanged = false;
 			}
-			if(!tipElement.is(':visible')){
+			
+			if(invisible){
 				stopTimer();
 				tipElement.stop().fadeIn(opts.fadeInDuration, function(){
 					resetTimer();
 				});
-			}
-		}
-		
-		function calcX(x){
-			var w = getTipElement().outerWidth();
-			
-			if (x + w + opts.offset > $(window).width()) {
-				return Math.max(0, x - opts.offset - w);
-			} else {
-				return x + opts.offset;
-			}
-		}
-		
-		function calcY(y){
-			var h = getTipElement().outerHeight();
-			
-			if (y + h + opts.offset > $(window).height()) {
-				//getTipElement().removeClass('above').addClass('below');
-				return y - h - opts.offset;
-			} else {
-				//getTipElement().removeClass('below').addClass('above');
-				return y + opts.offset;
 			}
 		}
 		
@@ -173,7 +164,39 @@
 		}
 		
 	};
+	
+	function calcX(x, tp, opts){
+		var w = tp.outerWidth();
+		
+		if (x + w + opts.offset > $(window).width()) {
+			return Math.max(0, x - opts.offset - w);
+		} else {
+			return x + opts.offset;
+		}
+	}
+	
+	function calcY(y, tp, opts){
+		var h = tp.outerHeight();
+		
+		if (y + h + opts.offset > $(window).height()) {
+			//getTipElement().removeClass('above').addClass('below');
+			return y - h - opts.offset;
+		} else {
+			//getTipElement().removeClass('below').addClass('above');
+			return y + opts.offset;
+		}
+	}
 }(jQuery));
+
+$.fn.isBound = function(type, fn) {
+    var data = jQuery._data(this[0], 'events')[type];
+
+    if (data === undefined || data.length === 0) {
+        return false;
+    }
+
+    return (-1 !== $.inArray(fn, data));
+};
 
 $(document).ready(function(){
 	$('[data-tooltip]').each(function(){
