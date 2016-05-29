@@ -264,7 +264,7 @@ bdff.create('complete', function(canvas, face){
 								label : function(tooltip){
 									var percent = Math.round(parseFloat(tooltip.yLabel),2);
 									var sign = percent == 0 ? '' : percent > 0 ? '+' : '-';
-									return ' '+complete.graphs.aspectRel.legend.legendItems[tooltip.datasetIndex].text+': '+sign+Math.abs(percent)+"%";
+									return complete.graphs.aspectRel.legend.legendItems[tooltip.datasetIndex].text+': '+sign+Math.abs(percent)+"%";
 								}
 							},
 							enabled: false
@@ -358,7 +358,7 @@ bdff.create('complete', function(canvas, face){
 								},
 								label : function(tooltip){
 									var percent = Math.round(parseFloat(tooltip.yLabel),2);
-									return ' '+complete.graphs.aspectsAbs.legend.legendItems[tooltip.datasetIndex].text+': '+Math.abs(percent)+"%";
+									return complete.graphs.aspectsAbs.legend.legendItems[tooltip.datasetIndex].text+': '+Math.abs(percent)+"%";
 								}
 							}
 						}

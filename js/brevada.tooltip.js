@@ -37,7 +37,7 @@ var currentTooltipOpts = false;
 			className : 'brevada-tooltip',
 			subClassName : '',
 			fadeInDuration : 10,
-			fadeOutDuration : 500,
+			fadeOutDuration : 100,
 			duration : 1550,
 			offset : 10,
 			text : '',
@@ -57,14 +57,14 @@ var currentTooltipOpts = false;
 		
 		if(opts.bind && opts.action != 'hide'){
 			$(this).not('.brv-tp-enabled').on({
-				mouseenter : function(){
+				mouseenter : function(e){
 					opts.text = $(this).attr('data-tooltip');
 					opts.subClassName = typeof opts.subClassName === 'undefined' ? '' : opts.subClassName;
 					getTipElement().removeClass(opts.subClassName);
 					opts.subClassName = $(this).attr('data-tooltip-class');
 					opts.subClassName = typeof opts.subClassName === 'undefined' ? '' : opts.subClassName;
 					tipElement.addClass(opts.subClassName);
-					$(this).mousemove();
+					$(this).mousemove(e);
 				},
 				mousemove : function(e){
 					show(e);
@@ -178,7 +178,7 @@ var currentTooltipOpts = false;
 	function calcY(y, tp, opts){
 		var h = tp.outerHeight();
 		
-		if (y + h + opts.offset > $(window).height()) {
+		if (y + h + opts.offset > $(window).height() + $(window).scrollTop()) {
 			//getTipElement().removeClass('above').addClass('below');
 			return y - h - opts.offset;
 		} else {
