@@ -12,6 +12,12 @@ body {
     font-family: 'Source Sans Pro', sans-serif;
     font-weight: 300;
 }
+body.noscroll {
+	overflow: hidden;
+	width: 100%;
+	height: 100%;
+}
+
 a.small-link {
     color: #ee2b2b;
     font-size: 11px;

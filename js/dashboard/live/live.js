@@ -103,8 +103,7 @@ bdff.create('live', function(canvas, face){
 										return data.datasets[0].data[tooltip.index] + ' responses';
 									}
 								},
-								backgroundColor : '#999',
-								color : '#FFFFFF'
+								enabled: false
 							}
 						}
 				});
@@ -131,6 +130,40 @@ bdff.create('live', function(canvas, face){
 						row.find('span').text(aspect.title + ', down ' + (Math.round(Math.abs(aspect.percent)*10)/10) + '%');
 					} else {
 						row.find('span').text('No Negative Performance');
+					}
+					
+					if(!row.is(':visible')){
+						row.fadeTo(100,1);
+					}
+				},
+				setUpAbs : function(aspect) {
+					var row = bestWorst.find('i.fa-thumbs-up').parent();
+					
+					if(aspect.title){
+						if(aspect.percent == 0){
+							row.find('span').text(aspect.title + ', No Responses');
+						} else {
+							row.find('span').text(aspect.title + ', at ' + (Math.round(Math.abs(aspect.percent) * 10)/10) + '%');
+						}
+					} else {
+						row.find('span').text('No Positive Performance');
+					}
+					
+					if(!row.is(':visible')){
+						row.fadeTo(100,1);
+					}
+				},
+				setDownAbs : function(aspect) {
+					var row = bestWorst.find('i.fa-thumbs-down').parent();
+					
+					if(aspect.title){
+						if(aspect.percent == 0){
+							row.find('span').text(aspect.title + ', No Responses');
+						} else {
+							row.find('span').text(aspect.title + ', at ' + (Math.round(Math.abs(aspect.percent) * 10)/10) + '%');
+						}
+					} else {
+						row.find('span').text('No Positive Performance');
 					}
 					
 					if(!row.is(':visible')){
@@ -216,7 +249,7 @@ bdff.create('live', function(canvas, face){
 	};
 	
 	var renderPastScores = function(canvas){
-		var weeksScores = $("<div>").addClass('weeks-scores col-xs-2').appendTo(canvas);
+		var weeksScores = $("<div>").addClass('weeks-scores').appendTo(canvas);
 		weeksScores
 			.append($('<span>').addClass('header').text('Loading...'))
 			.append($('<span>').addClass('subtitle').text("Loading..."));
@@ -294,15 +327,15 @@ bdff.create('live', function(canvas, face){
 					live.snapshot.week.setResponses(data.snapshot.week.responses);
 					live.snapshot.week.setGraph(data.snapshot.week.bucket);
 					
-					live.snapshot.all.setUp(data.snapshot.all.up);
-					live.snapshot.all.setDown(data.snapshot.all.down);
+					live.snapshot.all.setUpAbs(data.snapshot.all.up);
+					live.snapshot.all.setDownAbs(data.snapshot.all.down);
 					live.snapshot.all.setAverage(data.snapshot.all.average);
 					live.snapshot.all.setResponses(data.snapshot.all.responses);
 					live.snapshot.all.setGraph(data.snapshot.all.bucket);
 				}
 				
 				if(data.feed){
-					for(var i = 0; i < data.feed.length; i++){
+					for(var i = data.feed.length-1; i > 0; i--){
 						face.datahooks[0].request.data.latest = Math.max(face.datahooks[0].request.data.latest, data.feed[i].id);
 						live.feed.add(data.feed[i]);
 					}
@@ -315,7 +348,9 @@ bdff.create('live', function(canvas, face){
 					}
 				}
 				
-				$('[data-tooltip]').brevadaTooltip();
+				$('[data-tooltip]').each(function(){
+					$(this).brevadaTooltip();
+				});
 			};
 			
 			if(canvas.find('.full-loader').length > 0){
