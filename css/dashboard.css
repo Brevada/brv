@@ -507,9 +507,55 @@ div.bottom-bar {
 	position: relative;
 }
 
+.pod .body .pod-body-bottom div.graphs div.line-graph:not(.no-data)::after {
+	content: 'Last 2 Weeks';
+	background: rgb(242, 96, 106);
+	padding: 0 3px;
+	margin: 0;
+	color: #fff;
+	font-size: 12px;
+	position: absolute;
+	bottom: 7px;
+	left: 9px;
+	opacity: 0.5;
+}
+
+.pod .body .pod-body-bottom div.graphs div.line-graph:not(.no-data) .no-data {
+	display: none;
+}
+
+.pod .body .pod-body-bottom div.graphs div.line-graph.no-data .no-data {
+	display: block;
+	background: rgb(242, 96, 106);
+	text-align: center;
+	position: absolute;
+	bottom: 4%;
+	left: 2%;
+	width: 96%;
+	height: 96%;
+	margin: 0 auto;
+	margin-top: 5px;
+}
+.pod .body .pod-body-bottom div.graphs div.line-graph.no-data .no-data i {
+	text-align: center;
+	color: #fff;
+	opacity: 0.5;
+	font-size: 90px;
+}
+.pod .body .pod-body-bottom div.graphs div.line-graph.no-data .no-data span {
+	text-align: center;
+	color: #fff;
+	opacity: 0.5;
+	display: block;
+	font-size: 12px;
+}
+
 .pod .body .pod-body-bottom div.graphs div.line-graph canvas {
 	position: absolute;
 	bottom: 0;
+}
+.pod .body .pod-body-bottom div.graphs div.line-graph.no-data canvas {
+	visibility: hidden;
 }
 
 .pod .body .pod-body-bottom div.graphs div.bar-graph {
@@ -763,6 +809,8 @@ div.milestone {
 	background: none;
 	border: 1px solid #999;
 	outline: none;
+	padding-left: 3em;
+	padding-right: 3em;
 }
 .milestone-form input {
     padding: 5px;
@@ -811,6 +859,7 @@ div.milestone {
 .milestone-body .header .title .complete {
     font-size: 10px;
     color: #82cc0e;
+	margin-left: 10px;
 }
 .milestone-body .header .data {
     clear: both;
@@ -869,7 +918,7 @@ div.milestone {
 }
 .milestone-body .footer .complete-button {
     font-weight: bold;
-    display: none; /* Javascript will display if appropriate */
+    display: inline-block;
 }
 .milestone-body .footer div {
     cursor: pointer;
@@ -944,11 +993,18 @@ div.milestone {
     text-align: center;
 }
 .hoverpod .status .bulb {
-    width: 15px;
-    height: 15px;
+    width: 35px;
+	height: 20px;
+	padding: 0;
+	
     border-radius: 3px;
     margin: 0 auto;
-    margin-bottom: 5px;
+    margin-bottom: 3px;
+	
+	text-align: center;
+	font-size: 12px;
+	padding-top: 2px;
+	color: #fff;
 }
 
 @media (max-width:767px) {
@@ -1080,9 +1136,17 @@ div.milestone {
     margin-top: 10px;
 }
 
-.complete-page .settings .date {
+.complete-page .settings .date-label {
     padding: 10px;
     font-size: 15px;
+}
+.complete-page .settings .date-label .date {
+	
+}
+.complete-page .settings .date-label i {
+	display: inline-block;
+	color: rgb(242, 96, 106);
+	margin-right: 10px;
 }
 
 .complete-page .settings .default-options {
@@ -1119,8 +1183,9 @@ div.milestone {
 }
 
 .complete-page .aspects {
-    max-height: 480px; /*TODO */
-    overflow: scroll;
+    max-height: 480px;
+    overflow-x: hidden;
+	overflow-y: scroll;
     background: none;
     border-radius: 2px;
     margin-top: 10px;
@@ -1190,7 +1255,7 @@ div.milestone {
 /* Range Slider */
 .ui-rangeSlider {
     padding: 0px;
-    height: 30px;
+    height: 24px;
     overflow: hidden;
 }
 .ui-rangeSlider-arrow {
@@ -1212,7 +1277,6 @@ div.milestone {
 }
 .ui-rangeSlider-label {
     bottom: 50px;
-    /*font-size: 1px;*/
     padding: 0px;
     color: #333;
     background: rgba(255,255,255,0.5);
@@ -1342,8 +1406,13 @@ div.snapshot div.snapshot-pod div.snapshot-best-worst {
 	color: #999;
 	margin: 0px 0 5px 28.5px;
 	display: inline-block;
-	width: 100%;
+	width: 95%;
 	clear: both;
+	background: #f7f7f7;
+	padding: 5px;
+	border-radius: 3px;
+	
+	word-wrap: break-word;	
 }
 div.snapshot div.snapshot-pod div.snapshot-best-worst > span {
 	display: block;
@@ -1434,12 +1503,12 @@ div.feed div.feed-list div.feed-item span.medium.medium-phone::before {
 }
 
 div.weeks-scores {
-    position: fixed;
 	margin: 0 0 20px 0;
+	max-width: 300px;
 }
 
 div.weeks-scores div.scores-list {
-	width: 100%;
+	width: 95%;
 	padding: 0;
 	margin: 0;
 }
@@ -1479,7 +1548,7 @@ div.weeks-scores div.scores-list div.scores-item div.score-bar > span {
 div.weeks-scores div.scores-list div.scores-item div.score-bar > span.no-data {
 	background: rgb(242, 96, 106);
 	border-radius: 2px;
-	padding: 0 2px;
+	padding: 0 5px 0 2px;
 	left: 0;
 	opacity: 0.5;
 	transition: opacity 0.5s ease-in-out;

@@ -86,7 +86,7 @@ bdff.create('milestones', function(canvas, face){
 						$('<div>').addClass('input-group date').attr('id', 'dtpTo').append(
 							$('<input>').attr({
 								type: 'text',
-								placeholder: 'To Date'
+								placeholder: 'To Date (optional)'
 							}).addClass('form-control')
 						).append(
 							$('<span>').addClass('input-group-addon').append(
@@ -97,13 +97,13 @@ bdff.create('milestones', function(canvas, face){
 				)
 			).append(
 				$('<div>').addClass('form-group').append(
-					$('<button>').addClass('btn btn-default submit').attr({
+					$('<button>').addClass('btn btn-default submit add-event').attr({
 						'type': 'button'
 					}).text('Add Event').click(function(){
 						var title = canvas.find('.milestone-form .title').val();
 						var dateFrom = canvas.find('#dtpFrom > input').val();
 						var dateTo = canvas.find('#dtpTo > input').val();
-						if(title.length > 0 && dateFrom.length > 0 && dateTo.length > 0){
+						if(title.length > 0 && dateFrom.length > 0){
 							dateFrom = parseInt(moment(dateFrom, 'MMM. D, YYYY').format('X'));
 							dateTo = parseInt(moment(dateTo, 'MMM. D, YYYY').format('X'));
 							
@@ -209,7 +209,13 @@ bdff.create('milestones', function(canvas, face){
 		milestone.setDate = function(start, end){
 			var str;
 			start = moment(start, 'X').format('MMM. D, YYYY');
-			end = moment(end, 'X').format('MMM. D, YYYY');
+			
+			if(end > 0){
+				end = moment(end, 'X').format('MMM. D, YYYY');
+			} else {
+				end = "Still Active";
+			}
+			
 			if(start == end){
 				str = start;
 			} else {
@@ -218,13 +224,16 @@ bdff.create('milestones', function(canvas, face){
 			ms.find('.data .date').text(str);
 		};
 		
-		milestone.setCompletion = function(completed){
-			if(completed && ms.find('span.complete').length == 0){
-				$('<span class="complete" >&nbsp;MILESTONE COMPLETE</span>').appendTo(ms.find('.title'));
+		milestone.setCompletion = function(end){
+			if(end == 0){
+				ms.find('div.complete-button').show();
 			} else {
-				ms.find('.complete-button').css({ 'display' : 'inline-block' }).click(function(){
-					console.log("Milestone completed!");
-				});
+				ms.find('div.complete-button').hide();
+			}
+			
+			var now = (new Date().getTime())/1000;
+			if(now > end){
+				$('<span class="complete" >&nbsp;MILESTONE COMPLETE</span>').appendTo(ms.find('.title'));
 			}
 		};
 		
@@ -273,9 +282,9 @@ bdff.create('milestones', function(canvas, face){
 				} else {
 					var sign = parseInt(change) == 0 ? '' : parseInt(change) > 0 ? '+' : '-';
 					if(parseInt(change)==0){
-						dom.find('.details').text('no change after ' + responses + ' response' + (parseInt(change)>1 ? 's' : ''));
+						dom.find('.details').text('no change after ' + responses + ' response' + (parseInt(responses)>1 ? 's' : ''));
 					} else {
-						dom.find('.details').text(sign+change+'%' + ' after ' + responses + ' response' + (parseInt(change)>1 ? 's' : ''));
+						dom.find('.details').text(sign+Math.abs(change)+'%' + ' after ' + responses + ' response' + (parseInt(responses)>1 ? 's' : ''));
 					}
 				}
 				
@@ -334,7 +343,7 @@ bdff.create('milestones', function(canvas, face){
 					milestone.setMood(data.milestones[i].mood)
 					milestone.setTitle(data.milestones[i].title);
 					milestone.setDate(data.milestones[i].date.start, data.milestones[i].date.end);
-					milestone.setCompletion(data.milestones[i].completed);
+					milestone.setCompletion(data.milestones[i].date.end);
 					
 					for(var j = 0; j < data.milestones[i].aspects.length; j++){
 						var aspect;

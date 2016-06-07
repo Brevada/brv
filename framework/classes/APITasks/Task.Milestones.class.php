@@ -37,16 +37,29 @@ class TaskMilestones extends AbstractTask
 			throw new Exception("Missing field. Title required.");
 		}
 		
-		if($from <= 0 || $to <= 0 || $to < $from){
+		if($from <= 0 || ($to > 0 && $to < $from)){
 			throw new Exception("Invalid dates.");
 		}
 		
-		if(($stmt = Database::prepare("INSERT INTO milestones (`StoreID`, `Title`, `FromDate`, `ToDate`) VALUES (?, ?, FROM_UNIXTIME(?), FROM_UNIXTIME(?))")) !== false){
-			$stmt->bind_param('isii', $store, $title, $from, $to);
-			$res = $stmt->execute();
-			$stmt->close();
-			if(!$res){
-				throw new Exception("Failed to create milestone.");
+		if($to == 0){
+			// Open ended milestone.
+			if(($stmt = Database::prepare("INSERT INTO milestones (`StoreID`, `Title`, `FromDate`, `ToDate`) VALUES (?, ?, FROM_UNIXTIME(?), NULL)")) !== false){
+				$stmt->bind_param('isi', $store, $title, $from);
+				$res = $stmt->execute();
+				$stmt->close();
+				if(!$res){
+					throw new Exception("Failed to create event.");
+				}
+			}
+		} else {
+			// Definite end date.
+			if(($stmt = Database::prepare("INSERT INTO milestones (`StoreID`, `Title`, `FromDate`, `ToDate`) VALUES (?, ?, FROM_UNIXTIME(?), FROM_UNIXTIME(?))")) !== false){
+				$stmt->bind_param('isii', $store, $title, $from, $to);
+				$res = $stmt->execute();
+				$stmt->close();
+				if(!$res){
+					throw new Exception("Failed to create event.");
+				}
 			}
 		}
 	}
@@ -67,7 +80,7 @@ class TaskMilestones extends AbstractTask
 		$id = empty($_POST['id']) ? 0 : trim($_POST['id']);
 		
 		if($id <= 0){
-			throw new Exception("Invalid milestone.");
+			throw new Exception("Invalid event.");
 		}
 		
 		if(($stmt = Database::prepare("DELETE FROM milestones WHERE StoreID = ? AND id = ? LIMIT 1")) !== false){
@@ -75,7 +88,7 @@ class TaskMilestones extends AbstractTask
 			$res = $stmt->execute();
 			$stmt->close();
 			if(!$res){
-				throw new Exception("Failed to delete milestone.");
+				throw new Exception("Failed to delete event.");
 			}
 		}
 	}
@@ -96,15 +109,15 @@ class TaskMilestones extends AbstractTask
 		$id = empty($_POST['id']) ? 0 : trim($_POST['id']);
 		
 		if($id <= 0){
-			throw new Exception("Invalid milestone.");
+			throw new Exception("Invalid event.");
 		}
 		
-		if(($stmt = Database::prepare("UPDATE milestones SET Completed = 1 WHERE StoreID = ? AND id = ? LIMIT 1")) !== false){
+		if(($stmt = Database::prepare("UPDATE milestones SET ToDate = NOW() WHERE StoreID = ? AND id = ? AND ToDate IS NULL LIMIT 1")) !== false){
 			$stmt->bind_param('ii', $store, $id);
 			$res = $stmt->execute();
 			$stmt->close();
 			if(!$res){
-				throw new Exception("Failed to complete milestone.");
+				throw new Exception("Failed to complete event.");
 			}
 		}
 	}
@@ -126,7 +139,7 @@ class TaskMilestones extends AbstractTask
 		$aspect_id = empty($_POST['aid']) ? 0 : trim($_POST['aid']);
 		
 		if($milestone_id <= 0 || $aspect_id <= 0){
-			throw new Exception("Invalid milestone or aspect.");
+			throw new Exception("Invalid event or aspect.");
 		}
 		
 		$delete = !empty($_POST['delete']) && $_POST['delete'] == true;
@@ -137,7 +150,7 @@ class TaskMilestones extends AbstractTask
 				$res = $stmt->execute();
 				$stmt->close();
 				if(!$res){
-					throw new Exception("Failed to remove aspect from milestone.");
+					throw new Exception("Failed to remove aspect from event.");
 				}
 			}
 		} else {
@@ -146,7 +159,7 @@ class TaskMilestones extends AbstractTask
 				$res = $stmt->execute();
 				$stmt->close();
 				if(!$res){
-					throw new Exception("Failed to add aspect to milestone.");
+					throw new Exception("Failed to add aspect to event.");
 				}
 			}
 		}
@@ -168,15 +181,14 @@ class TaskMilestones extends AbstractTask
 		$milestones = [];
 		
 		if(($stmt = Database::prepare("
-			SELECT milestones.id, milestones.Title, milestones.Completed, UNIX_TIMESTAMP(milestones.FromDate) as FromDate, UNIX_TIMESTAMP(milestones.ToDate) as ToDate FROM milestones WHERE milestones.StoreID = ? ORDER BY milestones.id")) !== false){
+			SELECT milestones.id, milestones.Title, UNIX_TIMESTAMP(milestones.FromDate) as FromDate, IF(milestones.ToDate IS NULL, 0, UNIX_TIMESTAMP(milestones.ToDate)) as ToDate FROM milestones WHERE milestones.StoreID = ? ORDER BY milestones.FromDate ASC, milestones.id")) !== false){
 			$stmt->bind_param('i', $store);
 			if($stmt->execute()){
-				$stmt->bind_result($milestone_id, $milestone_title, $milestone_completed, $milestone_from, $milestone_to);
+				$stmt->bind_result($milestone_id, $milestone_title, $milestone_from, $milestone_to);
 				while($stmt->fetch()){
 					$milestones[] = [
 						'id' => $milestone_id,
 						'title' => $milestone_title,
-						'completed' => $milestone_completed == 1,
 						'date' => [
 							'start' => $milestone_from,
 							'end' => $milestone_to
@@ -216,7 +228,7 @@ class TaskMilestones extends AbstractTask
 				$aspect_type = intval($aspect['type']);
 				
 				$before = (new Data())->store($store)->aspectType($aspect_type)->to($from)->getAvg();
-				$after = (new Data())->store($store)->aspectType($aspect_type)->to($to)->getAvg();
+				$after = (new Data())->store($store)->aspectType($aspect_type)->to($to > 0 ? $to : time())->getAvg();
 				
 				$aspect['change'] = strval(round($after->getRating() - $before->getRating()));
 				$aspect['responses'] = $after->getSize() - $before->getSize();

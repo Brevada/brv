@@ -75,11 +75,23 @@ class TaskPlayground extends AbstractTask
 		
 		$minDate = time() - $MONTH;
 		
-		$from = max(@intval(Brevada::FromGET('from')), time()-$MONTH*12*5);
+		$from = @intval(Brevada::FromGET('from'));
 		$to = @intval(Brevada::FromGET('to'));
 		if($to == 0){ $to = time(); }
+		
 		$included = empty($_GET['included']) ? [] : array_map('intval', explode(',', $_GET['included']));
 		if(!isset($_GET['included'])){ $included = false; }
+		
+		if($from == 0){
+			foreach($rows as $row){
+				if($included !== false && !in_array(intval($row['id']), $included)){
+					continue;
+				}
+				$overall = (new Data())->store($store)->aspectType($row['AspectTypeID'])->getAvg();
+				$minDate = min($overall->getSize() > 0 ? $overall->getUTCFrom() : $minDate, $minDate);
+			}
+			$from = $minDate;
+		}
 		
 		$dateFormat = 'g:i:s a';
 		$delta = $to - $from;
@@ -115,7 +127,7 @@ class TaskPlayground extends AbstractTask
 			$includedTypes[] = intval($aspectType);
 			
 			$overall = (new Data())->store($store)->aspectType($aspectType)->getAvg();
-			$minDate = min($overall->getUTCFrom(), $minDate);
+			$minDate = min($overall->getSize() > 0 ? $overall->getUTCFrom() : $minDate, $minDate);
 			
 			$rating = (new Data())->store($store)->aspectType($aspectType)->from($from)->to($to)->getAvg();
 			
@@ -147,15 +159,20 @@ class TaskPlayground extends AbstractTask
 			
 			$bucketDates_abs = [];
 			$bucketData_abs = [];
+			$bucketData_responses = [];
 			
 			$minBucket_abs = 100;
 			$maxBucket_abs = 0;
+			$responses_max = 0;
 			
 			if(!empty($includedTypes)){
 				$aspectAvg = (new Data())->store($store)->aspectType($aspectType)->from($from)->to($to)->getAvg($bucketSize);
 				$prevVal = (new Data())->store($store)->aspectType($aspectType)->from($from - ($MONTH*12))->to($from)->getAvg()->getRating();
 				for($i = 0; $i < $bucketSize; $i++){
 					$bucketDates_abs[] = date($dateFormat, $aspectAvg->getUTCFrom($i)) == date($dateFormat, $aspectAvg->getUTCTo($i)-1) ? date($dateFormat, $aspectAvg->getUTCFrom($i)) : date($dateFormat, $aspectAvg->getUTCFrom($i)) . ' - ' . date($dateFormat, $aspectAvg->getUTCTo($i)-1);
+					
+					$bucketData_responses[] = $aspectAvg->getSize($i);
+					$responses_max = max($responses_max, $aspectAvg->getSize($i));
 					
 					$value = $aspectAvg->getRating($i);
 					if($aspectAvg->getSize($i) == 0){
@@ -189,6 +206,10 @@ class TaskPlayground extends AbstractTask
 					"abs" => [
 						"labels" => $bucketDates_abs,
 						"data" => $bucketData_abs,
+						"responses" => [
+							"data" => $bucketData_responses,
+							"max" => $responses_max
+						],
 						"min" => $minBucket_abs,
 						"max" => $maxBucket_abs
 					]

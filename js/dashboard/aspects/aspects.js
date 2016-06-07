@@ -75,6 +75,12 @@ bdff.create('aspects', function(canvas, face){
 						.append(
 							$('<div>').addClass('line-graph').attr('data-id', id).append(
 								$('<canvas>')
+							).append(
+								$('<div>').addClass('no-data').append(
+									$('<i>').addClass('fa fa-line-chart')
+								).append(
+									$('<span>').text('Insufficient Data')
+								).attr({ 'data-tooltip': "There's not enough data<br/>to make a meaningful graph." })
 							)
 						)
 					)
@@ -198,12 +204,24 @@ bdff.create('aspects', function(canvas, face){
 						
 						aspect.lineGraph.data.labels = aspect.data.labels;
 						aspect.lineGraph.data.datasets[0].data = aspect.data.data;
-						aspect.lineGraph.options.scales.yAxes[0].ticks.min = data.aspects[i].bucket.min;
+						
+						// Adds padding for label.
+						var padding = 0.23 * (data.aspects[i].bucket.max - data.aspects[i].bucket.min);
+						aspect.lineGraph.options.scales.yAxes[0].ticks.min = data.aspects[i].bucket.min - padding;
 						aspect.lineGraph.options.scales.yAxes[0].ticks.max = data.aspects[i].bucket.max;
 						aspect.lineGraph.update();
+						
+						var domGraph = $('#pod'+data.aspects[i].id).find('div.line-graph');
+						if(aspect.data.data.length == 1){
+							domGraph.addClass('no-data');
+						} else {
+							domGraph.removeClass('no-data');
+						}
 					}
 					
-					$('div[data-tooltip]').brevadaTooltip();
+					$('[data-tooltip]').each(function(){
+						$(this).brevadaTooltip();
+					});
 				}
 				/* Check deletes. */
 				var keys = Object.keys(aspects);

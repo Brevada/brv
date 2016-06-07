@@ -77,46 +77,58 @@ class TaskLive extends AbstractTask
 				'id' => $row['id']
 			];
 			
-			$day_aspect_change = (new Data())->store($store)->from(time()-$DAY)->to(time())->aspectType($row['AspectTypeID'])->getAvg()->getRating() - (new Data())->store($store)->from(time()-($DAY*2))->to(time()-$DAY)->aspectType($row['AspectTypeID'])->getAvg()->getRating();
+			$day_aspect_now = (new Data())->store($store)->from(time()-$DAY)->to(time())->aspectType($row['AspectTypeID'])->getAvg();
+			$day_aspect_then = (new Data())->store($store)->from(time()-($DAY*2))->to(time()-$DAY)->aspectType($row['AspectTypeID'])->getAvg();
+			$day_aspect_change = $day_aspect_now->getRating() - $day_aspect_then->getRating();
 			
-			$week_aspect_change = (new Data())->store($store)->from(time()-$WEEK)->to(time())->aspectType($row['AspectTypeID'])->getAvg()->getRating() - (new Data())->store($store)->from(time()-($WEEK*2))->to(time()-$WEEK)->aspectType($row['AspectTypeID'])->getAvg()->getRating();
+			$week_aspect_now = (new Data())->store($store)->from(time()-$WEEK)->to(time())->aspectType($row['AspectTypeID'])->getAvg();
+			$week_aspect_then = (new Data())->store($store)->from(time()-($WEEK*2))->to(time()-$WEEK)->aspectType($row['AspectTypeID'])->getAvg();
+			$week_aspect_change = $week_aspect_now->getRating() - $week_aspect_then->getRating();
 			
-			$all_aspect_change = (new Data())->store($store)->from(time()-$MONTH)->to(time())->aspectType($row['AspectTypeID'])->getAvg()->getRating() - (new Data())->store($store)->from(time()-($MONTH*2))->to(time()-$MONTH)->aspectType($row['AspectTypeID'])->getAvg()->getRating();
+			// Change does not make sense when dealing with all time. Instead, we consider absolute.
+			$all_aspect_data = (new Data())->store($store)->from(0)->to(time())->aspectType($row['AspectTypeID'])->getAvg();
+			$all_aspect = $all_aspect_data->getRating();
 			
-			if($day_aspect_change > 0 && (empty($day_up) || $day_aspect_change > $day_up['percent'])){
-				$day_up = [
-					'title' => $row['Title'],
-					'percent' => $day_aspect_change
-				];
-			} else if($day_aspect_change < 0 && (empty($day_down) || $day_aspect_change > $day_down['percent'])){
-				$day_down = [
-					'title' => $row['Title'],
-					'percent' => $day_aspect_change
-				];
+			if($day_aspect_now->getSize() > 0 && $day_aspect_then->getSize() > 0){
+				if($day_aspect_change > 0 && (empty($day_up) || $day_aspect_change > $day_up['percent'])){
+					$day_up = [
+						'title' => $row['Title'],
+						'percent' => $day_aspect_change
+					];
+				} else if($day_aspect_change < 0 && (empty($day_down) || $day_aspect_change < $day_down['percent'])){
+					$day_down = [
+						'title' => $row['Title'],
+						'percent' => $day_aspect_change
+					];
+				}
 			}
 			
-			if($week_aspect_change > 0 && (empty($week_up) || $week_aspect_change > $week_up['percent'])){
-				$week_up = [
-					'title' => $row['Title'],
-					'percent' => $week_aspect_change
-				];
-			} else if($week_aspect_change < 0 && (empty($week_down) || $week_aspect_change > $week_down['percent'])){
-				$week_down = [
-					'title' => $row['Title'],
-					'percent' => $week_aspect_change
-				];
+			if($week_aspect_now->getSize() > 0 && $week_aspect_then->getSize() > 0){
+				if($week_aspect_change > 0 && (empty($week_up) || $week_aspect_change > $week_up['percent'])){
+					$week_up = [
+						'title' => $row['Title'],
+						'percent' => $week_aspect_change
+					];
+				} else if($week_aspect_change < 0 && (empty($week_down) || $week_aspect_change < $week_down['percent'])){
+					$week_down = [
+						'title' => $row['Title'],
+						'percent' => $week_aspect_change
+					];
+				}
 			}
 			
-			if($all_aspect_change > 0 && (empty($all_up) || $all_aspect_change > $all_up['percent'])){
-				$all_up = [
-					'title' => $row['Title'],
-					'percent' => $all_aspect_change
-				];
-			} else if($all_aspect_change < 0 && (empty($all_down) || $all_aspect_change > $all_down['percent'])){
-				$all_down = [
-					'title' => $row['Title'],
-					'percent' => $all_aspect_change
-				];
+			if($all_aspect_data->getSize() > 0){
+				if(empty($all_up) || $all_aspect > $all_up['percent']){
+					$all_up = [
+						'title' => $row['Title'],
+						'percent' => $all_aspect
+					];
+				} else if(empty($all_down) || $all_aspect < $all_down['percent']){
+					$all_down = [
+						'title' => $row['Title'],
+						'percent' => $all_aspect
+					];
+				}
 			}
 		}
 		
