@@ -23,7 +23,7 @@ var currentTooltipOpts = false;
 				currentTooltip.css({ 'top' : y, 'left' : x });
 			}
 		}
-	}).mouseover();
+	}).mousemove();
 	
 	$.fn.brevadaTooltip = function(action, opts, tipEl){
 		if (typeof action !== 'string'){
@@ -58,16 +58,18 @@ var currentTooltipOpts = false;
 		if(opts.bind && opts.action != 'hide'){
 			$(this).not('.brv-tp-enabled').on({
 				mouseenter : function(e){
+					textChanged = true;
 					opts.text = $(this).attr('data-tooltip');
 					opts.subClassName = typeof opts.subClassName === 'undefined' ? '' : opts.subClassName;
 					getTipElement().removeClass(opts.subClassName);
 					opts.subClassName = $(this).attr('data-tooltip-class');
 					opts.subClassName = typeof opts.subClassName === 'undefined' ? '' : opts.subClassName;
 					tipElement.addClass(opts.subClassName);
-					$(this).mousemove(e);
 				},
 				mousemove : function(e){
-					show(e);
+					if (opts.text && opts.text.length > 0) {
+						show(e);
+					}
 				},
 				mouseleave : function(){
 					hide();
@@ -132,7 +134,7 @@ var currentTooltipOpts = false;
 				tipElement.children('span').html(opts.text);
 				textChanged = false;
 			}
-			
+
 			if(invisible){
 				stopTimer();
 				tipElement.stop().fadeIn(opts.fadeInDuration, function(){
