@@ -25,9 +25,9 @@ class TaskFeedback extends AbstractTask
 					Insert into Database.
 				*/
 
-				if(TaskFeedback::insertRating($rating, $aspectID, $sessionID, $time)){
+				if(TaskFeedback::insertRating($rating, $aspectID, $sessionID, $time, $serial)){
 					/* Good. */
-					Logger::info("Rating inserted via API: {$rating}, {$aspectID}, {$sessionID}, {$time}");
+					Logger::info("Rating inserted via API: {$rating}, {$aspectID}, {$sessionID}, {$serial}, {$time}");
 				} else {
 					throw new Exception("Error inserting rating.");
 				}
@@ -39,14 +39,12 @@ class TaskFeedback extends AbstractTask
 		}
 	}
 	
-	public static function insertRating($rating, $aspectID, $sessionCode, $time = 0)
+	public static function insertRating($rating, $aspectID, $sessionCode, $time = 0, $serial = null)
 	{
 		if($time == 0){ $time = time(); }
 		$time = @intval($time);
 
-		$geo = Geography::GetGeo();
-
-		$ipAddress = $geo['ip'];
+		$ipAddress = Geography::GetIP();
 
 		$userAgent = $_SERVER['HTTP_USER_AGENT'];
 		
@@ -59,9 +57,13 @@ class TaskFeedback extends AbstractTask
 		}
 		
 		if(isset($rating)){
-			if(($stmt = Database::prepare("INSERT INTO `user_agents` (`UserAgent`) VALUES (?)")) !== false){
+			if(($stmt = Database::prepare("
+				INSERT INTO `user_agents` (`UserAgent`, `TabletID`)
+				SELECT `UserAgent`, `TabletID` FROM ((SELECT ? as `UserAgent`, `tablets`.id as `TabletID` FROM `tablets`
+				WHERE `tablets`.`SerialCode` = ? LIMIT 1) UNION (SELECT ? as `UserAgent`, NULL as `TabletID`)) T LIMIT 1
+			")) !== false){
 				$userAgentID = -1;
-				$stmt->bind_param('s', $userAgent);
+				$stmt->bind_param('sss', $userAgent, $serial, $userAgent);
 				if($stmt->execute()){
 					$userAgentID = $stmt->insert_id;
 				}

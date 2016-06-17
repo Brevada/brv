@@ -188,3 +188,5 @@ div.issue-pod {
 }
 
 .faq.faq-index li { text-decoration: underline; cursor: pointer; }
+
+tr.highlight { background-color: rgba(54, 189, 43, 0.75); }

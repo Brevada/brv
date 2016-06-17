@@ -12,9 +12,6 @@ if(!empty($serial)){
 		if($row && !empty($row)){
 			$tablet_id = $row['SID'];
 			$tablet_url = $row['URLName'];
-		} else {
-			Database::query("INSERT INTO `tablets` (SerialCode, StoreID, Status) VALUES ('{$serial}', NULL, 'Pending')");
-			exit("Error: Request pending with ID: {$serial}.");
 		}
 	} else {
 		exit;
@@ -33,7 +30,7 @@ $condition = empty($url_name) ? "id = '".$_SESSION['StoreID']."'" : "URLName='{$
 $query = Database::query("SELECT * FROM `stores` WHERE {$condition} LIMIT 1");
 
 if($query->num_rows == 0) {
-	Brevada::Redirect('/404');
+	Brevada::Redirect('/api/setup');
 }
 
 $store_id='';

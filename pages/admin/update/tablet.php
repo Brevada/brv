@@ -6,7 +6,7 @@ $id = @intval(Brevada::FromPOST('id'));
 $column = @intval(Brevada::FromPOST('column'));
 $value = Brevada::FromPOST('value');
 
-$columns = array(false, 'SerialCode', 'StoreName', false, false, 'Status');
+$columns = array(false, false, 'StoreName', false, false, 'Status');
 
 if(empty($id) || empty($column) || $column < 0 || $column > count($columns) || $columns[$column] == false){ exit('Invalid'); }
 
@@ -41,5 +41,5 @@ if($columns[$column] == 'StoreName'){
 	}
 }
 
-exit('OK');
+exit($value);
 ?>

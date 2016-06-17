@@ -12,18 +12,7 @@ class Geography
 		
 		$result = array('ip' => '', 'country' => '', 'province' => '', 'city' => '');
 		
-		$client  = empty($_SERVER['HTTP_CLIENT_IP']) ? '' : $_SERVER['HTTP_CLIENT_IP'];
-		$forward = empty($_SERVER['HTTP_X_FORWARDED_FOR']) ? '' : $_SERVER['HTTP_X_FORWARDED_FOR'];
-		$ip  = empty($_SERVER['REMOTE_ADDR']) ? '' : $_SERVER['REMOTE_ADDR'];
-		
-		if(filter_var($client, FILTER_VALIDATE_IP))
-		{
-			$ip = $client;
-		}
-		else if(filter_var($forward, FILTER_VALIDATE_IP))
-		{
-			$ip = $forward;
-		}
+		$ip = self::GetIP();
 		
 		$ip_data = @json_decode(file_get_contents("http://www.geoplugin.net/json.gp?ip=".$ip));
 
@@ -45,6 +34,24 @@ class Geography
 		$_SESSION['geo_ip'] = $result['ip'] = $ip;
 		
 		return $result;
+	}
+	
+	public static function GetIP()
+	{
+		$client  = empty($_SERVER['HTTP_CLIENT_IP']) ? '' : $_SERVER['HTTP_CLIENT_IP'];
+		$forward = empty($_SERVER['HTTP_X_FORWARDED_FOR']) ? '' : $_SERVER['HTTP_X_FORWARDED_FOR'];
+		$ip  = empty($_SERVER['REMOTE_ADDR']) ? '' : $_SERVER['REMOTE_ADDR'];
+		
+		if(filter_var($client, FILTER_VALIDATE_IP))
+		{
+			$ip = $client;
+		}
+		else if(filter_var($forward, FILTER_VALIDATE_IP))
+		{
+			$ip = $forward;
+		}
+		
+		return $ip;
 	}
 }
 ?>
