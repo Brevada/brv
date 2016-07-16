@@ -120,6 +120,8 @@ class TaskAspects extends AbstractTask
 				$maxValue = max($maxValue, $prev);
 			}
 			
+			$industry = (new Data())->aspectType($aspectType)->keyword($keywords)->getAvg();
+			
 			$aspects[] = [
 				"id" => $row['id'],
 				"title" => __($row['Title']),
@@ -135,7 +137,7 @@ class TaskAspects extends AbstractTask
 					"min" => $minValue,
 					"max" => $maxValue
 				],
-				"industry" => (new Data())->aspectType($aspectType)->keyword($keywords)->getAvg()->getRating()
+				"industry" => $industry->getSize() == 0 ? false : $industry->getRating()
 			];
 		}
 		

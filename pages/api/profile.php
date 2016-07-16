@@ -77,3 +77,30 @@ while($row=$query->fetch_assoc()){
 <div id="email_connect"  class="aspect-container container" style="display: none;">
 	<?php $this->add(new View('../widgets/profile/email_connect.php', array('store_id' => $store_id, 'tablet' => true))); ?>
 </div>
+
+<?php
+	if (($stmt = Database::prepare("
+		SELECT `CollectionTemplate`, `CollectionLocation`
+		FROM store_features
+		JOIN stores ON stores.FeaturesID = store_features.id
+		WHERE stores.id = ?
+	")) !== false){
+		$stmt->bind_param('i', $store_id);
+		if ($stmt->execute()){
+			$stmt->store_result();
+			if ($stmt->num_rows > 0){
+				$stmt->bind_result($col_template, $col_location);
+				$stmt->fetch();
+				// Render data form.
+?>
+<div id="data-collect" style='display:none;' data-location='<?= $col_location; ?>'>
+	<div class='content'>
+		<?= $col_template; ?>
+	</div>
+</div>
+<?php
+			}
+		}
+		$stmt->close();
+	}
+?>

@@ -113,14 +113,18 @@ bdff.create('aspects', function(canvas, face){
 		};
 		
 		aspect.setIndustryRating = function(val){
-			val = Math.round(val * 10) / 10;
+			if(val === false){
+				aspectDom.find('div.pod-body-rating.external').text("N/A");
+			} else {
+				val = Math.round(val * 10) / 10;
 			
-			aspectDom.find('div.pod-body-rating.external').text(val + "%");
+				aspectDom.find('div.pod-body-rating.external').text(val + "%");
 			
-			aspectDom.find('div.right-graph').attr('data-percent', val)
-				.attr('data-tooltip', 'Market Benchmark ('+val+'%)')
-				.children('div.percent').text(val+"%");
-				
+				aspectDom.find('div.right-graph').attr('data-percent', val)
+					.attr('data-tooltip', 'Market Benchmark ('+val+'%)')
+					.children('div.percent').text(val+"%");
+			}
+
 			aspect.animateBarGraphs();
 		};
 		
