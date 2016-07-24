@@ -69,7 +69,7 @@ while($row=$query->fetch_assoc()){
 </div>
 
 <div class="fixed-toolbar">
-	<div class="container">
+	<div class="container-fluid">
 		<div class="submit" id='imdone'><i class="fa fa-check"></i> <?php _e("I'm Done"); ?></div>
 	</div>
 </div>
@@ -93,9 +93,15 @@ while($row=$query->fetch_assoc()){
 				$stmt->fetch();
 				// Render data form.
 ?>
+<div id="data-collect-overlay"></div>
 <div id="data-collect" style='display:none;' data-location='<?= $col_location; ?>'>
 	<div class='content'>
-		<?= $col_template; ?>
+		<?php
+			$dataT = DataTemplate::fromJSON($col_template);
+			if($dataT !== false){
+				echo $dataT;
+			}
+		?>
 	</div>
 </div>
 <?php

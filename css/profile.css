@@ -104,7 +104,7 @@ body{
 }
 .bottom-spacer{
 	width: 100%;
-	height: 25px;
+	height: 50px;
 }
 #communicate_form{
 	padding: 15px 15px;
@@ -156,7 +156,6 @@ body{
 }
 #inactivity {
 	z-index: 99999;
-	background: #FF2B2B;
 	text-align: center;
 	position: fixed;
 	width: 80%;
@@ -164,15 +163,197 @@ body{
 	left: 0;
 	right: 0;
 	margin: 0 auto;
-	padding: 2em;
-	border-radius: 1em;
-	opacity: 0.9;
+	
+	border-radius: 3px;
+	background: #333;
+	padding: 2em 0.5em;
+	border: 3px solid #ff2b2b;
+	
+	-webkit-touch-callout: none;
+	-webkit-user-select: none;
+	-khtml-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+	-webkit-box-shadow: 0px 0px 5px 0px rgba(50, 50, 50, 0.75);
+    -moz-box-shadow: 0px 0px 5px 0px rgba(50, 50, 50, 0.75);
+    box-shadow: 0px 0px 5px 0px rgba(50, 50, 50, 0.75);
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+	box-sizing: border-box;
 }
 #inactivity p {
 	font-weight: bold;
-	color: white;
-	font-size: 3.5em;
+	color: #fff;
+	font-size: 3.35em;
 	text-align: center;
 }
 
 .locked { overflow: hidden !important; }
+
+#data-collect-overlay {
+	position: fixed; top: 0; left: 0;
+	width: 100%; height: 100%;
+	background: #333;
+	opacity: 0.8;
+	z-index: 99900; /* below inactivity */
+	display: none;
+}
+
+#data-collect {
+	position: fixed; top: 0; left: 0;
+	width: 100%; height: 100%;
+	z-index: 99901; /* below inactivity */
+	display: none;
+	height: 100%;
+	overflow: hidden;
+}
+
+#data-collect > div.content {
+	position: fixed;
+	z-index: 99902;
+	left: 50%;
+	width: 100%;
+	height: 100%;
+	margin: 0 0 0 0;
+	padding: 10% 1em 1.1em 1em;
+	
+	color: #fff;
+	font-size: 18px;
+	
+	transform: translateX(-50%);
+	-webkit-transform: translateX(-50%);
+	-ms-transform: translateX(-50%);
+	-moz-transform: translateX(-50%);
+	
+	-webkit-touch-callout: none;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+}
+
+/* post/pre templating. */
+
+#data-collect > div.content p.pp-message {
+	font-size: 20px;
+	width: 85%;
+	margin: 4px auto 45px auto;
+	padding: 2px 25px;
+	display: inline-block;
+}
+
+
+#data-collect > div.content div.pp-email {
+	text-align: center;
+	width: 100%;
+	color: #fff;
+	font-size: 20px;
+}
+
+#data-collect > div.content span.pp-at {
+	font-size: 30px;
+	margin: 0 5px 0 20px;
+	display: inline-block;
+	font-weight: bold;
+}
+
+#data-collect > div.content .pp-field {
+	background: transparent;
+	outline: none;
+	border-top: 0;
+	border-right: 0;
+	border-left: 0;
+	border-bottom: 2px solid #fff;
+}
+
+#data-collect > div.content div.pp-email .pp-field {
+	padding: 5px;
+	font-size: 24px;
+	width: 45%;
+}
+
+#data-collect > div.content div.pp-email span.data-email .pp-field {
+	width: 100%;
+}
+
+#data-collect > div.content div.pp-email span.data-email {
+	color: #fff;
+	padding: 5px;
+	font-size: 24px;
+	width: 35%;
+	text-align: left;
+	display: inline-block;
+}
+
+#data-collect > div.content div.pp-email-options {
+	width: 98%;
+	padding: 0;
+	margin: 20px auto 5px auto;
+	text-align: center;
+}
+
+#data-collect > div.content div.pp-email-options div.pp-email-option {
+	display: inline-block;
+	width: 30%;
+	border-radius: 4px;
+	background: #fff;
+	color: #333;
+	padding: 4px 4.5px;
+	margin: 20px 1%;
+	font-size: 24px;
+}
+
+#data-collect > div.content div.pp-email-options div.pp-email-option.selected {
+	opacity: 0.95;
+	position: relative;
+}
+#data-collect > div.content div.pp-email-options div.pp-email-option.selected::after {
+	display: inline-block;
+    font: normal normal normal 14px/1 FontAwesome;
+    font-size: inherit;
+    text-rendering: auto;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+	
+	content: "\f00c";
+	position: absolute;
+	left: 0;
+	top: 50%;
+	width: 100%;
+	height: 100%;
+	overflow: hidden;
+	color: #2ecc0e;
+	font-size: 40px;
+	text-align: center;
+	border-radius: 4px;
+	background: #aaa;
+	opacity: 0.8;
+	
+	transform: translateY(-50%);
+	-webkit-transform: translateY(-50%);
+	-moz-transform: translateY(-50%);
+}
+
+#data-collect > div.content div.pp-email-options div.pp-email-option.other { font-weight: bold; }
+
+#data-collect > div.content div.pp-btn {
+	background: #999;
+}
+
+#data-collect > div.content div.pp-submit {
+	display: block;
+	position: fixed;
+	bottom: 0;
+	left: 0;
+	width: 100%;
+	text-align: center;
+	
+	font-size: 30px;
+	padding: 10px 20px;
+	cursor: pointer;
+	
+	-webkit-box-shadow: 0px 0px 5px 0px rgba(50, 50, 50, 0.75);
+    -moz-box-shadow: 0px 0px 5px 0px rgba(50, 50, 50, 0.75);
+    box-shadow: 0px 0px 5px 0px rgba(50, 50, 50, 0.75);
+}

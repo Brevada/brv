@@ -23,7 +23,6 @@ if($this->getParameter('tablet') !== true){
 		if(!$alreadyRated){
 		?>
 		<div><?php $this->add(new View('../widgets/profile/star_rating_bar.php', array('row' => $r))); ?></div>
-		<br style="clear: both;" />
 		<div class="rate-description">
 			<div class="pull-left"><?php _e('Worst'); ?></div>
 			<div class="pull-right"><?php _e('Best'); ?></div>

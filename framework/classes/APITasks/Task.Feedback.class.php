@@ -9,33 +9,86 @@ class TaskFeedback extends AbstractTask
 			}
 			
 			/* Ensure all required data is present. */
-			if(TaskLoader::requiresData(['serial', 'now', 'rating', 'aspectID'], $_POST)){
-			
+			if(TaskLoader::requiresData(['serial', 'now'], $_POST)){
 				$serial = $_POST['serial'];
 				$time = $_POST['now'];
-				$rating = $_POST['rating'];
-				$aspectID = $_POST['aspectID'];
-				$sessionID = Brevada::FromPOST('session');
 				
+				$sessionID = Brevada::FromPOST('session');
 				if(empty($sessionID)){
 					$sessionID = strval(bin2hex(openssl_random_pseudo_bytes(16)));
 				}
 				
-				/*
-					Insert into Database.
-				*/
+				if(isset($_POST['rating']) && isset($_POST['aspectID'])){
+					$rating = $_POST['rating'];
+					$aspectID = $_POST['aspectID'];
 
-				if(TaskFeedback::insertRating($rating, $aspectID, $sessionID, $time, $serial)){
-					/* Good. */
-					Logger::info("Rating inserted via API: {$rating}, {$aspectID}, {$sessionID}, {$serial}, {$time}");
-				} else {
-					throw new Exception("Error inserting rating.");
+					
+					/*
+						Insert into Database.
+					*/
+
+					if(TaskFeedback::insertRating($rating, $aspectID, $sessionID, $time, $serial)){
+						/* Good. */
+						Logger::info("Rating inserted via API: {$rating}, {$aspectID}, {$sessionID}, {$serial}, {$time}");
+					} else {
+						throw new Exception("Error inserting rating.");
+					}
+				}
+				
+				if(isset($_POST['fields'])){
+					$fields = json_decode($_POST['fields'], true);
+					if($fields){
+						TaskFeedback::insertSessionData($sessionID, $fields, $time);
+					}
 				}
 				
 			} else {
 				throw new Exception("Incomplete request.");
 			}
 			
+		}
+	}
+	
+	public static function insertSessionData($sessionCode, $fields, $time)
+	{
+		$sessionDataID = -1;
+		
+		if(($stmt = Database::prepare("
+			INSERT INTO `session_data` (`SessionCode`, `SubmissionTime`) VALUES (?, ?)
+		")) !== false){
+			$stmt->bind_param('si', $sessionCode, $time);
+			if($stmt->execute()){
+				$sessionDataID = $stmt->insert_id;
+			}
+			$stmt->close();
+		}
+		
+		if($sessionDataID > 0){
+			foreach($fields as $key => $data){
+				if(empty($key)){ continue; }
+				
+				$label = isset($data['label']) ? $data['label'] : '';
+				$value = isset($data['value']) ? $data['value'] : '';
+				
+				$sql = "
+					INSERT INTO `session_data_field` 
+					(`SessionDataID`, `DataLabel`, `DataKey`, `DataValueSmall`, `DataValueLarge`) 
+					VALUES (?, ?, ?, ?, NULL)
+				";
+				if(strlen($value) >= 255){
+					$sql = "INSERT INTO `session_data_field` 
+					(`SessionDataID`, `DataLabel`, `DataKey`, `DataValueLarge`, `DataValueSmall`) 
+					VALUES (?, ?, ?, ?, NULL)";
+				}
+				
+				if(($stmt = Database::prepare($sql)) !== false){
+					$stmt->bind_param('ssss', $sessionDataID, $label, $key, $value);
+					if($stmt->execute()){
+						Logger::info("Inserted session_data_field#{$stmt->insert_id}. Time: {$time}.");
+					}
+					$stmt->close();
+				}
+			}
 		}
 	}
 	

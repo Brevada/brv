@@ -23,7 +23,7 @@ if ($_SESSION['Corporate'] && Permissions::has(Permissions::MODIFY_COMPANY_STORE
 	$store_id = $_SESSION['StoreID'];
 }
 
-$col_template = '';
+$col_template = false;
 $col_location = 0;
 
 if ($store_id !== false && ($stmt = Database::prepare("
@@ -38,6 +38,7 @@ if ($store_id !== false && ($stmt = Database::prepare("
 		if($stmt->num_rows > 0){
 			$stmt->bind_result($col_template, $col_location);
 			$stmt->fetch();
+			$col_template = DataTemplate::fromJSON($col_template);
 			$stmt->close();
 		} else {
 			$stmt->close();
@@ -72,15 +73,20 @@ if ($store_id !== false && ($stmt = Database::prepare("
 
 if(isset($_POST) && !empty($_POST['rdDisplay'])){
 	$col_location = @intval($_POST['rdDisplay']) % 5;
-	$col_template = Brevada::FromPOST('txtCustomAspect');
-	$col_template = trim(strip_tags($col_template));
+	$message = trim(strip_tags(Brevada::FromPOST('txtMessage')));
+	
+	$col_template = new DataTemplate('postpre/email');
+	$col_template->set('message', $message);
+	
+	$template_string = $col_template->toJSON();
+	
 	if (($stmt = Database::prepare("
 		UPDATE stores
 		JOIN store_features ON store_features.id = stores.FeaturesID
 		SET CollectionTemplate = ?, CollectionLocation = ? 
 		WHERE stores.id = ?
 	")) !== false){
-		$stmt->bind_param('sii', $col_template, $col_location, $store_id);
+		$stmt->bind_param('sii', $template_string, $col_location, $store_id);
 		if(!$stmt->execute()){
 			$message = "Unknown error. 500.";
 		} else {
@@ -113,7 +119,7 @@ if(isset($_POST) && !empty($_POST['rdDisplay'])){
 	<div class='form-group'>
 		<span class="form-header"><?php _e("Custom Message");?></span>
 		<span class="form-subheader"><?php _e("This message will appear alongside the email form."); ?></span>
-		<textarea class='form-control' name='txtCustomAspect' rows="3" placeholder="<?php _e("Please provide us with your email address so that we can be sure to properly remedy any negative situations."); ?>"><?= $col_template; ?></textarea>
+		<textarea class='form-control' name='txtMessage' rows="3" placeholder="<?php _e("Please provide us with your email address so that we can be sure to properly remedy any negative situations."); ?>"><?= $col_template !== false ? $col_template->get('message') : ''; ?></textarea>
 	</div>
 	
 	<div id="submit" class="submit-next"><?php _e('Save'); ?></div>
@@ -152,7 +158,7 @@ if(isset($_POST) && !empty($_POST['rdDisplay'])){
 	<div class='form-group'>
 		<span class="form-header"><?php _e("Custom Message");?></span>
 		<span class="form-subheader"><?php _e("This message will appear alongside the email form."); ?></span>
-		<textarea class='form-control' name='txtCustomAspect' rows="3" placeholder="<?php _e("Please provide us with your email address so that we can be sure to properly remedy any negative situations."); ?>"><?= $col_template; ?></textarea>
+		<textarea class='form-control' name='txtMessage' rows="3" placeholder="<?php _e("Please provide us with your email address so that we can be sure to properly remedy any negative situations."); ?>"><?= $col_template !== false ? $col_template->get('message') : ''; ?></textarea>
 	</div>
 	<div id="submit" class="submit-next"><?php _e('Save'); ?></div>
 	<?php } ?>
