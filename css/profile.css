@@ -240,7 +240,7 @@ body{
 	width: 85%;
 	margin: 4px auto 45px auto;
 	padding: 2px 20px;
-	display: inline-block;
+	display: block;
 }
 
 #data-collect > div.content .pp-centered { text-align: center; }
