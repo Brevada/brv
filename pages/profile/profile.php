@@ -22,7 +22,9 @@ if($query->num_rows == 0) {
 	Brevada::Redirect('/404');
 }
 
-$_SESSION['SessionCode'] = strval(bin2hex(openssl_random_pseudo_bytes(16)));
+if(empty($_SESSION['SessionCode'])){
+	$_SESSION['SessionCode'] = strval(bin2hex(openssl_random_pseudo_bytes(16)));
+}
 
 $store_id='';
 $name='';
@@ -78,3 +80,19 @@ $this->addResource("<meta property='og:description' content='Give {$name} Feedba
 <div id="email_connect"  class="aspect-container container" style="display: none;">
 	<?php $this->add(new View('../widgets/profile/email_connect.php', array('store_id' => $store_id))); ?>
 </div>
+
+<?php
+	// Don't ask for post/pre data if already collected.
+	if(($stmt = Database::prepare("
+		SELECT 1 FROM `session_data` WHERE `SessionCode` = ? LIMIT 1
+	")) !== false){
+		$stmt->bind_param('s', $_SESSION['SessionCode']);
+		if($stmt->execute()){
+			$stmt->store_result();
+			if($stmt->num_rows == 0){
+				$this->add(new View('../widgets/profile/data_collection.php', array('store_id' => $store_id)));
+			}
+		}
+		$stmt->close();
+	}
+?>
