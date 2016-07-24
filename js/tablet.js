@@ -50,9 +50,9 @@ app.custom.initPostPreData = function(){
 	var dataLocation = parseInt($dataCollect.attr('data-location'));
 	if (dataLocation == 1){
 		// After poor response.
-		app.events.onDone(function(){
+		app.events.onDone(function(e){
 			if(app.session.poorResponse){
-				app.custom.showPostPre();
+				app.custom.showPostPre(e);
 				return false;
 			}
 			return true;
