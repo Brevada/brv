@@ -71,7 +71,7 @@ if ($store_id !== false && ($stmt = Database::prepare("
 	}
 }
 
-if(isset($_POST) && !empty($_POST['rdDisplay'])){
+if(isset($_POST) && isset($_POST['rdDisplay'])){
 	$col_location = @intval($_POST['rdDisplay']) % 5;
 	$message = trim(strip_tags(Brevada::FromPOST('txtMessage')));
 	
