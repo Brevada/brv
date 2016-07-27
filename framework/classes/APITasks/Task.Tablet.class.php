@@ -17,6 +17,7 @@ class TaskTablet extends AbstractTask
 	public function taskCommunicate()
 	{
 		$serial = Brevada::FromPOST('serial');
+		$ip_address = Geography::GetIP();
 		$battery_percent = Brevada::FromPOST('battery_percent');
 		$battery_plugged_in = Brevada::FromPOST('battery_percent');
 		$device_version = Brevada::FromPOST('device_version');
@@ -36,6 +37,7 @@ class TaskTablet extends AbstractTask
 		if(($stmt = Database::prepare("
 			UPDATE `tablets` SET
 			`OnlineSince` = UNIX_TIMESTAMP(NOW()),
+			`IPAddress` = ?,
 			`BatteryPercent` = ?,
 			`BatteryPluggedIn` = ?,
 			`PositionLatitude` = ?,
@@ -46,7 +48,7 @@ class TaskTablet extends AbstractTask
 			`DeviceModel` = ?
 			WHERE `tablets`.`SerialCode` = ? LIMIT 1
 		")) !== false){
-			$stmt->bind_param('diddiisss', $battery_percent, $battery_plugged_in, $position_latitude, $position_longitude, $position_timestamp, $stored_data_count, $device_version, $device_model, $serial);
+			$stmt->bind_param('sdiddiisss', $ip_address, $battery_percent, $battery_plugged_in, $position_latitude, $position_longitude, $position_timestamp, $stored_data_count, $device_version, $device_model, $serial);
 			if($stmt->execute()){
 				$this->data['update'] = true;
 			} else {
@@ -104,6 +106,68 @@ class TaskTablet extends AbstractTask
 				$this->data['ok'] = false;
 			}
 			$stmt->close();
+		}
+	}
+	
+	public function taskSetup()
+	{
+		$serial = Brevada::FromPOST('serial');
+		
+		if(empty($serial)){
+			throw new Exception("Missing identification.");
+		}
+		
+		$email = Brevada::FromPOST('email');
+		$password = Brevada::FromPOST('password');
+		$store = Brevada::FromPOST('store');
+		
+		if (!empty($email) && !empty($password)) {
+			// If account valid, return list of stores (where user has permission).
+			if (Brevada::LogIn($email, $password) && Permissions::has(Permissions::MODIFY_COMPANY_STORES)) {
+				$company = $_SESSION['CompanyID'];
+				
+				if (empty($company)){ throw new Exception("Critical security threat detected."); }
+				
+				if(($stmt = Database::prepare("
+					SELECT `stores`.`Name`, `stores`.`id` FROM `stores`
+					WHERE `stores`.`CompanyID` = ? AND `stores`.`Active` = 1
+					ORDER BY `stores`.`Name` ASC
+				")) !== false){
+					$stmt->bind_param('i', $company);
+					if($stmt->execute()){
+						$stmt->store_result();
+						$stmt->bind_result($storeName, $storeID);
+						$stores = [];
+						while($stmt->fetch()){
+							$stores[] = ['title' => $storeName, 'id' => $storeID];
+						}
+						
+						$this->data['stores'] = $stores;
+						$stmt->close();
+						return;
+					}
+					$stmt->close();
+				}
+				
+				throw new Exception("Error retrieving store list.");
+			} else {
+				throw new Exception("Invalid login credentials.");
+			}		
+		} else if (!empty($store)) {
+			// Insert tablet (ideally should check if user has permission for specific store).
+			if(($stmt = Database::prepare("INSERT INTO `tablets` (SerialCode, StoreID, Status) VALUES (?, ?, 'Pending')")) !== false){
+				$stmt->bind_param('si', $serial, $store);
+				if($stmt->execute()){
+					$this->data['ok'] = true;
+				} else {
+					$stmt->close();
+					throw new Exception("Error adding tablet to system.");
+				}
+				$stmt->close();
+			}
+			
+		} else {
+			throw new Exception("Unknown error.");
 		}
 	}
 }

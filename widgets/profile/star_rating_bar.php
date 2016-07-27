@@ -1,6 +1,5 @@
 <?php
 $this->addResource('/css/star_rating_bar.css');
-$this->addResource('/js/star_rating_bar.js');
 
 $r = $this->getParameter('row');
 $post_id = $r['ID'];

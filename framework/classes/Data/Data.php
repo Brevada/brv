@@ -422,8 +422,8 @@ class Data
 			while($stmt->fetch()){
 				$parDuration = floor(($to - $from) / floatval($numPoints));
 			}
+			$stmt->close();
 		}
-		$stmt->close();
 		
 		if(empty($from) && empty($to)){
 			return new DataResult([[self::AVERAGE_RATING => 0.0, self::AVERAGE_DATE => 0, self::TOTAL_DATASIZE => 0,

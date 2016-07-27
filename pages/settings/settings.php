@@ -4,6 +4,8 @@ $this->addResource('/css/signup.css');
 $this->addResource('/css/settings.css');
 $this->addResource('/js/dashboard-slide.js');
 $this->addResource('/js/settings.js');
+$this->addResource('/css/brevada.tooltip.css');
+$this->addResource('/js/brevada.tooltip.js');
 
 if(!Brevada::IsLoggedIn()){
 	Brevada::Redirect('/logout');
@@ -12,7 +14,7 @@ if(!Brevada::IsLoggedIn()){
 $name = Database::query("SELECT `Name` FROM `companies` WHERE `companies`.`id` = {$_SESSION['CompanyID']} LIMIT 1")->fetch_assoc()['Name'];
 
 $section = Brevada::FromGET('section');
-$acceptableSections = ['account', 'feedback', 'billing', 'tablets', 'logins', 'stores'];
+$acceptableSections = ['account', 'feedback', 'billing', 'tablets', 'logins', 'stores', 'emails'];
 if(!in_array($section, $acceptableSections)){ $section = 'account'; }
 ?>
 <div class='top-fixed'>
@@ -44,6 +46,7 @@ if(!in_array($section, $acceptableSections)){ $section = 'account'; }
 			<ul class='nav nav-sidebar'>
 				<li data-page='account'><a href='?section=account'><?php _e("Account"); ?></a></li>
 				<li data-page='feedback'><a href='?section=feedback'><?php _e("Feedback"); ?></a></li>
+				<li data-page='emails'><a href='?section=emails'><?php _e("Customer Emails"); ?></a></li>
 				
 				<?php if(($_SESSION['Corporate'] && Permissions::has(Permissions::MODIFY_COMPANY_STORES)) || (!$_SESSION['Corporate'] && Permissions::has(Permissions::MODIFY_STORE))){ ?>
 				<li data-page='billing'><a href='?section=billing'><?php _e("Billing"); ?></a></li>
@@ -74,3 +77,11 @@ if(!in_array($section, $acceptableSections)){ $section = 'account'; }
 		<div class='col-md-2'></div>
 	</div>
 </div>
+
+<script type='text/javascript'>
+$('.help[data-tooltip]').css('cursor', 'help').brevadaTooltip({
+	fadeInDuration: 300,
+	keepalive: true,
+	offset: 15
+});
+</script>

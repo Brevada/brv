@@ -14,14 +14,16 @@ if(typeof bdff !== 'undefined'){
 			play: 'complete',
 			details: 'aspects',
 			live: 'live',
-			events: 'milestones'
+			events: 'milestones',
+			customers: 'customers'
 		};
 		
 		var mappingsToHash = {
 			complete: 'play',
 			aspects: 'details',
 			live: 'live',
-			milestones: 'events'
+			milestones: 'events',
+			customers: 'customers'
 		};
 		
 		$('.toggle-button').click(function(){
@@ -45,6 +47,7 @@ if(typeof bdff !== 'undefined'){
 		bdff.faces['live'].attach();
 		bdff.faces['milestones'].attach();
 		bdff.faces['aspects'].attach();
+		bdff.faces['customers'].attach();
 		
 		bdff.persistent('hoverpod');
 		
