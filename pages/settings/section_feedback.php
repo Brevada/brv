@@ -161,8 +161,6 @@ if((!empty($_SESSION['StoreID']) && (($_SESSION['Corporate'] && Permissions::has
 			$stmt->bind_param('ii', $session_check, $store_id);
 			if(!$stmt->execute()){
 				$message = "Unknown error. 500.";
-			} else {
-				$message = "Changes saved.";
 			}
 			$stmt->close();
 		}
