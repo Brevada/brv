@@ -66,7 +66,7 @@ $this->addResource('/js/signup.js');
 			<div class='token-container token-aspects'>
 				<div class='tokens'>
 					<?php
-					if(($query = Database::query("SELECT aspect_type.Title, aspect_type.ID as AspectTypeID FROM aspect_type ORDER BY aspect_type.Title ASC")) !== false){
+					if(($query = Database::query("SELECT aspect_type.Title, aspect_type.ID as AspectTypeID FROM aspect_type WHERE aspect_type.CompanyID IS NULL ORDER BY aspect_type.Title ASC")) !== false){
 						while($row = $query->fetch_assoc()){
 							echo "<div class='token noselect' data-tokenid='{$row['AspectTypeID']}'><span>".__($row['Title'])."</span></div>";
 						}

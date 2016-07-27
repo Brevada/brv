@@ -2,8 +2,7 @@
 $this->IsScript = true;
 date_default_timezone_set('America/New_York');
 
-$rating = Brevada::validate(Brevada::FromPOSTGET('value'), VALIDATE_DATABASE);
-$aspectID = @intval(Brevada::FromPOSTGET('post_id'));
+$fields = json_decode(Brevada::FromPOST('fields'), true);
 
 // If the user clears their cookies while on the page:
 if(empty($_SESSION['SessionCode'])){
@@ -15,7 +14,10 @@ $sessionCode = isset($_SESSION['SessionCode']) ? $_SESSION['SessionCode'] : '';
 require_once 'classes/TaskLoader.php';
 require_once 'classes/BrevadaAPI.php';
 require_once 'classes/APITasks/Task.Feedback.class.php';
-TaskFeedback::insertRating($rating, $aspectID, $sessionCode);
+
+if ($fields !== false){
+	TaskFeedback::insertSessionData($sessionCode, $fields, time());
+}
 
 exit('OK');
 ?>

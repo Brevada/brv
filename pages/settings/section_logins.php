@@ -29,6 +29,8 @@ if(($storeQuery = Database::query("SELECT `stores`.`Name`, `stores`.id FROM `sto
 		$stores[$row['Name']] = $row['id'];
 	}
 }
+
+$maxAccounts = max($maxAccounts, $numAccounts);
 ?>
 <div class='form-account'>
 	<span class="form-header"><?php echo sprintf(__("You are using %s out of your %s available logins."), '<span class="large">'.$numAccounts.'</span>', '<span class="large">'.$maxAccounts.'</span>'); ?></span><br />

@@ -29,7 +29,7 @@ if(isset($_POST)){
 <form id='frmAccount' action='settings?section=account' method='post'>
 <?php if(!empty($message)){ echo "<p class='message'>{$message}</p>"; } ?>
 <div class='form-account'>
-	<span class="form-header"><?php _e('Change Your Password'); ?></span>
+	<span class="form-header"><?php _e('Change Your Password'); ?><span class='pull-right'><i class='fa fa-info-circle help' data-tooltip="<?php _e("Passwords are tied to specific accounts, not to a store or company."); ?>"></i></span></span>
 	<span class="form-subheader"><?php _e('A strong password contains uppercase, lowercase, numbers and symbols (!@#$).'); ?></span>
 	
 	<input class='in' type='password' name='txtPassword' placeholder='<?php _e("Enter your new password."); ?>' />

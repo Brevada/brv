@@ -175,7 +175,7 @@ bdff.create('live', function(canvas, face){
 				},
 				setChange : function(change) {
 					var sign = change == 0 ? '' : change > 0 ? '+' : '-';
-					stats.find('div.change').children('span.number').removeClass('positive great neutral bad negative').addClass(bdff.mood((parseFloat(Math.abs(change))+100.0)/2)).text(sign+Math.abs(change)+'%');
+					stats.find('div.change').children('span.number').removeClass('positive great neutral bad negative').addClass(bdff.mood((parseFloat(change)+100.0)/2)).text(sign+Math.abs(change)+'%');
 				},
 				setResponses : function(resp) {
 					var magnitude = Math.floor(Math.log10(parseInt(resp)))+1;
