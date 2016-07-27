@@ -2,37 +2,6 @@
 if($this->getParameter('valid') !== true){ Brevada::Redirect('/404'); }
 ?>
 <?php
-$this->addResource('/css/bootstrap-datetimepicker.css');
-$this->addResource('/js/bootstrap-datetimepicker.min.js');
-
-$this->addResource('/css/brevada.tooltip.css');
-$this->addResource('/js/brevada.tooltip.js');
-
-$this->addResource('/js/jQRangeSlider/jQRangeSlider-min.js');
-$this->addResource('/js/jQRangeSlider/jQDateRangeSlider-min.js');
-$this->addResource('/js/jQRangeSlider/css/iThing.css');
-
-$this->addResource('/css/layout.css');
-$this->addResource('/css/dashboard.css');
-
-$this->addResource('/js/Brevada.BDFF.js');
-$this->addResource('/js/dashboard/dashboard.js');
-
-$this->addResource('/js/dashboard/aspects/aspects.js');
-
-$this->addResource('/js/dashboard/milestones/milestones.js');
-
-$this->addResource('/js/dashboard/live/live.js');
-
-$this->addResource('/js/dashboard/support/support.js');
-
-$this->addResource('/js/dashboard/hoverpod/hoverpod.js');
-
-$this->addResource('/js/dashboard/complete/complete.js');
-
-$this->addResource('/js/dashboard/dashboard-slide.js');
-$this->addResource('/js/dashboard/dashboard-graph.js');
-
 if(!Brevada::IsLoggedIn()){
 	Brevada::Redirect('/home/logout');
 }
@@ -73,6 +42,35 @@ while($row = $query->fetch_assoc()){
 		$keywords[] = intval($row['CompanyKeywordID']);
 	}
 }
+
+$this->addResource('/css/bootstrap-datetimepicker.css');
+$this->addResource('/js/bootstrap-datetimepicker.min.js');
+
+$this->addResource('/css/brevada.tooltip.css');
+$this->addResource('/js/brevada.tooltip.js');
+
+$this->addResource('/js/jQRangeSlider/jQRangeSlider-min.js');
+$this->addResource('/js/jQRangeSlider/jQDateRangeSlider-min.js');
+$this->addResource('/js/jQRangeSlider/css/iThing.css');
+
+$this->addResource('/css/layout.css');
+$this->addResource('/css/dashboard.css');
+
+$this->addResource('/js/Brevada.BDFF.js');
+$this->addResource('/js/dashboard/dashboard.js');
+
+if ($company_active && !$company_expired){
+	$this->addResource('/js/dashboard/aspects/aspects.js');
+	$this->addResource('/js/dashboard/milestones/milestones.js');
+	$this->addResource('/js/dashboard/live/live.js');
+	$this->addResource('/js/dashboard/support/support.js');
+	$this->addResource('/js/dashboard/hoverpod/hoverpod.js');
+	$this->addResource('/js/dashboard/complete/complete.js');
+	$this->addResource('/js/dashboard/customers/customers.js');
+}
+
+$this->addResource('/js/dashboard/dashboard-slide.js');
+$this->addResource('/js/dashboard/dashboard-graph.js');
 
 $qAspects = Database::query("SELECT COUNT(*) as cnt FROM aspects WHERE aspects.StoreID = {$store_id} AND `Active` = 1");
 $aspectCount = $qAspects->fetch_assoc()['cnt'];
@@ -122,16 +120,6 @@ $aspectCount = $qAspects->fetch_assoc()['cnt'];
 
 <div class="spacer"></div>
 
-<div id="slide-down" class="slide-down">
-	<div id="email-display-holder">
-		<?php if($company_active && !$company_expired){ ?>
-		<?php $this->add(new View('../widgets/dashboard/email_display.php', array('store_id' => $store_id))); ?>
-		<?php } else { ?>
-		<br /><p><?php _e("You must activate your account to view the email list."); ?> <div id="email-close" class="slide-down-button"><?php _e("Close"); ?></div></p>
-		<?php } ?>
-	</div>
-</div>
-
 <div id="wrapper">
 	<!-- Side bar -->
     <div id="sidebar-wrapper">
@@ -145,6 +133,13 @@ $aspectCount = $qAspects->fetch_assoc()['cnt'];
 				<div class='icon-subtext hidden-xs'><?php _e('Summary'); ?></div>
 			</button>
 
+			<button type="button" data-id="customers" class="btn-sidebar toggle-button icon-button">
+				<div class="icon">
+					<i class='fa fa-users'></i>
+				</div>
+				<div class='icon-subtext hidden-xs'><?php _e('Customers'); ?></div>
+			</button>
+			
         	<button type="button" data-id="complete" class="btn-sidebar toggle-button icon-button">
 				<div class="icon">
 					<i class='fa fa-area-chart'></i>

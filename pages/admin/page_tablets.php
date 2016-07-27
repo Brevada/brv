@@ -2,6 +2,7 @@
 if(!Brevada::IsLoggedIn()){ Brevada::Redirect('/home/logout'); }
 if(!Permissions::has(Permissions::VIEW_ADMIN)){ Brevada::Redirect('/404'); }
 
+$ip = Geography::GetIP();
 ?>
 <h1 class="page-header">Tablets</h1>
 
@@ -13,7 +14,7 @@ if(!Permissions::has(Permissions::VIEW_ADMIN)){ Brevada::Redirect('/404'); }
     <thead>
       <tr>
         <th>#</th>
-        <th class='editable'>Serial #</th>
+        <th>Serial #</th>
         <th class='editable' placeholder='Enter ID'>Store Name</th>
 		<th>Battery</th>
 		<th>Online</th>
@@ -27,18 +28,20 @@ if(!Permissions::has(Permissions::VIEW_ADMIN)){ Brevada::Redirect('/404'); }
 	`tablets`.`id` as TabletID,
 	`tablets`.`SerialCode`,
 	`tablets`.`StoreID`,
+	`tablets`.`IPAddress`,
 	`stores`.`Name`,
 	`stores`.`id` as StoreID,
 	`tablets`.`Status`,
 	`tablets`.`OnlineSince`,
 	`tablets`.`BatteryPercent`,
 	`tablets`.`BatteryPluggedIn`
-	FROM `tablets` LEFT JOIN `stores` ON `stores`.`id` = `tablets`.`StoreID`");
+	FROM `tablets` LEFT JOIN `stores` ON `stores`.`id` = `tablets`.`StoreID` ORDER BY `tablets`.`id` DESC");
 	while($row = $query->fetch_assoc()){
 		$id = $row['TabletID'];
 		$storeID = $row['StoreID'];
 		$serial = strtoupper($row['SerialCode']);
 		$status = $row['Status'];
+		$tabletIP = $row['IPAddress'];
 		$name = empty($row['Name']) ? 'NULL' : $row['Name'];
 		$battery = 'N/A';
 		if(!empty($row['BatteryPercent'])){
@@ -49,7 +52,7 @@ if(!Permissions::has(Permissions::VIEW_ADMIN)){ Brevada::Redirect('/404'); }
 			$online = time() - @intval($row['OnlineSince']) > 600 ? 'Offline' : 'Online';
 		}
 	?>
-      <tr data-id='<?php echo $id; ?>'>
+      <tr data-id='<?php echo $id; ?>' class='<?= empty($storeID) && $tabletIP == $ip ? 'highlight' : ''; ?>'>
         <td><a href='admin?show=tablets&id=<?php echo $id; ?>'><?php echo $id; ?></a></td>
         <td><?php echo $serial; ?></td>
         <td><?php echo $name; ?></td>
@@ -145,8 +148,8 @@ function submitChange(column, id, value){
 	$.post('/admin/update/tablet.php', {'column' : column, 'id' : id, 'value' : value}, function(data){
 		$('table.editable tr[data-id="'+id+'"] td > i').remove();
 		$('table.editable tr[data-id="'+id+'"] td').removeClass('saving');
-		if(data != 'Invalid' && data.indexOf('Error') !== -1){
-			if(column == 2){
+		if(data != 'Invalid' && data.indexOf('Error') === -1){
+			if(column == 2 || column == 5){
 				$('table.editable tr[data-id="'+id+'"] td:eq('+column+')').text(data);
 				$('table.editable tr[data-id="'+id+'"] td:eq('+column+')').data('previous-value', data);
 			}

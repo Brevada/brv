@@ -12,9 +12,6 @@ if(!empty($serial)){
 		if($row && !empty($row)){
 			$tablet_id = $row['SID'];
 			$tablet_url = $row['URLName'];
-		} else {
-			Database::query("INSERT INTO `tablets` (SerialCode, StoreID, Status) VALUES ('{$serial}', NULL, 'Pending')");
-			exit("Error: Request pending with ID: {$serial}.");
 		}
 	} else {
 		exit;
@@ -33,7 +30,7 @@ $condition = empty($url_name) ? "id = '".$_SESSION['StoreID']."'" : "URLName='{$
 $query = Database::query("SELECT * FROM `stores` WHERE {$condition} LIMIT 1");
 
 if($query->num_rows == 0) {
-	Brevada::Redirect('/404');
+	Brevada::Redirect('/api/setup');
 }
 
 $store_id='';
@@ -72,7 +69,7 @@ while($row=$query->fetch_assoc()){
 </div>
 
 <div class="fixed-toolbar">
-	<div class="container">
+	<div class="container-fluid">
 		<div class="submit" id='imdone'><i class="fa fa-check"></i> <?php _e("I'm Done"); ?></div>
 	</div>
 </div>
@@ -80,3 +77,5 @@ while($row=$query->fetch_assoc()){
 <div id="email_connect"  class="aspect-container container" style="display: none;">
 	<?php $this->add(new View('../widgets/profile/email_connect.php', array('store_id' => $store_id, 'tablet' => true))); ?>
 </div>
+
+<?php $this->add(new View('../widgets/profile/data_collection.php', array('store_id' => $store_id))); ?>
