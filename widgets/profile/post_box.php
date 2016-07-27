@@ -8,7 +8,28 @@ $post_name = $r['Title'];
 $post_description = $r['Description'];
 
 $alreadyRated = false;
-if($this->getParameter('tablet') !== true){
+
+$session_check = 1;
+if (($stmt = Database::prepare("
+		SELECT `SessionCheck`
+		FROM stores
+		JOIN store_features ON store_features.id = stores.FeaturesID
+		JOIN aspects ON aspects.StoreID = stores.id
+		WHERE aspects.id = ?
+		LIMIT 1
+	")) !== false){
+	$stmt->bind_param('i', $post_id);
+	if ($stmt->execute()){
+		$stmt->store_result();
+		if($stmt->num_rows > 0){
+			$stmt->bind_result($session_check);
+			$stmt->fetch();
+		}
+		$stmt->close();
+	}
+}
+
+if($this->getParameter('tablet') !== true && $session_check){
 	$alreadyRated = isset($_SESSION['feedback']) && !empty($_SESSION['feedback']) && in_array($post_id, $_SESSION['feedback']);
 }
 ?>

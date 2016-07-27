@@ -5,6 +5,9 @@ $_GET = $this->getParameter('GET');
 
 $message = '';
 
+$session_check = 1;
+
+// TODO: These permission checks need to change.. can't retrieve values in a MODIFY check.
 if((!empty($_SESSION['StoreID']) && (($_SESSION['Corporate'] && Permissions::has(Permissions::MODIFY_COMPANY_STORES)) || !$_SESSION['Corporate'] && Permissions::has(Permissions::MODIFY_STORE))) || (!empty($_POST['ddStores']) && $_SESSION['Corporate'] && Permissions::has(Permissions::MODIFY_COMPANY_STORES))){
 	
 	$company_id = Brevada::validate($_SESSION['CompanyID'], VALIDATE_DATABASE);
@@ -26,7 +29,7 @@ if((!empty($_SESSION['StoreID']) && (($_SESSION['Corporate'] && Permissions::has
 	}
 	
 	if(isset($_POST) && !empty($_POST['txtCustomAspect'])){
-		$custom = trim($_POST['txtCustomAspect']);
+		$custom = trim(strip_tags($_POST['txtCustomAspect']));
 		if(!empty($custom)){			
 			// If title exists, don't allow.
 			if(($stmt = Database::prepare("SELECT FROM `aspect_type` WHERE `Title` = ? AND (`CompanyID` = ? OR `CompanyID` IS NULL) LIMIT 1")) !== false){
@@ -55,9 +58,12 @@ if((!empty($_SESSION['StoreID']) && (($_SESSION['Corporate'] && Permissions::has
 	if(isset($_POST) && isset($_POST['posts-token'])){
 		if($posts_tokens !== false){
 
+			$update = false;
+		
 			if(($query = Database::query("SELECT aspects.ID FROM aspects WHERE aspects.StoreID = {$store_id} AND aspects.`Active` = 1")) !== false){
 				while($row = $query->fetch_assoc()){
 					if(!in_array($row['ID'], $posts_tokens)){
+						$update = true;
 						Database::query("UPDATE aspects SET aspects.`Active` = 0 WHERE aspects.StoreID = {$store_id} AND aspects.ID = {$row['ID']} LIMIT 1");
 					}
 				}
@@ -80,24 +86,88 @@ if((!empty($_SESSION['StoreID']) && (($_SESSION['Corporate'] && Permissions::has
 						} else {
 							if(($stmt = Database::prepare("INSERT INTO aspects (`StoreID`, `AspectTypeID`) SELECT stores.id, (SELECT aspect_type.ID FROM aspect_type WHERE aspect_type.ID = ?) as AspectTypeID FROM stores WHERE stores.id = ?")) !== false){
 								$stmt->bind_param('ii', $token, $store_id);
-								$stmt->execute();
+								if($stmt->execute() && $stmt->num_rows > 0){
+									$update = true;
+								}
 								$stmt->close();
 							}
 						}
 					}
 				}
 			}
+			
+			if ($update){
+				Tablet::RestartByStore($_SESSION['StoreID']);
+				if (empty($message)){
+					$message = "Changes saved. Tablets will be restarted.";
+				}
+			}
 		}
+	}
+	
+	if ($store_id !== false && ($stmt = Database::prepare("
+			SELECT `SessionCheck`
+			FROM stores
+			JOIN store_features ON store_features.id = stores.FeaturesID
+			WHERE stores.id = ?
+		")) !== false){
+		$stmt->bind_param('i', $store_id);
+		if ($stmt->execute()){
+			$stmt->store_result();
+			if($stmt->num_rows > 0){
+				$stmt->bind_result($session_check);
+				$stmt->fetch();
+				$stmt->close();
+			} else {
+				$stmt->close();
+				
+				// Doesn't exist. Create and link.
+				
+				$features_id = -1;
+				if (($stmt = Database::prepare("
+					INSERT INTO store_features (CollectionTemplate, CollectionLocation) VALUES (NULL, NULL)
+				")) !== false){
+					if($stmt->execute()){
+						$stmt->store_result();
+						$features_id = Database::getCon()->insert_id;
+					}
+					$stmt->close();
+				}
+				
+				if ($features_id > 0) {
+					if (($stmt = Database::prepare("
+						UPDATE stores SET FeaturesID = ? WHERE stores.id = ?
+					")) !== false){
+						$stmt->bind_param('ii', $features_id, $store_id);
+						if(!$stmt->execute()){
+							$message = "Unknown error. 500.";
+						}
+						$stmt->close();
+					}
+				}
+			}
+		}
+	}
+	
+	if(isset($_POST)){
+		$session_check = isset($_POST['chkSessionCheck']) ? 1 : 0;
 		
-		if($_SESSION['Corporate'] && !empty($_POST['ddStores'])){
-			unset($_POST);
-			Brevada::Redirect('/settings?section=feedback&saved=1');
-		} else if(!empty($_SESSION['StoreID']) && $_SESSION['Corporate']){
-			Brevada::Redirect('/dashboard?s='.$_SESSION['StoreID']);
-		} else {
-			Brevada::Redirect('/dashboard');
+		if (($stmt = Database::prepare("
+			UPDATE stores
+			JOIN store_features ON store_features.id = stores.FeaturesID
+			SET SessionCheck = ? 
+			WHERE stores.id = ?
+		")) !== false){
+			$stmt->bind_param('ii', $session_check, $store_id);
+			if(!$stmt->execute()){
+				$message = "Unknown error. 500.";
+			} else {
+				$message = "Changes saved.";
+			}
+			$stmt->close();
 		}
-	}	
+	}
+	
 }
 ?>
 <form id='frmAccount' action='settings?section=feedback' method='post'>
@@ -163,6 +233,11 @@ if((!empty($_SESSION['StoreID']) && (($_SESSION['Corporate'] && Permissions::has
 	<div class='form-group'>
 		<span class="form-header"><?php _e("Create a new custom aspect:");?><span class='pull-right'><i class='fa fa-info-circle help' data-tooltip="<?php _e("For example, if you have a signature dish, you can name it.<br/><br/>Keep in mind, the aspect name is case-sensitive."); ?>"></i></span></span>
 		<input type='text' class='form-control' name='txtCustomAspect' placeholder="<?php _e("e.g. Signature Dish"); ?>" />
+	</div>
+	<br />
+	<div class='form-group'>
+		<span class="form-header"><?php _e("Session checking:");?></span>
+		<span class="form-subheader"><input type='checkbox' name='chkSessionCheck' <?= $session_check ? 'checked' : ''; ?> />&nbsp;<?php _e("If enabled, users must wait between feedback sessions. Disable this if you are using your own device to gather feedback.");?></span>
 	</div>
 	
 	<div id="submit" class="submit-next"><?php _e('Save'); ?></div>
@@ -235,6 +310,12 @@ if((!empty($_SESSION['StoreID']) && (($_SESSION['Corporate'] && Permissions::has
 	<div class='form-group'>
 		<span class="form-header"><?php _e("Create a new custom aspect:");?><span class='pull-right'><i class='fa fa-info-circle help' data-tooltip="<?php _e("For example, if you have a signature dish, you can name it.<br/><br/>Keep in mind, the aspect name is case-sensitive."); ?>"></i></span></span>
 		<input type='text' class='form-control' name='txtCustomAspect' placeholder="<?php _e("e.g. Signature Dish"); ?>" />
+	</div>
+	
+	<br />
+	<div class='form-group'>
+		<span class="form-header"><?php _e("Session checking:");?></span>
+		<span class="form-subheader"><input type='checkbox' name='chkSessionCheck' <?= $session_check ? 'checked' : ''; ?> />&nbsp;<?php _e("If enabled, users must wait between feedback sessions. Disable this if you are using your own device to gather feedback.");?></span>
 	</div>
 	
 	<div id="submit" class="submit-next"><?php _e('Save'); ?></div>

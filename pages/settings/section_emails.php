@@ -90,7 +90,8 @@ if(isset($_POST) && isset($_POST['rdDisplay'])){
 		if(!$stmt->execute()){
 			$message = "Unknown error. 500.";
 		} else {
-			$message = "Save changes.";
+			$message = "Changes saved. Tablets will restart.";
+			Tablet::RestartByStore($_SESSION['StoreID']);
 		}
 		$stmt->close();
 	}

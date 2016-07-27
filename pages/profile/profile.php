@@ -84,9 +84,16 @@ $this->addResource("<meta property='og:description' content='Give {$name} Feedba
 <?php
 	// Don't ask for post/pre data if already collected.
 	if(($stmt = Database::prepare("
-		SELECT 1 FROM `session_data` WHERE `SessionCode` = ? LIMIT 1
+		SELECT 1 FROM `session_data` 
+		WHERE `SessionCode` = ? 
+		AND NOT EXISTS (
+			SELECT 1 FROM store_features JOIN stores ON stores.FeaturesID = store_features.id
+			WHERE stores.id = ? AND store_features.SessionCheck = 0
+			LIMIT 1
+		)
+		LIMIT 1
 	")) !== false){
-		$stmt->bind_param('s', $_SESSION['SessionCode']);
+		$stmt->bind_param('si', $_SESSION['SessionCode'], $store_id);
 		if($stmt->execute()){
 			$stmt->store_result();
 			if($stmt->num_rows == 0){

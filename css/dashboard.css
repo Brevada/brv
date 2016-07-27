@@ -130,7 +130,7 @@ div.mid-banner .icon-button i {
 }
 
 div.sidebar {
-    width: 70px;
+    width: 75px;
 }
 
 div.sidebar .icon-button.selected {
@@ -146,7 +146,7 @@ div.sidebar .icon-button.selected {
     border-color: #EEE;
     border: none;
     border-bottom: 1px solid #BBB;
-    width: 70px;
+    width: 75px;
     height: 90px;
     overflow: hidden;
     border-radius: 0px;
@@ -211,7 +211,7 @@ div.sidebar .icon-button:hover {
 }
 
 div.sidebar .icon-button.selected {
-    background: rgb(242, 96, 106);
+    background: #333;
 }
 
 div.sidebar .icon-button.selected .icon-subtext {
@@ -1303,10 +1303,17 @@ div.full-loader { margin: 0 auto; text-align: center; width: 100%; display: bloc
 /* Live */
 div.snapshot {
 	margin: 0 0 20px 0;
-    padding: 0px;
+    padding: 8px;
+	background: #333;
+	border-radius: 5px;
 }
 
-div.snapshot span.header, div.weeks-scores span.header, div.feed span.header {
+div.snapshot span.header {
+	display: block;
+	color: #eee;
+	font-size: 22px;
+}
+div.weeks-scores span.header, div.feed span.header {
 	display: block;
 	color: #333;
 	font-size: 22px;
@@ -1318,8 +1325,6 @@ div.snapshot span.subtitle, div.weeks-scores span.subtitle, div.feed span.subtit
 }
 
 div.snapshot div.snapshot-pod {
-	background: #FFF;
-    border-bottom: 1px solid #DCDCDC;
 	padding: 5px;
 	margin: 5px 0 0 0;
 	position: relative;
@@ -1408,7 +1413,6 @@ div.snapshot div.snapshot-pod div.snapshot-best-worst {
 	display: inline-block;
 	width: 95%;
 	clear: both;
-	background: #f7f7f7;
 	padding: 5px;
 	border-radius: 3px;
 	
@@ -1427,7 +1431,7 @@ div.snapshot div.snapshot-pod span.snapshot-label {
 	text-align: center;
 	display: block;
 	font-weight: bold;
-	color: #666;
+	color: #fff;
 	margin: 5px 0 5px 0;
 	clear: both;
 }
@@ -1556,9 +1560,204 @@ div.weeks-scores div.scores-list div.scores-item div.score-bar > span.no-data {
 div.weeks-scores div.scores-list div.scores-item div.score-bar > span.no-data:hover {
 	opacity: 1;
 }
-
 div.weeks-scores div.scores-list div.scores-item > span {
 	display: block;
 	color: #666;
     font-size: 12px;
 }
+
+/* Customers */
+/* Live */
+div.customers {
+	margin: 0 0 20px 0;
+    padding: 8px;
+	border-radius: 5px;
+}
+
+div.customers span.header {
+	display: block;
+	color: #333;
+	font-size: 22px;
+}
+
+div.customers span.subtitle {
+	display: block;
+	color: #aaa;
+	font-size: 16px;
+	margin-bottom: 10px;
+}
+
+div.customers div.customer {
+	background: #333;
+	border-radius: 4px;
+	width: 300px;
+	padding: 0;
+	margin: 0.5em 1.5em 1.25em 0.25em;
+	border: 1px solid #bbb;
+	display: inline-block;
+}
+
+div.customers div.customer div.customer-top {
+	color: #fff;
+	margin: 0;
+	padding: 3px 3px 6px 3px;
+	width: 100%;
+	
+	position: relative;
+}
+
+div.customers div.customer div.customer-top div.device {
+	padding: 5px 10px 5px 5px;
+	margin: 0;
+	text-align: center;
+	display: inline-block;
+}
+
+div.customers div.customer div.customer-top div.device i {
+	font-size: 35px;
+	height: 100%;
+}
+
+div.customers div.customer div.customer-top div.details {
+	height: 100%;
+	padding: 2px 0;
+	margin: 0;
+	display: inline-block;
+}
+
+div.customers div.customer div.customer-top div.details span.customer-date {
+	font-weight: bold;
+	display: block;
+	font-size: 12px;
+	padding: 0;
+	margin: 0;
+}
+
+div.customers div.customer div.customer-top div.details span.customer-email {
+	display: block;
+	font-size: 12px;
+	font-style: italic;
+	padding: 0;
+	margin: 0;
+}
+
+div.customers div.customer div.customer-top div.btn-aspect-view {
+	float: right;
+	padding: 5px;
+	cursor: pointer;
+	
+	-webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+div.customers div.customer div.customer-top div.btn-aspect-view i {
+	font-size: 25px;
+}
+
+div.customers div.customer div.customer-middle {
+	
+}
+
+div.customers div.customer div.customer-middle div.aspects-overview {
+	padding: 5px;
+	background: #333;
+}
+
+div.customers div.customer div.customer-middle div.aspects-overview > div {
+	display: inline-block;
+	width: 30%;
+	margin: 0 1.5%;
+	text-align: center;
+}
+
+div.customers div.customer div.customer-middle div.aspects-overview div.bulb {
+	border-radius: 5px;
+	width: 75px;
+	height: 75px;
+	text-align: center;
+	display: inline-block;
+	color: #fff;
+	font-size: 25px;
+	overflow: hidden;
+	padding-top: 23%;
+}
+
+div.customers div.customer div.customer-middle div.aspects-overview span.label {
+	color: #eee;
+}
+
+div.customers div.customer div.customer-middle div.aspect-list {
+	display: none;
+	
+	background: #eee;
+	height: 110px;
+	overflow-y: auto;
+}
+
+div.customers div.customer div.customer-middle div.aspect-list div.customer-aspect {
+	width: 100%;
+	padding: 6px 6px;
+	position: relative;
+}
+
+div.customers div.customer div.customer-middle div.aspect-list div.customer-aspect div.bulb {
+	border-radius: 5px;
+	width: 40px;
+	height: 40px;
+	text-align: center;
+	display: inline-block;
+	color: #fff;
+	font-size: 14px;
+	overflow: hidden;
+	padding-top: 10px;
+	margin-bottom: -10px;
+	position: relative;
+}
+
+div.customers div.customer div.customer-middle div.aspect-list div.customer-aspect span.customer-aspect-title {
+	font-size: 16px;
+	color: #333;
+	position: relative;
+	
+	padding: 0 4px 0 12px;
+	top: 50%;
+	transform: translateY(-50%);
+	-webkit-transform: translateY(-50%);
+}
+
+div.customers div.customer div.customer-bottom {
+	width: 100%;
+	margin: 0;
+	padding: 0;
+	text-align: center;
+}
+
+div.customers div.customer div.customer-bottom div.btn-acknowledge {
+	font-size: 16px;
+	padding: 15px 15px 10px 15px;
+	width: 100%;
+	font-weight: bold;
+	color: #333;
+	text-align: center;
+	background: #eee;
+	border-top: 1px solid #bbb;
+	cursor: pointer;
+	
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+div.customers div.customer div.customer-bottom div.btn-acknowledge:hover {
+	background: #dedede;
+	color: #444;
+}
+
+div.customers div.customer.acknowledged div.customer-bottom div.btn-acknowledge { display: none; }

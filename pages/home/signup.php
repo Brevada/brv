@@ -23,9 +23,21 @@ if(isset($_GET['l'])){
 			$plan = 0;
 	}
 }
+
+$message = '';
+if (isset($_GET['error'])){
+	$message = "Unknown error. Please contact us.";
+} else if (isset($_GET['badpassword'])){
+	$message = "Please make sure your passwords match.";
+} else if (isset($_GET['badname'])){
+	$message = "Invalid company name. Please choose a different name.";
+} else if (isset($_GET['badaddress'])){
+	$message = "A valid address is required.";
+}
 ?>
 <div id="signup_box" style='display: none;'>
 	<a href="/index.php" ><img src="/images/brevada.png" id='logo' style="margin:0 auto; width:150px; outline:none;" /></a>
+	<?php if(!empty($message)){ echo "<br /><br /><div class='alert alert-danger'>{$message}</div>"; } ?>
 	<form method="post" id='frmSignup' action="/overall/insert/insert_user.php" class='part-container'>
 		<div class='part'>
 			<div class="signup_instruction"><?php _e("Signing up is easy. We just need a bit of information to get started."); ?></div>
@@ -73,7 +85,7 @@ if(isset($_GET['l'])){
 			<div class='token-container token-aspects'>
 				<div class='tokens'>
 					<?php
-					if(($query = Database::query("SELECT aspect_type.Title, aspect_type.ID as AspectTypeID FROM aspect_type ORDER BY aspect_type.Title ASC")) !== false){
+					if(($query = Database::query("SELECT aspect_type.Title, aspect_type.ID as AspectTypeID FROM aspect_type WHERE aspect_type.CompanyID IS NULL ORDER BY aspect_type.Title ASC")) !== false){
 						while($row = $query->fetch_assoc()){
 							echo "<div class='token noselect' data-tokenid='{$row['AspectTypeID']}'><span>".__($row['Title'])."</span></div>";
 						}

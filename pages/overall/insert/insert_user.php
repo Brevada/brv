@@ -212,6 +212,8 @@ if(empty($email) || empty($password) || empty($name)){
 						}
 						
 						$dest = '/dashboard';
+					} else {
+						$dest = '/home/signup.php?badaddress';
 					}
 				
 				}
@@ -238,8 +240,15 @@ if(empty($email) || empty($password) || empty($name)){
 					Brevada::Login($email, $password);
 				}
 				
+			} else {
+				$dest = '/home/signup.php?badname';
 			}
+		} else {
+			$dest = '/home/signup.php?bademail';
 		}
+	} else {
+		// Invalid password.
+		$dest = '/home/signup.php?badpassword';
 	}
 	
 }
