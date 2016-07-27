@@ -1,6 +1,6 @@
 app.custom.sessionToken = 'not-set';
 
-if (!app.session.create) {
+if (!app.session || !app.session.create) {
 	app.custom.newSessionToken = function(){
 		var chars = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
 		var result = '';
@@ -14,7 +14,11 @@ if (!app.session.create) {
 /* Hooks for each event where we might show post-feedback. */
 
 app.custom.initialize = function(){
-	(app.session.create || app.custom.newSessionToken)();
+	if (app.session && app.session.create){
+		app.session.create();
+	} else {
+		app.custom.newSessionToken();
+	}
 
 	$(document).click(app.custom.inactivity.updateInteraction);
 	$('input, select').change(app.custom.inactivity.updateInteraction);
@@ -191,17 +195,23 @@ app.custom.showPostPre = function(e){
 }
 
 app.custom.imdone = function(){
-	if(app.events.callbacks.onDone.length == 0 ||
-		(app.events.callbacks.onDone.length > 0 &&
-			app.events.fireDone({ timestamp: (new Date()).getTime(), thanks: function(){
-				$('#aspects, .fixed-toolbar').stop().fadeOut(300, function () {
-					$('#email_connect').show();
-				});
-			} }))){
-			
+	if (!app.events){
 		$('#aspects, .fixed-toolbar').stop().fadeOut(300, function () {
 			$('#email_connect').show();
 		});
+	} else {
+		if(app.events.callbacks.onDone.length == 0 ||
+			(app.events.callbacks.onDone.length > 0 &&
+				app.events.fireDone({ timestamp: (new Date()).getTime(), thanks: function(){
+					$('#aspects, .fixed-toolbar').stop().fadeOut(300, function () {
+						$('#email_connect').show();
+					});
+				} }))){
+				
+			$('#aspects, .fixed-toolbar').stop().fadeOut(300, function () {
+				$('#email_connect').show();
+			});
+		}	
 	}
 };
 
@@ -214,8 +224,10 @@ app.custom.resizestars = function(){
 app.custom.resetAll = function(){
 	$('html, body').scrollTop(0);
 	
-	$('#data-collect').hide();
-	$('#data-collect-overlay').hide();
+	if ($('#data-collect').length > 0){
+		$('#data-collect').hide();
+		$('#data-collect-overlay').hide();
+	}
 	
 	$('#email_connect').hide();
 	$('.rated').removeClass('rated').show();
@@ -223,7 +235,11 @@ app.custom.resetAll = function(){
 	$('#aspects, .fixed-toolbar').stop().fadeIn(300);
 	$('#imdone').hide();
 	
-	(app.session.create || app.custom.newSessionToken)();
+	if (app.session && app.session.create){
+		app.session.create();
+	} else {
+		app.custom.newSessionToken();
+	}
 };
 
 function insertRating(val, id) {
@@ -244,7 +260,11 @@ function insertRating(val, id) {
 
 	$("#aspect_"+id).addClass('rated').stop().slideUp(325, function(){
 		app.custom.inactivity.updateInteraction();
-		app.events.fireRating({ rating: val, timestamp: (new Date()).getTime() });
+		
+		if (app.events){
+			app.events.fireRating({ rating: val, timestamp: (new Date()).getTime() });
+		}
+		
 		if($('div.aspect:not(.rated)').length == 0 && $('#aspects').is(':visible')){
 			app.custom.imdone();
 		}
