@@ -78,4 +78,4 @@ while($row=$query->fetch_assoc()){
 	<?php $this->add(new View('../widgets/profile/email_connect.php', array('store_id' => $store_id, 'tablet' => true))); ?>
 </div>
 
-<?php $this->add(new View('../widgets/profile/data_collection.php', array('store_id' => $store_id))); ?>
+<?php $this->add(new View('../widgets/profile/data_collection.php', array('store_id' => $store_id, 'tablet' => true))); ?>

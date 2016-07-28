@@ -195,7 +195,7 @@ body{
 	position: fixed; top: 0; left: 0;
 	width: 100%; height: 100%;
 	background: #333;
-	opacity: 0.8;
+	opacity: 0.9;
 	z-index: 99900; /* below inactivity */
 	display: none;
 }
@@ -242,6 +242,11 @@ body{
 	margin: 4px auto 45px auto;
 	padding: 2px 20px;
 	display: block;
+	font-weight: bold;
+}
+
+#data-collect.tablet > div.content p.pp-message {
+	font-size: 25px;
 }
 
 #data-collect > div.content .pp-centered { text-align: center; }
@@ -303,8 +308,25 @@ body{
 	color: #333;
 	padding: 4px 4.5px;
 	margin: 20px 1%;
-	font-size: 24px;
+	font-size: 20px;
 	cursor: pointer;
+	text-overflow: ellipsis;
+	overflow: hidden;
+}
+
+@media (max-width: 500px){
+	#data-collect > div.content div.pp-email-options div.pp-email-option {
+		width: 48%;
+		margin: 8px 1%;
+	}
+	
+	#data-collect > div.content div.pp-email span.data-email {
+		font-size: 20px;
+	}
+	
+	#data-collect > div.content div.pp-email .pp-field {
+		font-size: 20px;
+	}
 }
 
 #data-collect > div.content div.pp-email-options div.pp-email-option.selected {
@@ -344,6 +366,10 @@ body{
 	background: #999;
 }
 
+#data-collect:not(.tablet) > div.content div.pp-btn:hover {
+	background: #888;
+}
+
 #data-collect > div.content div.pp-submit {
 	display: block;
 	position: fixed;
@@ -351,12 +377,18 @@ body{
 	left: 0;
 	width: 100%;
 	text-align: center;
-	
-	font-size: 30px;
-	padding: 10px 20px;
 	cursor: pointer;
 	
 	-webkit-box-shadow: 0px 0px 5px 0px rgba(50, 50, 50, 0.75);
     -moz-box-shadow: 0px 0px 5px 0px rgba(50, 50, 50, 0.75);
     box-shadow: 0px 0px 5px 0px rgba(50, 50, 50, 0.75);
+	
+	font-size: 25px;
+	padding: 15px 20px;
+}
+
+#data-collect.tablet > div.content div.pp-submit {
+	font-size: 33px;
+	padding: 30px 20px 30px 20px;
+	bottom: 60px;
 }
