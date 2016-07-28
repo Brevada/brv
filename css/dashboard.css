@@ -1304,13 +1304,11 @@ div.full-loader { margin: 0 auto; text-align: center; width: 100%; display: bloc
 div.snapshot {
 	margin: 0 0 20px 0;
     padding: 8px;
-	background: #333;
-	border-radius: 5px;
 }
 
 div.snapshot span.header {
 	display: block;
-	color: #eee;
+	color: #333;
 	font-size: 22px;
 }
 div.weeks-scores span.header, div.feed span.header {
@@ -1328,6 +1326,10 @@ div.snapshot div.snapshot-pod {
 	padding: 5px;
 	margin: 5px 0 0 0;
 	position: relative;
+	background: #FFF;
+	border-bottom: 1px solid #DCDCDC;
+	background: #f7f7f7;
+	border-radius: 3px;
 }
 div.snapshot div.snapshot-pod:first-child {
 	border-top-left-radius: 3px;
@@ -1431,7 +1433,7 @@ div.snapshot div.snapshot-pod span.snapshot-label {
 	text-align: center;
 	display: block;
 	font-weight: bold;
-	color: #fff;
+	color: #666;
 	margin: 5px 0 5px 0;
 	clear: both;
 }

@@ -120,7 +120,7 @@ if(isset($_POST) && isset($_POST['rdDisplay'])){
 	<div class='form-group'>
 		<span class="form-header"><?php _e("Custom Message");?></span>
 		<span class="form-subheader"><?php _e("This message will appear alongside the email form."); ?></span>
-		<textarea class='form-control' name='txtMessage' rows="3" placeholder="<?php _e("Please provide us with your email address so that we can be sure to properly remedy any negative situations."); ?>"><?= $col_template !== false ? $col_template->get('message') : ''; ?></textarea>
+		<textarea class='form-control' name='txtMessage' rows="3" placeholder="<?php _e("Please provide us with your email address so that we can be sure to properly remedy any issues."); ?>"><?= $col_template !== false ? $col_template->get('message') : __("Please provide us with your email address so that we can be sure to properly remedy any issues."); ?></textarea>
 	</div>
 	
 	<div id="submit" class="submit-next"><?php _e('Save'); ?></div>
@@ -159,7 +159,7 @@ if(isset($_POST) && isset($_POST['rdDisplay'])){
 	<div class='form-group'>
 		<span class="form-header"><?php _e("Custom Message");?></span>
 		<span class="form-subheader"><?php _e("This message will appear alongside the email form."); ?></span>
-		<textarea class='form-control' name='txtMessage' rows="3" placeholder="<?php _e("Please provide us with your email address so that we can be sure to properly remedy any negative situations."); ?>"><?= $col_template !== false ? $col_template->get('message') : ''; ?></textarea>
+		<textarea class='form-control' name='txtMessage' rows="3" placeholder="<?php _e("Please provide us with your email address so that we can be sure to properly remedy any issues."); ?>"><?= $col_template !== false ? $col_template->get('message') : __("Please provide us with your email address so that we can be sure to properly remedy any issues."); ?></textarea>
 	</div>
 	<div id="submit" class="submit-next"><?php _e('Save'); ?></div>
 	<?php } ?>

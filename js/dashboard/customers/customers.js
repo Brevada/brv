@@ -22,7 +22,7 @@ bdff.create('customers', function(canvas, face){
 	var acknowledgedDom = $('<div>').addClass('customers customers-acknowledged col-xs-12').appendTo(canvas);
 	acknowledgedDom
 		.append($('<span>').addClass('header').html('Acknowledged Responses <span class="badge"></span>'))
-		.append($('<span>').addClass('subtitle').text("New customer responses are listed here until acknowledged, at which point they are moved to the 'acknowledged responses' section."));
+		.append($('<span>').addClass('subtitle').text("Customers listed here have been marked as acknowledged."));
 		
 	var renderCustomer = function(id, is_acknowledged){
 		var customer = { 'id' : id };
