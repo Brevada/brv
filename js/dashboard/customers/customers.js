@@ -111,7 +111,7 @@ bdff.create('customers', function(canvas, face){
 		};
 		
 		customer.setEmail = function(email){
-			dom.find('div.customer-top > div > span.customer-email').text(email);
+			dom.find('div.customer-top > div > span.customer-email').text(email || "No Email Provided");
 		};
 		
 		customer.setAcknowledged = function(ack){

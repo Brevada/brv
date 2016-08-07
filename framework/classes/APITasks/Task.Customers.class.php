@@ -39,13 +39,13 @@ class TaskCustomers extends AbstractTask
 					session_data_field.DataValueSmall as Email,
 					session_data.SubmissionTime as SubmissionTime
 				FROM session_data
-				JOIN session_data_field ON session_data_field.SessionDataID = session_data.id
+				LEFT JOIN session_data_field ON session_data_field.SessionDataID = session_data.id
 				JOIN feedback ON feedback.SessionCode = session_data.SessionCode
 				JOIN aspects ON aspects.id = feedback.AspectID
 				JOIN stores ON stores.id = aspects.StoreID
 				JOIN companies ON companies.id = stores.CompanyID
 				WHERE
-					session_data_field.DataKey = 'email' AND
+					(session_data_field.DataKey = 'email' OR session_data_field.DataKey IS NULL) AND
 					aspects.StoreID = ? AND
 					session_data.Acknowledged = 0 AND
 					`stores`.`CompanyID` = ? AND
@@ -62,13 +62,13 @@ class TaskCustomers extends AbstractTask
 					session_data_field.DataValueSmall as Email,
 					session_data.SubmissionTime as SubmissionTime
 				FROM session_data
-				JOIN session_data_field ON session_data_field.SessionDataID = session_data.id
+				LEFT JOIN session_data_field ON session_data_field.SessionDataID = session_data.id
 				JOIN feedback ON feedback.SessionCode = session_data.SessionCode
 				JOIN aspects ON aspects.id = feedback.AspectID
 				JOIN stores ON stores.id = aspects.StoreID
 				JOIN companies ON companies.id = stores.CompanyID
 				WHERE
-					session_data_field.DataKey = 'email' AND
+					(session_data_field.DataKey = 'email' OR session_data_field.DataKey IS NULL) AND
 					aspects.StoreID = ? AND
 					session_data.Acknowledged = 1 AND
 					`stores`.`CompanyID` = ? AND
@@ -161,7 +161,7 @@ class TaskCustomers extends AbstractTask
 				"id" => $row['id'],
 				"acknowledged" => $row['Acknowledged'],
 				"date" => $row['SubmissionTime'],
-				"email" => $row['Email'],
+				"email" => empty($row['Email']) ? false : $row['Email'],
 				"aspects" => $aspects,
 				"average" => $average,
 				"relative" => $relative,
