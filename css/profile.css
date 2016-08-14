@@ -39,7 +39,9 @@ body{
 }
 .topbar i {
 	color: #FF2B2B;
-	font-size: 100px;
+	font-size: 80px;
+	padding-top: 5px;
+	display: inline-block;
 	cursor: pointer;
 }
 .top-spacer {
@@ -62,14 +64,24 @@ body{
 .topbar.fixed i {
 	display: none;
 }
-.topbar.fixed .title {
-	font-size: 12px;
-}
+
 .topbar .title{
 	color: #999;
-	font-size: 20px;
-	line-height: 30px;
+	font-size: 30px;
 	margin-top: 10px;
+}
+
+.topbar .title .shortened-message, .full-message {
+	padding: 0;
+	margin: 0;
+}
+.topbar .title.custom-title .full-message {
+	font-size: 40px;
+	padding: 10px 3px;
+}
+.topbar .title .shortened-message {
+	display: none;
+	font-size: 16px;
 }
 .topbar .logo{
 	height: 30px;

@@ -26,8 +26,15 @@ app.custom.initialize = function(){
 	$('#reset').click(app.custom.resetAll);
 	
 	$(window).bind('touchmove scroll scrollstart', function() {
-		if ($(window).scrollTop() >= 100) { $('.topbar, .top-spacer').addClass('fixed'); }
-		else { $('.topbar, .top-spacer').removeClass('fixed'); }
+		if ($(window).scrollTop() >= 20) {
+			$('.topbar .full-message').hide();
+			$('.topbar .shortened-message').show();
+			$('.topbar, .top-spacer').addClass('fixed');
+		} else {
+			$('.topbar .full-message').show();
+			$('.topbar .shortened-message').hide();
+			$('.topbar, .top-spacer').removeClass('fixed');
+		}
 	});
 	$('.topbar i').click(function () {
 		$('html,body').animate({
@@ -224,6 +231,9 @@ app.custom.resizestars = function(){
 app.custom.resetAll = function(){
 	$('html, body').scrollTop(0);
 	
+	$('.topbar .shortened-message').hide();
+	$('.topbar .full-message').show();
+	
 	if ($('#data-collect').length > 0){
 		$('#data-collect').hide();
 		$('#data-collect-overlay').hide();
@@ -275,8 +285,8 @@ function disappearRating(post_id) {}
 
 app.custom.inactivity = {
 	inactivityTmr : null,
-	inactiveDelayA : 60000,
-	inactiveDelayB : 15000,
+	inactiveDelayA : 40000,
+	inactiveDelayB : 12000,
 	inactiveA : null,
 	inactiveB : null,
 	message : "If you're not done giving feedback, tap anywhere on the screen.<br /><i class='fa fa-hand-pointer-o'></i>"

@@ -14,7 +14,7 @@ if(!Brevada::IsLoggedIn()){
 $name = Database::query("SELECT `Name` FROM `companies` WHERE `companies`.`id` = {$_SESSION['CompanyID']} LIMIT 1")->fetch_assoc()['Name'];
 
 $section = Brevada::FromGET('section');
-$acceptableSections = ['account', 'feedback', 'billing', 'tablets', 'logins', 'stores', 'emails'];
+$acceptableSections = ['account', 'feedback', 'billing', 'tablets', 'logins', 'stores', 'emails', 'personalize'];
 if(!in_array($section, $acceptableSections)){ $section = 'account'; }
 ?>
 <div class='top-fixed'>
@@ -47,6 +47,7 @@ if(!in_array($section, $acceptableSections)){ $section = 'account'; }
 				<li data-page='account'><a href='?section=account'><?php _e("Account"); ?></a></li>
 				<li data-page='feedback'><a href='?section=feedback'><?php _e("Feedback"); ?></a></li>
 				<li data-page='emails'><a href='?section=emails'><?php _e("Customer Emails"); ?></a></li>
+				<li data-page='personalize'><a href='?section=personalize'><?php _e("Personalize"); ?></a></li>
 				
 				<?php if(($_SESSION['Corporate'] && Permissions::has(Permissions::MODIFY_COMPANY_STORES)) || (!$_SESSION['Corporate'] && Permissions::has(Permissions::MODIFY_STORE))){ ?>
 				<li data-page='billing'><a href='?section=billing'><?php _e("Billing"); ?></a></li>

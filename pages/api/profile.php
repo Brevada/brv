@@ -43,13 +43,22 @@ while($row=$query->fetch_assoc()){
    $name=Brevada::validate($row['Name']);
    $url_name=Brevada::validate($row['URLName']);
 }
+
+$dataT = DataTemplate::fromStore($store_id);
 ?>
 
-<div class="topbar">
+<div class="topbar profile-topbar">
 	<div class="container">
 		<img class="logo" src="/images/quote.png" />
-		<div class="title">
-			<?php echo sprintf(__('Give %s Feedback'), "<b>{$name}</b>"); ?>
+		<div class="title<?= $dataT !== false && $dataT['tpl'] !== false && strlen($dataT['tpl']->getWelcome()) > 0 ? ' custom-title' : ''; ?>">
+			<span class='full-message'><?php
+				if ($dataT !== false && $dataT['tpl'] !== false && strlen($dataT['tpl']->getWelcome()) > 0){
+					echo str_replace(['%store%'], [$name], $dataT['tpl']->getWelcome());
+				} else {
+					echo sprintf(__('Give %s Feedback'), "<b>{$name}</b>");
+				}
+			?></span>
+			<span class='shortened-message'><?php echo sprintf(__('Give %s Feedback'), "<b>{$name}</b>"); ?></span>
 		</div>
 		<i class="fa fa-arrow-circle-down"></i>
 	</div>

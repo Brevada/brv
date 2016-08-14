@@ -3,6 +3,7 @@ class DataTemplate
 {
 	private $params = [];
 	private $html = '';
+	private $welcome = '';
 	
 	function __construct($path = ''){
 		if (!empty($path)){
@@ -19,6 +20,16 @@ class DataTemplate
 	public function setHTML($html)
 	{
 		$this->html = $html;
+	}
+	
+	public function setWelcome($text)
+	{
+		$this->welcome = $text;
+	}
+	
+	public function getWelcome()
+	{
+		return $this->welcome;
 	}
 	
 	public function set($key, $val = null)
@@ -60,6 +71,10 @@ class DataTemplate
 			'html' => $this->html
 		];
 		
+		if (!empty($this->welcome)){
+			$object['welcome'] = $this->welcome;
+		}
+		
 		return json_encode($object);
 	}
 	
@@ -72,8 +87,40 @@ class DataTemplate
 		$dataTemp = new DataTemplate();
 		$dataTemp->setHTML(isset($json['html']) ? $json['html'] : '');
 		$dataTemp->set(isset($json['params']) ? $json['params'] : []);
+		$dataTemp->setWelcome(isset($json['welcome']) ? $json['welcome'] : '');
 		
 		return $dataTemp;
+	}
+	
+	public static function fromStore($store_id)
+	{
+		if (($stmt = Database::prepare("
+			SELECT `CollectionTemplate`, `CollectionLocation`
+			FROM store_features
+			JOIN stores ON stores.FeaturesID = store_features.id
+			WHERE stores.id = ?
+		")) !== false){
+			$stmt->bind_param('i', $store_id);
+			if ($stmt->execute()){
+				$stmt->store_result();
+				if ($stmt->num_rows > 0){
+					$stmt->bind_result($col_template, $col_location);
+					$stmt->fetch();
+
+					$dataT = self::fromJSON($col_template);
+					if($dataT !== false){
+						return [
+							'loc' => $col_location,
+							'tpl' => $dataT
+						];
+					}
+				} else {
+					return false;
+				}
+			}
+			$stmt->close();
+		}
+		return false;
 	}
 }
 ?>

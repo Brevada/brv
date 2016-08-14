@@ -26,8 +26,15 @@ $(document).ready(function(){
 	});
 
 	$(window).bind('touchmove scroll scrollstart', function() {
-		if ($(window).scrollTop() >= 100) $('.topbar, .top-spacer').addClass('fixed');
-		else $('.topbar, .top-spacer').removeClass('fixed');
+		if ($(window).scrollTop() >= 20) { 
+			$('.topbar .full-message').hide();
+			$('.topbar .shortened-message').show();
+			$('.topbar, .top-spacer').addClass('fixed');
+		} else {
+			$('.topbar .full-message').show();
+			$('.topbar .shortened-message').hide();
+			$('.topbar, .top-spacer').removeClass('fixed');
+		}
 	});
 	$('.topbar i').click(function () {
 		$('html,body').animate({
