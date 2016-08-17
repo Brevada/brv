@@ -203,7 +203,7 @@ body{
 
 .locked { overflow: hidden !important; }
 
-#data-collect-overlay {
+div.pp-overlay {
 	position: fixed; top: 0; left: 0;
 	width: 100%; height: 100%;
 	background: #333;
@@ -212,7 +212,7 @@ body{
 	display: none;
 }
 
-#data-collect {
+div.pp {
 	position: fixed; top: 0; left: 0;
 	width: 100%; height: 100%;
 	z-index: 99901; /* below inactivity */
@@ -221,7 +221,7 @@ body{
 	overflow: hidden;
 }
 
-#data-collect > div.content {
+div.pp > div.content {
 	position: fixed;
 	z-index: 99902;
 	left: 50%;
@@ -248,7 +248,7 @@ body{
 
 /* post/pre templating. */
 
-#data-collect > div.content p.pp-message {
+div.pp > div.content p.pp-message {
 	font-size: 20px;
 	width: 85%;
 	margin: 4px auto 45px auto;
@@ -257,27 +257,27 @@ body{
 	font-weight: bold;
 }
 
-#data-collect.tablet > div.content p.pp-message {
+div.pp.tablet > div.content p.pp-message {
 	font-size: 25px;
 }
 
-#data-collect > div.content .pp-centered { text-align: center; }
+div.pp > div.content .pp-centered { text-align: center; }
 
-#data-collect > div.content div.pp-email {
+div.pp > div.content div.pp-email {
 	text-align: center;
 	width: 100%;
 	color: #fff;
 	font-size: 20px;
 }
 
-#data-collect > div.content span.pp-at {
+div.pp > div.content span.pp-at {
 	font-size: 30px;
 	margin: 0 5px 0 20px;
 	display: inline-block;
 	font-weight: bold;
 }
 
-#data-collect > div.content .pp-field {
+div.pp > div.content .pp-field {
 	background: transparent;
 	outline: none;
 	border-top: 0;
@@ -286,17 +286,17 @@ body{
 	border-bottom: 2px solid #fff;
 }
 
-#data-collect > div.content div.pp-email .pp-field {
+div.pp > div.content div.pp-email .pp-field {
 	padding: 5px;
 	font-size: 24px;
 	width: 45%;
 }
 
-#data-collect > div.content div.pp-email span.data-email .pp-field {
+div.pp > div.content div.pp-email span.data-email .pp-field {
 	width: 100%;
 }
 
-#data-collect > div.content div.pp-email span.data-email {
+div.pp > div.content div.pp-email span.data-email {
 	color: #fff;
 	padding: 5px;
 	font-size: 24px;
@@ -305,14 +305,14 @@ body{
 	display: inline-block;
 }
 
-#data-collect > div.content div.pp-email-options {
+div.pp > div.content div.pp-email-options {
 	width: 98%;
 	padding: 0;
 	margin: 20px auto 5px auto;
 	text-align: center;
 }
 
-#data-collect > div.content div.pp-email-options div.pp-email-option {
+div.pp > div.content div.pp-email-options div.pp-email-option {
 	display: inline-block;
 	width: 30%;
 	border-radius: 4px;
@@ -327,25 +327,25 @@ body{
 }
 
 @media (max-width: 500px){
-	#data-collect > div.content div.pp-email-options div.pp-email-option {
+	div.pp > div.content div.pp-email-options div.pp-email-option {
 		width: 48%;
 		margin: 8px 1%;
 	}
 	
-	#data-collect > div.content div.pp-email span.data-email {
+	div.pp > div.content div.pp-email span.data-email {
 		font-size: 20px;
 	}
 	
-	#data-collect > div.content div.pp-email .pp-field {
+	div.pp > div.content div.pp-email .pp-field {
 		font-size: 20px;
 	}
 }
 
-#data-collect > div.content div.pp-email-options div.pp-email-option.selected {
+div.pp > div.content div.pp-email-options div.pp-email-option.selected {
 	opacity: 0.95;
 	position: relative;
 }
-#data-collect > div.content div.pp-email-options div.pp-email-option.selected::after {
+div.pp > div.content div.pp-email-options div.pp-email-option.selected::after {
 	display: inline-block;
     font: normal normal normal 14px/1 FontAwesome;
     font-size: inherit;
@@ -372,17 +372,17 @@ body{
 	-moz-transform: translateY(-50%);
 }
 
-#data-collect > div.content div.pp-email-options div.pp-email-option.other { font-weight: bold; }
+div.pp > div.content div.pp-email-options div.pp-email-option.other { font-weight: bold; }
 
-#data-collect > div.content div.pp-btn {
+div.pp > div.content div.pp-btn {
 	background: #999;
 }
 
-#data-collect:not(.tablet) > div.content div.pp-btn:hover {
+div.pp:not(.tablet) > div.content div.pp-btn:hover, div.pp:not(.tablet) > div.content div.pp-btn:active {
 	background: #888;
 }
 
-#data-collect > div.content div.pp-submit {
+div.pp > div.content div.pp-submit {
 	display: block;
 	position: fixed;
 	bottom: 0;
@@ -399,8 +399,147 @@ body{
 	padding: 15px 20px;
 }
 
-#data-collect.tablet > div.content div.pp-submit {
+div.pp.tablet > div.content div.pp-submit {
 	font-size: 33px;
 	padding: 30px 20px 30px 20px;
 	bottom: 60px;
+}
+
+div.comments-btn {
+	display: inline-block;
+	position: fixed;
+	bottom: 75px;
+	right: 20px;
+	width: 1.5em;
+	height: 1.5em;
+	z-index: 99800;
+	opacity: 0.98;
+	
+	padding: 3px;
+	margin: 0;
+	
+	color: #fff;
+	background: #ff2b2b;
+	border-radius: 50%;
+	font-size: 3em;
+	text-align: center;
+	
+	-webkit-box-shadow: 0px 0px 5px 0px rgba(50, 50, 50, 0.75);
+    -moz-box-shadow: 0px 0px 5px 0px rgba(50, 50, 50, 0.75);
+    box-shadow: 0px 0px 5px 0px rgba(50, 50, 50, 0.75);
+	
+	cursor: pointer;
+}
+
+div.comments-btn.tablet {
+	width: 2em;
+	height: 2em;
+	font-size: 3.25em;
+}
+
+div.comments-btn:hover, div.comments-btn:active {
+	opacity: 0.9;
+}
+
+div.comments-btn i {
+	display: inline-block;
+	margin-top: 50%;
+	-webkit-transform: translateY(-50%);
+	transform: translateY(-50%);
+}
+
+div.pp-dismiss-circle {
+	display: inline-block;
+	position: fixed;
+	top: 8px;
+	right: 4px;
+	width: 1.8em;
+	height: 1.8em;
+	
+	padding: 0;
+	margin: 0;
+	
+	color: #fff;
+	background: #888;
+	border-radius: 50%;
+	font-size: 1.3em;
+	text-align: center;
+	
+	-webkit-box-shadow: 0px 0px 5px 0px rgba(50, 50, 50, 0.75);
+    -moz-box-shadow: 0px 0px 5px 0px rgba(50, 50, 50, 0.75);
+    box-shadow: 0px 0px 5px 0px rgba(50, 50, 50, 0.75);
+	
+	cursor: pointer;
+}
+
+div.pp-dismiss-circle:hover, div.pp-dismiss-circle:active {
+	opacity: 0.9;
+}
+
+div.pp-dismiss-circle i {
+	display: inline-block;
+	margin-top: 50%;
+	-webkit-transform: translateY(-50%);
+	transform: translateY(-50%);
+}
+
+div.pp div.pp-textarea-box {
+	width: 92%;
+	margin: 0 auto;
+	padding: 0;
+	display: block;
+	font-size: 0;
+	overflow: hidden;
+}
+
+div.pp div.pp-textarea-box textarea {
+	margin: 0;
+	padding: 10px;
+	font-size: 20px;
+	background: #fff;
+	display: inline-block;
+	min-height: 250px;
+	width: 100%;
+	resize: none;
+	color: #000;
+	outline: none;
+	border: 0;
+}
+
+div.pp.tablet div.pp-textarea-box textarea {
+	font-size: 24px;
+}
+
+div.pp div.pp-textarea-box div.pp-btn-done,
+div.pp div.pp-textarea-box div.pp-btn-cancel {
+	display: inline-block;
+	padding: 6px;
+	font-size: 20px;
+	text-align: center;
+	color: #fff;
+	margin: 0;
+	cursor: pointer;
+	outline: none;
+	border: 0;
+}
+
+div.pp.tablet div.pp-textarea-box div.pp-btn-done,
+div.pp.tablet div.pp-textarea-box div.pp-btn-cancel {
+	font-size: 22px;
+	padding: 10px;
+}
+
+div.pp div.pp-textarea-box div.pp-btn-done:hover,
+div.pp div.pp-textarea-box div.pp-btn-done:active { opacity: 0.9; }
+div.pp div.pp-textarea-box div.pp-btn-cancel:hover,
+div.pp div.pp-textarea-box div.pp-btn-cancel:active { opacity: 0.9; }
+
+div.pp div.pp-textarea-box div.pp-btn-done {
+	background: #2ecc0e;
+	width: 75%;
+}
+
+div.pp div.pp-textarea-box div.pp-btn-cancel {
+	background: #BBB;
+	width: 25%;
 }

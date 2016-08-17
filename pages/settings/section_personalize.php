@@ -23,17 +23,32 @@ if ($_SESSION['Corporate'] && Permissions::has(Permissions::MODIFY_COMPANY_STORE
 	$store_id = $_SESSION['StoreID'];
 }
 
-$col_template = false;
-$col_location = 0;
+$welcome_message = '';
+$allow_comments = false;
 
-$dataT = DataTemplate::fromStore($store_id);
-if ($dataT !== false && isset($dataT['tpl'])){
-	$col_template = $dataT['tpl'];
-	$col_location = $dataT['loc'];
-} else {
+$lookup_result = false;
+if (($stmt = Database::prepare("
+	SELECT WelcomeMessage, AllowComments FROM store_features
+	JOIN stores ON stores.FeaturesID = store_features.id
+	WHERE stores.id = ?
+")) !== false){
+	$stmt->bind_param('i', $store_id);
+	if(!$stmt->execute()){
+		$message = "Unknown error. 500.";
+	} else {
+		$stmt->bind_result($welcome_message, $allow_comments);
+		if($lookup_result = $stmt->fetch()){
+			$welcome_message = empty($welcome_message) ? '' : $welcome_message;
+			$allow_comments = $allow_comments == 1;
+		}
+	}
+	$stmt->close();
+}
+
+if (is_null($lookup_result)){
 	$features_id = -1;
 	if (($stmt = Database::prepare("
-		INSERT INTO store_features (CollectionTemplate, CollectionLocation) VALUES (NULL, NULL)
+		INSERT INTO store_features (CollectionTemplate) VALUES (NULL)
 	")) !== false){
 		if($stmt->execute()){
 			$stmt->store_result();
@@ -56,21 +71,17 @@ if ($dataT !== false && isset($dataT['tpl'])){
 }
 
 if(isset($_POST) && isset($_POST['txtMessage'])){
-	$message = trim(strip_tags(Brevada::FromPOST('txtMessage')));
-	
-	$col_template = DataTemplate::fromStore($store_id);
-	$col_template = $col_template['tpl'];
-	$col_template->setWelcome($message);
-	
-	$template_string = $col_template->toJSON();
+	$welcome_message = trim(strip_tags(Brevada::FromPOST('txtMessage')));
+	$allow = isset($_POST['chkAllowComments']) ? 1 : 0;
+	$allow_comments = $allow == 1;
 	
 	if (($stmt = Database::prepare("
 		UPDATE stores
 		JOIN store_features ON store_features.id = stores.FeaturesID
-		SET CollectionTemplate = ? 
+		SET WelcomeMessage = ?, AllowComments = ? 
 		WHERE stores.id = ?
 	")) !== false){
-		$stmt->bind_param('si', $template_string, $store_id);
+		$stmt->bind_param('sii', $welcome_message, $allow, $store_id);
 		if(!$stmt->execute()){
 			$message = "Unknown error. 500.";
 		} else {
@@ -89,8 +100,13 @@ if(isset($_POST) && isset($_POST['txtMessage'])){
 	<div class='form-group'>
 		<span class="form-header"><?php _e("Custom Welcome Message");?></span>
 		<span class="form-subheader"><?php _e("Set a custom welcome message to greet your customers or offer them an incentive. You can write %store% in place of your store's name (or manually enter what you wish)."); ?></span>
-		<br />
-		<textarea class='form-control' name='txtMessage' rows="3" placeholder="<?php _e("Give %store% Feedback"); ?>"><?= $col_template !== false ? $col_template->getWelcome() : ''; ?></textarea>
+		<textarea class='form-control' name='txtMessage' rows="3" placeholder="<?php _e("Give %store% Feedback"); ?>"><?= $welcome_message; ?></textarea>
+	</div>
+	<br />
+	<div class='form-group'>
+		<span class="form-header"><?php _e("Allow Comments");?></span>
+		<span class="form-subheader"><?php _e("If checked, customers will be able to send you comments viewable in your dashboard."); ?></span>
+		<input type='checkbox' name='chkAllowComments' <?= $allow_comments ? 'checked' : ''; ?>>&nbsp;<span>Allow Comments</span>
 	</div>
 	
 	<div id="submit" class="submit-next"><?php _e('Save'); ?></div>
@@ -115,7 +131,13 @@ if(isset($_POST) && isset($_POST['txtMessage'])){
 		<span class="form-header"><?php _e("Custom Welcome Message");?></span>
 		<span class="form-subheader"><?php _e("Set a custom welcome message to greet your customers or offer them an incentive. You can write %store% in place of your store's name (or manually enter what you wish)."); ?></span>
 		<br />
-		<textarea class='form-control' name='txtMessage' rows="3" placeholder="<?php _e("Give %store% Feedback"); ?>"><?= $col_template !== false ? $col_template->getWelcome() : ''; ?></textarea>
+		<textarea class='form-control' name='txtMessage' rows="3" placeholder="<?php _e("Give %store% Feedback"); ?>"><?= $welcome_message; ?></textarea>
+	</div>
+	<br />
+	<div class='form-group'>
+		<span class="form-header"><?php _e("Allow Comments");?></span>
+		<span class="form-subheader"><?php _e("If checked, customers will be able to send you comments viewable in your dashboard."); ?></span>
+		<input type='checkbox' name='chkAllowComments' <?= $allow_comments ? 'checked' : ''; ?>>&nbsp;<span>Allow Comments</span>
 	</div>
 	<div id="submit" class="submit-next"><?php _e('Save'); ?></div>
 	<?php } ?>

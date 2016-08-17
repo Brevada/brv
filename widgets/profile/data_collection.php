@@ -8,8 +8,8 @@ $dataT = DataTemplate::fromStore($store_id);
 
 if ($dataT !== false && $dataT['tpl'] !== false){
 ?>
-<div id="data-collect-overlay"></div>
-<div id="data-collect" style='display:none;' <?= $tablet ? "class='tablet'" : ""; ?> data-location='<?= $dataT['loc']; ?>'>
+<div id="data-collect-overlay" class="pp-overlay"></div>
+<div id="data-collect" style='display:none;' class='pp <?= $tablet ? " tablet" : ""; ?>' data-location='<?= $dataT['loc']; ?>'>
 	<div class='content'><?= $dataT['tpl']; ?></div>
 </div>
 <?php

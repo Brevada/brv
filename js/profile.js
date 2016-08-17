@@ -49,6 +49,10 @@ $(document).ready(function(){
 	});
 	$(window).resize();
 	
+	if ($('#btn-submit-comment').length > 0){
+		$('#btn-submit-comment').click(showCommentForm);
+	}
+	
 	initPostPreData();
 });
 
@@ -126,6 +130,7 @@ function initPostPreData(){
 	
 	if (dataLocation == 3){
 		// Before survey.
+		$('.pp-dismiss-circle', $dataCollect).hide();
 		showPostPre();
 	}
 }
@@ -148,12 +153,41 @@ function showPostPre(e){
 		});
 	});
 	
-	if($('[data-type=submit]', $dataCollect).length > 0){
-		$('[data-type=submit]', $dataCollect).one('click', function(){
+	initSessionDataForm($dataCollect, '#data-collect-overlay', e);
+}
+
+function showCommentForm(e){
+	var $comments = $('#comment-form');
+
+	if(!$comments || $comments.length === 0){
+		return false;
+	}
+	
+	$('html, body').addClass('locked');
+	
+	$('#comment-form-overlay').stop().fadeIn(200, function(){
+		$comments.stop().fadeIn(350, function(){
+			$('.content .auto-focus', $comments).length > 0 &&
+				$('.content .auto-focus', $comments).focus();
+		});
+	});
+	
+	initSessionDataForm($comments, '#comment-form-overlay', e);
+}
+
+function initSessionDataForm($container, overlay, e) {
+	if ($container.hasClass('pp-configured')){
+		return;
+	} else {
+		$container.addClass('pp-configured');
+	}
+	
+	if($('[data-type=submit]', $container).length > 0){
+		$('[data-type=submit]', $container).on('click', function(){
 			
-			if($('.pp-require', $dataCollect).length > 0){
+			if($('.pp-require', $container).length > 0){
 				var failed = false;
-				$('.pp-require', $dataCollect).each(function(){
+				$('.pp-require', $container).each(function(){
 					if($(this).val().length == 0){
 						failed = true;
 					}
@@ -165,7 +199,7 @@ function showPostPre(e){
 			}
 			
 			var fields = {};
-			$('[data-pp-key]', $dataCollect).each(function(){
+			$('[data-pp-key]', $container).each(function(){
 				fields[$(this).attr('data-pp-key')] = {
 					value: $(this).val(),
 					label: $(this).attr('data-pp-label') || $(this).attr('data-pp-key')
@@ -174,13 +208,27 @@ function showPostPre(e){
 			
 			$.post("/overall/insert/insert_session_data.php", { fields : JSON.stringify(fields) });
 			
-			$dataCollect.stop().fadeOut(200, function(){
-				$('#data-collect-overlay').stop().fadeOut();
+			$container.stop().fadeOut(200, function(){
+				$(overlay).stop().fadeOut(100, function(){
+					$('input, textarea', $container).val('');
+					$('html, body').removeClass('locked');
+				});
 			});
 			
-			if(e.thanks){
+			if(e && e.thanks){
 				e.thanks();
 			}
+		});
+	}
+
+	if($('[data-type=dismiss]', $container).length > 0){
+		$('[data-type=dismiss]', $container).on('click', function(){
+			$container.stop().fadeOut(200, function(){
+				$(overlay).stop().fadeOut(100, function(){
+					$('input, textarea', $container).val('');
+					$('html, body').removeClass('locked');
+				});
+			});
 		});
 	}
 }

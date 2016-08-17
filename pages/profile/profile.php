@@ -3,6 +3,7 @@ $this->addResource('/css/layout.css');
 $this->addResource('/css/profile_header.css');
 $this->addResource('/css/profile.css');
 $this->addResource('/js/profile.js');
+$this->addResource('/js/communicate_pod.js');
 
 $tablet_id = $this->getParameter("tablet_id");
 $tablet_url = $this->getParameter("tablet_url");
@@ -46,16 +47,35 @@ $this->addResource("<meta property='og:image' content='http://brevada.com/images
 $this->addResource("<meta property='og:site_name' content='Brevada'/>", true, true);
 $this->addResource("<meta property='og:description' content='Give {$name} Feedback on Brevada'/>", true, true);
 
-$dataT = DataTemplate::fromStore($store_id);
+$welcome_message = '';
+$allow_comments = false;
+
+if (($stmt = Database::prepare("
+	SELECT WelcomeMessage, AllowComments FROM store_features
+	JOIN stores ON stores.FeaturesID = store_features.id
+	WHERE stores.id = ?
+")) !== false){
+	$stmt->bind_param('i', $store_id);
+	if(!$stmt->execute()){
+		$message = "Unknown error. 500.";
+	} else {
+		$stmt->bind_result($welcome_message, $allow_comments);
+		if($lookup_result = $stmt->fetch()){
+			$welcome_message = empty($welcome_message) ? '' : $welcome_message;
+			$allow_comments = $allow_comments == 1;
+		}
+	}
+	$stmt->close();
+}
 ?>
 
 <div class="topbar profile-topbar">
 	<div class="container">
 		<img class="logo" src="/images/quote.png" />
-		<div class="title<?= $dataT !== false && $dataT['tpl'] !== false && strlen($dataT['tpl']->getWelcome()) > 0 ? ' custom-title' : ''; ?>">
+		<div class="title<?= strlen($welcome_message) > 0 ? ' custom-title' : ''; ?>">
 			<span class='full-message'><?php
-				if ($dataT !== false && $dataT['tpl'] !== false && strlen($dataT['tpl']->getWelcome()) > 0){
-					echo str_replace(['%store%'], [$name], $dataT['tpl']->getWelcome());
+				if (strlen($welcome_message) > 0){
+					echo nl2br(str_replace(['%store%'], [$name], $welcome_message));
 				} else {
 					echo sprintf(__('Give %s Feedback'), "<b>{$name}</b>");
 				}
@@ -86,7 +106,13 @@ $dataT = DataTemplate::fromStore($store_id);
 </div>
 
 <div id="email_connect"  class="aspect-container container" style="display: none;">
-	<?php $this->add(new View('../widgets/profile/email_connect.php', array('store_id' => $store_id))); ?>
+	<div class="thanks-header">
+		<h1><?php _e("Thanks for the feedback!"); ?></h1> 
+	</div>
+
+	<div id="reset" class="refresh">
+		<i class="fa fa-refresh"></i>
+	</div>
 </div>
 
 <?php
@@ -111,3 +137,4 @@ $dataT = DataTemplate::fromStore($store_id);
 		$stmt->close();
 	}
 ?>
+<?php if ($allow_comments){ $this->add(new View('../widgets/profile/comments.php', array('store_id' => $store_id))); } ?>
