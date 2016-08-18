@@ -43,4 +43,8 @@ $(document).ready(function(){
 		td.append(input);
 		input.focus();
 	});
+
+	$('[data-tooltip]').each(function(){
+		$(this).brevadaTooltip();
+	});
 });
