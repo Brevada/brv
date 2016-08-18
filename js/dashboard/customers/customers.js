@@ -114,6 +114,10 @@ bdff.create('customers', function(canvas, face){
 			dom.find('div.customer-top > div > span.customer-email').text(email || "No Email Provided");
 		};
 		
+		customer.setComment = function(comment){
+			
+		};
+		
 		customer.setAcknowledged = function(ack){
 			var currentlyAck = !dom.parent().is(outstandingDom);
 			if (currentlyAck != ack){
@@ -180,6 +184,7 @@ bdff.create('customers', function(canvas, face){
 					customer.setDevice(data.customers[i].device);
 					customer.setDate(data.customers[i].date);
 					customer.setEmail(data.customers[i].email);
+					customer.setComment(data.customers[i].comment);
 					
 					customer.setAverageScore(data.customers[i].average);
 					customer.setRelative(data.customers[i].relative);

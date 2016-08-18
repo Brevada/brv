@@ -48,10 +48,11 @@ $this->addResource("<meta property='og:site_name' content='Brevada'/>", true, tr
 $this->addResource("<meta property='og:description' content='Give {$name} Feedback on Brevada'/>", true, true);
 
 $welcome_message = '';
+$comment_message = '';
 $allow_comments = false;
 
 if (($stmt = Database::prepare("
-	SELECT WelcomeMessage, AllowComments FROM store_features
+	SELECT WelcomeMessage, CommentMessage, AllowComments FROM store_features
 	JOIN stores ON stores.FeaturesID = store_features.id
 	WHERE stores.id = ?
 ")) !== false){
@@ -59,9 +60,10 @@ if (($stmt = Database::prepare("
 	if(!$stmt->execute()){
 		$message = "Unknown error. 500.";
 	} else {
-		$stmt->bind_result($welcome_message, $allow_comments);
+		$stmt->bind_result($welcome_message, $comment_message, $allow_comments);
 		if($lookup_result = $stmt->fetch()){
 			$welcome_message = empty($welcome_message) ? '' : $welcome_message;
+			$comment_message = empty($comment_message) ? '' : $comment_message;
 			$allow_comments = $allow_comments == 1;
 		}
 	}
@@ -137,4 +139,4 @@ if (($stmt = Database::prepare("
 		$stmt->close();
 	}
 ?>
-<?php if ($allow_comments){ $this->add(new View('../widgets/profile/comments.php', array('store_id' => $store_id))); } ?>
+<?php if ($allow_comments){ $this->add(new View('../widgets/profile/comments.php', array('store_id' => $store_id, 'message' => $comment_message))); } ?>
