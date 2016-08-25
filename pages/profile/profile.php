@@ -3,6 +3,7 @@ $this->addResource('/css/layout.css');
 $this->addResource('/css/profile_header.css');
 $this->addResource('/css/profile.css');
 $this->addResource('/js/profile.js');
+$this->addResource('/js/communicate_pod.js');
 
 $tablet_id = $this->getParameter("tablet_id");
 $tablet_url = $this->getParameter("tablet_url");
@@ -45,14 +46,43 @@ $this->addResource("<meta property='og:url' content='http://brevada.com/{$url_na
 $this->addResource("<meta property='og:image' content='http://brevada.com/images/square_logo.png'/>", true, true);
 $this->addResource("<meta property='og:site_name' content='Brevada'/>", true, true);
 $this->addResource("<meta property='og:description' content='Give {$name} Feedback on Brevada'/>", true, true);
+
+$welcome_message = '';
+$comment_message = '';
+$allow_comments = false;
+
+if (($stmt = Database::prepare("
+	SELECT WelcomeMessage, CommentMessage, AllowComments FROM store_features
+	JOIN stores ON stores.FeaturesID = store_features.id
+	WHERE stores.id = ?
+")) !== false){
+	$stmt->bind_param('i', $store_id);
+	if(!$stmt->execute()){
+		$message = "Unknown error. 500.";
+	} else {
+		$stmt->bind_result($welcome_message, $comment_message, $allow_comments);
+		if($lookup_result = $stmt->fetch()){
+			$welcome_message = empty($welcome_message) ? '' : $welcome_message;
+			$comment_message = empty($comment_message) ? '' : $comment_message;
+			$allow_comments = $allow_comments == 1;
+		}
+	}
+	$stmt->close();
+}
 ?>
 
-	
-<div class="topbar">
+<div class="topbar profile-topbar">
 	<div class="container">
 		<img class="logo" src="/images/quote.png" />
-		<div class="title">
-			<?php echo sprintf(__('Give %s Feedback'), "<b>{$name}</b>"); ?>
+		<div class="title<?= strlen($welcome_message) > 0 ? ' custom-title' : ''; ?>">
+			<span class='full-message'><?php
+				if (strlen($welcome_message) > 0){
+					echo nl2br(str_replace(['%store%'], [$name], $welcome_message));
+				} else {
+					echo sprintf(__('Give %s Feedback'), "<b>{$name}</b>");
+				}
+			?></span>
+			<span class='shortened-message'><?php echo sprintf(__('Give %s Feedback'), "<b>{$name}</b>"); ?></span>
 		</div>
 		<i class="fa fa-arrow-circle-down"></i>
 	</div>
@@ -78,7 +108,13 @@ $this->addResource("<meta property='og:description' content='Give {$name} Feedba
 </div>
 
 <div id="email_connect"  class="aspect-container container" style="display: none;">
-	<?php $this->add(new View('../widgets/profile/email_connect.php', array('store_id' => $store_id))); ?>
+	<div class="thanks-header">
+		<h1><?php _e("Thanks for the feedback!"); ?></h1> 
+	</div>
+
+	<div id="reset" class="refresh">
+		<i class="fa fa-refresh"></i>
+	</div>
 </div>
 
 <?php
@@ -103,3 +139,4 @@ $this->addResource("<meta property='og:description' content='Give {$name} Feedba
 		$stmt->close();
 	}
 ?>
+<?php if ($allow_comments){ $this->add(new View('../widgets/profile/comments.php', array('store_id' => $store_id, 'message' => $comment_message))); } ?>

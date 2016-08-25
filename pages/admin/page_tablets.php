@@ -104,7 +104,7 @@ $ip = Geography::GetIP();
 <div class='panel panel-default'>
 	<div class='panel-heading' style='overflow: hidden;'>
 		<span class='pull-left'>#<?php echo $id; ?></span>
-		<span class='pull-right'><?php echo time() - @intval($row['OnlineSince']) > 600 ? 'Offline' : 'Online'; ?></span>
+		<span class='pull-right'><?php echo time() - @intval($row['OnlineSince']) > 600 ? 'Offline since '.date("M. jS, Y @ g:i a", @intval($row['OnlineSince'])) : 'Online'; ?></span>
 	</div>
 	<div class='panel-body'>
 		<span>Store: <a href='admin?show=stores&id=<?php echo $row['StoreID']; ?>'><?php echo $row['Name']; ?></a></span><br />

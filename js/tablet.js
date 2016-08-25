@@ -26,14 +26,26 @@ app.custom.initialize = function(){
 	$('#reset').click(app.custom.resetAll);
 	
 	$(window).bind('touchmove scroll scrollstart', function() {
-		if ($(window).scrollTop() >= 100) { $('.topbar, .top-spacer').addClass('fixed'); }
-		else { $('.topbar, .top-spacer').removeClass('fixed'); }
+		if ($(window).scrollTop() >= 20) {
+			$('.topbar .full-message').hide();
+			$('.topbar .shortened-message').show();
+			$('.topbar, .top-spacer').addClass('fixed');
+		} else {
+			$('.topbar .full-message').show();
+			$('.topbar .shortened-message').hide();
+			$('.topbar, .top-spacer').removeClass('fixed');
+		}
 	});
+	
 	$('.topbar i').click(function () {
 		$('html,body').animate({
         	scrollTop: $(window).scrollTop() + 100
     	});
 	});
+	
+	if ($('#btn-submit-comment').length > 0){
+		$('#btn-submit-comment').click(app.custom.showCommentForm);
+	}
 
 	app.custom.resizestars();
 	$('#aspects').randomize('div.aspect');
@@ -69,6 +81,7 @@ app.custom.initPostPreData = function(){
 		});
 	} else if (dataLocation == 3){
 		// Before survey.
+		$('.pp-dismiss-circle', $dataCollect).hide();
 		app.events.onNewSession(function(){
 			app.custom.showPostPre();
 		});
@@ -123,7 +136,77 @@ app.custom.initPostPreData = function(){
 		// Before survey.
 		app.custom.resetAll();
 	}
-}
+};
+
+app.custom.initDataForm = function($container, overlay, e){
+	if ($container.hasClass('pp-configured')){
+		return;
+	} else {
+		$container.addClass('pp-configured');
+	}
+	
+	if($('[data-type=submit]', $container).length > 0){
+		$('[data-type=submit]', $container).on('click', function(){
+			
+			if($('.pp-require', $container).length > 0){
+				var failed = false;
+				$('.pp-require', $container).each(function(){
+					if($(this).val().length == 0){
+						failed = true;
+					}
+				});
+				
+				if(failed){
+					return false;
+				}
+			}
+			
+			var fields = {};
+			$('[data-pp-key]', $container).each(function(){
+				fields[$(this).attr('data-pp-key')] = {
+					value: $(this).val(),
+					label: $(this).attr('data-pp-label') || $(this).attr('data-pp-key')
+				};
+			});
+			
+			var payload = {
+				now : Math.floor((new Date()).getTime()/1000),
+				session : app.session.token || app.custom.sessionToken,
+				fields : JSON.stringify(fields)
+			};
+
+			app.sendPayload(payload);
+			
+			$container.stop().fadeOut(200, function(){
+				$(overlay).stop().fadeOut(100, function(){
+					$('input, textarea', $container).val('');
+					$('html, body').removeClass('locked');
+				});
+			});
+			
+			if(e && e.thanks){
+				e.thanks();
+			}
+		});
+	}
+	
+	$('.pp-enter-submit', $container).on('keyup', function(e){
+		if (e.which == 13){
+			$('[data-type=submit]', $container).first().click();
+		}
+	});
+
+	if($('[data-type=dismiss]', $container).length > 0){
+		$('[data-type=dismiss]', $container).on('click', function(){
+			$container.stop().fadeOut(200, function(){
+				$(overlay).stop().fadeOut(100, function(){
+					$('input, textarea', $container).val('');
+					$('html, body').removeClass('locked');
+				});
+			});
+		});
+	}
+};
 
 app.custom.showPostPre = function(e){
 	var $dataCollect = $('#data-collect');
@@ -148,51 +231,29 @@ app.custom.showPostPre = function(e){
 	
 	app.log('Post/Pre form shown.');
 	
-	if($('[data-type=submit]', $dataCollect).length > 0){
-		$('[data-type=submit]', $dataCollect).one('click', function(){
-			
-			if($('.pp-require', $dataCollect).length > 0){
-				var failed = false;
-				$('.pp-require', $dataCollect).each(function(){
-					if($(this).val().length == 0){
-						console.log("Failed @ " + $(this).attr('class'));
-						failed = true;
-					}
-				});
-				
-				if(failed){
-					return false;
-				}
-			}
-			
-			var fields = {};
-			$('[data-pp-key]', $dataCollect).each(function(){
-				fields[$(this).attr('data-pp-key')] = {
-					value: $(this).val(),
-					label: $(this).attr('data-pp-label') || $(this).attr('data-pp-key')
-				};
-			});
-			
-			var payload = {
-				now : Math.floor((new Date()).getTime()/1000),
-				session : app.session.token || app.custom.sessionToken,
-				fields : JSON.stringify(fields)
-			};
+	app.custom.initDataForm($dataCollect, '#data-collect-overlay', e);
+};
 
-			app.sendPayload(payload);
-			
-			
-			$dataCollect.stop().fadeOut(200, function(){
-				$('#data-collect-overlay').stop().fadeOut();
-			});
-			
-			if(e.thanks){
-				e.thanks();
-			}
-		});
+app.custom.showCommentForm = function(e){
+	var $comments = $('#comment-form');
+
+	if(!$comments || $comments.length === 0){
+		return false;
 	}
-
-}
+	
+	$('html, body').addClass('locked');
+	
+	$('#comment-form-overlay').stop().fadeIn(200, function(){
+		$comments.stop().fadeIn(350, function(){
+			$('.content .auto-focus', $comments).length > 0 &&
+				$('.content .auto-focus', $comments).focus();
+		});
+	});
+	
+	app.log('Comment form shown.');
+	
+	app.custom.initDataForm($comments, '#comment-form-overlay', e);
+};
 
 app.custom.imdone = function(){
 	if (!app.events){
@@ -223,6 +284,10 @@ app.custom.resizestars = function(){
 
 app.custom.resetAll = function(){
 	$('html, body').scrollTop(0);
+	$('html, body').removeClass('locked');
+	
+	$('.topbar .shortened-message').hide();
+	$('.topbar .full-message').show();
 	
 	if ($('#data-collect').length > 0){
 		$('#data-collect').hide();
@@ -275,8 +340,8 @@ function disappearRating(post_id) {}
 
 app.custom.inactivity = {
 	inactivityTmr : null,
-	inactiveDelayA : 60000,
-	inactiveDelayB : 15000,
+	inactiveDelayA : 30000,
+	inactiveDelayB : 12000,
 	inactiveA : null,
 	inactiveB : null,
 	message : "If you're not done giving feedback, tap anywhere on the screen.<br /><i class='fa fa-hand-pointer-o'></i>"

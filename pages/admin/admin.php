@@ -2,6 +2,9 @@
 if(!Brevada::IsLoggedIn()){ Brevada::Redirect('/home/logout'); }
 if(!Permissions::has(Permissions::VIEW_ADMIN)){ Brevada::Redirect('/404'); }
 
+$this->addResource('/css/brevada.tooltip.css');
+$this->addResource('/js/brevada.tooltip.js');
+
 $this->addResource('/css/admin.css');
 $this->addResource('/js/jquery.tablesorter.min.js');
 $this->addResource('/js/admin.js');
@@ -83,4 +86,3 @@ $this->add(new View("../pages/admin/page_{$show}.php", array('valid' => true)));
 	</div>
 </div>
 </div>
-
