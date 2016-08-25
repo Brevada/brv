@@ -26,47 +26,31 @@ if ($_SESSION['Corporate'] && Permissions::has(Permissions::MODIFY_COMPANY_STORE
 $col_template = false;
 $col_location = 0;
 
-if ($store_id !== false && ($stmt = Database::prepare("
-		SELECT `CollectionTemplate`, `CollectionLocation`
-		FROM stores
-		JOIN store_features ON store_features.id = stores.FeaturesID
-		WHERE stores.id = ?
+$dataT = DataTemplate::fromStore($store_id);
+if ($dataT !== false && isset($dataT['tpl'])){
+	$col_template = $dataT['tpl'];
+	$col_location = $dataT['loc'];
+} else {
+	$features_id = -1;
+	if (($stmt = Database::prepare("
+		INSERT INTO store_features (CollectionTemplate, CollectionLocation) VALUES (NULL, NULL)
 	")) !== false){
-	$stmt->bind_param('i', $store_id);
-	if ($stmt->execute()){
-		$stmt->store_result();
-		if($stmt->num_rows > 0){
-			$stmt->bind_result($col_template, $col_location);
-			$stmt->fetch();
-			$col_template = DataTemplate::fromJSON($col_template);
-			$stmt->close();
-		} else {
-			$stmt->close();
-			
-			// Doesn't exist. Create and link.
-			
-			$features_id = -1;
-			if (($stmt = Database::prepare("
-				INSERT INTO store_features (CollectionTemplate, CollectionLocation) VALUES (NULL, NULL)
-			")) !== false){
-				if($stmt->execute()){
-					$stmt->store_result();
-					$features_id = Database::getCon()->insert_id;
-				}
-				$stmt->close();
+		if($stmt->execute()){
+			$stmt->store_result();
+			$features_id = Database::getCon()->insert_id;
+		}
+		$stmt->close();
+	}
+	
+	if ($features_id > 0) {
+		if (($stmt = Database::prepare("
+			UPDATE stores SET FeaturesID = ? WHERE stores.id = ?
+		")) !== false){
+			$stmt->bind_param('ii', $features_id, $store_id);
+			if(!$stmt->execute()){
+				$message = "Unknown error. 500.";
 			}
-			
-			if ($features_id > 0) {
-				if (($stmt = Database::prepare("
-					UPDATE stores SET FeaturesID = ? WHERE stores.id = ?
-				")) !== false){
-					$stmt->bind_param('ii', $features_id, $store_id);
-					if(!$stmt->execute()){
-						$message = "Unknown error. 500.";
-					}
-					$stmt->close();
-				}
-			}
+			$stmt->close();
 		}
 	}
 }

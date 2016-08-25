@@ -44,8 +44,11 @@
 	margin-top: 0px;
 	padding: 10px;
 }
-.aspect:first-child {
+.aspect:not(.rated) {
 	margin-top: 30px;
+}
+.aspect:not(.rated) ~ .aspect:not(.rated)  {
+	margin-top: 0;
 }
 .aspect-header{
 	width: 98%;

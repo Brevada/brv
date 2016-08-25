@@ -75,5 +75,36 @@ class DataTemplate
 		
 		return $dataTemp;
 	}
+	
+	public static function fromStore($store_id)
+	{
+		if (($stmt = Database::prepare("
+			SELECT `CollectionTemplate`, `CollectionLocation`
+			FROM store_features
+			JOIN stores ON stores.FeaturesID = store_features.id
+			WHERE stores.id = ?
+		")) !== false){
+			$stmt->bind_param('i', $store_id);
+			if ($stmt->execute()){
+				$stmt->store_result();
+				if ($stmt->num_rows > 0){
+					$stmt->bind_result($col_template, $col_location);
+					$stmt->fetch();
+
+					$dataT = self::fromJSON($col_template);
+					if($dataT !== false){
+						return [
+							'loc' => $col_location,
+							'tpl' => $dataT
+						];
+					}
+				} else {
+					return false;
+				}
+			}
+			$stmt->close();
+		}
+		return false;
+	}
 }
 ?>

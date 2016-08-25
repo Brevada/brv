@@ -32,20 +32,21 @@ class TaskCustomers extends AbstractTask
 		
 		// Get groups of session_data.
 		if(($stmt = Database::prepare("
-			SELECT CustomerID, Acknowledged, Email, SubmissionTime FROM (
+			SELECT CustomerID, Acknowledged, Email, Comment, SubmissionTime FROM (
 				( SELECT
 					session_data.id as CustomerID,
 					session_data.Acknowledged as Acknowledged,
-					session_data_field.DataValueSmall as Email,
+					sdf_email.DataValueSmall as Email,
+					IFNULL(sdf_comment.DataValueLarge, sdf_comment.DataValueSmall) as Comment,
 					session_data.SubmissionTime as SubmissionTime
 				FROM session_data
-				JOIN session_data_field ON session_data_field.SessionDataID = session_data.id
+				LEFT JOIN session_data_field sdf_email ON (sdf_email.SessionDataID = session_data.id AND sdf_email.DataKey = 'email')
+				LEFT JOIN session_data_field sdf_comment ON (sdf_comment.SessionDataID = session_data.id AND sdf_comment.DataKey = 'comment')
 				JOIN feedback ON feedback.SessionCode = session_data.SessionCode
 				JOIN aspects ON aspects.id = feedback.AspectID
 				JOIN stores ON stores.id = aspects.StoreID
 				JOIN companies ON companies.id = stores.CompanyID
 				WHERE
-					session_data_field.DataKey = 'email' AND
 					aspects.StoreID = ? AND
 					session_data.Acknowledged = 0 AND
 					`stores`.`CompanyID` = ? AND
@@ -59,16 +60,17 @@ class TaskCustomers extends AbstractTask
 				( SELECT
 					session_data.id as CustomerID,
 					session_data.Acknowledged as Acknowledged,
-					session_data_field.DataValueSmall as Email,
+					sdf_email.DataValueSmall as Email,
+					IFNULL(sdf_comment.DataValueLarge, sdf_comment.DataValueSmall) as Comment,
 					session_data.SubmissionTime as SubmissionTime
 				FROM session_data
-				JOIN session_data_field ON session_data_field.SessionDataID = session_data.id
+				LEFT JOIN session_data_field sdf_email ON (sdf_email.SessionDataID = session_data.id AND sdf_email.DataKey = 'email')
+				LEFT JOIN session_data_field sdf_comment ON (sdf_comment.SessionDataID = session_data.id AND sdf_comment.DataKey = 'comment')
 				JOIN feedback ON feedback.SessionCode = session_data.SessionCode
 				JOIN aspects ON aspects.id = feedback.AspectID
 				JOIN stores ON stores.id = aspects.StoreID
 				JOIN companies ON companies.id = stores.CompanyID
 				WHERE
-					session_data_field.DataKey = 'email' AND
 					aspects.StoreID = ? AND
 					session_data.Acknowledged = 1 AND
 					`stores`.`CompanyID` = ? AND
@@ -82,9 +84,9 @@ class TaskCustomers extends AbstractTask
 			")) !== false){
 			$stmt->bind_param('iiii', $store, $company, $store, $company);
 			if($stmt->execute()){
-				$stmt->bind_result($a, $b, $c, $d);
+				$stmt->bind_result($a, $b, $c, $d, $e);
 				while($stmt->fetch()){
-					$rows[] = ['id' => $a, 'Acknowledged' => $b, 'Email' => $c, 'SubmissionTime' => $d];
+					$rows[] = ['id' => $a, 'Acknowledged' => $b, 'Email' => $c, 'Comment' => $d, 'SubmissionTime' => $e];
 				}
 			}
 			$stmt->close();
@@ -161,7 +163,8 @@ class TaskCustomers extends AbstractTask
 				"id" => $row['id'],
 				"acknowledged" => $row['Acknowledged'],
 				"date" => $row['SubmissionTime'],
-				"email" => $row['Email'],
+				"email" => empty($row['Email']) ? false : htmlentities(strip_tags($row['Email'])),
+				"comment" => empty($row['Comment']) ? false : htmlentities(strip_tags($row['Comment'])),
 				"aspects" => $aspects,
 				"average" => $average,
 				"relative" => $relative,
@@ -195,13 +198,12 @@ class TaskCustomers extends AbstractTask
 		if(($stmt = Database::prepare("
 			UPDATE session_data
 			JOIN (
-				SELECT sd.id as sdid FROM session_data sd JOIN session_data_field ON session_data_field.SessionDataID = sd.id
+				SELECT sd.id as sdid FROM session_data sd
 				JOIN feedback ON feedback.SessionCode = sd.SessionCode
 				JOIN aspects ON aspects.id = feedback.AspectID
 				JOIN stores ON stores.id = aspects.StoreID
 				JOIN companies ON companies.id = stores.CompanyID
 				WHERE
-					session_data_field.DataKey = 'email' AND
 					aspects.StoreID = ? AND
 					`stores`.`CompanyID` = ? AND
 					sd.id = ?

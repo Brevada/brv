@@ -43,13 +43,43 @@ while($row=$query->fetch_assoc()){
    $name=Brevada::validate($row['Name']);
    $url_name=Brevada::validate($row['URLName']);
 }
+
+$welcome_message = '';
+$comment_message = '';
+$allow_comments = false;
+
+if (($stmt = Database::prepare("
+	SELECT WelcomeMessage, CommentMessage, AllowComments FROM store_features
+	JOIN stores ON stores.FeaturesID = store_features.id
+	WHERE stores.id = ?
+")) !== false){
+	$stmt->bind_param('i', $store_id);
+	if(!$stmt->execute()){
+		$message = "Unknown error. 500.";
+	} else {
+		$stmt->bind_result($welcome_message, $comment_message, $allow_comments);
+		if($lookup_result = $stmt->fetch()){
+			$welcome_message = empty($welcome_message) ? '' : $welcome_message;
+			$comment_message = empty($comment_message) ? '' : $comment_message;
+			$allow_comments = $allow_comments == 1;
+		}
+	}
+	$stmt->close();
+}
 ?>
 
-<div class="topbar">
+<div class="topbar profile-topbar">
 	<div class="container">
 		<img class="logo" src="/images/quote.png" />
-		<div class="title">
-			<?php echo sprintf(__('Give %s Feedback'), "<b>{$name}</b>"); ?>
+		<div class="title<?= strlen($welcome_message) > 0 ? ' custom-title' : ''; ?>">
+			<span class='full-message'><?php
+				if (strlen($welcome_message) > 0){
+					echo nl2br(str_replace(['%store%'], [$name], $welcome_message));
+				} else {
+					echo sprintf(__('Give %s Feedback'), "<b>{$name}</b>");
+				}
+			?></span>
+			<span class='shortened-message'><?php echo sprintf(__('Give %s Feedback'), "<b>{$name}</b>"); ?></span>
 		</div>
 		<i class="fa fa-arrow-circle-down"></i>
 	</div>
@@ -75,7 +105,14 @@ while($row=$query->fetch_assoc()){
 </div>
 
 <div id="email_connect"  class="aspect-container container" style="display: none;">
-	<?php $this->add(new View('../widgets/profile/email_connect.php', array('store_id' => $store_id, 'tablet' => true))); ?>
+	<div class="thanks-header">
+		<h1><?php _e("Thanks for the feedback!"); ?></h1> 
+	</div>
+
+	<div id="reset" class="refresh">
+		<i class="fa fa-refresh"></i>
+	</div>
 </div>
 
 <?php $this->add(new View('../widgets/profile/data_collection.php', array('store_id' => $store_id, 'tablet' => true))); ?>
+<?php if ($allow_comments){ $this->add(new View('../widgets/profile/comments.php', array('store_id' => $store_id, 'tablet' => true, 'message' => $comment_message))); } ?>
