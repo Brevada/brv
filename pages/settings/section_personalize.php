@@ -74,9 +74,16 @@ if (is_null($lookup_result)){
 
 if(isset($_POST) && isset($_POST['txtMessageW'])){
 	$welcome_message = trim(strip_tags(Brevada::FromPOST('txtMessageW')));
-	$comment_message = trim(strip_tags(Brevada::FromPOST('txtMessageC')));
 	
+	/* Temp. removed.
+	$comment_message = trim(strip_tags(Brevada::FromPOST('txtMessageC')));
+	*/
+	$comment_message = '';
+	
+	/* Temp. removed.
 	$allow = isset($_POST['chkAllowComments']) ? 1 : 0;
+	*/
+	$allow = 0;
 	$allow_comments = $allow == 1;
 	
 	if (($stmt = Database::prepare("
@@ -106,7 +113,7 @@ if(isset($_POST) && isset($_POST['txtMessageW'])){
 		<span class="form-subheader"><?php _e("Set a custom welcome message to greet your customers or offer them an incentive."); ?></span>
 		<textarea class='form-control' name='txtMessageW' rows="3" placeholder="<?php _e("Give %store% Feedback"); ?>"><?= $welcome_message; ?></textarea>
 	</div>
-	<br />
+	<?php /*<br />
 	<div class='form-group'>
 		<span class="form-header"><?php _e("Comments");?><span class='pull-right'><i class='fa fa-info-circle help' data-tooltip="<?php _e("Comments are viewable in your dashboard on the Customers page."); ?>"></i></span></span>
 		<span class="form-subheader"><?php _e("Allow customers to leave you a comment at any time during the feedback process."); ?></span>
@@ -114,7 +121,7 @@ if(isset($_POST) && isset($_POST['txtMessageW'])){
 		<br /><br />
 		<span class="form-subheader"><?php _e("You can set a custom message which will be displayed on the comment screen."); ?></span>
 		<textarea class='form-control' name='txtMessageC' rows="3" placeholder="<?php _e("Send us a message."); ?>"><?= $comment_message; ?></textarea>
-	</div>
+	</div>*/ ?>
 	
 	<div id="submit" class="submit-next"><?php _e('Save'); ?></div>
 	<?php } else if($_SESSION['Corporate'] && Permissions::has(Permissions::MODIFY_COMPANY_STORES)) { ?>
@@ -140,7 +147,7 @@ if(isset($_POST) && isset($_POST['txtMessageW'])){
 		<br />
 		<textarea class='form-control' name='txtMessageW' rows="3" placeholder="<?php _e("Give %store% Feedback"); ?>"><?= $welcome_message; ?></textarea>
 	</div>
-	<br />
+	<?php /*<br />
 	<div class='form-group'>
 		<span class="form-header"><?php _e("Comments");?><span class='pull-right'><i class='fa fa-info-circle help' data-tooltip="<?php _e("Comments are viewable in your dashboard on the Customers page."); ?>"></i></span></span>
 		<span class="form-subheader"><?php _e("You can allow customers to leave you a comment at any time during the feedback process."); ?></span>
@@ -149,6 +156,8 @@ if(isset($_POST) && isset($_POST['txtMessageW'])){
 		<span class="form-subheader"><?php _e("You can set a custom message which will be displayed on the comment screen."); ?></span>
 		<textarea class='form-control' name='txtMessageC' rows="3" placeholder="<?php _e("Send us a message."); ?>"><?= $comment_message; ?></textarea>
 	</div>
+	*/ ?>
+	
 	<div id="submit" class="submit-next"><?php _e('Save'); ?></div>
 	<?php } ?>
 	<?php } ?>
