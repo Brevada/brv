@@ -196,12 +196,18 @@ app.custom.initDataForm = function($container, overlay, e){
 		}
 	});
 
+	
 	if($('[data-type=dismiss]', $container).length > 0){
 		$('[data-type=dismiss]', $container).on('click', function(){
 			$container.stop().fadeOut(200, function(){
 				$(overlay).stop().fadeOut(100, function(){
 					$('input, textarea', $container).val('');
 					$('html, body').removeClass('locked');
+					
+					/* If dismiss and shown after, go to thanks. */
+					if(e && e.dismissMode && e.dismissMode === 'thanks' && e.thanks){
+						e.thanks();
+					}
 				});
 			});
 		});
@@ -214,6 +220,8 @@ app.custom.showPostPre = function(e){
 	if(!$dataCollect || $dataCollect.length === 0){
 		return false;
 	}
+	
+	var dataLocation = parseInt($dataCollect.attr('data-location') || 0);
 	
 	$('html, body').addClass('locked');
 	
@@ -231,7 +239,7 @@ app.custom.showPostPre = function(e){
 	
 	app.log('Post/Pre form shown.');
 	
-	app.custom.initDataForm($dataCollect, '#data-collect-overlay', e);
+	app.custom.initDataForm($dataCollect, '#data-collect-overlay', $.extend({}, e, { dismissMode: dataLocation < 3 ? 'thanks' : false }));
 };
 
 app.custom.showCommentForm = function(e){
