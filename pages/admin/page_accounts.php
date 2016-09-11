@@ -44,10 +44,9 @@ if(!Permissions::has(Permissions::VIEW_ADMIN)){ Brevada::Redirect('/404'); }
 		<td><?php echo empty($storeName) ? 'null' : $storeName; ?></td>
 		<td><?php echo $permissions; ?></td>
 		<td class='options'>
-			<!--<a href='#'><i class='fa fa-link'></i></a>
-			<a href='#'><i class='fa fa-bar-chart'></i></a>
-			<a href='#'><i class='fa fa-cog'></i></a>
-			<a href='#'><i class='fa fa-credit-card'></i></a>-->
+			<?php if(@intval($permissions) < Permissions::VIEW_ADMIN){ ?>
+			<a href='/admin/process/sign_in.php?id=<?php echo $id; ?>'><i class='fa fa-sign-in'></i></a>
+			<?php } ?>
 		</td>
       </tr>
 	<?php
