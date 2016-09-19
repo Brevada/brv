@@ -15,6 +15,8 @@ $sessionCode = isset($_SESSION['SessionCode']) ? $_SESSION['SessionCode'] : '';
 require_once 'classes/TaskLoader.php';
 require_once 'classes/BrevadaAPI.php';
 require_once 'classes/APITasks/Task.Feedback.class.php';
+
+TaskFeedback::insertSessionData($sessionCode, false, time());
 TaskFeedback::insertRating($rating, $aspectID, $sessionCode);
 
 exit('OK');
