@@ -35,12 +35,12 @@ class TaskFeedback extends AbstractTask
 					}
 				}
 				
+				$fields = false;
 				if(isset($_POST['fields'])){
 					$fields = json_decode($_POST['fields'], true);
-					if($fields){
-						TaskFeedback::insertSessionData($sessionID, $fields, $time);
-					}
 				}
+
+				TaskFeedback::insertSessionData($sessionID, $fields, $time);
 				
 			} else {
 				throw new Exception("Incomplete request.");
@@ -52,9 +52,9 @@ class TaskFeedback extends AbstractTask
 	public static function insertSessionData($sessionCode, $fields, $time)
 	{
 		$sessionDataID = -1;
-		
+
 		if(($stmt = Database::prepare("
-			INSERT INTO `session_data` (`SessionCode`, `SubmissionTime`) VALUES (?, ?)
+			INSERT IGNORE INTO `session_data` (`SessionCode`, `SubmissionTime`) VALUES (?, ?)
 		")) !== false){
 			$stmt->bind_param('si', $sessionCode, $time);
 			if($stmt->execute()){
@@ -62,8 +62,28 @@ class TaskFeedback extends AbstractTask
 			}
 			$stmt->close();
 		}
+
+		if($sessionDataID == 0){
+			// Session already exists.
+			if(($stmt = Database::prepare("
+				SELECT id, SubmissionTime FROM `session_data`
+				WHERE SessionCode = ?
+				LIMIT 1
+			")) !== false){
+				$stmt->bind_param('i', $sessionCode);
+				if($stmt->execute()){
+					$stmt->bind_result($sessionDataID, $sessionTime);
+					if($stmt->fetch()){
+						if ($time - intval($sessionTime) > 24*60*60){
+							Logger::info("Inserted into session_data#{$sessionDataID} 24 hours after row created. Time of attempt: {$time}. Time of creation: {$sessionTime}.");
+						}
+					}
+				}
+				$stmt->close();
+			}
+		}
 		
-		if($sessionDataID > 0){
+		if($sessionDataID > 0 && $fields){
 			foreach($fields as $key => $data){
 				if(empty($key)){ continue; }
 				
