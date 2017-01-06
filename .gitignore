@@ -1,10 +1,33 @@
+# Legacy
 user_data
 framework/logs
 
+# Logging
+app/log/
+*.log
+
+# Built Assets
+res/css/dist/
+res/js/dist/
+
+# Package Managers
+node_modules/
+vendor/
+
+# Compiled + Cache
 *.pyc
+*.cache
 
 # OS generated
 Thumbs.db
 .DS_Store
 .Spotlight-V100
 .Trashes
+
+./*.phar
+
+# Auto-generated Docs
+./docs/build/*
+./docs/cache/*
+./docs/phpunit/*
+./docs/phploc/*
