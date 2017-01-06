@@ -1,0 +1,41 @@
+/* DropDownButton */
+.dropdown-btn {
+    display: inline-block;
+    position: relative;
+    outline: none;
+
+    @extend .clickable;
+
+    .label .fa {
+        font-size: 0.6em;
+        margin: 0 5px;
+        position: relative;
+        top: -0.3em;
+    }
+
+    &:not(.open) .options {
+        display: none;
+    }
+
+    .options {
+        position: absolute;
+        min-width: 100%;
+        font-size: 0.925rem;
+        background: $grey1;
+        border: 1px solid $grey2;
+        border-bottom-left-radius: 3px;
+        border-bottom-right-radius: 3px;
+        z-index: 999;
+
+        @extend .clickable;
+
+        .option {
+            padding: 0.33rem 0.35rem;
+            color: $grey4;
+
+            &:hover, &:active {
+                background: $grey2;
+            }
+        }
+    }
+}

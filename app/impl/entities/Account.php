@@ -1,0 +1,83 @@
+<?php
+/**
+ * Account | Entity
+ *
+ * @version v0.0.1 (Dec. 21, 2016)
+ * @copyright Copyright (c) 2016, Brevada
+ */
+
+namespace Brv\impl\entities;
+
+use Brv\core\entities\Entity;
+use Brv\core\entities\Permission;
+use Brv\core\libs\database\Database as DB;
+use Brv\impl\entities\Company;
+
+/**
+ * An entity representing an individual account or user.
+ */
+class Account extends Entity
+{
+    /** @var Company A Company singleton. */
+    private $company = null;
+
+    /**
+     * Instantiate an account entity from a data row.
+     *
+     * @param array $row The data row from which to hydrate.
+     */
+    public function __construct(array $row = [])
+    {
+        $this->hydrate($row, Entity::HYDRATE_ALL);
+    }
+
+    /* Query Functions */
+
+    /**
+     * Factory method to instantiate an account entity by email address.
+     *
+     * @param string $email The email of the account to query for.
+     * @return self
+     */
+    public static function queryEmail($email)
+    {
+        try {
+            $stmt = DB::get()->prepare("SELECT * FROM accounts WHERE EmailAddress = :email LIMIT 1");
+            $stmt->bindValue(':email', $email, \PDO::PARAM_STR);
+            $stmt->execute();
+            if (($row = $stmt->fetch(\PDO::FETCH_ASSOC)) !== false) {
+                return self::from($row);
+            }
+        } catch (\PDOException $ex) {
+            \App::log()->error($ex->getMessage());
+        }
+
+        return null;
+    }
+
+    /* Instance Methods */
+
+    /**
+     * Gets the Permissions between an account and a target entity.
+     *
+     * @param  Entity $target The target entity the user is attempting to access.
+     * @return Permission
+     */
+    public function getPermissions(Entity $target)
+    {
+        return new Permission((int) $this->get('id'), $target);
+    }
+
+    /**
+     * Gets the company associated with the account.
+     *
+     * @return Company
+     */
+    public function getCompany()
+    {
+        if ($this->company !== null) {
+            return $this->company;
+        }
+        return $this->company = Company::queryAccount((int) $this->get('id'));
+    }
+}

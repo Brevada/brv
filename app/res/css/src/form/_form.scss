@@ -1,0 +1,142 @@
+/* Form */
+
+.form {
+    .form-group {
+        padding: 0.4rem 0;
+        @extend .clearfix;
+
+        .label {
+            display: block;
+            font-size: 0.9em;
+            margin-bottom: 0.3em;
+            color: $grey3;
+            @extend .clickable;
+
+            &.inline {
+                display: inline;
+            }
+        }
+
+        > .link {
+            color: $blue2;
+            text-decoration: none;
+            margin: 0 10px 0 15px;
+            font-size: 0.95em;
+
+            &.right { float: right; }
+            &.left { float: left; }
+
+            &.btn-like {
+                font-size: 14px;
+                line-height: 1.42857143;
+                padding: 4.5px 8px;
+                margin: 0;
+            }
+
+            &:hover {
+                color: $blue1;
+            }
+        }
+    }
+
+    .btn {
+        &.right { float: right; margin-left: 2px; }
+        &.left { float: left; margin-right: 2px; }
+
+        display: inline-block;
+        font-size: 14px;
+        line-height: 1.42857143;
+        padding: 4.5px 8px;
+        color: #fff;
+        border: 1px solid $blue1;
+        border-radius: 3px;
+        background: $blue2;
+        outline: none;
+
+        @extend .clickable;
+
+        &:hover {
+            border-color: $blue2;
+        }
+
+        &:active, &:focus {
+            border-color: $blue1;
+        }
+    }
+
+    .form-group.link-style .btn {
+        margin: 0 10px 0 15px;
+        font-size: 0.95em;
+        background: transparent;
+        border-color: transparent;
+        &:hover, &:active, &:focus {
+            border-color: transparent;
+        }
+
+        color: $black;
+        &:hover {
+            color: $grey4;
+        }
+
+        &[type='submit'] {
+            color: $blue1;
+
+            &:hover {
+                color: $blue2;
+            }
+        }
+    }
+
+    .input {
+        display: inline-block;
+        max-width: 100%;
+
+        input[type=text],
+        input[type=email],
+        input[type=password] {
+            outline: none;
+            padding: 6px;
+            margin: 0;
+
+            width: 500px;
+            max-width: 100%;
+            height: 34px;
+            font-size: 14px;
+            line-height: 1.42857143;
+            color: #555;
+
+            background: #fff;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            @include vendor-prefix('box-shadow', 'inset 0 1px 1px rgba(0,0,0,0.075)');
+            transition: border-color ease-in-out .15s,
+                        box-shadow ease-in-out .15s;
+
+            &:focus {
+                border-color: #66afe9;
+                @include vendor-prefix('box-shadow', 'inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(102,175,233,.6)');
+            }
+
+            &:invalid {
+                border-color: #e96767;
+                @include vendor-prefix('box-shadow', 'inset 0 1px 1px rgba(255, 0, 0, 0.25)');
+            }
+
+            &:focus:invalid {
+                @include vendor-prefix('box-shadow', 'inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(255, 0, 0, 0.25)');
+            }
+        }
+    }
+}
+
+.form-error {
+    border: 1px solid #ebccd1;
+    background: #f2dede;
+    color: #a94442;
+    padding: 10px;
+    margin: 0 0 10px 0;
+    border-radius: 3px;
+    font-size: 0.9rem;
+}
+
+@import './aspectinput';

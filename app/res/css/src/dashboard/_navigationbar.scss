@@ -1,0 +1,43 @@
+.view-navbar {
+    @extend .clearfix;
+
+    .navigation-btn, .dropdown-btn > .label {
+        display: inline-block;
+        font-size: 1.125em;
+        font-weight: bold;
+        padding: 6px 8px 3px 8px;
+        margin: 2px 30px 0 2px;
+        color: $black;
+        border-bottom: 4px solid transparent;
+
+        @extend .clickable;
+
+        &:not(.active):hover {
+            border-color: $blue2;
+        }
+
+        &.active {
+            border-color: $blue1;
+        }
+    }
+
+    > .dropdown-btn {
+        > .label {
+            margin-right: 0;
+        }
+    }
+
+    > a.link {
+        float: right;
+        display: inline-block;
+        font-size: 0.85em;
+        color: $grey3;
+        padding: 6px 8px 3px 8px;
+        margin: 6px 10px 0 2px;
+        text-decoration: none;
+
+        &:hover {
+            color: $grey4;
+        }
+    }
+}

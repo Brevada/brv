@@ -1,0 +1,35 @@
+.brand-bar {
+    @extend .clearfix;
+
+    .logo {
+        float: left;
+        background: $red1;
+        width: 25px;
+        height: 25px;
+        background-image: url('/images/brand/quote-white.png');
+        background-repeat: no-repeat;
+        background-size: 70%;
+        background-position: center center;
+        margin: 0 5px 0 10px;
+        border: 1px solid transparent;
+        border-radius: 2px;
+    }
+
+    .dropdown-btn {
+        float: right;
+        margin: 5px;
+        font-size: 0.85em;
+
+        .label {
+            color: $grey3;
+        }
+
+        .options {
+            right: 0;
+
+            .option {
+                padding: 0.33rem 0.45rem;
+            }
+        }
+    }
+}

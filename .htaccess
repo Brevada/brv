@@ -1,0 +1,12 @@
+Options +FollowSymLinks
+RewriteEngine On
+
+# Map all assets to the public resource directory.
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteRule (^(fonts|images)\/.*)$ app/res/$1 [L,NC,END]
+
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteRule (^(css|js)(\/.*))$ app/res/$2/dist/$3 [L,NC,END]
+
+# Map all else to the entry point.
+RewriteRule ^ index.php [L]

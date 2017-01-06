@@ -1,0 +1,52 @@
+/* Core Theme */
+
+/* Normalize environment first. */
+@import 'normalize';
+
+/* Colour guide. */
+@import 'colours';
+
+/* Mixins */
+@import 'mixins';
+
+/* Breakpoints */
+@import 'breakpoints';
+
+/* HTML Defaults */
+@import 'htmlDefaults';
+
+/* Font Awesome */
+@import 'font-awesome/scss/font-awesome';
+
+/* Assets */
+@import 'assets';
+
+/* Layout */
+@import 'layout';
+
+/* Animations */
+@import 'animations/animations';
+
+/* Loaders */
+@import 'loaders';
+
+/* Form */
+@import 'form/form';
+
+/* Dashboard */
+@import 'dashboard/dashboard';
+
+/* --- TODO: Move to appropriate files. --- */
+
+a.phone {
+    text-decoration: none;
+    color: $blue1;
+    white-space: nowrap;
+    line-height: 1.5em;
+
+    &:before {
+        content: "\260e";
+        margin-right: 0.25em;
+        margin-left: 0.15em;
+    }
+}

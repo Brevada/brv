@@ -1,0 +1,27 @@
+/* Assets */
+
+$image_resize: 0.6;
+
+.brand {
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-size: contain;
+
+    &.text-lq {
+        background-image: url('/images/brand/brevada-lq.png');
+        width: calc(#{$image_resize} * 300px);
+        height: calc(#{$image_resize} * 65px);
+    }
+
+    &.text-mq {
+        background-image: url('/images/brand/brevada-mq.png');
+        width: calc(#{$image_resize} * 600px);
+        height: calc(#{$image_resize} * 130px);
+    }
+
+    &.text-hq {
+        background-image: url('/images/brand/brevada-hq.png');
+        width: calc(#{$image_resize} * 800px);
+        height: calc(#{$image_resize} * 173px);
+    }
+}

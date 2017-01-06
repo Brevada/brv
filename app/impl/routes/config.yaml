@@ -1,0 +1,30 @@
+# Routes Configuration
+
+middleware:
+    auth: Authentication
+
+routes:
+    index: [ 'GET ^\/?$', pass, twig+homepage ]
+
+    login:
+        GET: [ '^\/login(\/to\/(.+))?$', pass, Authentication+viewLogin ]
+        POST: [ '^\/login\/?$', pass, Authentication+password ]
+
+    logout: [ 'GET ^\/logout$', pass, Authentication+logout ]
+
+    dashboard: [ 'GET ^\/dashboard\/?$', auth, twig+dashboard/dashboard]
+
+    # REST
+    store:
+        GET: [ '^\/api\/store(\/(\d+))?$', auth, Store+get ]
+
+    aspect:
+        GET: [ '^\/api\/aspect\/(\d+)$', auth, Aspect+get ]
+        DELETE: [ '^\/api\/aspect\/(\d+)$', auth, Aspect+delete ]
+        POST: [ '^\/api\/aspect$', auth, Aspect+create ]
+
+    aspects:
+        GET: [ '^\/api\/aspects$', auth, Aspect+getAll ]
+
+    aspect_type:
+        GET: [ '^\/api\/aspecttypes\/industry$', auth, AspectType+getIndustry ]

@@ -1,0 +1,20 @@
+{% import "macros/_resources.twig" as resources %}
+
+<!DOCTYPE html>
+<html>
+    <head>
+
+    <!-- Scripts -->
+    <script type='text/javascript' src='/js/chunks.js'></script>
+    <script type='text/javascript' src='/js/vendor.js'></script>
+    {% block scripts %}{% endblock %}
+
+    <!-- Themes -->
+    <link rel='stylesheet' type='text/css' href='/css/theme.css'>
+    {% block styles %}{% endblock %}
+
+    </head>
+    <body>
+        {% block body %}{% endblock %}
+    </body>
+</html>

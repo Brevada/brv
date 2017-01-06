@@ -1,14 +1,14 @@
 # Legacy
-user_data
-framework/logs
+user_data/
+framework/logs/
 
 # Logging
 app/log/
 *.log
 
 # Built Assets
-res/css/dist/
-res/js/dist/
+app/res/css/dist/*
+app/res/js/dist/*
 
 # Package Managers
 node_modules/
@@ -17,6 +17,7 @@ vendor/
 # Compiled + Cache
 *.pyc
 *.cache
+app/views_cache/*
 
 # OS generated
 Thumbs.db
@@ -27,7 +28,9 @@ Thumbs.db
 ./*.phar
 
 # Auto-generated Docs
-./docs/build/*
-./docs/cache/*
-./docs/phpunit/*
-./docs/phploc/*
+docs/build/*
+docs/cache/*
+docs/phpunit/*
+docs/phploc/*
+
+!*.gitkeep

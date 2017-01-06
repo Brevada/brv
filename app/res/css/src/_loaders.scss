@@ -1,0 +1,70 @@
+/* Loaders */
+
+/* Root Loader */
+.root-loader {
+    text-align: center;
+    padding: 1.5em;
+    max-width: 600px;
+
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -60%);
+
+    > i {
+        font-size: 15em;
+        color: $blue1;
+    }
+
+    > .tip {
+        display: block;
+        margin: 0;
+
+        span.message {
+            margin-top: 0.5em;
+        }
+
+        span {
+            display: inline-block;
+            font-size: 1.65em;
+            background: #fff;
+            padding: 0.4em 0.6em;
+        }
+    }
+}
+
+.view .loader {
+    font-size: 1em;
+}
+
+/* loader. */
+.loader {
+    text-align: center;
+    padding: 1.5em;
+    border-radius: 5px;
+    background: #fff;
+    border: 1px solid transparent;
+
+    min-width: 415px;
+
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -60%);
+
+    > i {
+        font-size: 15em;
+        color: $blue1;
+    }
+
+    > .tip {
+        display: block;
+        margin: 2.5em 0 0 0;
+
+        span {
+            font-size: 1.65em;
+            background: #fff;
+            padding: 0.4em 0.6em;
+        }
+    }
+}

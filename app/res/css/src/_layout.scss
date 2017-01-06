@@ -1,0 +1,50 @@
+/* Layout */
+
+.ly {
+    margin: 0;
+    padding: 0;
+
+    @extend .clearfix;
+
+    &.flex-v {
+        display: flex;
+        flex-direction: column;
+    }
+
+    &.flex-h {
+        display: flex;
+        flex-direction: row;
+    }
+
+    &.center-h {
+        margin: 0 auto;
+    }
+
+    &.offset-v {
+        margin-top: 9em;
+        margin-bottom: 9em;
+    }
+
+    &.xsmall {
+        max-width: 90%;
+
+        &:not(.center-h) {
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        @include respond-to('xsmall') {
+            max-width: 300px;
+        }
+    }
+
+    > header {
+        margin-bottom: 1em;
+    }
+
+    > footer {
+        margin-top: 2em;
+        font-size: 12px;
+        text-align: center;
+    }
+}

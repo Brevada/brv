@@ -1,0 +1,42 @@
+/* TimeFilter */
+
+.time-filter {
+    font-size: 0.9rem;
+    padding: 10px 16px;
+    margin: 0 0 5px 0;
+    @extend .clearfix;
+
+    .navigation-btn {
+        display: inline-block;
+        font-size: 1em;
+        padding: 6px 8px 3px 8px;
+        margin: 2px 30px 0 2px;
+        color: $black;
+        border-bottom: 4px solid transparent;
+        float: left;
+
+        @extend .clickable;
+
+        &:not(.active):hover {
+            border-color: $blue2;
+        }
+
+        &.active {
+            border-color: $blue1;
+        }
+    }
+
+    > .link {
+        float: right;
+        margin-right: 8px;
+        color: $blue2;
+        text-decoration: none;
+        display: inline-block;
+        padding: 6px 8px 3px 8px;
+        margin: 2px 2px 0 2px;
+
+        &:hover {
+            color: $blue1;
+        }
+    }
+}

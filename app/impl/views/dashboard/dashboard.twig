@@ -1,0 +1,31 @@
+{% extends "_structure.twig" %}
+
+{% block scripts %}
+{{ resources.script('/js/views/dashboard.js') }}
+{% endblock %}
+
+{% block body %}
+<div id='dashboard-root'>
+    <div class='root-loader'>
+        <i class='fa fa-circle-o-notch fa-spin'></i>
+        <div class='tip'>
+            <span class='message'>Configuring the dashboard...</span>
+            <span class='error' style='display:none;'>
+                A critical error has occured. If this error persists after
+                refreshing the page, please contact Brevada customer support at
+                <a href='tel:1-855-484-7451' class='phone'>1 (855) 484-7451</a>
+            </span>
+        </div>
+        <script type='text/javascript'>
+            setTimeout(function(){
+                var rootLoader = document.querySelector('#dashboard-root > .root-loader');
+                if (rootLoader) {
+                    rootLoader.querySelector('i').className = 'fa fa-exclamation-triangle';
+                    rootLoader.querySelector('.tip > .message').style.display = 'none';
+                    rootLoader.querySelector('.tip > .error').style.display = 'inline-block';
+                }
+            }, 8000);
+        </script>
+    </div>
+</div>
+{% endblock %}

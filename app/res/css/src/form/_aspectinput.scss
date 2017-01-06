@@ -1,0 +1,87 @@
+/* Aspect Input */
+
+.form-group.new-aspect {
+    margin: 0 0 1em 0;
+
+    text-align: center;
+    @include respond-to('xsmall') {
+        text-align: left;
+    }
+    @include respond-to('large') {
+        text-align: center;
+    }
+
+    .label {
+        font-size: 1.1em;
+        @include respond-to('small') {
+            font-size: 1.4em;
+        }
+        @include respond-to('large') {
+            font-size: 1.9em;
+        }
+        transition: font-size 0.1s linear;
+
+        color: $black;
+    }
+
+    .aspect-input {
+        margin: 0 0.55em;
+        display: inline-block;
+        border-bottom: 2px solid $black;
+        position: relative;
+        width: 300px;
+        max-width: 100%;
+        padding: 0.25em;
+
+        input {
+            font-size: 0.98em;
+            @include respond-to('small') {
+                font-size: 1.25em;
+            }
+            @include respond-to('large') {
+                font-size: 1.7em;
+            }
+            transition: font-size 0.1s linear;
+
+            text-align: left;
+            width: 100%;
+            border: 0;
+            outline: none;
+        }
+    }
+
+    .aspect-options {
+        position: absolute;
+        width: 100%;
+        background: #fff;
+        border: 1px solid $blue2;
+        border-top-color: transparent;
+        border-bottom-left-radius: 3px;
+        border-bottom-right-radius: 3px;
+        overflow-y: auto;
+        text-align: left;
+
+        font-size: 0.95em;
+        @include respond-to('small') {
+            font-size: 1.1em;
+        }
+        @include respond-to('large') {
+            font-size: 1.4em;
+        }
+
+        .option {
+            @extend .clickable;
+            padding: 0.1em 0.5em;
+            color: $grey3;
+
+            &.new {
+                font-size: 0.93em;
+                font-style: italic;
+            }
+
+            &:hover {
+                color: $blue1;
+            }
+        }
+    }
+}

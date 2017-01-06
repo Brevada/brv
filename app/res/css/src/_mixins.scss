@@ -1,0 +1,33 @@
+/* Mixins */
+
+@mixin user-select($type){
+	-webkit-user-select: $type;
+	-moz-user-select: $type;
+	-ms-user-select: $type;
+	user-select: $type;
+}
+
+@mixin vendor-prefix($name, $value) {
+  @each $vendor in ('-webkit-', '-moz-', '-ms-', '-o-', '') {
+    #{$vendor}#{$name}: #{$value};
+  }
+}
+
+@mixin vendor-prefix-key($property, $name, $content) {
+  @each $vendor in ('-webkit-', '-moz-', '-ms-', '-o-', '') {
+    #{$property}: #{$vendor}#{$name}#{unquote("(")}#{$content}#{unquote(")")};
+  }
+}
+
+.clearfix {
+	&:after {
+		content: '';
+		display: table;
+		clear: both;
+	}
+}
+
+.clickable {
+	@include user-select(none);
+	cursor: pointer;
+}

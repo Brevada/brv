@@ -1,0 +1,82 @@
+@import '../colours';
+@import '../mixins';
+@import '../breakpoints';
+
+/* Dashboard */
+
+/*#dashboard-root {
+    max-width: 1200px;
+    margin: 0 auto;
+}*/
+
+#dashboard-root {
+    min-height: 100%;
+    display: flex;
+}
+
+#dashboard-root, .dashboard-container {
+    width: 100%;
+    @extend .clearfix;
+}
+
+/* Dialog */
+@import 'dialog';
+
+/* Brand Bar */
+@import 'brandbar';
+
+/* DropDownButton */
+@import 'dropdownbutton';
+
+/* Navigation Bar */
+@import 'navigationbar';
+
+/* Columns */
+.dashboard-container {
+    $livefeed_width: 175px;
+
+    @extend .clearfix;
+
+    .left-column {
+        float: left;
+        width: 100%;
+    }
+
+    .right-column {
+        display: none;
+        float: right;
+    }
+
+    .left-column, .right-column {
+        flex-direction: column;
+        height: 100%;
+    }
+
+    @include respond-to('xsmall') {
+        .left-column {
+            width: calc(100% - #{$livefeed_width});
+        }
+
+        .right-column {
+            width: #{$livefeed_width};
+        }
+
+        .left-column, .right-column {
+            display: flex;
+        }
+    }
+
+
+}
+
+/* View */
+@import 'view';
+
+/* Livefeed */
+@import 'livefeed';
+
+/* Time Filter */
+@import 'timefilter';
+
+/* Aspect */
+@import 'aspect';

@@ -1,0 +1,216 @@
+/* Aspect */
+
+.aspect-container {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+
+    .aspect {
+        display: inline-block;
+        margin: 5px 15px 10px 15px;
+        position: relative;
+        max-width: 100%;
+
+        &.hidden {
+
+        }
+
+        .hidden-badge {
+            position: absolute;
+            color: $grey3;
+            font-size: 1.5rem;
+            top: -0.6rem;
+            left: -0.5rem;
+            border: 1px solid $grey2;
+            border-radius: 50%;
+            z-index: 2;
+            padding: 2px 5px;
+            background: #fff;
+            @include vendor-prefix('box-shadow', '1px 0 5px #{$grey3}');
+        }
+
+        .aspect-content {
+            background: #fff;
+            @include vendor-prefix('box-shadow', '1px 0 5px #{$grey3}');
+            border-radius: 2px;
+            width: 300px;
+            max-width: 100%;
+            display: inline-block;
+            position: relative;
+            overflow: hidden;
+
+            .header {
+                text-align: center;
+                padding: 10px 10px 0 10px;
+                position: relative;
+
+                .hint {
+                    position: absolute;
+                    top: 4px;
+                    right: 4px;
+                    font-size: 0.75em;
+                    color: $grey2;
+                }
+
+                .title {
+                    font-size: 1.4rem;
+                    color: $black;
+                    overflow: hidden;
+                    white-space: nowrap;
+                    text-overflow: ellipsis;
+                    padding-top: 5px;
+                }
+
+                .links {
+                    font-size: 0.915rem;
+                    margin: 5px;
+
+                    .link {
+                        color: $blue2;
+                        text-decoration: none;
+                        margin: 0 10px;
+
+                        &:hover {
+                            color: $blue1;
+                        }
+                    }
+                }
+
+                .links.filler::before {
+                    content: '\00a0';
+                    font-size: 0.915rem;
+                    margin: 5px;
+                }
+
+            }
+
+            .badges {
+                padding: 15px 3px 10px 3px;
+                text-align: center;
+                display: flex;
+                flex-direction: row;
+                justify-content: center;
+                @include user-select(none);
+                @include vendor-prefix('box-shadow', '0px 0px 3px #{$grey3}');
+
+                .badge {
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+                    margin: 0 6px;
+
+                    .value {
+                        color: #fff;
+                        width: 55px;
+                        padding: 5px 0;
+                        border-radius: 3px;
+                        font-size: 0.95rem;
+                        display: flex;
+                        flex-direction: column;
+                        justify-content: center;
+
+                        &.mood-0 { background: $red1; }
+                        &.mood-10 { background: $red1; }
+                        &.mood-20, &.mood-30, &.mood-40 { background: $orange1; }
+                        &.mood-50 { background: $green5; }
+                        &.mood-60 { background: $green4; }
+                        &.mood-70 { background: $green3; }
+                        &.mood-80 { background: $green2; }
+                        &.mood-90, &.mood-100 { background: $green1; }
+                    }
+
+                    .label {
+                        color: $grey4;
+                        font-size: 0.65em;
+                        margin: 2px 0;
+                    }
+                }
+
+            }
+
+            $graph_height: 180px;
+
+            .graph {
+                height: $graph_height;
+
+                .recharts-x-axis .recharts-cartesian-axis-line {
+                    stroke: $grey2;
+                }
+
+                .x-axis-text {
+                    font-size: 0.85rem;
+                    fill: $grey3;
+                }
+
+                .recharts-tooltip-cursor {
+                    display: none;
+                }
+            }
+
+            .blank-state {
+                height: calc(#{$graph_height} + 67px);
+                text-align: center;
+                padding: 3em 0;
+                @include vendor-prefix('box-shadow', '0px 0px 3px #{$grey3}');
+                @include user-select(none);
+
+                i {
+                    font-size: 4em;
+                    color: $blue1;
+                }
+
+                span {
+                    font-size: 1.45em;
+                    padding: 0.6em 0.2em;
+                    display: block;
+                }
+            }
+
+            .remove-dialog {
+                height: 267px;
+                text-align: center;
+                padding: 3em 0;
+                @include vendor-prefix('box-shadow', '0px 0px 3px #{$grey3}');
+                @include user-select(none);
+
+                span {
+                    font-size: 1.2em;
+                    padding: 0.6em 0.5em;
+                    display: block;
+                }
+
+                form {
+                    width: 80%;
+                    margin: 1.5em auto 0 auto;
+                }
+            }
+
+        }
+    }
+}
+
+.graph-tooltip {
+    padding: 8px;
+    background: $blue4;
+    @include vendor-prefix('box-shadow', '1px 0 5px #{$blue4}');
+    border-radius: 3px;
+    display: inline-block;
+    @extend .clickable;
+    color: #fff;
+
+    .value, .specific {
+        display: block;
+        text-align: center;
+        font-size: 1em;
+    }
+
+    .value {
+        font-size: 1.1em;
+        margin: 0 0 0.15em 0;
+    }
+
+    .specific {
+        font-size: 0.7em;
+    }
+}
