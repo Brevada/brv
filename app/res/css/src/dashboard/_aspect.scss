@@ -168,7 +168,7 @@
             }
 
             .remove-dialog {
-                height: 267px;
+                height: calc(#{$graph_height} + 67px);
                 text-align: center;
                 padding: 3em 0;
                 @include vendor-prefix('box-shadow', '0px 0px 3px #{$grey3}');

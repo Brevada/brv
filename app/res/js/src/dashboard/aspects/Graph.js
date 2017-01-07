@@ -1,8 +1,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import moment from 'moment';
+import equal from 'deep-equal';
 
-import { DateCluster } from '../../utils/DateCluster';
+import { DateCluster } from 'utils/DateCluster';
 import { ResponsiveContainer, LineChart, Tooltip, Line, XAxis, YAxis } from 'recharts';
 
 const AspectGraphTooltip = props => (
@@ -39,11 +40,11 @@ class Graph extends React.Component {
     }
 
     shouldComponentUpdate(nextProps, nextState) {
-        return nextState.data !== this.state.data;
+        return !equal(nextState.data, this.state.data);
     }
 
     componentWillReceiveProps(nextProps) {
-        if (nextProps.data !== this.props.data) this.updateData();
+        if (!equal(nextProps.data, this.props.data)) this.updateData();
     }
 
     componentDidMount() {

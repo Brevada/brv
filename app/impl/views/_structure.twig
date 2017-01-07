@@ -5,12 +5,12 @@
     <head>
 
     <!-- Scripts -->
-    <script type='text/javascript' src='/js/chunks.js'></script>
-    <script type='text/javascript' src='/js/vendor.js'></script>
+    {{ resources.script('/js/chunks.js') }}
+    {{ resources.script('/js/vendor.js') }}
     {% block scripts %}{% endblock %}
 
     <!-- Themes -->
-    <link rel='stylesheet' type='text/css' href='/css/theme.css'>
+    {{ resources.styles('/css/theme.css') }}
     {% block styles %}{% endblock %}
 
     </head>

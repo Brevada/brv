@@ -1,8 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-import Form, { Group, Label, Textbox, Button, ErrorMessage } from '../forms/Form';
-import { Link } from '../components/Link';
+import Form, { Group, Label, Textbox, Button, ErrorMessage } from 'forms/Form';
+import { Link } from 'components/Link';
 
 export default class Login extends React.Component {
     constructor() {

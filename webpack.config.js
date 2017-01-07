@@ -26,5 +26,9 @@ module.exports = {
     plugins: [
         new webpack.optimize.CommonsChunkPlugin('chunks.js')
     ],
-    cache: true
+    cache: true,
+    resolve: {
+        root: path.resolve('./app/res/js/src'),
+        extensions: ['', '.js']
+    }
 };

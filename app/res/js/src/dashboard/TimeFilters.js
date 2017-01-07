@@ -1,8 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-import { NavigationButton } from '../components/NavigationButton';
-import { Link } from '../components/Link';
+import { NavigationButton } from 'components/NavigationButton';
+import { Link } from 'components/Link';
 
 const TimeFilters = props => (
     <div className='time-filter'>
@@ -30,7 +30,7 @@ const TimeFilters = props => (
             onClick={props.onChangeFilter}
             active={props.filter === 'ALL_TIME'}
         />
-        <Link label={'+ Ask Something New'} onClick={props.onNewAspect} />
+        <Link label={props.actionLabel} onClick={props.onAction} />
     </div>
 );
 

@@ -1,54 +1,27 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import axios from 'axios';
 import classNames from 'classnames';
 
-import NavigationBar from './NavigationBar';
-import LiveFeed from './LiveFeed';
+import DataLayer from 'forms/DataLayer';
+
+import NavigationBar from 'dashboard/NavigationBar';
+import LiveFeed from 'dashboard/livefeed/LiveFeed';
 
 /* Views */
-import TimelineView from './TimelineView';
-import AspectsView from './AspectsView';
-import EventsView from './EventsView';
-import Loader from './Loader';
+import TimelineView from 'dashboard/TimelineView';
+import AspectsView from 'dashboard/aspects/AspectsView';
+import EventsView from 'dashboard/events/EventsView';
+
 
 export default class Dashboard extends React.Component {
-
     constructor() {
         super();
 
         this.state = {
-            view: 'ASPECTS',
-
-            loading: true,
-            error: null,
-
-            storeId: null,
-            storeName: null,
-            storeActive: null,
-            storeUrl: null
+            view: 'ASPECTS'
         };
 
         this.onChangeView = this.onChangeView.bind(this);
-    }
-
-    componentDidMount() {
-        axios.get('/api/store')
-        .then(res => {
-            this.setState({
-                loading: false,
-                storeId: res.data.id,
-                storeName: res.data.name,
-                storeActive: res.data.active,
-                storeUrl: res.data.url
-            });
-        })
-        .catch(err => {
-            this.setState({
-                loading: false,
-                error: err.reason || `An unknown error has occured: ${err.code}`
-            });
-        });
     }
 
     onChangeView(view) {
@@ -56,33 +29,19 @@ export default class Dashboard extends React.Component {
     }
 
     render() {
-        const views = {
-            'TIMELINE': <TimelineView storeId={this.state.storeId} />,
-            'ASPECTS': <AspectsView storeId={this.state.storeId} />,
-            'EVENTS': <EventsView storeId={this.state.storeId} />
-        };
-
         return (
-            <div className={classNames('dashboard-container', { loading: this.state.loading })}>
+            <div className='dashboard-container'>
                 <div className='left-column'>
                     <NavigationBar
                         onChangeView={this.onChangeView}
                         view={this.state.view}
-                        url={this.state.storeUrl}
+                        url={this.props.data.url}
                     />
-                    {!this.state.loading && views[this.state.view]}
-                    {this.state.loading && (
-                        <Loader
-                            className='view'
-                            messages={[
-                                "Preparing your dashboard...",
-                                "Retrieving store information...",
-                                "Downloading analytics...",
-                                "Analyzing data...",
-                                "Crunching numbers..."
-                            ]}
-                        />
-                    )}
+                    {{
+                        'TIMELINE': <TimelineView storeId={this.props.data.id} />,
+                        'ASPECTS': <AspectsView storeId={this.props.data.id} />,
+                        'EVENTS': <EventsView storeId={this.props.data.id} />
+                    }[this.state.view] }
                 </div>
                 <div className='right-column'>
                     <LiveFeed />

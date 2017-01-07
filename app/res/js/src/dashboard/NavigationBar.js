@@ -2,9 +2,9 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import classNames from 'classnames';
 
-import { DropDownButton, DropDownOption } from '../components/DropDownNav';
-import { NavigationButton } from '../components/NavigationButton';
-import { Link } from '../components/Link';
+import { DropDownButton, DropDownOption } from 'components/DropDownNav';
+import { NavigationButton } from 'components/NavigationButton';
+import { Link } from 'components/Link';
 
 const BrandBar = props => {
     return (
@@ -19,7 +19,6 @@ const BrandBar = props => {
 };
 
 export default class NavigationBar extends React.Component {
-
     constructor() {
         super();
 

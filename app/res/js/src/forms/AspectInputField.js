@@ -1,7 +1,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import classNames from 'classnames';
-import { Input as FormInput } from './Form';
+import equal from 'deep-equal';
+
+import { Input as FormInput } from 'forms/Form';
 
 const AspectOption = props => (
     <div className={'option ' + (props.className || '')} onMouseDown={props.onClick}>
@@ -10,19 +12,30 @@ const AspectOption = props => (
 );
 
 export default class AspectInputField extends FormInput {
-    constructor() {
-        super();
+    constructor(props) {
+        super(props);
 
         this.state = {
             value: '',
             id: -1,
-            show: false
+            show: false,
+            types: props.types || []
         };
 
         this.onSelect = this.onSelect.bind(this);
         this.onTextChange = this.onTextChange.bind(this);
         this.onBlur = this.onBlur.bind(this);
         this.onFocus = this.onFocus.bind(this);
+    }
+
+    componentWillReceiveProps(nextProps) {
+        if (!nextProps.types || equal(nextProps.types, this.state.types)) {
+            return;
+        }
+
+        this.setState({
+            types: nextProps.types
+        });
     }
 
     componentWillUnmount() {
@@ -44,7 +57,7 @@ export default class AspectInputField extends FormInput {
 
         let id = -1;
         if (this.state.value.length > 0) {
-            let types = this.props.types.filter(type => (type.title.toLowerCase() == this.state.value.trim().toLowerCase()));
+            let types = this.state.types.filter(type => (type.title.toLowerCase() == this.state.value.trim().toLowerCase()));
             if (types.length > 0) {
                 id = types[0].id;
             }
@@ -110,7 +123,7 @@ export default class AspectInputField extends FormInput {
                             />
                         ) }
 
-                        { this.props.types.filter(type => (
+                        { this.state.types.filter(type => (
                             this.state.value.length === 0 ||
                             type.title.toLowerCase().indexOf(this.state.value.toLowerCase()) >= 0
                         )).map(type => (

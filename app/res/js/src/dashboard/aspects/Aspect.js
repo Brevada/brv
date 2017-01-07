@@ -1,13 +1,13 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-import { Link } from '../../components/Link';
+import { Link } from 'components/Link';
 
-import { Badges } from './Badges';
-import { Graph } from './Graph';
-import { Filter } from './Filter';
+import { Badges } from 'dashboard/aspects/Badges';
+import { Graph } from 'dashboard/aspects/Graph';
+import { Filter } from 'dashboard/aspects/Filter';
 
-import Form, { Group, Button, Group as FormGroup } from '../../forms/Form';
+import Form, { Group, Button, Group as FormGroup } from 'forms/Form';
 
 import classNames from 'classnames';
 

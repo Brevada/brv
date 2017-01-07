@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-import { Mood } from '../../utils/Mood';
+import { Mood } from 'utils/Mood';
 
 const Badge = props => {
     let moodClass = props.change ? Mood(props.value, -100) : Mood(props.value);

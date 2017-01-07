@@ -22,12 +22,24 @@ export const DialogButton = props => (
 export default class Dialog extends React.Component {
     constructor(props) {
         super(props);
+        this.onOverlayClick = this.onOverlayClick.bind(this);
+    }
+
+    onOverlayClick() {
+        if (this.props.escapable) {
+            this.props.onAction(DialogButtonActions.CLOSE);
+        }
     }
 
     render() {
         return (
             <div className='dialog'>
-                <div className='overlay'></div>
+                <div
+                    className={classNames('overlay', {
+                        'escapable': this.props.escapable === true
+                    })}
+                    title={this.props.escapable ? 'Click To Close' : ''}
+                    onClick={this.onOverlayClick}></div>
                 <div className='content'>
                     {React.Children.map(this.props.children, child => {
                         if (child.type === DialogButton) {

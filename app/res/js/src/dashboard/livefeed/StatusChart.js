@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 
 import { ResponsiveContainer, PieChart, Tooltip, Pie, XAxis, YAxis, Cell } from 'recharts';
-import { Mood, MoodColor } from '../../utils/Mood';
+import { Mood, MoodColor } from 'utils/Mood';
 
 const StatusGraphTooltip = props => (
     <div className='graph-tooltip'>

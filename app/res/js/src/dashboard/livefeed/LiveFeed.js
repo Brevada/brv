@@ -1,8 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-import CustomerUpdates from './livefeed/CustomerUpdates';
-import StatusChart from './livefeed/StatusChart';
+import CustomerUpdates from 'dashboard/livefeed/CustomerUpdates';
+import StatusChart from 'dashboard/livefeed/StatusChart';
 
 export default class LiveFeed extends React.Component {
 

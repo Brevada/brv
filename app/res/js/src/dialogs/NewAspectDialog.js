@@ -1,73 +1,36 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import classNames from 'classnames';
-import axios from 'axios';
 
-import Dialog, { DialogButton, DialogButtonActions } from './Dialog';
-import Form, { Group as FormGroup, Label as FormLabel, Button, ErrorMessage } from '../forms/Form';
+import DataLayer from 'forms/DataLayer';
 
-import { Link } from '../components/Link';
-import AspectInputField from '../forms/AspectInputField';
+import Dialog, { DialogButton, DialogButtonActions } from 'dialogs/Dialog';
+import Form, { Group as FormGroup, Label as FormLabel, Button, ErrorMessage } from 'forms/Form';
+
+import { Link } from 'components/Link';
+import AspectInputField from 'forms/AspectInputField';
+
+const AspectInputFieldLinked = props => (
+    <AspectInputField
+        types={props.data.aspect_types || []}
+        name='aspect'
+        placeHolder="type something here"
+    />
+);
 
 export default class NewAspectDialog extends React.Component {
     constructor() {
         super();
 
         this.state = {
-            types: [],
-
-            loading: false,
-            error: null,
-
             createError: null
         };
 
-        this.fetchTypes = this.fetchTypes.bind(this);
         this.submitError = this.submitError.bind(this);
-    }
-
-    componentWillReceiveProps(next) {
-        if (!this.props.storeId && !!next.storeId) {
-            this.fetchTypes();
-        }
-    }
-
-    componentDidMount() {
-        this.fetchTypes();
     }
 
     componentWillUnmount() {
         this._unmounted = true;
-    }
-
-    fetchTypes() {
-        if (!this.props.storeId || this.state.loading) return;
-
-        this.setState({
-            loading: true,
-            error: null
-        }, () => {
-            axios.get('/api/aspecttypes/industry', {
-                params: {
-                    'exclude_store': this.props.storeId
-                }
-            })
-            .then(res => {
-                if (this._unmounted) return;
-                this.setState({
-                    loading: false,
-                    types: res.data.aspect_types || [],
-                    error: null
-                });
-            })
-            .catch(err => {
-                if (this._unmounted) return;
-                this.setState({
-                    loading: false,
-                    error: err.reason || `An unknown error has occured: ${err.code}`
-                });
-            });
-        });
     }
 
     submitError(error) {
@@ -77,7 +40,11 @@ export default class NewAspectDialog extends React.Component {
 
     render() {
         return (
-            <Dialog defaultShow={this.props.show} onAction={this.props.onAction}>
+            <Dialog
+                defaultShow={this.props.show}
+                onAction={this.props.onAction}
+                escapable={true}
+            >
                 <Form
                     method="POST"
                     action="/api/aspect"
@@ -94,12 +61,12 @@ export default class NewAspectDialog extends React.Component {
                             text={'How satisfied are customers with'}
                             inline={true}
                         />
-                        <AspectInputField
-                            types={this.state.types}
-                            loading={this.state.loading}
-                            name={'aspect'}
-                            placeHolder={"type something here"}
-                        />
+                        <DataLayer
+                            action="/api/aspecttypes/industry"
+                            data={{exclude_store: this.props.storeId}}
+                        >
+                            <AspectInputFieldLinked />
+                        </DataLayer>
                         <FormLabel
                             text={'?'}
                             inline={true}
