@@ -26,6 +26,8 @@ export default class AspectInputField extends FormInput {
         this.onTextChange = this.onTextChange.bind(this);
         this.onBlur = this.onBlur.bind(this);
         this.onFocus = this.onFocus.bind(this);
+        this.onKeyPress = this.onKeyPress.bind(this);
+        this.potentialSubmit = this.potentialSubmit.bind(this);
     }
 
     componentWillReceiveProps(nextProps) {
@@ -42,6 +44,18 @@ export default class AspectInputField extends FormInput {
         this._unmounted = true;
     }
 
+    potentialSubmit() {
+        if (this.props.submitOnSelect === true && this._inputText) {
+            ReactDOM.findDOMNode(this._inputText).form.submit();
+        }
+    }
+
+    onKeyPress(e) {
+        if (e.key == 'Enter') {
+            this.potentialSubmit();
+        }
+    }
+
     onSelect(type) {
         if (this._unmounted) return;
 
@@ -49,7 +63,7 @@ export default class AspectInputField extends FormInput {
             value: type.title,
             id: type.id,
             show: false
-        });
+        }, this.potentialSubmit);
     }
 
     onTextChange(e) {
@@ -100,6 +114,7 @@ export default class AspectInputField extends FormInput {
                     value={this.state.value}
                     onFocus={this.onFocus}
                     onBlur={this.onBlur}
+                    onKeyPress={this.onKeyPress}
                     autoComplete='off'
                 />
                 <input
@@ -110,7 +125,8 @@ export default class AspectInputField extends FormInput {
                 />
                 { this.state.show && (
                     <div className='aspect-options'>
-                        { this.state.id === -1 && this.state.value.length > 0 && (
+                        { this.props.custom === true && this.state.id === -1 &&
+                            this.state.value.length > 0 && (
                             <AspectOption
                                 label={`"${this.state.value.trim()}"`}
                                 className='new'

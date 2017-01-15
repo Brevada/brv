@@ -60,6 +60,7 @@
         border-bottom-right-radius: 3px;
         overflow-y: auto;
         text-align: left;
+        z-index: 10;
 
         font-size: 0.95em;
         @include respond-to('small') {
@@ -83,5 +84,40 @@
                 color: $blue1;
             }
         }
+    }
+}
+
+.form-group.input-like {
+    margin: 0;
+    font-size: 1em;
+
+    text-align: left;
+    @include respond-to('large') {
+        text-align: left;
+    }
+
+    &.small {
+        .aspect-options {
+            font-size: 0.99em;
+            @include respond-to('small') {
+                font-size: 1.1em;
+            }
+            @include respond-to('large') {
+                font-size: 1.4em;
+            }
+        }
+
+        .aspect-input input {
+            font-size: 1em;
+            @include respond-to('large') {
+                font-size: 1.1em;
+            }
+        }
+    }
+
+    .aspect-input {
+        margin: 0 0.55em;
+        width: 100%;
+        border-bottom: 0;
     }
 }

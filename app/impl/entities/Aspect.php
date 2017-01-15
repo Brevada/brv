@@ -338,7 +338,7 @@ class Aspect extends Entity
      */
     public function getAspectTypeId()
     {
-        return (int) $this->get('AspectTypeId');
+        return (int) $this->get('AspectTypeID');
     }
 
     /**
@@ -349,7 +349,7 @@ class Aspect extends Entity
      */
     public function setAspectTypeId($id)
     {
-        $this->set('AspectTypeId', (int) $id);
+        $this->set('AspectTypeID', (int) $id);
         return $this->getAspectTypeId();
     }
 

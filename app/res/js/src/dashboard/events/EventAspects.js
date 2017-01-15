@@ -2,7 +2,9 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import equal from 'deep-equal';
 
-import Form, { Link as FormLink } from 'forms/Form';
+import DataLayer from 'forms/DataLayer';
+import Form, { Group as FormGroup, Link as FormLink } from 'forms/Form';
+import AspectInputField from 'forms/AspectInputField';
 
 import { Mood } from 'utils/Mood';
 import classNames from 'classnames';
@@ -37,6 +39,16 @@ const EventAspectsItem = props => (
     </div>
 );
 
+const AspectInputFieldLinked = props => (
+    <AspectInputField
+        types={props.data.aspect_types || []}
+        name='aspect'
+        custom={false}
+        submitOnSelect={true}
+        placeHolder='+ Add New Aspect'
+    />
+);
+
 export default class EventAspects extends React.Component {
     constructor(props) {
         super(props);
@@ -69,22 +81,47 @@ export default class EventAspects extends React.Component {
 
     render() {
         return (
-            <div className='ly flex-v event-aspects'>
-                {this.state.aspects
-                    .concat()
-                    .filter(a => !this.state.removed.includes(a.id))
-                    .sort((a,b) => a.title.localeCompare(b.title))
-                    .map(aspect => (
-                        <EventAspectsItem
-                            key={aspect.id}
-                            id={aspect.id}
-                            event_id={this.props.event_id}
-                            title={aspect.title}
-                            change={aspect.change}
-                            responses={aspect.responses}
-                            onRemove={this.remove}
-                        />
-                ))}
+            <div>
+                <div className='ly flex-v event-aspects'>
+                    {this.state.aspects
+                        .concat()
+                        .filter(a => !this.state.removed.includes(a.id))
+                        .sort((a,b) => a.title.localeCompare(b.title))
+                        .map(aspect => (
+                            <EventAspectsItem
+                                key={aspect.id}
+                                id={aspect.id}
+                                event_id={this.props.event_id}
+                                title={aspect.title}
+                                change={aspect.change}
+                                responses={aspect.responses}
+                                onRemove={this.remove}
+                            />
+                    ))}
+                </div>
+                <div className='ly ly-split tools'>
+                    <div className='left fill overflow'>
+                        <Form>
+                            <FormGroup className='new-aspect input-like small'>
+                                <DataLayer
+                                    action={`/api/aspecttypes/event/${this.props.event_id}`}>
+                                    <AspectInputFieldLinked />
+                                </DataLayer>
+                            </FormGroup>
+                        </Form>
+                    </div>
+                    <div className='right'>
+                        <Form
+                            action={`/api/event/${this.props.event_id}`}
+                            method="DELETE"
+                            onSuccess={()=>props.onRemove(this.props.event_id)}
+                            onError={()=>false}
+                        >
+                            <FormLink label='Delete' submit={true} />
+                        </Form>
+                    </div>
+                </div>
+
             </div>
         );
     }

@@ -380,4 +380,57 @@ class Event extends Entity
 
         return false;
     }
+
+    /**
+     * Links an aspect to the event.
+     *
+     * @param integer $id The aspect id to link.
+     * @return boolean False on failure.
+     */
+    public function addAspect($id)
+    {
+        try {
+            // Create aspect link.
+            $stmt = DB::get()->prepare("
+                INSERT INTO milestone_aspects
+                SET MilestoneID = :event_id,
+                AspectID = :aspect_id
+            ");
+            $stmt->bindValue(':event_id', $this->getId(), \PDO::PARAM_INT);
+            $stmt->bindValue(':aspect_id', $id, \PDO::PARAM_INT);
+            $stmt->execute();
+
+            return true;
+        } catch (\PDOException $ex) {
+            \App::log()->error($ex->getMessage());
+        }
+
+        return false;
+    }
+
+    /**
+     * Checks if an event has an aspect linked to it.
+     *
+     * @param integer $id The aspect id to check.
+     * @return boolean False on failure.
+     */
+    public function hasAspect($id)
+    {
+        try {
+            $stmt = DB::get()->prepare("
+                SELECT 1 FROM milestone_aspects
+                WHERE MilestoneID = :event_id AND
+                AspectID = :aspect_id
+            ");
+            $stmt->bindValue(':event_id', $this->getId(), \PDO::PARAM_INT);
+            $stmt->bindValue(':aspect_id', $id, \PDO::PARAM_INT);
+            $stmt->execute();
+
+            return $stmt->fetchColumn() > 0;
+        } catch (\PDOException $ex) {
+            \App::log()->error($ex->getMessage());
+        }
+
+        return false;
+    }
 }

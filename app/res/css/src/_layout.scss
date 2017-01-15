@@ -72,7 +72,9 @@
         > .left, > .right {  }
         > .left.fill, .right.fill {
             flex-grow: 1;
-            overflow: hidden;
+            &:not(.overflow) {
+                overflow: hidden;
+            }
         }
     }
 }

@@ -17,7 +17,7 @@ $event_background: #fff;
     &.item {
         border-radius: 2px;
         @include vendor-prefix('box-shadow', '1px 0 5px #{$grey3}');
-        overflow: hidden;
+        //overflow-x: hidden;
     }
 
     &.hint {

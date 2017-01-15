@@ -41,5 +41,8 @@ routes:
         POST: [ '^\/api\/event\/(\d+)\/aspect$', auth, Event+aspectLink ]
         DELETE: [ '^\/api\/event\/(\d+)\/aspect\/(\d+)$', auth, Event+aspectDelete ]
 
+    event_aspect_type:
+        GET: [ '^\/api\/aspecttypes\/event\/(\d+)$', auth, AspectType+getEvent ]
+
     events:
         GET: [ '^\/api\/events$', auth, Event+getAll ]

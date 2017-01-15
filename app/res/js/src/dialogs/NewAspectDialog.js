@@ -14,6 +14,7 @@ const AspectInputFieldLinked = props => (
     <AspectInputField
         types={props.data.aspect_types || []}
         name='aspect'
+        custom={true}
         placeHolder="type something here"
     />
 );
