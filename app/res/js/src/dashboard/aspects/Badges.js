@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 
 import { Mood } from 'utils/Mood';
+import classNames from 'classnames';
 
 const Badge = props => {
     let moodClass = props.change ? Mood(props.value, -100) : Mood(props.value);
@@ -29,7 +30,7 @@ const Badge = props => {
 };
 
 const Badges = props => (
-    <div className='badges'>
+    <div className={classNames('badges', { inline: props.inline===true })}>
         <Badge
             value={props.summary.average}
             label={'Average'}
@@ -62,13 +63,15 @@ const Badges = props => (
                 formatter={x => +x.toFixed(2)}
             />
         ) }
-        <Badge
-            value={props.summary.to_industry}
-            label={'To Industry'}
-            change={true}
-            percent={true}
-            formatter={x => +x.toFixed(1)}
-        />
+        { props.industry !== false && (
+            <Badge
+                value={props.summary.to_industry}
+                label={'To Industry'}
+                change={true}
+                percent={true}
+                formatter={x => +x.toFixed(1)}
+            />
+        ) }
     </div>
 );
 

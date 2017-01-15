@@ -54,10 +54,10 @@ export default class Aspect extends React.Component {
 
     render() {
         return (
-            <div className={classNames('aspect', { 'hidden': !this.state.visible })}>
+            <div className={classNames('item constrain-w aspect', { 'hidden': !this.state.visible })}>
                 { !this.state.visible && (<div className={'hidden-badge'}><i className={'fa fa-eye-slash'}></i></div>) }
-                <div className={'aspect-content'}>
-                    <div className='header'>
+                <div className='ly contrain-w item dl aspect-content'>
+                    <div className='dl header'>
                         <div className='hint'>{Filter.toLabel(this.props.filter)}</div>
                         <div className='title'>{this.props.title}</div>
                         { (!this.state.removing && (

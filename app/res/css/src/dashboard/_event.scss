@@ -1,0 +1,65 @@
+/* Event */
+.event-container .event {
+    margin: 5px 15px 10px 15px;
+
+    .event-content {
+        width: $event_width;
+        background: $event_background;
+        @extend .clearfix;
+
+        .header {
+            font-size: 1.15em;
+            padding-bottom: 0.4em;
+            @include vendor-prefix('box-shadow', '0px 0px 3px #{$grey3}');
+        }
+
+        .header .hint {
+            color: $grey3;
+
+            .delim {
+                padding: 0 0.3em;
+            }
+
+            .to.completed {
+                color: $green2;
+            }
+        }
+
+        .badges {
+            float: right;
+        }
+
+        .event-aspects {
+            padding: 0 0.1em;
+
+            .event-aspects-item {
+                font-size: 1.05em;
+                padding: 0.7em 0.55em;
+                @extend .clearfix;
+
+                .title {
+                    color: $black;
+                    @extend .ellipsis;
+                }
+
+                .detail {
+                    padding: 0 0.8em;
+                    color: $grey4;
+                }
+
+                .change {
+                    //@include moods(color);
+                    color: $green1;
+                }
+
+                .text {
+
+                }
+
+                .control {
+                    font-size: 0.84em;
+                }
+            }
+        }
+    }
+}

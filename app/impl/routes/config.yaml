@@ -28,3 +28,18 @@ routes:
 
     aspect_type:
         GET: [ '^\/api\/aspecttypes\/industry$', auth, AspectType+getIndustry ]
+
+    event:
+        GET: [ '^\/api\/event\/(\d+)$', auth, Event+get ]
+        DELETE: [ '^\/api\/event\/(\d+)$', auth, Event+delete ]
+        POST: [ '^\/api\/event$', auth, Event+create ]
+
+    event_status:
+        POST: [ '^\/api\/event\/complete\/(\d+)$', auth, Event+complete ]
+
+    event_aspect:
+        POST: [ '^\/api\/event\/(\d+)\/aspect$', auth, Event+aspectLink ]
+        DELETE: [ '^\/api\/event\/(\d+)\/aspect\/(\d+)$', auth, Event+aspectDelete ]
+
+    events:
+        GET: [ '^\/api\/events$', auth, Event+getAll ]

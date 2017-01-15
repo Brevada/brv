@@ -46,17 +46,17 @@ class Store extends Controller
             v::intVal()->min(0)->check($storeId);
             $store = EStore::queryId(intval($storeId));
         } else {
-            $store = EStore::queryDefault($account->get('id'));
+            $store = EStore::queryDefault($account->getId());
         }
 
         /* Require READ permissions on the store. */
         if ($store != null && $account->getPermissions($store)->canRead()) {
             return new View([
-                'id' => $store->get('id'),
-                'name' => $store->get('Name'),
-                'active' => $store->get('Active') == 1,
-                'url' => $store->get('URLName'),
-                'website' => $store->get('Website')
+                'id' => $store->getId(),
+                'name' => $store->getName(),
+                'active' => $store->isActive(),
+                'url' => $store->getURL(),
+                'website' => $store->getWebsite()
             ]);
         }
 

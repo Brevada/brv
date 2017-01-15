@@ -163,8 +163,23 @@ const Button = props => (
     >{props.label}</button>
 );
 
+const Link = props => (
+    <button
+        className={classNames(props.className || '', 'link', {
+            'submit': props.submit === true,
+            'right': props.right === true,
+            'left': props.left === true,
+            'danger': props.danger === true
+        })}
+        type={props.submit === true ? 'submit' : 'button'}
+        onClick={() => {
+            if (props.onClick) props.onClick();
+        }}
+    >{props.label}</button>
+);
+
 const ErrorMessage = props => (
     <div className='form-error'>{props.text}</div>
 );
 
-export { Input, Group, Label, Textbox, Button, ErrorMessage };
+export { Input, Group, Label, Textbox, Button, Link, ErrorMessage };

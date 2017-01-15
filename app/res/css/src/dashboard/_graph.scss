@@ -1,0 +1,26 @@
+/* Graph */
+
+.graph-tooltip {
+    padding: 8px;
+    background: $blue4;
+    @include vendor-prefix('box-shadow', '1px 0 5px #{$blue4}');
+    border-radius: 3px;
+    display: inline-block;
+    @extend .clickable;
+    color: #fff;
+
+    .value, .specific {
+        display: block;
+        text-align: center;
+        font-size: 1em;
+    }
+
+    .value {
+        font-size: 1.1em;
+        margin: 0 0 0.15em 0;
+    }
+
+    .specific {
+        font-size: 0.7em;
+    }
+}

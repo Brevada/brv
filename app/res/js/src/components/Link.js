@@ -7,7 +7,8 @@ const Link = props => (
         className={classNames('link', {
             left: props.left === true,
             right: props.right === true,
-            'btn-like': props.btnLike === true
+            'btn-like': props.btnLike === true,
+            'danger': props.danger === true
         })}
         href={'#'}
         onClick={(e) => {

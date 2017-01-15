@@ -1,21 +1,37 @@
 /* Layout */
 
 .ly {
-    margin: 0;
-    padding: 0;
+    &:not(.keep-spacing) {
+        margin: 0;
+        padding: 0;
+    }
 
     @extend .clearfix;
 
-    &.flex-v {
+    &.flex-h, &.flex-v {
         display: flex;
-        flex-direction: column;
+        flex-wrap: wrap;
+
+        .item:not(.ex-ly) {
+            display: inline-block;
+            position: relative;
+        }
     }
 
-    &.flex-h {
-        display: flex;
-        flex-direction: row;
+    &.flex-v { flex-direction: column; }
+    &.flex-h { flex-direction: row; }
+
+    &.constrain-w, & .constrain-w {
+        max-width: 100%;
     }
 
+    /* Content Alignment */
+    &.center-c-h {
+        &.flex-v, &.flex-h { justify-content: center; }
+        &:not(.flex-v):not(.flex-h) { text-align: center; }
+    }
+
+    /* Container Alignment */
     &.center-h {
         margin: 0 auto;
     }
@@ -38,13 +54,25 @@
         }
     }
 
-    > header {
-        margin-bottom: 1em;
+    &.top-level {
+        > header {
+            margin-bottom: 1em;
+        }
+
+        > footer {
+            margin-top: 2em;
+            font-size: 12px;
+            text-align: center;
+        }
     }
 
-    > footer {
-        margin-top: 2em;
-        font-size: 12px;
-        text-align: center;
+    &.ly-split {
+        display: flex;
+
+        > .left, > .right {  }
+        > .left.fill, .right.fill {
+            flex-grow: 1;
+            overflow: hidden;
+        }
     }
 }

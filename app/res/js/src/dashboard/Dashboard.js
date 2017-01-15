@@ -18,7 +18,7 @@ export default class Dashboard extends React.Component {
         super();
 
         this.state = {
-            view: 'ASPECTS'
+            view: 'EVENTS'
         };
 
         this.onChangeView = this.onChangeView.bind(this);

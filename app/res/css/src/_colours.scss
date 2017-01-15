@@ -17,3 +17,16 @@ $grey2: #c7d0d6;
 $grey3: #8fa1ad;
 $grey4: #4c5f6b;
 $orange1: #ffb400;
+
+/* Mood Colouring */
+
+@mixin moods($property: background) {
+    &.mood-0 { #{$property}: $red1; }
+    &.mood-10 { #{$property}: $red1; }
+    &.mood-20, &.mood-30, &.mood-40 { #{$property}: $orange1; }
+    &.mood-50 { #{$property}: $green5; }
+    &.mood-60 { #{$property}: $green4; }
+    &.mood-70 { #{$property}: $green3; }
+    &.mood-80 { #{$property}: $green2; }
+    &.mood-90, &.mood-100 { #{$property}: $green1; }
+}

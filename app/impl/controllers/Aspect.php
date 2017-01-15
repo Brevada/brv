@@ -147,11 +147,10 @@ class Aspect extends Controller
         }
 
         // Create and return id.
-        $aspect = new EAspect([
-            'StoreID' => $storeId,
-            'AspectTypeID' => $id,
-            'Active' => 1
-        ]);
+        $aspect = new EAspect();
+        $aspect->setStoreId($storeId);
+        $aspect->setAspectTypeId($id);
+        $aspect->setActive(true);
         try {
             $aspectId = $aspect->commit();
         } catch (\Exception $ex) {
@@ -203,8 +202,8 @@ class Aspect extends Controller
             $numPoints = intval($numPoints);
         }
 
-        if ($aspect != null && $aspect->getActive()) {
-            $store = EStore::queryId($aspect->get('StoreID'));
+        if ($aspect != null && $aspect->isActive()) {
+            $store = EStore::queryId($aspect->getStoreId());
             /* User requires READ permission for the store. */
             if ($store != null && $account->getPermissions($store)->canRead()) {
                 return new View($this->extract($aspect, $dataSpan, $numPoints));
@@ -253,10 +252,10 @@ class Aspect extends Controller
         }
 
         /* Load all aspects by store id. */
-        $aspects = EAspect::queryStore($store->get('id'));
+        $aspects = EAspect::queryStore($store->getId());
         if ($aspects !== null) {
             $aspects = array_values(array_filter($aspects, function ($aspect) {
-                return $aspect->getActive();
+                return $aspect->isActive();
             }));
 
             return new View([
@@ -275,28 +274,28 @@ class Aspect extends Controller
      *
      * @param EAspect $aspect The aspect entity to extract data from.
      * @param integer|boolean $dataSpan Days to retrieve data for, or false for no data.
-     * @param integer|boolean $numPoints The number of groups to divide the summary into.
+     * @param integer|boolean $numPoints The number of groups to divide the details into.
      * @return array The extracted data.
      */
     private function extract($aspect, $dataSpan = false, $numPoints = false)
     {
         $aspectData = [
-            'id' => $aspect->get('id'),
-            'title' => $aspect->get('Title'),
-            'description' => $aspect->get('Description'),
-            'active' => $aspect->get('Active') == 1,
-            'custom' => $aspect->get('custom') == 1
+            'id' => $aspect->getId(),
+            'title' => $aspect->getTitle(),
+            'description' => $aspect->getDescription(),
+            'active' => $aspect->isActive() == 1,
+            'custom' => $aspect->getCustom() == 1
         ];
 
         if ($dataSpan !== false) {
-            /* Only get summary if a data span is supplied. */
+            /* Only get details if a data span is supplied. */
             $numPoints = $numPoints === false ? 7 : $numPoints;
 
             /* For industry comparisons. */
             $account = MiddleAuth::get();
             $industry = $account->getCompany()->getIndustry();
 
-            $aspectData['summary'] = $aspect->getSummary($industry, $dataSpan, $numPoints);
+            $aspectData['summary'] = $aspect->getDetails($industry, $dataSpan, $numPoints);
         }
 
         return $aspectData;

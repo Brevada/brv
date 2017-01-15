@@ -4,11 +4,6 @@
 
 /* Dashboard */
 
-/*#dashboard-root {
-    max-width: 1200px;
-    margin: 0 auto;
-}*/
-
 #dashboard-root {
     min-height: 100%;
     display: flex;
@@ -18,18 +13,6 @@
     width: 100%;
     @extend .clearfix;
 }
-
-/* Dialog */
-@import 'dialog';
-
-/* Brand Bar */
-@import 'brandbar';
-
-/* DropDownButton */
-@import 'dropdownbutton';
-
-/* Navigation Bar */
-@import 'navigationbar';
 
 /* Columns */
 .dashboard-container {
@@ -65,12 +48,25 @@
             display: flex;
         }
     }
-
-
 }
+
+/* Dialog */
+@import 'dialog';
+
+/* Brand Bar */
+@import 'brandbar';
+
+/* DropDownButton */
+@import 'dropdownbutton';
+
+/* Navigation Bar */
+@import 'navigationbar';
 
 /* View */
 @import 'view';
+
+/* Dashboard Layout */
+@import 'layout';
 
 /* Livefeed */
 @import 'livefeed';
@@ -80,3 +76,12 @@
 
 /* Aspect */
 @import 'aspect';
+
+/* Event */
+@import 'event';
+
+/* Graph */
+@import 'graph';
+
+/* Badges */
+@import 'badges';

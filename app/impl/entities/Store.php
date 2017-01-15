@@ -90,4 +90,64 @@ class Store extends Entity
     {
         return (int) $this->get('id');
     }
+
+    /**
+     * Gets the company id.
+     *
+     * @return integer
+     */
+    public function getCompanyId()
+    {
+        return (int) $this->get('CompanyID');
+    }
+
+    /**
+     * Gets the store's phone number.
+     *
+     * @return string
+     */
+    public function getPhoneNumber()
+    {
+        return $this->get('PhoneNumber');
+    }
+
+    /**
+     * Gets the store name.
+     *
+     * @return string
+     */
+    public function getName()
+    {
+        return $this->get('Name');
+    }
+
+    /**
+     * Checks if the store is active.
+     *
+     * @return boolean
+     */
+    public function isActive()
+    {
+        return $this->get('Active') == 1;
+    }
+
+    /**
+     * Gets the store URL.
+     *
+     * @return string
+     */
+    public function getURL()
+    {
+        return $this->get('URLName');
+    }
+
+    /**
+     * Gets the store website.
+     *
+     * @return string
+     */
+    public function getWebsite()
+    {
+        return $this->get('Website');
+    }
 }

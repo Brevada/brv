@@ -40,6 +40,25 @@ export default class DataLayer extends React.Component {
             loading: true,
             error: null
         }, () => {
+            /* For debugging. */
+            if (this.props.dummy) {
+                setTimeout(() => {
+                    this.setState({
+                        loading: false,
+                        error: null,
+                        result: this.props.dummy || {}
+                    }, () => {
+                        if (this.props.onSuccess && this.props.dummy !== false) {
+                            this.props.onSuccess(this.props.dummy);
+                        } else if (this.props.onError && this.props.dummy === false) {
+                            this.props.onError(this.props.dummy);
+                        }
+                    });
+                }, this.props.dummyDelay || 0);
+                return;
+            }
+            /* End of debugging code. */
+
             let data = { params: Object.assign({}, this.props.data) };
 
             axios(Object.assign({

@@ -26,6 +26,9 @@ class Data
 
     /** @var integer Seconds in a day. */
     const SECONDS_DAY = 86400;
+
+    /** @var integer Seconds in a year. */
+    const SECONDS_YEAR = 31536000;
     /**#@-*/
 
     /** @var Response[] The collection of Responses. */

@@ -62,7 +62,7 @@ abstract class Entity
      * @param mixed $blank The default value if the key does not exist.
      * @return mixed The value associated with the supplied property key.
      */
-    public function get($property, $blank = null)
+    protected function get($property, $blank = null)
     {
         return $this->has($property) ? $this->properties[$property] : $blank;
     }
@@ -73,7 +73,7 @@ abstract class Entity
      * @param  string $property The key to check.
      * @return boolean True if the property exists.
      */
-    public function has($property)
+    protected function has($property)
     {
         return isset($this->properties[$property]);
     }
@@ -85,7 +85,7 @@ abstract class Entity
      * @param mixed $value The value to store.
      * @return void
      */
-    public function set($property, $value)
+    protected function set($property, $value)
     {
         $this->properties[$property] = $value;
     }

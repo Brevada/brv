@@ -5,6 +5,7 @@
 	-moz-user-select: $type;
 	-ms-user-select: $type;
 	user-select: $type;
+	cursor: default;
 }
 
 @mixin vendor-prefix($name, $value) {
@@ -30,4 +31,10 @@
 .clickable {
 	@include user-select(none);
 	cursor: pointer;
+}
+
+.ellipsis {
+	overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
 }

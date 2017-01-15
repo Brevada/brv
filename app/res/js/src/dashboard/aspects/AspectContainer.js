@@ -3,7 +3,6 @@ import ReactDOM from 'react-dom';
 import equal from 'deep-equal';
 
 import Aspect from 'dashboard/aspects/Aspect';
-import Loader from 'dashboard/Loader';
 
 export default class AspectContainer extends React.Component {
     constructor(props) {
@@ -34,7 +33,7 @@ export default class AspectContainer extends React.Component {
 
     render() {
         return (
-            <div className='aspect-container'>
+            <div className='ly flex-h center-c-h aspect-container'>
                 {this.state.aspects
                     .concat()
                     .filter(a => !this.state.removed.includes(a.id))

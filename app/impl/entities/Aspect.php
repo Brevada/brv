@@ -63,6 +63,40 @@ class Aspect extends Entity
     }
 
     /**
+     * Factory method to instantiate an array of aspect entities from an array
+     * of aspect ids.
+     *
+     * @param integer[] $ids The aspect ids array.
+     * @return self[]
+     */
+    public static function queryIds($ids)
+    {
+        try {
+            $idsList = implode(',', array_map('intval', $ids));
+            if (empty($idsList)) return [];
+
+            $stmt = DB::get()->prepare("
+                SELECT
+                    aspects.*, aspect_type.Title,
+                    NOT(ISNULL(aspect_type.CompanyID)) as custom
+                FROM aspects
+                JOIN aspect_type ON aspect_type.id = aspects.AspectTypeID
+                WHERE aspects.id IN ({$idsList})
+            ");
+            $stmt->execute();
+            return array_map(function ($row) {
+                return self::from($row);
+            }, $stmt->fetchAll(\PDO::FETCH_ASSOC));
+        } catch (\PDOException $ex) {
+            \App::log()->error($ex->getMessage());
+        } catch (\Exception $ex) {
+            \App::log()->error($ex->getMessage());
+        }
+
+        return null;
+    }
+
+    /**
      * Factory method to instantiate an array of aspect entities from a store id.
      *
      * This method retrieves all aspects belonging to a particular store.
@@ -72,8 +106,6 @@ class Aspect extends Entity
      */
     public static function queryStore($storeId)
     {
-        $aspects = [];
-
         try {
             $stmt = DB::get()->prepare("
                 SELECT
@@ -85,14 +117,14 @@ class Aspect extends Entity
             ");
             $stmt->bindValue(':id', $storeId, \PDO::PARAM_INT);
             $stmt->execute();
-            while ($row = $stmt->fetch(\PDO::FETCH_ASSOC)) {
-                $aspects[] = self::from($row);
-            }
+            return array_map(function ($row) {
+                return self::from($row);
+            }, $stmt->fetchAll(\PDO::FETCH_ASSOC));
         } catch (\PDOException $ex) {
             \App::log()->error($ex->getMessage());
         }
 
-        return $aspects;
+        return null;
     }
 
     /* Instance Methods */
@@ -112,7 +144,7 @@ class Aspect extends Entity
             try {
                 $stmt = DB::get()->prepare("UPDATE aspects SET Active = :active WHERE id = :id");
                 $stmt->bindValue(':id', $this->getId(), \PDO::PARAM_INT);
-                $stmt->bindValue(':active', (int) $this->getActive(), \PDO::PARAM_INT);
+                $stmt->bindValue(':active', (int) $this->isActive(), \PDO::PARAM_INT);
                 $stmt->execute();
                 return $this->getId();
             } catch (\PDOException $ex) {
@@ -131,8 +163,8 @@ class Aspect extends Entity
                     SELECT id FROM aspects
                     WHERE AspectTypeID = :aspectType AND StoreID = :store
                 ");
-                $stmt->bindValue(':aspectType', $this->get('AspectTypeID', -1), \PDO::PARAM_INT);
-                $stmt->bindValue(':store', $this->get('StoreID', -1), \PDO::PARAM_INT);
+                $stmt->bindValue(':aspectType', $this->getAspectTypeId(), \PDO::PARAM_INT);
+                $stmt->bindValue(':store', $this->getStoreId(), \PDO::PARAM_INT);
                 $stmt->execute();
 
                 if (($id = $stmt->fetchColumn()) !== false) {
@@ -147,9 +179,9 @@ class Aspect extends Entity
             /* Completely new aspect. INSERT. */
             try {
                 $stmt = DB::get()->prepare("INSERT INTO aspects (AspectTypeID, StoreID, Active) VALUES (:aspectType, :store, :active)");
-                $stmt->bindValue(':aspectType', $this->get('AspectTypeID', -1), \PDO::PARAM_INT);
-                $stmt->bindValue(':store', $this->get('StoreID', -1), \PDO::PARAM_INT);
-                $stmt->bindValue(':active', $this->get('Active', 1), \PDO::PARAM_INT);
+                $stmt->bindValue(':aspectType', $this->getAspectTypeId(), \PDO::PARAM_INT);
+                $stmt->bindValue(':store', $this->getStoreId(), \PDO::PARAM_INT);
+                $stmt->bindValue(':active', (int) $this->getActive(), \PDO::PARAM_INT);
                 $stmt->execute();
                 $this->set('id', (int) DB::get()->lastInsertId());
                 return $this->getId();
@@ -162,18 +194,18 @@ class Aspect extends Entity
     }
 
     /**
-     * Gets a summary of the aspect's data for a particular duration of time.
+     * Gets a detailed overview of the aspect's data for a particular duration of time.
      *
      * Setting $days = 0 defaults to all time.
      *
      * @api
      *
      * @param Industry $industry The industry entity to compare against.
-     * @param integer $days The number of days to include in the data summary.
-     * @param integer $numPoints The number of groups to divide the summary into.
+     * @param integer $days The number of days to include in the data overview.
+     * @param integer $numPoints The number of groups to divide the overview into.
      * @return array The data for a particular aspect.
      */
-    public function getSummary(Industry $industry, $days = 0, $numPoints = 1)
+    public function getDetails(Industry $industry = null, $days = 0, $numPoints = 1)
     {
         $summary = [];
 
@@ -183,12 +215,12 @@ class Aspect extends Entity
             $from = 0;
         }
 
-        $allData = new Data(Response::queryAspect((int) $this->get('id'), 0, $to));
+        $allData = new Data(Response::queryAspect($this->getId(), 0, $to));
         $aspectData = $allData->subsetTime($from, $to);
 
         $industryData = new Data([]);
         if ($industry !== null) {
-            $industryAvg = $industry->getAspectAverage((int) $this->get('AspectTypeID'));
+            $industryAvg = $industry->getAspectAverage($this->getAspectTypeId());
             if ($industryAvg !== null) {
                 $industryData = new Data([$industryAvg], [
                     /*
@@ -221,6 +253,33 @@ class Aspect extends Entity
     }
 
     /**
+     * Gets a summary of the aspect for a particular duration of time.
+     *
+     * @api
+     *
+     * @param integer $from The start date of the data to consider.
+     * @param integer $days The end date of the data to consider.
+     *
+     * @return array A summary of this aspect.
+     */
+    public function getSummary($from, $to)
+    {
+        // TODO Can be changed to a MySQL query for better performance.
+
+        $summary = [];
+
+        // TODO Should "All Time" consider past the end date?
+        $allData = new Data(Response::queryAspect($this->getId(), 0, $to));
+        $aspectData = $allData->subsetTime($from, $to);
+
+        $summary['average'] = $aspectData->getAverage();
+        $summary['responses'] = $aspectData->getCount();
+        $summary['to_all_time'] = $aspectData->getAverageDiff($allData);
+
+        return $summary;
+    }
+
+    /**
      * Gets the aspect id.
      *
      * @return integer
@@ -231,13 +290,99 @@ class Aspect extends Entity
     }
 
     /**
+     * Gets the title.
+     *
+     * @return string
+     */
+    public function getTitle()
+    {
+        return $this->get('Title');
+    }
+
+    /**
+     * Gets the description.
+     *
+     * @return string
+     */
+    public function getDescription()
+    {
+        return $this->get('Description');
+    }
+
+    /**
+     * Gets the store id of the aspect.
+     *
+     * @return integer
+     */
+    public function getStoreId()
+    {
+        return (int) $this->get('StoreID');
+    }
+
+    /**
+     * Sets the store id of the aspect.
+     *
+     * @param integer The new store id.
+     * @return integer
+     */
+    public function setStoreId($id)
+    {
+        $this->set('StoreID', $id);
+        return $this->getStoreId();
+    }
+
+    /**
+     * Gets the aspect type id of the aspect.
+     *
+     * @return integer
+     */
+    public function getAspectTypeId()
+    {
+        return (int) $this->get('AspectTypeId');
+    }
+
+    /**
+     * Sets the aspect type id of the aspect.
+     *
+     * @param integer The new aspect type id.
+     * @return integer
+     */
+    public function setAspectTypeId($id)
+    {
+        $this->set('AspectTypeId', (int) $id);
+        return $this->getAspectTypeId();
+    }
+
+    /**
      * Checks if the aspect is active.
      *
      * @return boolean
      */
-    public function getActive()
+    public function isActive()
     {
         return ((int) $this->get('Active')) === 1;
+    }
+
+    /**
+     * Sets the aspect's active state.
+     *
+     * @param boolean $state The new "active" state.
+     * @return boolean
+     */
+    public function setActive($state)
+    {
+        $this->set('Active', (int) $state);
+        return $this->getActive();
+    }
+
+    /**
+     * Checks if the aspect is of custom type.
+     *
+     * @return boolean
+     */
+    public function getCustom()
+    {
+        return ((int) $this->get('custom')) === 1;
     }
 
     /**

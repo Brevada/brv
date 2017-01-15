@@ -4,38 +4,52 @@
     .form-group {
         padding: 0.4rem 0;
         @extend .clearfix;
+    }
 
-        .label {
-            display: block;
-            font-size: 0.9em;
-            margin-bottom: 0.3em;
-            color: $grey3;
-            @extend .clickable;
+    .label {
+        display: block;
+        font-size: 0.9em;
+        margin-bottom: 0.3em;
+        color: $grey3;
+        @extend .clickable;
 
-            &.inline {
-                display: inline;
-            }
+        &.inline {
+            display: inline;
+        }
+    }
+
+    .link {
+        color: $blue1;
+        opacity: 0.65;
+
+        &.danger {
+            color: $orange1;
         }
 
-        > .link {
-            color: $blue2;
-            text-decoration: none;
-            margin: 0 10px 0 15px;
-            font-size: 0.95em;
+        transition: opacity 0.2s;
 
-            &.right { float: right; }
-            &.left { float: left; }
+        text-decoration: none;
+        margin: 0 10px 0 15px;
+        font-size: 0.95em;
+        outline: none;
+        border: 0;
+        background: transparent;
+        line-height: 1;
+        padding: 0;
+        @extend .clickable;
 
-            &.btn-like {
-                font-size: 14px;
-                line-height: 1.42857143;
-                padding: 4.5px 8px;
-                margin: 0;
-            }
+        &.right { float: right; }
+        &.left { float: left; }
 
-            &:hover {
-                color: $blue1;
-            }
+        &.btn-like {
+            font-size: 14px;
+            line-height: 1.42857143;
+            padding: 4.5px 8px;
+            margin: 0;
+        }
+
+        &:hover {
+            opacity: 1;
         }
     }
 

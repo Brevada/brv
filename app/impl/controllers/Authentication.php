@@ -90,7 +90,7 @@ class Authentication extends Controller
             self::fail("Invalid email and/or password.", \HTTP::BAD_PARAMS);
         }
 
-        if (password_verify($password, $account->get('Password', ''))) {
+        if (password_verify($password, $account->getPassword())) {
             /* Deter session hijacking. */
             session_regenerate_id();
             MiddleAuth::set($account);
