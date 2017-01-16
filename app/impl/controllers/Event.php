@@ -99,15 +99,15 @@ class Event extends Controller
         /* 100 char limit is schema restriction. */
         v::stringType()->notEmpty()->length(1, 100)->alnum('-"\'')->check($title);
 
-        $maxTime = time() + (Brv\core\data\Data::SECONDS_YEAR * 10);
+        $maxTime = time() + (\Brv\core\data\Data::SECONDS_YEAR * 10);
 
-        $from = self::from('from', $this->getBody(), null);
+        $from = self::from('from_unix', $this->getBody(), null);
         if ($from === null) {
             self::fail("A from date must be specified.");
         }
         v::intVal()->min(0)->max($maxTime)->check($from);
 
-        $to = self::from('to', $this->getBody(), null);
+        $to = self::from('to_unix', $this->getBody(), null);
         if ($to !== null) {
             v::intVal()->min($from)->max($maxTime)->check($to);
         }
@@ -325,5 +325,68 @@ class Event extends Controller
         }
 
         self::fail("Invalid event or aspect and/or lack of permissions.", \HTTP::BAD_PARAMS);
+    }
+
+    /**
+     * Links an aspect to an event.
+     *
+     * @api
+     *
+     * @throws \Respect\Validation\Exceptions\ValidationException on invalid input.
+     * @throws \Brv\core\routing\ControllerException on failure.
+     *
+     * @param array $params URL parameters from the route pattern.
+     * @return View
+     */
+    public function aspectLink(array $params = [])
+    {
+        /* Defined account is a precondition due to middleware. */
+        $account = MiddleAuth::get();
+
+        $store = null;
+        $event = null;
+        $aspect = null;
+
+        /* Load a Store Model. */
+        $storeId = self::from('store', $this->getBody());
+        if ($storeId != null) {
+            v::intVal()->min(0)->check($storeId);
+            $store = EStore::queryId(intval($storeId));
+        }
+
+        if ($store === null || !$account->getPermissions($store)->canWrite()) {
+            self::fail("Invalid store and/or lack of permissions.", \HTTP::BAD_PARAMS);
+        }
+
+        /* Load an Event Model. */
+        $eventId = self::from(1, $params);
+        if ($eventId != null) {
+            v::intVal()->min(0)->check($eventId);
+            $event = EEvent::queryId(intval($eventId));
+        }
+
+        if ($event === null || !$account->getPermissions($event)->canWrite()) {
+            self::fail("Invalid event and/or lack of permissions.", \HTTP::BAD_PARAMS);
+        }
+
+        /* Load aspect by aspect type. */
+        $aspectTypeId = self::from('aspect_id', $this->getBody());
+        if ($aspectTypeId != null) {
+            v::intVal()->min(0)->check($aspectTypeId);
+            $aspect = EAspect::queryTypeId(intval($aspectTypeId), $store->getId());
+        }
+
+        if ($aspect === null || !$account->getPermissions($aspect)->canWrite()) {
+            self::fail("Invalid aspect and/or lack of permissions.", \HTTP::BAD_PARAMS);
+        }
+
+        /* User requires WRITE permission for the event and for the aspect. */
+        if ($event->linkAspect($aspect->getId()) !== false) {
+            return new View([]);
+        } else {
+            self::fail("Unable to add aspect to event.", \HTTP::SERVER);
+        }
+
+        self::fail("Invalid request and/or lack of permissions.", \HTTP::BAD_PARAMS);
     }
 }

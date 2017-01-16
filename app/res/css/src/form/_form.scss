@@ -1,9 +1,19 @@
 /* Form */
 
+$textbox_width: 500px;
+$inline_margin: 5px;
+
 .form {
     .form-group {
         padding: 0.4rem 0;
         @extend .clearfix;
+
+        &.inline {
+            display: inline-block;
+
+            &.left { margin-right: $inline_margin; }
+            &.right { margin-left: $inline_margin; }
+        }
     }
 
     .label {
@@ -112,7 +122,7 @@
             padding: 6px;
             margin: 0;
 
-            width: 500px;
+            width: $textbox_width;
             max-width: 100%;
             height: 34px;
             font-size: 14px;
@@ -154,3 +164,8 @@
 }
 
 @import './aspectinput';
+
+.datepicker.input > div {
+    max-width: 100%;
+    width: calc((#{$textbox_width} / 2) - #{$inline_margin});
+}

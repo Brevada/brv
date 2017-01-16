@@ -27,7 +27,7 @@ const EventAspectsItem = props => (
             </div>
             <div className='control right'>
                 <Form
-                    action={`/api/event/${props.event_id}/aspect/${props.id}`}
+                    action={`/api/event/${props.eventId}/aspect/${props.id}`}
                     method="DELETE"
                     onSuccess={()=>props.onRemove(props.id)}
                     onError={()=>false}
@@ -55,10 +55,12 @@ export default class EventAspects extends React.Component {
 
         this.state = {
             aspects: props.aspects || [],
-            removed: []
+            removed: [],
+            refresh: 0
         };
 
         this.remove = this.remove.bind(this);
+        this.refreshAspects = this.refreshAspects.bind(this);
     }
 
     componentWillReceiveProps(nextProps) {
@@ -71,6 +73,12 @@ export default class EventAspects extends React.Component {
         });
 
         this.remove = this.remove.bind(this);
+    }
+
+    refreshAspects() {
+        this.setState({
+            refresh: this.state.refresh+1
+        });
     }
 
     remove(id) {
@@ -91,7 +99,7 @@ export default class EventAspects extends React.Component {
                             <EventAspectsItem
                                 key={aspect.id}
                                 id={aspect.id}
-                                event_id={this.props.event_id}
+                                eventId={this.props.eventId}
                                 title={aspect.title}
                                 change={aspect.change}
                                 responses={aspect.responses}
@@ -101,10 +109,16 @@ export default class EventAspects extends React.Component {
                 </div>
                 <div className='ly ly-split tools'>
                     <div className='left fill overflow'>
-                        <Form>
+                        <Form
+                            action={`/api/event/${this.props.eventId}/aspect`}
+                            method="POST"
+                            onSuccess={this.refreshAspects}
+                            onError={()=>false}
+                        >
                             <FormGroup className='new-aspect input-like small'>
                                 <DataLayer
-                                    action={`/api/aspecttypes/event/${this.props.event_id}`}>
+                                    action={`/api/aspecttypes/event/${this.props.eventId}`}
+                                    refresh={this.state.refresh}>
                                     <AspectInputFieldLinked />
                                 </DataLayer>
                             </FormGroup>
@@ -112,9 +126,9 @@ export default class EventAspects extends React.Component {
                     </div>
                     <div className='right'>
                         <Form
-                            action={`/api/event/${this.props.event_id}`}
+                            action={`/api/event/${this.props.eventId}`}
                             method="DELETE"
-                            onSuccess={()=>props.onRemove(this.props.event_id)}
+                            onSuccess={()=>this.props.onRemoveEvent(this.props.eventId)}
                             onError={()=>false}
                         >
                             <FormLink label='Delete' submit={true} />

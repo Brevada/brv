@@ -1,5 +1,9 @@
 {% extends "_structure.twig" %}
 
+{% block styles %}
+{{ resources.style('/css/react-datepicker/react-datepicker.min.css') }}
+{% endblock %}
+
 {% block scripts %}
 {{ resources.script('/js/views/dashboard.js') }}
 {% endblock %}

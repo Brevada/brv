@@ -25,6 +25,7 @@ const EventContainerLinked = props => {
             <EventContainer
                 filter={props.filter}
                 events={props.data.events}
+                storeId={props.storeId}
             />
         );
     }
@@ -90,6 +91,7 @@ export default class EventsView extends React.Component {
                 refresh={this.state.refresh}>
                     <EventContainerLinked
                         filter={this.state.filter}
+                        storeId={this.props.storeId}
                     />
                 </DataLayer>
             </div>

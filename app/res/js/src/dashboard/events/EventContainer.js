@@ -63,6 +63,7 @@ export default class EventContainer extends React.Component {
                                 aspects={event.aspects}
                                 completed={event.completed}
                                 filter={this.props.filter}
+                                storeId={this.props.storeId}
                                 onRemove={this.remove}
                             />
                     ))}

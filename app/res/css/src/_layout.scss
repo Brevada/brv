@@ -66,6 +66,18 @@
         }
     }
 
+    &.ly-half {
+        width: 49%;
+
+        &.left {
+            margin-right: 1%;
+        }
+
+        &.right {
+            margin-left: 1%;
+        }
+    }
+
     &.ly-split {
         display: flex;
 

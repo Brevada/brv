@@ -1,11 +1,12 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import classNames from 'classnames';
-
+import moment from 'moment';
 import DataLayer from 'forms/DataLayer';
 
 import Dialog, { DialogButton, DialogButtonActions } from 'dialogs/Dialog';
-import Form, { Group as FormGroup, Label as FormLabel, Button, ErrorMessage } from 'forms/Form';
+import Form, { Group as FormGroup, Label as FormLabel, Textbox, Button, ErrorMessage } from 'forms/Form';
+import DatePickerInput from 'forms/DatePickerInput';
 
 import { Link } from 'components/Link';
 
@@ -14,7 +15,10 @@ export default class NewEventDialog extends React.Component {
         super();
 
         this.state = {
-            createError: null
+            createError: null,
+
+            fromDate: null,
+            toDate: null
         };
 
         this.submitError = this.submitError.bind(this);
@@ -50,8 +54,36 @@ export default class NewEventDialog extends React.Component {
                     <FormGroup className='new-event'>
                         <FormLabel
                             text={'What is the title of the event?'}
-                            inline={true}
                         />
+                        <Textbox
+                            placeHolder={'e.g. Hired a New Chef'}
+                            name='title'
+                        />
+                    </FormGroup>
+                    <FormGroup className='inline left'>
+                        <FormLabel
+                            text={'Choose a start date:'}
+                        />
+                        <DatePickerInput
+                            name='from'
+                            defaultDate={moment()}
+                            selectsStart
+                            startDate={this.state.fromDate}
+                            endDate={this.state.toDate}
+                            onDateChange={d=>this.setState({ fromDate: d })}
+                            isClearable={false} />
+                    </FormGroup>
+                    <FormGroup className='inline right'>
+                        <FormLabel
+                            text={'Choose an optional end date:'}
+                        />
+                        <DatePickerInput
+                            name='to'
+                            selectsEnd
+                            startDate={this.state.fromDate}
+                            endDate={this.state.toDate}
+                            onDateChange={d=>this.setState({ toDate: d })}
+                            isClearable={true} />
                     </FormGroup>
                     <FormGroup className='dialog-controls link-style'>
                         <Button

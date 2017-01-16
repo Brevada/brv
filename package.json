@@ -30,6 +30,7 @@
   },
   "dependencies": {
     "axios": "^0.15.3",
+    "classlist-polyfill": "^1.0.3",
     "classnames": "^2.2.5",
     "expose-loader": "^0.7.1",
     "get-form-data": "^1.2.5",
@@ -37,6 +38,7 @@
     "jquery": "^3.1.1",
     "moment": "^2.16.0",
     "react": "^15.3.2",
+    "react-datepicker": "^0.39.0",
     "react-dom": "^15.3.2",
     "recharts": "^0.17.1"
   }

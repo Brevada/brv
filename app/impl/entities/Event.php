@@ -133,7 +133,7 @@ class Event extends Entity
                     INSERT INTO milestones SET
                     StoreID = :storeId, Title = :title, Completed = :completed,
                     FromDate = FROM_UNIXTIME(:from),
-                    ToDate = IFNULL(ISNULL(:to), NULL, FROM_UNIXTIME(:to))
+                    ToDate = IF(ISNULL(:to), NULL, FROM_UNIXTIME(:to))
                 ");
                 $stmt->bindValue(':storeId', $this->getStoreId(), \PDO::PARAM_INT);
                 $stmt->bindValue(':title', $this->getTitle(), \PDO::PARAM_STR);

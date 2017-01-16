@@ -97,6 +97,38 @@ class Aspect extends Entity
     }
 
     /**
+     * Factory method to instantiate an aspect entity from an aspect type id for
+     * a given store.
+     *
+     * @param integer $type_id The aspect type id.
+     * @param integer $storE_id The store id the aspect belongs to.
+     * @return self
+     */
+    public static function queryTypeId($type_id, $store_id)
+    {
+        try {
+            $stmt = DB::get()->prepare("
+                SELECT
+                    aspects.*, aspect_type.Title,
+                    NOT(ISNULL(aspect_type.CompanyID)) as custom
+                FROM aspects
+                JOIN aspect_type ON aspect_type.id = aspects.AspectTypeID
+                WHERE aspects.AspectTypeID = :type_id AND aspects.StoreID = :store_id
+            ");
+            $stmt->bindValue(':type_id', $type_id, \PDO::PARAM_INT);
+            $stmt->bindValue(':store_id', $store_id, \PDO::PARAM_INT);
+            $stmt->execute();
+            if (($row = $stmt->fetch(\PDO::FETCH_ASSOC)) !== false) {
+                return self::from($row);
+            }
+        } catch (\PDOException $ex) {
+            \App::log()->error($ex->getMessage());
+        }
+
+        return null;
+    }
+
+    /**
      * Factory method to instantiate an array of aspect entities from a store id.
      *
      * This method retrieves all aspects belonging to a particular store.

@@ -12,22 +12,7 @@ export default class Event extends React.Component {
     constructor(props) {
         super(props);
 
-        this.state = {
-            removing: false
-        };
-
-        this.removeEvent = this.removeEvent.bind(this);
-        this.removeAspect = this.removeAspect.bind(this);
-    }
-
-    removeEvent() {
-        this.setState({
-            removing: true
-        });
-    }
-
-    removeAspect() {
-
+        this.state = {};
     }
 
     render() {
@@ -60,8 +45,9 @@ export default class Event extends React.Component {
                     <div className='body'>
                         <EventAspects
                             aspects={this.props.aspects}
-                            onRemove={this.removeAspect}
-                            event_id={this.props.id}
+                            onRemoveEvent={this.props.onRemove}
+                            eventId={this.props.id}
+                            storeId={this.props.storeId}
                         />
                     </div>
                 </div>
