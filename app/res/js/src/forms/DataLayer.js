@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import classNames from 'classnames';
 import equal from 'deep-equal';
-
+import omit from 'lodash.omit';
 import axios from 'axios';
 
 export default class DataLayer extends React.Component {
@@ -23,11 +23,19 @@ export default class DataLayer extends React.Component {
     }
 
     componentDidMount() {
+        // Skip if refresh is -1, i.e. "inactive" mode.
+        if (this.props.refresh === -1) return;
+
         this.load();
     }
 
     componentWillReceiveProps(nextProps) {
-        if (!this._unmounted && !equal(nextProps, this.props)) {
+        if (this._unmounted) return;
+
+        if ((this.props.refresh !== nextProps.refresh ||
+            this.props.action !== nextProps.action ||
+            !equal(nextProps.data || {}, this.props.data || {})) &&
+            nextProps.refresh !== -1) {
             this.load();
         }
     }
@@ -93,10 +101,13 @@ export default class DataLayer extends React.Component {
     }
 
     render() {
-        return React.cloneElement(React.Children.only(this.props.children), {
+        return React.cloneElement(React.Children.only(this.props.children), Object.assign({
             data: this.state.result,
             loading: this.state.loading,
             error: this.state.error
-        });
+        }, omit(this.props, [
+            'children', 'data', 'loading', 'error', 'onSuccess',
+            'onError', 'action', 'dummy', 'dummyDelay', 'refresh', 'key'
+        ])));
     }
 }

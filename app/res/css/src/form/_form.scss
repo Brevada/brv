@@ -4,6 +4,10 @@ $textbox_width: 500px;
 $inline_margin: 5px;
 
 .form {
+    &.inline {
+        display: inline-block;
+    }
+
     .form-group {
         padding: 0.4rem 0;
         @extend .clearfix;

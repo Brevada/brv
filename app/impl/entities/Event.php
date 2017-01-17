@@ -110,7 +110,7 @@ class Event extends Entity
                     UPDATE milestones SET
                     StoreID = :storeId, Title = :title, Completed = :completed,
                     FromDate = FROM_UNIXTIME(:from),
-                    ToDate = IFNULL(ISNULL(:to), NULL, FROM_UNIXTIME(:to))
+                    ToDate = IF(ISNULL(:to), NULL, FROM_UNIXTIME(:to))
                     WHERE id = :id
                 ");
                 $stmt->bindValue(':id', $this->getId(), \PDO::PARAM_INT);
@@ -273,11 +273,11 @@ class Event extends Entity
             if ($this->getFrom() === null || $this->getTo() === null) {
                 $state = false;
             } else {
-                $state = $this->getTo() < time();
+                $state = $this->getTo() <= time();
             }
         }
         $this->set('Completed', (int) $state);
-        return $this->getCompleted();
+        return $this->isCompleted();
     }
 
     /**

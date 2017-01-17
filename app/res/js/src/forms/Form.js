@@ -21,12 +21,13 @@ export default class Form extends React.Component {
     }
 
     submit(e) {
-        e.preventDefault();
+        if (e) e.preventDefault();
+        if (!this._form) return;
 
         // Skip if already submitting.
         if (this.props.once !== false && this.state.submitting) return;
 
-        let formData = getFormData(e.target);
+        let formData = getFormData(ReactDOM.findDOMNode(this._form));
 
         this.setState({
             submitting: true
@@ -65,10 +66,24 @@ export default class Form extends React.Component {
     render() {
         return (
             <div className={classNames('form', {
-                submitting: this.state.submitting
+                submitting: this.state.submitting,
+                inline: this.props.inline === true
             }, this.props.className || '')}>
-                <form onSubmit={this.submit}>
-                {this.props.children}
+                <form onSubmit={this.submit} ref={frm=>this._form=frm}>
+                    {React.Children.map(this.props.children,
+                     (child) => {
+                         if (child && child.type.prototype instanceof React.Component) {
+                             return React.cloneElement(child, {
+                                 form: () => {
+                                     if(this._form){
+                                         return this;
+                                     }
+                                 }
+                             })
+                         } else {
+                             return child;
+                         }
+                     })}
                 </form>
             </div>
         );
@@ -98,17 +113,23 @@ class Group extends React.Component {
             <div className={'form-group ' + (this.props.className || '')}>
                 {React.Children.map(this.props.children,
                  (child) => {
-                     if (child.type === Label) {
-                         return React.cloneElement(child, {
-                             onClick: this.labelClicked
-                         });
-                     } else if (child.type.prototype instanceof Input) {
-                         return React.cloneElement(child, {
-                             ref: this.inputCallback
-                         })
-                     } else {
-                         return child;
+                     if (child) {
+                         if (child.type === Label) {
+                             return React.cloneElement(child, {
+                                 onClick: this.labelClicked
+                             });
+                         } else if (child.type.prototype instanceof Input) {
+                             return React.cloneElement(child, {
+                                 ref: this.inputCallback,
+                                 form: this.props.form
+                             })
+                         } else if (child.type.prototype instanceof React.Component) {
+                             return React.cloneElement(child, {
+                                 form: this.props.form
+                             })
+                         }
                      }
+                     return child;
                  })}
             </div>
         );

@@ -45,8 +45,15 @@ export default class AspectInputField extends FormInput {
     }
 
     potentialSubmit() {
-        if (this.props.submitOnSelect === true && this._inputText) {
-            ReactDOM.findDOMNode(this._inputText).form.submit();
+        if (this._inputText && this.props.submitOnSelect && this.props.form) {
+            this.props.form().submit();
+            if (!this._unmounted) {
+                this.setState({
+                    value: '',
+                    id: -1,
+                    show: false
+                });
+            }
         }
     }
 

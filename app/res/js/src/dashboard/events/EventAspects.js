@@ -29,7 +29,7 @@ const EventAspectsItem = props => (
                 <Form
                     action={`/api/event/${props.eventId}/aspect/${props.id}`}
                     method="DELETE"
-                    onSuccess={()=>props.onRemove(props.id)}
+                    onSuccess={props.onRemove}
                     onError={()=>false}
                 >
                     <FormLink label='Remove' submit={true} danger={true} />
@@ -39,28 +39,22 @@ const EventAspectsItem = props => (
     </div>
 );
 
-const AspectInputFieldLinked = props => (
-    <AspectInputField
-        types={props.data.aspect_types || []}
-        name='aspect'
-        custom={false}
-        submitOnSelect={true}
-        placeHolder='+ Add New Aspect'
-    />
-);
+const AspectInputFieldLinked = props => {
+    return (
+        <AspectInputField
+            types={props.data.aspect_types || []}
+            {...props}
+        />
+    );
+};
 
 export default class EventAspects extends React.Component {
     constructor(props) {
         super(props);
 
         this.state = {
-            aspects: props.aspects || [],
-            removed: [],
-            refresh: 0
+            aspects: props.aspects || []
         };
-
-        this.remove = this.remove.bind(this);
-        this.refreshAspects = this.refreshAspects.bind(this);
     }
 
     componentWillReceiveProps(nextProps) {
@@ -71,20 +65,6 @@ export default class EventAspects extends React.Component {
         this.setState({
             aspects: nextProps.aspects
         });
-
-        this.remove = this.remove.bind(this);
-    }
-
-    refreshAspects() {
-        this.setState({
-            refresh: this.state.refresh+1
-        });
-    }
-
-    remove(id) {
-        this.setState({
-            removed: this.state.removed.concat([id])
-        });
     }
 
     render() {
@@ -93,7 +73,6 @@ export default class EventAspects extends React.Component {
                 <div className='ly flex-v event-aspects'>
                     {this.state.aspects
                         .concat()
-                        .filter(a => !this.state.removed.includes(a.id))
                         .sort((a,b) => a.title.localeCompare(b.title))
                         .map(aspect => (
                             <EventAspectsItem
@@ -103,7 +82,7 @@ export default class EventAspects extends React.Component {
                                 title={aspect.title}
                                 change={aspect.change}
                                 responses={aspect.responses}
-                                onRemove={this.remove}
+                                onRemove={this.props.onRefresh}
                             />
                     ))}
                 </div>
@@ -112,14 +91,19 @@ export default class EventAspects extends React.Component {
                         <Form
                             action={`/api/event/${this.props.eventId}/aspect`}
                             method="POST"
-                            onSuccess={this.refreshAspects}
+                            data={{store: this.props.storeId}}
+                            onSuccess={this.props.onRefresh}
                             onError={()=>false}
                         >
                             <FormGroup className='new-aspect input-like small'>
                                 <DataLayer
-                                    action={`/api/aspecttypes/event/${this.props.eventId}`}
-                                    refresh={this.state.refresh}>
-                                    <AspectInputFieldLinked />
+                                    action={`/api/aspecttypes/event/${this.props.eventId}`}>
+                                    <AspectInputFieldLinked
+                                        name='aspect'
+                                        custom={false}
+                                        submitOnSelect={true}
+                                        placeHolder='+ Add New Aspect'
+                                    />
                                 </DataLayer>
                             </FormGroup>
                         </Form>

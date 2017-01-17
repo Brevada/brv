@@ -35,7 +35,7 @@ routes:
         POST: [ '^\/api\/event$', auth, Event+create ]
 
     event_status:
-        POST: [ '^\/api\/event\/complete\/(\d+)$', auth, Event+complete ]
+        POST: [ '^\/api\/event\/(\d+)\/complete$', auth, Event+complete ]
 
     event_aspect:
         POST: [ '^\/api\/event\/(\d+)\/aspect$', auth, Event+aspectLink ]

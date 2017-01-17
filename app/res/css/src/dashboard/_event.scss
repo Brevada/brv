@@ -20,8 +20,12 @@
                 padding: 0 0.3em;
             }
 
-            .to.completed {
-                color: $green2;
+            .to.incomplete {
+                margin: 0;
+
+                &:hover {
+                    border-bottom: 1px dotted $green2;
+                }
             }
         }
 

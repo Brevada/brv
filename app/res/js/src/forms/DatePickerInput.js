@@ -15,7 +15,7 @@ export default class DatePickerInput extends FormInput {
             date: null
         };
 
-        if (typeof props.defaultDate !== undefined) {
+        if (props.defaultDate) {
             this.state.date = props.defaultDate;
             this.state.unix = props.defaultDate.unix();
         }

@@ -82,7 +82,13 @@ export default class Aspect extends React.Component {
                     ) || (
                         (this.props.summary.responses > 0 && (
                             <div className='body'>
-                                <Badges summary={this.props.summary} filter={this.props.filter} />
+                                <Badges
+                                    average={this.props.summary.average}
+                                    to_all_time={this.props.summary.to_all_time}
+                                    responses={this.props.summary.responses}
+                                    to_industry={this.props.summary.to_industry}
+                                    filter={this.props.filter}
+                                />
                                 <Graph data={this.props.summary.data.concat().sort((a, b) => a.to-b.to)} />
                             </div>
                         )) || (

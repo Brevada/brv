@@ -32,14 +32,14 @@ const Badge = props => {
 const Badges = props => (
     <div className={classNames('badges', { inline: props.inline===true })}>
         <Badge
-            value={props.summary.average}
+            value={props.average}
             label={'Average'}
             change={false}
             percent={true}
             formatter={x => +x.toFixed(1)}
         />
         <Badge
-            value={props.summary.responses}
+            value={props.responses}
             label={'Responses'}
             change={false}
             percent={false}
@@ -56,7 +56,7 @@ const Badges = props => (
         />
         { props.filter !== 'ALL_TIME' && (
             <Badge
-                value={props.summary.to_all_time}
+                value={props.to_all_time}
                 label={'To All Time'}
                 change={true}
                 percent={true}
@@ -65,7 +65,7 @@ const Badges = props => (
         ) }
         { props.industry !== false && (
             <Badge
-                value={props.summary.to_industry}
+                value={props.to_industry}
                 label={'To Industry'}
                 change={true}
                 percent={true}

@@ -26,6 +26,45 @@ class Event extends Controller
 {
 
     /**
+     * Marks an aspect as complete by setting its to date.
+     *
+     * @api
+     *
+     * @throws \Respect\Validation\Exceptions\ValidationException on invalid input.
+     * @throws \Brv\core\routing\ControllerException on failure.
+     *
+     * @param array $params URL parameters from the route pattern.
+     * @return View
+     */
+    public function complete(array $params = [])
+    {
+        /* Defined account is a precondition due to middleware. */
+        $account = MiddleAuth::get();
+
+        $event = null;
+
+        /* Load an Event Model. */
+        $eventId = self::from(1, $params);
+        if ($eventId != null) {
+            v::intVal()->min(0)->check($eventId);
+            $event = EEvent::queryId(intval($eventId));
+        }
+
+        /* User requires WRITE permission for the event. */
+        if ($event !== null && $account->getPermissions($event)->canWrite()) {
+            $event->setTo(time());
+            $event->setCompleted();
+            if ($event->commit() !== false) {
+                return new View([]);
+            } else {
+                self::fail("Unable to mark event as complete.", \HTTP::SERVER);
+            }
+        }
+
+        self::fail("Invalid event and/or lack of permissions.", \HTTP::BAD_PARAMS);
+    }
+
+    /**
      * Deletes an individual event by event id.
      *
      * @api
@@ -97,7 +136,7 @@ class Event extends Controller
 
         $title = trim($title);
         /* 100 char limit is schema restriction. */
-        v::stringType()->notEmpty()->length(1, 100)->alnum('-"\'')->check($title);
+        v::stringType()->notEmpty()->length(1, 100)->alnum('-"\'?_()&%$#@!/\\')->check($title);
 
         $maxTime = time() + (\Brv\core\data\Data::SECONDS_YEAR * 10);
 
@@ -108,6 +147,9 @@ class Event extends Controller
         v::intVal()->min(0)->max($maxTime)->check($from);
 
         $to = self::from('to_unix', $this->getBody(), null);
+        if ($to == -1) {
+            $to = null;
+        }
         if ($to !== null) {
             v::intVal()->min($from)->max($maxTime)->check($to);
         }
@@ -381,7 +423,7 @@ class Event extends Controller
         }
 
         /* User requires WRITE permission for the event and for the aspect. */
-        if ($event->linkAspect($aspect->getId()) !== false) {
+        if ($event->addAspect($aspect->getId()) !== false) {
             return new View([]);
         } else {
             self::fail("Unable to add aspect to event.", \HTTP::SERVER);
