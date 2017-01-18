@@ -404,7 +404,7 @@ class Aspect extends Entity
     public function setActive($state)
     {
         $this->set('Active', (int) $state);
-        return $this->getActive();
+        return $this->isActive();
     }
 
     /**
