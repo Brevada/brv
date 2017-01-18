@@ -23,7 +23,7 @@ class StoreTest extends TestCase
      * @throws \Exception if database cannot be setup.
      */
     public static function setUpBeforeClass() {
-        $result = TestDatabase::executeFile(realpath(dirname(__FILE__) . '/schema.sql'));
+        $result = TestDatabase::executeFile(realpath(dirname(__FILE__) . '/../schema/schema.sql'));
         if ($result !== true) throw new \Exception("Failed to setup database for tests.");
     }
 
@@ -34,7 +34,7 @@ class StoreTest extends TestCase
      * @throws \Exception if database cannot be truncated.
      */
     public static function tearDownAfterClass() {
-        $result = TestDatabase::executeFile(realpath(dirname(__FILE__) . '/dropall.sql'));
+        $result = TestDatabase::executeFile(realpath(dirname(__FILE__) . '/../schema/dropall.sql'));
         if ($result !== true) throw new \Exception("Failed to setup database for tests.");
     }
 }
