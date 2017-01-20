@@ -6,16 +6,22 @@ import equal from 'deep-equal';
 import { DateCluster } from 'utils/DateCluster';
 import { ResponsiveContainer, LineChart, Tooltip, Line, XAxis, YAxis } from 'recharts';
 
-const AspectGraphTooltip = props => (
-    <div className='graph-tooltip'>
-        <span className='value'>
-            {props.payload[0].value + props.payload[0].unit}
-        </span>
-        <span className='specific'>
-            {moment.unix(props.timestamps[parseInt(props.payload[0].payload.label)]).format('D/MM/YYYY')}
-        </span>
-    </div>
-);
+const AspectGraphTooltip = props => {
+    if (props.active) {
+        return (
+            <div className='graph-tooltip'>
+                <span className='value'>
+                    {props.payload[0].value + props.payload[0].unit}
+                </span>
+                <span className='specific'>
+                    {moment.unix(props.timestamps[parseInt(props.payload[0].payload.label)]).format('D/MM/YYYY')}
+                </span>
+            </div>
+        );
+    }
+
+    return null;
+};
 
 const AspectXAxisTick = props => (
     <g transform={`translate(${props.x}, ${props.y})`}>
