@@ -22,7 +22,7 @@ const DashboardLinked = props => {
             />
         );
     } else {
-        return (<Dashboard {...props} />);
+        return (<Dashboard {...props} storeId={props.data.id} />);
     }
 };
 

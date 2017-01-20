@@ -13,8 +13,10 @@ module.exports = {
         "vendor": ['moment']
     }, views),
     output: {
-        path: './app/res/js/dist',
-        filename: '[name].js'
+        path: path.join(__dirname, 'app', 'res', 'js', 'dist'),
+        publicPath: '/js/',
+        filename: '[name].js',
+        chunkFilename: '[name]-[chunkhash].js'
     },
     module: {
         rules: [

@@ -1,5 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import LazilyLoad, { importLazy } from 'utils/LazilyLoad';
 import classNames from 'classnames';
 
 import DataLayer from 'forms/DataLayer';
@@ -8,10 +9,6 @@ import NavigationBar from 'dashboard/NavigationBar';
 import LiveFeed from 'dashboard/livefeed/LiveFeed';
 
 /* Views */
-import TimelineView from 'dashboard/TimelineView';
-import AspectsView from 'dashboard/aspects/AspectsView';
-import EventsView from 'dashboard/events/EventsView';
-
 
 export default class Dashboard extends React.Component {
     constructor() {
@@ -22,10 +19,35 @@ export default class Dashboard extends React.Component {
         };
 
         this.onChangeView = this.onChangeView.bind(this);
+        this.getView = this.getView.bind(this);
     }
 
     onChangeView(view) {
         this.setState({ view: view });
+    }
+
+    getView(view) {
+        /* Hardcoded (for the moment) since webpack prints a warning if an
+         * expression is used in an import. */
+        const views = {
+            'ASPECTS': (
+                <LazilyLoad modules={{
+                    C: () => importLazy(import('dashboard/aspects/AspectsView'))
+                }}>{({C})=>(<C storeId={this.props.storeId} />)}</LazilyLoad>
+            ),
+            'EVENTS': (
+                <LazilyLoad modules={{
+                    C: () => importLazy(import('dashboard/events/EventsView'))
+                }}>{({C})=>(<C storeId={this.props.storeId} />)}</LazilyLoad>
+            ),
+            'TIMELINE': (
+                <LazilyLoad modules={{
+                    C: () => importLazy(import('dashboard/TimelineView'))
+                }}>{({C})=>(<C storeId={this.props.storeId} />)}</LazilyLoad>
+            )
+        };
+
+        return views[view];
     }
 
     render() {
@@ -37,11 +59,7 @@ export default class Dashboard extends React.Component {
                         view={this.state.view}
                         url={this.props.data.url}
                     />
-                    {{
-                        'TIMELINE': <TimelineView storeId={this.props.data.id} />,
-                        'ASPECTS': <AspectsView storeId={this.props.data.id} />,
-                        'EVENTS': <EventsView storeId={this.props.data.id} />
-                    }[this.state.view] }
+                    { this.getView(this.state.view) }
                 </div>
                 <div className='right-column'>
                     <LiveFeed />
