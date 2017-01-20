@@ -1,11 +1,11 @@
-require('expose?$!expose?jQuery!jquery');
-
 import React from 'react';
 import ReactDOM from 'react-dom';
+import docReady from 'doc-ready';
 
 import DataLayer from 'forms/DataLayer';
-import Dashboard from 'dashboard/Dashboard';
 import Loader from 'dashboard/Loader';
+
+import Dashboard from 'dashboard/Dashboard';
 
 const DashboardLinked = props => {
     if (!props.data.id || props.loading) {
@@ -26,7 +26,7 @@ const DashboardLinked = props => {
     }
 };
 
-$(function() {
+docReady(function() {
     ReactDOM.render(
         (<DataLayer action="/api/store">
             <DashboardLinked />

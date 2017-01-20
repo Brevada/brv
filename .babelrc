@@ -1,4 +1,4 @@
 {
-    "presets": ["es2015", "react"],
-    "plugins": ["transform-es2015-instanceof"]
+    "presets": [["es2015", { "modules": false }], "react"],
+    "plugins": ["transform-es2015-instanceof", "syntax-dynamic-import"]
 }

@@ -25,7 +25,12 @@ module.exports = {
             }
         ]
     },
-    plugins: [new webpack.optimize.CommonsChunkPlugin('chunks')],
+    plugins: [
+        new webpack.optimize.CommonsChunkPlugin('chunks'),
+        new webpack.optimize.UglifyJsPlugin(),
+        new webpack.optimize.AggressiveMergingPlugin(),
+        new webpack.optimize.OccurrenceOrderPlugin()
+    ],
     cache: true,
     resolve: {
         modules: [

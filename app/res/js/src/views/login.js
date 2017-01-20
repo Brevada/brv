@@ -1,11 +1,10 @@
-require('expose?$!expose?jQuery!jquery');
-
 import React from 'react';
 import ReactDOM from 'react-dom';
+import docReady from 'doc-ready';
 
 import Login from 'login/Login';
 
-$(function() {
+docReady(function() {
     ReactDOM.render(
         <Login />,
         document.getElementById('login-root')

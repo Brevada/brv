@@ -29,19 +29,24 @@ The latest version of `npm` and `composer` are required.
 
 ### Build
 
-To build all assets (css/javascript):
+To build all assets (css/javascript) in a development environment:
 ```
-> npm run build
+> npm run dev-build
 ```
 
 Which is equivalent to:
 ```
-> npm run build-css && npm run build-js
+> npm run dev-build-css && npm run dev-build-js
 ```
 
 To build documentation:
 ```
 > npm run build-docs
+```
+
+To build for production, omit the "dev-" prefix:
+```
+> npm run build
 ```
 
 ### Testing
@@ -54,6 +59,13 @@ in the shell's environment variables.
 ```
 
 Arguments supplied to the test command are forwarded to `phpunit`.
+
+### Clean
+
+To clean the distribution files (remove them):
+```
+> npm run clean
+```
 
 ## Deployment Process
 
