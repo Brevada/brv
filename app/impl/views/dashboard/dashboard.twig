@@ -1,5 +1,9 @@
 {% extends "_structure.twig" %}
 
+{% block metadata %}
+<meta name='viewport' content='width=device-width, user-scalable=no'>
+{% endblock %}
+
 {% block styles %}
 {{ resources.style('/css/react-datepicker/react-datepicker.min.css') }}
 {% endblock %}

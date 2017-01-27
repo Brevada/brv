@@ -21,12 +21,12 @@
 
     .value {
         color: #fff;
-        width: 55px;
-        padding: 5px 0;
+        width: 57px;
+        padding: 8.5px 0;
         border-radius: 3px;
         font-size: 0.95rem;
         display: flex;
-        flex-direction: column;
+        flex-direction: row;
         justify-content: center;
 
         @include moods(background);
@@ -35,6 +35,6 @@
     .label {
         color: $grey4;
         font-size: 0.65em;
-        margin: 2px 0;
+        margin: 3px 0 2px 0;
     }
 }

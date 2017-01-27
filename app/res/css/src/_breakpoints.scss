@@ -1,10 +1,11 @@
 /* Responsive Breakpoints */
 
 $breakpoints: (
-    'xsmall': 480px,
+    'xsmall': 320px,
     'small': 767px,
     'medium': 992px,
-    'large': 1200px
+    'large': 1200px,
+    'xlarge': 1900px
 ) !default;
 
 /// Mixin to manage responsive breakpoints

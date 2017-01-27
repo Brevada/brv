@@ -10,7 +10,9 @@
 
     &.flex-h, &.flex-v {
         display: flex;
-        flex-wrap: wrap;
+        &:not(.defined-size) {
+            flex-wrap: wrap;
+        }
 
         .item:not(.ex-ly) {
             display: inline-block;
@@ -88,5 +90,15 @@
                 overflow: hidden;
             }
         }
+    }
+
+    &.ly-float {
+        > .left { float: left; }
+        > .right { float: right; }
+    }
+
+    &.ly-abs-container {
+        position: relative;
+        @extend .clearfix;
     }
 }
