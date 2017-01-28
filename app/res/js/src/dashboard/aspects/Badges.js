@@ -60,7 +60,7 @@ const Badges = props => (
                 label={'To All Time'}
                 change={true}
                 percent={true}
-                formatter={x => +x.toFixed(2)}
+                formatter={x => +x.toFixed(1)}
             />
         ) }
         { props.industry !== false && (

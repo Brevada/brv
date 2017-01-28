@@ -11,18 +11,25 @@ import classNames from 'classnames';
 
 const EventAspectsItem = props => (
     <div className='event-aspects-item'>
-        <div className='ly ly-split'>
-            <div className='title left'>{props.title}</div>
-            <div className='detail right fill'>
+        <div className='ly ly-abs-container'>
+            <div className='title left' title={props.title}>{props.title}</div>
+            <div className='detail left'>
                 { (props.responses > 0 && (
-                    <span>
+                    <span title={
+                        (props.change > 0 ? '+' : (props.change == 0 ? '' : '-')) + Math.abs(+props.change.toFixed(2)) + '%'
+                        + ` after ${props.responses} response${props.responses>1?'s':''}`
+                    }>
                         <span className={'change ' + Mood(props.change, -100)}>{
                             (props.change > 0 ? '+' : (props.change == 0 ? '' : '-')) + Math.abs(+props.change.toFixed(2)) + '%'
                         }</span>
-                        <span className='text'>{` after ${props.responses} response${props.responses>1?'s':''}`}</span>
+                        <span className='text'>
+                            {` after ${props.responses} response${props.responses>1?'s':''}`}
+                        </span>
                     </span>
                 )) || (
-                    <span className='text'>{"no activity for this aspect"}</span>
+                    <span className='text' title={"no activity for this aspect"}>
+                        {"no activity for this aspect"}
+                    </span>
                 )}
             </div>
             <div className='control right'>
@@ -70,7 +77,7 @@ export default class EventAspects extends React.Component {
     render() {
         return (
             <div>
-                <div className='ly flex-v event-aspects'>
+                <div className='ly flex-v defined-size event-aspects'>
                     {this.state.aspects
                         .concat()
                         .sort((a,b) => a.title.localeCompare(b.title))

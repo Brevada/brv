@@ -32,9 +32,15 @@ export default class Event extends React.Component {
                 <div className='ly constrain-w item dl event-content'>
                     <div className='dl header ly keep-spacing ly-split'>
                         <div className='left fill'>
-                            <div className='title'>{this.props.title}</div>
-                            <div className='hint'>
-                                <span className='from'>{moment.unix(this.props.from).format('MMM. Do, YYYY')}</span>
+                            <div className='title' title={this.props.title}>{this.props.title}</div>
+                            <div className='hint'
+                                title={moment.unix(this.props.from).format('MMM. Do, YYYY') + ' - ' +
+                                (this.props.completed === false ? 'Still Active' :
+                                moment.unix(this.props.completed).format('MMM. Do, YYYY'))}
+                            >
+                                <span className='from'>
+                                    {moment.unix(this.props.from).format('MMM. Do, YYYY')}
+                                </span>
                                 <span className='delim'>{'\u2014'}</span>
                                 { (this.props.completed === false && (
                                     <Form

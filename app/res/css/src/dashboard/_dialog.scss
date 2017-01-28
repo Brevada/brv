@@ -52,3 +52,9 @@
         color: $grey4;
     }
 }
+
+.dialog > .content .dialog-controls {
+    .btn {
+        font-size: 1.05em;
+    }
+}

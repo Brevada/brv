@@ -95,6 +95,8 @@ export default class AspectInputField extends FormInput {
 
         this.setState({
             show: true
+        }, () => {
+            this._inputText && ReactDOM.findDOMNode(this._inputText).focus();
         });
     }
 
@@ -108,13 +110,11 @@ export default class AspectInputField extends FormInput {
 
     render() {
         return (
-            <div className='aspect-input' tabIndex={0} onFocus={()=>{
-                this._inputText && ReactDOM.findDOMNode(this._inputText).focus();
-            }}>
+            <div className='aspect-input' tabIndex={0} onFocus={this.onFocus}>
                 <input
                     className='textbox'
                     name={this.props.name}
-                    placeholder={this.props.placeHolder || ''}
+                    placeholder=''
                     type='text'
                     ref={ input => (this._inputText = input) }
                     onChange={this.onTextChange}
@@ -124,6 +124,9 @@ export default class AspectInputField extends FormInput {
                     onKeyPress={this.onKeyPress}
                     autoComplete='off'
                 />
+                { this.state.value.length === 0 && (
+                    <div className='placeholder'>{ this.props.placeHolder || '' }</div>
+                ) }
                 <input
                     type='hidden'
                     ref={ input => (this._inputId = input) }

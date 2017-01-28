@@ -14,7 +14,9 @@ import classNames from 'classnames';
 const InlineRemoveDialog = props => (
     <div className='body'>
         <div className='remove-dialog'>
-            <span>Are you sure you'd like to remove "{props.title}"?</span>
+            <span>
+                Are you sure? This means you will no longer collect feedback on <span className='aspect-name'>{props.title}</span>.
+            </span>
             <Form method="DELETE" action={`/api/aspect/${props.id}`} onSuccess={props.onSuccess} onError={()=>false}>
                 <FormGroup className='link-style'>
                     <Button label="Remove" submit={true} right={true} />

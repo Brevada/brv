@@ -74,21 +74,46 @@
                 border-top: 1px solid transparent;
                 border-bottom: 1px solid $grey5;
 
+                > .ly {
+                    @include respond-to('xsmall') {
+                        white-space: nowrap;
+                    }
+                }
+
                 .title, .detail, .control {
-                    display: inline-block;
+                    display: block;
+                    @include respond-to('xsmall') {
+                        display: inline-block;
+                    }
                 }
 
                 .title {
                     color: $black;
-                    min-width: 30%;
                     @extend .ellipsis;
+
+                    min-width: 100%;
+                    @include respond-to('xsmall') { min-width: 40%; }
+                    @include respond-to('medium') { min-width: 30%; }
+                    @include respond-to('large') { min-width: 24%; }
+                    @include respond-to('xlarge') { min-width: 20%; }
+                    transition: min-width 0.1s;
                 }
 
                 .detail {
-                    padding: 0 0.8em;
+                    padding: 0;
+                    @include respond-to('xsmall') {
+                        padding: 0 0.8em;
+                    }
                     color: $grey4;
 
-                    width: calc(70% - 70px);
+                    $right_width: 75px;
+                    width: 100%;
+                    @include respond-to('xsmall') { width: calc(60% - #{$right_width}); }
+                    @include respond-to('medium') { width: calc(70% - #{$right_width}); }
+                    @include respond-to('large') { width: calc(74% - #{$right_width}); }
+                    @include respond-to('xlarge') { width: calc(80% - #{$right_width}); }
+                    transition: width 0.1s;
+
                     @extend .ellipsis;
                 }
 
@@ -102,9 +127,13 @@
                 }
 
                 .control {
-                    position: absolute;
-                    right: 0;
                     font-size: 0.84em;
+                    display: none;
+                    @include respond-to('xsmall') {
+                        display: inline-block;
+                        position: absolute;
+                        right: 0;
+                    }
                 }
             }
         }
