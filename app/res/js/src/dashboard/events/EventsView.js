@@ -31,12 +31,24 @@ const EventContainerLinked = props => {
     }
 };
 
+const EventTimeFilter = props => (
+    <TimeFilters
+        {...props}
+        options={[
+            { view: 'PAST_MONTH' },
+            { view: 'PAST_6_MONTH' },
+            { view: 'PAST_YEAR' },
+            { view: 'ALL_TIME' }
+        ]}
+    />
+);
+
 export default class EventsView extends React.Component {
     constructor() {
         super();
 
         this.state = {
-            filter: 'TODAY',
+            filter: 'PAST_MONTH',
             dialogs: {
                 'NEW_EVENT': false
             },
@@ -78,8 +90,8 @@ export default class EventsView extends React.Component {
                         onAction={this.newEventDialogAction}
                     />
                 )}
-                <TimeFilters
-                    onChangeFilter={this.onChangeFilter}
+                <EventTimeFilter
+                    onChange={this.onChangeFilter}
                     filter={this.state.filter}
                     actionLabel='+ Create a New Event'
                     onAction={() => {this.newEventDialogAction(DialogButtonActions.OPEN);}}

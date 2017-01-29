@@ -30,6 +30,18 @@ const AspectContainerLinked = props => {
     }
 };
 
+const AspectTimeFilter = props => (
+    <TimeFilters
+        {...props}
+        options={[
+            { view: 'TODAY' },
+            { view: 'PAST_WEEK' },
+            { view: 'PAST_MONTH' },
+            { view: 'ALL_TIME' }
+        ]}
+    />
+);
+
 export default class AspectsView extends React.Component {
     constructor() {
         super();
@@ -77,10 +89,10 @@ export default class AspectsView extends React.Component {
                         onAction={this.newAspectDialogAction}
                     />
                 )}
-                <TimeFilters
-                    onChangeFilter={this.onChangeFilter}
+                <AspectTimeFilter
+                    onChange={this.onChangeFilter}
                     filter={this.state.filter}
-                    actionLabel='+ Ask Something New'
+                    actionLabel={'+ Ask Something New'}
                     onAction={() => {this.newAspectDialogAction(DialogButtonActions.OPEN);}}
                 />
                 <DataLayer action="/api/aspects" data={{

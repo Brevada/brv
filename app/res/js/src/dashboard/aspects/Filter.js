@@ -15,6 +15,16 @@ const Filter = {
             days: 30,
             points: 4
         },
+        'PAST_6_MONTH': {
+            label: 'Past 6 Months',
+            days: 30*6,
+            points: 6
+        },
+        'PAST_YEAR': {
+            label: 'Past Year',
+            days: 365,
+            points: 12
+        },
         'ALL_TIME': {
             label: 'All Time',
             days: 0,

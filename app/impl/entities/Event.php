@@ -66,10 +66,16 @@ class Event extends Entity
      * Factory method to instantiate an array of event entities from a store id.
      *
      * @param integer $id The store id.
+     * @param integer $from From unix time to filter events.
+     * @param integer $to To unix time to filter events.
      * @return self
      */
-    public static function queryStore($id)
+    public static function queryStore($id, $from = null, $to = null)
     {
+        $from = is_null($from) ? 0 : $from;
+        $to = is_null($to) ? time() : $to;
+
+        // We find events which "overlap" from, to.
         try {
             $stmt = DB::get()->prepare("
                 SELECT
@@ -78,9 +84,15 @@ class Event extends Entity
                     UNIX_TIMESTAMP(milestones.FromDate) as _From,
                     UNIX_TIMESTAMP(milestones.ToDate) as _To
                 FROM milestones
-                WHERE milestones.StoreID = :id
+                WHERE
+                    milestones.StoreID = :id AND
+                    (milestones.FromDate >= FROM_UNIXTIME(:from) OR
+                    milestones.ToDate > FROM_UNIXTIME(:from)) AND
+                    milestones.FromDate < FROM_UNIXTIME(:to)
             ");
             $stmt->bindValue(':id', $id, \PDO::PARAM_INT);
+            $stmt->bindValue(':from', $from, \PDO::PARAM_INT);
+            $stmt->bindValue(':to', $to, \PDO::PARAM_INT);
             $stmt->execute();
             return array_map(function ($row) {
                 return self::from([])->hydrate($row, Entity::HYDRATE_UNDERSCORE);

@@ -230,8 +230,26 @@ class Event extends Controller
             self::fail("Invalid store and/or lack of permissions.", \HTTP::BAD_PARAMS);
         }
 
+        /* Parse the data span or default to false (no data). */
+        $dataSpan = self::from('days', $_GET, false);
+        if ($dataSpan !== false) {
+            v::intVal()->min(0)->max(36500)->check($dataSpan);
+            $dataSpan = intval($dataSpan);
+        }
+
+        $from = time();
+        $to = $from;
+
+        // Treat days=0 as all time.
+        if ($dataSpan !== false && $dataSpan > 0) {
+            $from -= Data::infDay(Data::SECONDS_DAY * $dataSpan);
+            v::intVal()->min(0)->max($to)->check($from);
+        } elseif ($dataSpan === 0) {
+            $from = 0;
+        }
+
         /* Load all events by store id. */
-        $events = EEvent::queryStore($store->getId());
+        $events = EEvent::queryStore($store->getId(), $from, $to);
         if ($events !== null) {
             return new View([
                 /* For each event, extract info pertinent to the API. */
