@@ -17,6 +17,11 @@ use Brv\impl\entities\Industry;
  */
 class Company extends Entity
 {
+    use common\FeaturesId,
+        common\Contact,
+        common\Active,
+        common\CompanyFeatures;
+
     /** @var Industry A Industry singleton. */
     private $industry = null;
 
@@ -205,16 +210,6 @@ class Company extends Entity
     }
 
     /**
-     * Gets the company id.
-     *
-     * @return integer
-     */
-    public function getId()
-    {
-        return (int) $this->get('id');
-    }
-
-    /**
      * Gets the company's category id.
      *
      * @return integer
@@ -274,72 +269,6 @@ class Company extends Entity
     }
 
     /**
-     * Gets the company name.
-     *
-     * @return string
-     */
-    public function getName()
-    {
-        return $this->get('Name');
-    }
-
-    /**
-     * Sets the company name.
-     *
-     * @param string $name
-     * @return string
-     */
-    public function setName($name)
-    {
-        $this->set('Name', $name);
-        return $this->getName();
-    }
-
-    /**
-     * Checks if the company is active.
-     *
-     * @return boolean
-     */
-    public function isActive()
-    {
-        return $this->get('Active') == 1;
-    }
-
-    /**
-     * Sets the active state of the company.
-     *
-     * @param boolean $state The new active state.
-     * @return boolean
-     */
-    public function setActive($state)
-    {
-        $this->set('Active', (int) $state);
-        return $this->isActive();
-    }
-
-    /**
-     * Gets the company's phone number.
-     *
-     * @return string
-     */
-    public function getPhoneNumber()
-    {
-        return $this->get('PhoneNumber');
-    }
-
-    /**
-     * Sets the company's phone number.
-     *
-     * @param string $phone The new phone number.
-     * @return string
-     */
-    public function setPhoneNumber($phone)
-    {
-        $this->set('PhoneNumber', $phone);
-        return $this->getPhoneNumber();
-    }
-
-    /**
      * Gets the company's website.
      *
      * @return string
@@ -359,85 +288,6 @@ class Company extends Entity
     {
         $this->set('Website', $website);
         return $this->getWebsite();
-    }
-
-    /**
-     * Gets the max number of stores the company can have.
-     *
-     * @return integer
-     */
-    public function getMaxStores()
-    {
-        return (int) $this->get('MaxStores', 0);
-    }
-
-    /**
-     * Sets the max number of stores the company can have.
-     *
-     * @param integer $val The new value.
-     * @return integer
-     */
-    public function setMaxStores($val)
-    {
-        $this->set('MaxStores', (int) $val);
-        return $this->getMaxStores();
-    }
-
-    /**
-     * Gets the max number of accounts the company can have.
-     *
-     * @return integer
-     */
-    public function getMaxAccounts()
-    {
-        return (int) $this->get('MaxAccounts', 0);
-    }
-
-    /**
-     * Sets the max number of accounts the company can have.
-     *
-     * @param integer $val The new value.
-     * @return integer
-     */
-    public function setMaxAccounts($val)
-    {
-        $this->set('MaxAccounts', (int) $val);
-        return $this->getMaxAccounts();
-    }
-
-    /**
-     * Gets the max number of tablets the company can have.
-     *
-     * @return integer
-     */
-    public function getMaxTablets()
-    {
-        return (int) $this->get('MaxTablets', 0);
-    }
-
-    /**
-     * Sets the max number of tablets the company can have.
-     *
-     * @param integer $val The new value.
-     * @return integer
-     */
-    public function setMaxTablets($val)
-    {
-        $this->set('MaxTablets', (int) $val);
-        return $this->getMaxTablets();
-    }
-
-    /**
-     * Gets the id of the features table associated with the company.
-     *
-     * @return integer
-     */
-    public function getFeaturesId()
-    {
-        if ($this->get('FeaturesID') === null) {
-            return null;
-        }
-        return (int) $this->get('FeaturesID');
     }
 
     /**

@@ -20,6 +20,8 @@ use Brv\impl\entities\Aspect;
  */
 class Event extends Entity
 {
+    use common\StoreId;
+
     /**
      * Instantiates an event entity from a data row.
      *
@@ -161,38 +163,6 @@ class Event extends Entity
         }
 
         return null;
-    }
-
-    /**
-     * Gets the event id.
-     *
-     * @return integer
-     */
-    public function getId()
-    {
-        return (int) $this->get('id');
-    }
-
-    /**
-     * Gets the event store id.
-     *
-     * @return integer
-     */
-    public function getStoreId()
-    {
-        return (int) $this->get('StoreID');
-    }
-
-    /**
-     * Sets the event store id.
-     *
-     * @param integer $id The new store id.
-     * @return integer
-     */
-    public function setStoreId($id)
-    {
-        $this->set('StoreID', (int) $id);
-        return $this->getStoreId();
     }
 
     /**

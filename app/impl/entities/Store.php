@@ -16,6 +16,14 @@ use Brv\core\libs\database\Database as DB;
  */
 class Store extends Entity
 {
+    use common\CompanyId,
+        common\LocationId,
+        common\FeaturesId,
+        common\Contact,
+        common\Active,
+        common\Location,
+        common\StoreFeatures;
+
     /**
      * Instantiates a store entity from a data row.
      *
@@ -37,7 +45,28 @@ class Store extends Entity
     public static function queryId($id)
     {
         try {
-            $stmt = DB::get()->prepare("SELECT * FROM stores WHERE id = :id");
+            $stmt = DB::get()->prepare("
+                SELECT
+                    stores.*, UNIX_TIMESTAMP(stores.DateCreated) as sDateCreated,
+                    store_features.id as FeaturesID,
+                    store_features.CollectionTemplate,
+                    store_features.CollectionLocation,
+                    store_features.SessionCheck,
+                    store_features.WelcomeMessage,
+                    store_features.AllowComments,
+                    store_features.CommentMessage,
+                    locations.id as LocationID,
+                    locations.Country,
+                    locations.Province,
+                    locations.City,
+                    locations.PostalCode,
+                    locations.Longitude,
+                    locations.Latitude
+                FROM stores
+                JOIN store_features ON store_features.id = stores.FeaturesID
+                JOIN locations ON locations.id = stores.LocationID
+                WHERE stores.id = :id
+            ");
             $stmt->bindValue(':id', (int) $id, \PDO::PARAM_INT);
             $stmt->execute();
             if (($row = $stmt->fetch(\PDO::FETCH_ASSOC)) !== false) {
@@ -63,8 +92,24 @@ class Store extends Entity
         try {
             $stmt = DB::get()->prepare("
                 SELECT
-                    stores.*, UNIX_TIMESTAMP(stores.DateCreated) as sDateCreated
+                    stores.*, UNIX_TIMESTAMP(stores.DateCreated) as sDateCreated,
+                    store_features.id as FeaturesID,
+                    store_features.CollectionTemplate,
+                    store_features.CollectionLocation,
+                    store_features.SessionCheck,
+                    store_features.WelcomeMessage,
+                    store_features.AllowComments,
+                    store_features.CommentMessage,
+                    locations.id as LocationID,
+                    locations.Country,
+                    locations.Province,
+                    locations.City,
+                    locations.PostalCode,
+                    locations.Longitude,
+                    locations.Latitude
                 FROM stores
+                JOIN store_features ON store_features.id = stores.FeaturesID
+                JOIN locations ON locations.id = stores.LocationID
                 JOIN accounts ON accounts.CompanyID = stores.CompanyID
                 WHERE accounts.StoreID = stores.id AND accounts.id = :id
                 LIMIT 1
@@ -94,24 +139,47 @@ class Store extends Entity
             /*
              * UPDATE rather than INSERT.
              */
-             try {
-                 $stmt = DB::get()->prepare("
-                     UPDATE locations SET
-                     Country = :country, Province = :province, City = :city,
-                     PostalCode = :postalcode, Longitude = :longitude, Latitude = :latitude
-                     WHERE id = :id
-                 ");
-                 $stmt->bindValue(':id', $this->getLocationId(), \PDO::PARAM_INT);
-                 $stmt->bindValue(':country', $this->getCountry(), \PDO::PARAM_STR);
-                 $stmt->bindValue(':province', $this->getProvince(), \PDO::PARAM_STR);
-                 $stmt->bindValue(':city', $this->getCity(), \PDO::PARAM_STR);
-                 $stmt->bindValue(':postalcode', $this->getPostalCode(), \PDO::PARAM_STR);
-                 $stmt->bindValue(':longitude', $this->getLongitude(), \PDO::PARAM_STR);
-                 $stmt->bindValue(':latitude', $this->getLatitude(), \PDO::PARAM_STR);
-                 $stmt->execute();
-             } catch (\PDOException $ex) {
-                 \App::log()->error($ex->getMessage());
-             }
+            try {
+                $stmt = DB::get()->prepare("
+                    UPDATE locations SET
+                    Country = :country, Province = :province, City = :city,
+                    PostalCode = :postalcode, Longitude = :longitude, Latitude = :latitude
+                    WHERE id = :id
+                ");
+                $stmt->bindValue(':id', $this->getLocationId(), \PDO::PARAM_INT);
+                $stmt->bindValue(':country', $this->getCountry(), \PDO::PARAM_STR);
+                $stmt->bindValue(':province', $this->getProvince(), \PDO::PARAM_STR);
+                $stmt->bindValue(':city', $this->getCity(), \PDO::PARAM_STR);
+                $stmt->bindValue(':postalcode', $this->getPostalCode(), \PDO::PARAM_STR);
+                $stmt->bindValue(':longitude', $this->getLongitude(), \PDO::PARAM_STR);
+                $stmt->bindValue(':latitude', $this->getLatitude(), \PDO::PARAM_STR);
+                $stmt->execute();
+            } catch (\PDOException $ex) {
+                \App::log()->error($ex->getMessage());
+            }
+
+            try {
+                $stmt = DB::get()->prepare("
+                    UPDATE store_features SET
+                        CollectionTemplate = :template,
+                        CollectionLocation = :location,
+                        SessionCheck = :sessionCheck,
+                        WelcomeMessage = :welcome,
+                        AllowComments = :allowComments,
+                        CommentMessage = :comment
+                    WHERE id = :id
+                ");
+                $stmt->bindValue(':id', $this->getFeaturesId(), \PDO::PARAM_INT);
+                $stmt->bindValue(':template', $this->getCollectionTemplate(), \PDO::PARAM_STR);
+                $stmt->bindValue(':location', $this->getCollectionLocation(), \PDO::PARAM_INT);
+                $stmt->bindValue(':sessionCheck', $this->isSessionCheck(), \PDO::PARAM_INT);
+                $stmt->bindValue(':welcome', $this->getWelcomeMessage(), \PDO::PARAM_STR);
+                $stmt->bindValue(':allowComments', $this->isAllowComments(), \PDO::PARAM_INT);
+                $stmt->bindValue(':comment', $this->getCommentMessage(), \PDO::PARAM_STR);
+                $stmt->execute();
+            } catch (\PDOException $ex) {
+                \App::log()->error($ex->getMessage());
+            }
 
             try {
                 $stmt = DB::get()->prepare("
@@ -156,7 +224,21 @@ class Store extends Entity
                 $this->setLocationId(DB::get()->lastInsertId());
 
                 // create Store Features entry.
-                $stmt = DB::get()->prepare("INSERT INTO store_features VALUES ()");
+                $stmt = DB::get()->prepare("
+                    INSERT INTO store_features SET
+                        CollectionTemplate = :template,
+                        CollectionLocation = :location,
+                        SessionCheck = :sessionCheck,
+                        WelcomeMessage = :welcome,
+                        AllowComments = :allowComments,
+                        CommentMessage = :comment
+                ");
+                $stmt->bindValue(':template', $this->getCollectionTemplate(), \PDO::PARAM_STR);
+                $stmt->bindValue(':location', $this->getCollectionLocation(), \PDO::PARAM_INT);
+                $stmt->bindValue(':sessionCheck', $this->isSessionCheck(), \PDO::PARAM_INT);
+                $stmt->bindValue(':welcome', $this->getWelcomeMessage(), \PDO::PARAM_STR);
+                $stmt->bindValue(':allowComments', $this->isAllowComments(), \PDO::PARAM_INT);
+                $stmt->bindValue(':comment', $this->getCommentMessage(), \PDO::PARAM_STR);
                 $stmt->execute();
                 $this->setFeaturesId(DB::get()->lastInsertId());
 
@@ -185,6 +267,10 @@ class Store extends Entity
 
                 DB::get()->commit();
 
+                $this->pendLocation = false;
+                $this->pendStore = false;
+                $this->pendFeatures = false;
+
                 return $this->getId();
             } catch (\PDOException $ex) {
                 \App::log()->error($ex->getMessage());
@@ -201,16 +287,6 @@ class Store extends Entity
     }
 
     /**
-     * Gets the store id.
-     *
-     * @return integer
-     */
-    public function getId()
-    {
-        return (int) $this->get('id');
-    }
-
-    /**
      * Gets the date the company created the "store".
      *
      * @return integer The date created in unix seconds.
@@ -218,132 +294,6 @@ class Store extends Entity
     public function getDateCreated()
     {
         return (int) $this->get('sDateCreated');
-    }
-
-    /**
-     * Gets the company id.
-     *
-     * @return integer
-     */
-    public function getCompanyId()
-    {
-        return (int) $this->get('CompanyID');
-    }
-
-    /**
-     * Sets the company id.
-     * @param integer $id
-     */
-    public function setCompanyId($id)
-    {
-        $this->set('CompanyID', (int) $id);
-        return $this->getCompanyId();
-    }
-
-    /**
-     * Gets the store's location id.
-     *
-     * @return integer
-     */
-    public function getLocationId()
-    {
-        return (int) $this->get('LocationID');
-    }
-
-    /**
-     * Sets the store's location id.
-     * @param integer $id
-     */
-    protected function setLocationId($id)
-    {
-        $this->set('LocationID', (int) $id);
-        return $this->getLocationId();
-    }
-
-    /**
-     * Gets the store's features id.
-     *
-     * @return integer
-     */
-    public function getFeaturesId()
-    {
-        return (int) $this->get('FeaturesID');
-    }
-
-    /**
-     * Sets the store's features id.
-     * @param integer $id
-     */
-    protected function setFeaturesId($id)
-    {
-        $this->set('FeaturesID', (int) $id);
-        return $this->getFeaturesId();
-    }
-
-    /**
-     * Gets the store's phone number.
-     *
-     * @return string
-     */
-    public function getPhoneNumber()
-    {
-        return $this->get('PhoneNumber');
-    }
-
-    /**
-     * Sets the store's phone number.
-     *
-     * @param string $phone
-     * @return string
-     */
-    public function setPhoneNumber($phone)
-    {
-        $this->set('PhoneNumber', $phone);
-        return $this->getPhoneNumber();
-    }
-
-    /**
-     * Gets the store name.
-     *
-     * @return string
-     */
-    public function getName()
-    {
-        return $this->get('Name');
-    }
-
-    /**
-     * Sets the store name.
-     *
-     * @param string $name
-     * @return string
-     */
-    public function setName($name)
-    {
-        $this->set('Name', $name);
-        return $this->getName();
-    }
-
-    /**
-     * Checks if the store is active.
-     *
-     * @return boolean
-     */
-    public function isActive()
-    {
-        return $this->get('Active') == 1;
-    }
-
-    /**
-     * Sets the store's active state.
-     *
-     * @param boolean $state The new state.
-     * @return boolean
-     */
-    public function setActive($state = true)
-    {
-        $this->set('Active', (int) $state);
-        return $this->isActive();
     }
 
     /**

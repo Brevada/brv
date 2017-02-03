@@ -21,6 +21,9 @@ use Brv\core\data\Data;
  */
 class Aspect extends Entity
 {
+    use common\StoreId,
+        common\Active;
+
     /**
      * Instantiates an aspect entity from a data row.
      *
@@ -279,7 +282,11 @@ class Aspect extends Entity
                 'average' => $group->getAverage(),
                 'responses' => $group->getCount()
             ];
-        }, $aspectData->group($numPoints, Data::infDay($aspectData->getEarliestDate()), $aspectData->getLatestDate()));
+        }, $aspectData->group(
+            $numPoints,
+            $aspectData->getFrom() == 0 ? Data::infDay($aspectData->getEarliestDate()) : $aspectData->getFrom(),
+            $aspectData->getTo())
+        );
 
         return $summary;
     }
@@ -290,7 +297,7 @@ class Aspect extends Entity
      * @api
      *
      * @param integer $from The start date of the data to consider.
-     * @param integer $days The end date of the data to consider.
+     * @param integer $to The end date of the data to consider.
      *
      * @return array A summary of this aspect.
      */
@@ -309,16 +316,6 @@ class Aspect extends Entity
         $summary['to_all_time'] = $aspectData->getAverageDiff($allData);
 
         return $summary;
-    }
-
-    /**
-     * Gets the aspect id.
-     *
-     * @return integer
-     */
-    public function getId()
-    {
-        return (int) $this->get('id');
     }
 
     /**
@@ -342,28 +339,6 @@ class Aspect extends Entity
     }
 
     /**
-     * Gets the store id of the aspect.
-     *
-     * @return integer
-     */
-    public function getStoreId()
-    {
-        return (int) $this->get('StoreID');
-    }
-
-    /**
-     * Sets the store id of the aspect.
-     *
-     * @param integer The new store id.
-     * @return integer
-     */
-    public function setStoreId($id)
-    {
-        $this->set('StoreID', $id);
-        return $this->getStoreId();
-    }
-
-    /**
      * Gets the aspect type id of the aspect.
      *
      * @return integer
@@ -383,28 +358,6 @@ class Aspect extends Entity
     {
         $this->set('AspectTypeID', (int) $id);
         return $this->getAspectTypeId();
-    }
-
-    /**
-     * Checks if the aspect is active.
-     *
-     * @return boolean
-     */
-    public function isActive()
-    {
-        return ((int) $this->get('Active')) === 1;
-    }
-
-    /**
-     * Sets the aspect's active state.
-     *
-     * @param boolean $state The new "active" state.
-     * @return boolean
-     */
-    public function setActive($state)
-    {
-        $this->set('Active', (int) $state);
-        return $this->isActive();
     }
 
     /**

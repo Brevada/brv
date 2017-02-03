@@ -83,16 +83,6 @@ class AspectType extends Entity
     }
 
     /**
-     * Gets the aspect type id.
-     *
-     * @return integer
-     */
-    public function getId()
-    {
-        return (int) $this->get('id');
-    }
-
-    /**
      * Gets the aspect type title.
      *
      * @return string

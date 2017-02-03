@@ -18,6 +18,9 @@ use Brv\impl\entities\Company;
  */
 class Account extends Entity
 {
+    use common\CompanyId,
+        common\StoreId;
+
     /** @var Company A Company singleton. */
     private $company = null;
 
@@ -118,16 +121,6 @@ class Account extends Entity
     }
 
     /**
-     * Gets the account id.
-     *
-     * @return integer
-     */
-    public function getId()
-    {
-        return (int) $this->get('id');
-    }
-
-    /**
      * Gets the account's password.
      *
      * @return string
@@ -165,26 +158,6 @@ class Account extends Entity
     public function getEmailAddress()
     {
         return $this->get('EmailAddress');
-    }
-
-    /**
-     * Gets the company id.
-     *
-     * @return integer
-     */
-    public function getCompanyId()
-    {
-        return (int) $this->get('CompanyID');
-    }
-
-    /**
-     * Gets the store id.
-     *
-     * @return integer
-     */
-    public function getStoreId()
-    {
-        return (int) $this->get('StoreID');
     }
 
     /**

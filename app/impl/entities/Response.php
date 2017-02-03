@@ -132,14 +132,4 @@ class Response extends Entity implements IResponse
     {
         return (int) $this->get('typeId');
     }
-
-    /**
-     * Gets the response feedback id.
-     *
-     * @return integer
-     */
-    public function getId()
-    {
-        return (int) $this->get('id');
-    }
 }

@@ -118,6 +118,21 @@ abstract class Entity
     }
 
     /**
+     * Gets the entity's id.
+     *
+     * @throws \Exception If entity does not have a default id.
+     * @return integer
+     */
+    public function getId()
+    {
+        if ($this->has('id')) {
+            return (int) $this->get('id');
+        } else {
+            throw new \Exception("Entity does not have a default id.");
+        }
+    }
+
+    /**
      * Static factory method to instantiate an entity from a row.
      *
      * @param  array $row The initial data underlying the entity.
