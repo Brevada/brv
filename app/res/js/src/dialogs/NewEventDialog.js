@@ -46,6 +46,7 @@ export default class NewEventDialog extends React.Component {
                     data={{ store: this.props.storeId }}
                     onSuccess={()=>this.props.onAction(DialogButtonActions.SUCCESS)}
                     onError={this.submitError}
+                    className='center'
                 >
                     { this.state.createError !== null && (
                         <ErrorMessage text={this.state.createError} />
@@ -54,13 +55,15 @@ export default class NewEventDialog extends React.Component {
                     <FormGroup className='new-event'>
                         <FormLabel
                             text={'What is the title of the event?'}
+                            inline={true}
                         />
                         <Textbox
                             placeHolder={'e.g. Hired a New Chef'}
                             name='title'
+                            seamless={true}
                         />
                     </FormGroup>
-                    <FormGroup className='inline left'>
+                    <FormGroup className='date inline left'>
                         <FormLabel
                             text={'Choose a start date:'}
                         />
@@ -73,7 +76,7 @@ export default class NewEventDialog extends React.Component {
                             onDateChange={d=>this.setState({ fromDate: d })}
                             isClearable={false} />
                     </FormGroup>
-                    <FormGroup className='inline right'>
+                    <FormGroup className='date inline right'>
                         <FormLabel
                             text={'Choose an optional end date:'}
                         />

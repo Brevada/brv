@@ -1,0 +1,68 @@
+/* New Event Form */
+
+.form-group.new-event {
+    margin: 0 0 1em 0;
+
+    text-align: center;
+
+    .label {
+        font-size: 1.1em;
+        @include respond-to('small') {
+            font-size: 1.4em;
+        }
+        @include respond-to('large') {
+            font-size: 1.9em;
+        }
+        transition: font-size 0.05s ease-out;
+
+        color: $black;
+        font-weight: bold;
+    }
+
+    .input {
+        margin: 0 0.55em;
+        display: inline-block;
+        border-bottom: 2px solid $black;
+        position: relative;
+        width: 300px;
+        max-width: 100%;
+
+        input, .placeholder {
+            font-size: 0.98em;
+            @include respond-to('small') {
+                font-size: 1.25em;
+            }
+            @include respond-to('large') {
+                font-size: 1.7em;
+            }
+            transition: font-size 0.1s linear;
+
+            text-align: left;
+            width: 100%;
+            border: 0;
+            outline: none;
+            background: transparent;
+        }
+
+        input {
+            color: $blue1;
+        }
+    }
+}
+
+.form-group.new-event ~ .form-group.date {
+    transition: margin 0.1s linear;
+    margin: 0;
+    width: 100%;
+    text-align: center;
+
+    @include respond-to('xsmall') {
+        margin: 0 0.5em;
+        width: auto;
+        text-align: left;
+    }
+
+    @include respond-to('medium') {
+        margin: 0 1em;
+    }
+}

@@ -144,14 +144,18 @@ class Event extends Controller
         if ($from === null) {
             self::fail("A from date must be specified.");
         }
-        v::intVal()->min(0)->max($maxTime)->check($from);
+
+        if (!v::intVal()->min(0)->max($maxTime)->validate($from)) {
+            self::fail("You cannot plan an event that far in advance.");
+        }
 
         $to = self::from('to_unix', $this->getBody(), null);
         if ($to == -1) {
             $to = null;
         }
-        if ($to !== null) {
-            v::intVal()->min($from)->max($maxTime)->check($to);
+
+        if ($to !== null && !v::intVal()->min($from)->max($maxTime)->validate($to)) {
+            self::fail("The end date must be after the start date.");
         }
 
         // Create and return id.

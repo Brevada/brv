@@ -151,20 +151,44 @@ class Input extends React.Component {
 }
 
 class Textbox extends Input {
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            value: ''
+        };
+
+        this.onFocus = this.onFocus.bind(this);
+        this.onChange = this.onChange.bind(this);
+    }
+
+    onFocus() {
+        this._input && ReactDOM.findDOMNode(this._input).focus();
+    }
+
+    onChange(e) {
+        this.setState({
+            value: e.target.value || ''
+        });
+    }
+
     render() {
         let passedProps = this.props.props || {};
         return (
-            <div className='input' tabIndex={0} onFocus={()=>{
-                this._input && ReactDOM.findDOMNode(this._input).focus();
-            }}>
+            <div className='input' tabIndex={0} onFocus={this.onFocus}>
                 <input
-                    className={'textbox'}
+                    className={classNames('textbox', {
+                        'seamless': this.props.seamless === true
+                    })}
                     name={this.props.name}
-                    placeholder={this.props.placeHolder || ''}
                     type={this.props.type || 'text'}
+                    onChange={this.onChange}
                     ref={ input => (this._input = input)}
                     {...passedProps}
                 />
+                { this.state.value.length === 0 && (
+                    <div className='placeholder'>{ this.props.placeHolder || '' }</div>
+                ) }
             </div>
         );
     }

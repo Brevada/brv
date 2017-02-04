@@ -8,6 +8,10 @@ $inline_margin: 5px;
         display: inline-block;
     }
 
+    &.center {
+        text-align: center;
+    }
+
     .form-group {
         padding: 0.4rem 0;
         @extend .clearfix;
@@ -118,6 +122,9 @@ $inline_margin: 5px;
     .input {
         display: inline-block;
         max-width: 100%;
+        position: relative;
+        background: #fff;
+        text-align: left;
 
         input[type=text],
         input[type=email],
@@ -133,26 +140,49 @@ $inline_margin: 5px;
             line-height: 1.42857143;
             color: #555;
 
-            background: #fff;
-            border: 1px solid #ccc;
+            background: transparent;
+            border-width: 1px;
+            border-color: transparent;
+            border-style: solid;
             border-radius: 4px;
-            @include vendor-prefix('box-shadow', 'inset 0 1px 1px rgba(0,0,0,0.075)');
-            transition: border-color ease-in-out .15s,
-                        box-shadow ease-in-out .15s;
 
-            &:focus {
-                border-color: #66afe9;
-                @include vendor-prefix('box-shadow', 'inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(102,175,233,.6)');
+            &:not(.seamless) {
+                border-color: #ccc;
+
+                @include vendor-prefix('box-shadow', 'inset 0 1px 1px rgba(0,0,0,0.075)');
+                transition: border-color ease-in-out .15s,
+                            box-shadow ease-in-out .15s;
+
+                &:focus {
+                    border-color: #66afe9;
+                    @include vendor-prefix('box-shadow', 'inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(102,175,233,.6)');
+                }
+
+                &:invalid {
+                    border-color: #e96767;
+                    @include vendor-prefix('box-shadow', 'inset 0 1px 1px rgba(255, 0, 0, 0.25)');
+                }
+
+                &:focus:invalid {
+                    @include vendor-prefix('box-shadow', 'inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(255, 0, 0, 0.25)');
+                }
             }
 
-            &:invalid {
-                border-color: #e96767;
-                @include vendor-prefix('box-shadow', 'inset 0 1px 1px rgba(255, 0, 0, 0.25)');
+            &:focus + .placeholder {
+                visibility: hidden;
             }
+        }
 
-            &:focus:invalid {
-                @include vendor-prefix('box-shadow', 'inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(255, 0, 0, 0.25)');
-            }
+        .placeholder {
+            color: $blue2;
+            @include user-select(none);
+            cursor: text;
+            position: absolute;
+            top: 50%;
+            @include vendor-prefix('transform', 'translateY(-50%)')
+            left: 6px;
+            width: calc(100% - 12px);
+            min-width: 12px;
         }
     }
 }
@@ -168,6 +198,7 @@ $inline_margin: 5px;
 }
 
 @import './aspectinput';
+@import './newevent';
 
 .datepicker.input > div {
     max-width: 100%;

@@ -4,12 +4,6 @@
     margin: 0 0 1em 0;
 
     text-align: center;
-    @include respond-to('xsmall') {
-        text-align: left;
-    }
-    @include respond-to('large') {
-        text-align: center;
-    }
 
     .label {
         font-size: 1.1em;
@@ -19,7 +13,7 @@
         @include respond-to('large') {
             font-size: 1.9em;
         }
-        transition: font-size 0.1s linear;
+        transition: font-size 0.05s ease-out;
 
         color: $black;
         font-weight: bold;
@@ -50,6 +44,10 @@
             outline: none;
             color: $blue1;
             background: transparent;
+        }
+
+        input:focus + .placeholder {
+            visibility: hidden;
         }
 
         .placeholder {
