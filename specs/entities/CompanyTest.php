@@ -110,7 +110,21 @@ class CompanyTest extends TestCase
         $this->assertEquals($website, $recalled->getWebsite());
         $this->assertEquals($phone, $recalled->getPhoneNumber());
         $this->assertEquals($expiry, $recalled->getExpiryDate());
-        $this->assertTrue(abs($expiry - $recalled->getDateCreated()) < 100);
+    }
+
+    /**
+     * Tests the date created is properly set.
+     * @test
+     */
+    public function testDateCreated()
+    {
+        $company = new Company();
+        $company->setName('A Company');
+        $id = $company->commit();
+        $company = Company::queryId($id);
+
+        $this->assertNotNull($company->getDateCreated());
+        $this->assertTrue(abs(time() - $company->getDateCreated()) < 100);
     }
 
     /**
@@ -120,18 +134,10 @@ class CompanyTest extends TestCase
     public function testUpdate()
     {
         $name = 'Test Company';
-        $active = true;
-        $website = 'www.example.com';
-        $phone = '123456789';
-        $expiry = time();
 
         // INSERT
         $company = new Company();
         $company->setName($name);
-        $company->setActive($active);
-        $company->setWebsite($website);
-        $company->setPhoneNumber($phone);
-        $company->setExpiryDate($expiry);
         $id = $company->commit();
 
         // UPDATE
