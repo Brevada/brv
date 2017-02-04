@@ -22,9 +22,12 @@ class AspectTest extends TestCase
      *
      * @throws \Exception if database cannot be setup.
      */
-    public static function setUpBeforeClass() {
+    public static function setUpBeforeClass()
+    {
         $result = TestDatabase::executeFile(realpath(dirname(__FILE__) . '/../schema/schema.sql'));
-        if ($result !== true) throw new \Exception("Failed to setup database for tests.");
+        if ($result !== true) {
+            throw new \Exception("Failed to setup database for tests.");
+        }
     }
 
     /**
@@ -33,9 +36,11 @@ class AspectTest extends TestCase
      *
      * @throws \Exception if database cannot be truncated.
      */
-    public static function tearDownAfterClass() {
+    public static function tearDownAfterClass()
+    {
         $result = TestDatabase::executeFile(realpath(dirname(__FILE__) . '/../schema/dropall.sql'));
-        if ($result !== true) throw new \Exception("Failed to setup database for tests.");
+        if ($result !== true) {
+            throw new \Exception("Failed to setup database for tests.");
+        }
     }
 }
-?>
