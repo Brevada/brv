@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import classNames from 'classnames';
-import equal from 'deep-equal';
+import _ from 'lodash';
 
 import { Input as FormInput } from 'forms/Form';
 
@@ -31,7 +31,7 @@ export default class AspectInputField extends FormInput {
     }
 
     componentWillReceiveProps(nextProps) {
-        if (!nextProps.types || equal(nextProps.types, this.state.types)) {
+        if (!nextProps.types || _.isEqual(nextProps.types, this.state.types)) {
             return;
         }
 

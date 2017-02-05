@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import moment from 'moment';
-import equal from 'deep-equal';
+import _ from 'lodash';
 
 import { DateCluster } from 'utils/DateCluster';
 import { ResponsiveContainer, LineChart, Tooltip, Line, XAxis, YAxis } from 'recharts';
@@ -46,11 +46,11 @@ class Graph extends React.Component {
     }
 
     shouldComponentUpdate(nextProps, nextState) {
-        return !equal(nextState.data, this.state.data);
+        return !_.isEqual(nextState.data, this.state.data);
     }
 
     componentWillReceiveProps(nextProps) {
-        if (!equal(nextProps.data, this.props.data)) this.updateData();
+        if (!_.isEqual(nextProps.data, this.props.data)) this.updateData();
     }
 
     componentDidMount() {

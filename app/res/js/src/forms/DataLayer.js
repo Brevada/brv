@@ -1,8 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import classNames from 'classnames';
-import equal from 'deep-equal';
-import omit from 'lodash.omit';
+import _ from 'lodash';
 import axios from 'axios';
 
 export default class DataLayer extends React.Component {
@@ -34,7 +33,7 @@ export default class DataLayer extends React.Component {
 
         if ((this.props.refresh !== nextProps.refresh ||
             this.props.action !== nextProps.action ||
-            !equal(nextProps.data || {}, this.props.data || {})) &&
+            !_.isEqual(nextProps.data || {}, this.props.data || {})) &&
             nextProps.refresh !== -1) {
             this.load();
         }
@@ -105,7 +104,7 @@ export default class DataLayer extends React.Component {
             data: this.state.result,
             loading: this.state.loading,
             error: this.state.error
-        }, omit(this.props, [
+        }, _.omit(this.props, [
             'children', 'data', 'loading', 'error', 'onSuccess',
             'onError', 'action', 'dummy', 'dummyDelay', 'refresh', 'key'
         ])));

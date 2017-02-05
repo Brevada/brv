@@ -1,14 +1,13 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import equal from 'deep-equal';
-import omit from 'lodash.omit';
+import _ from 'lodash';
 
 import Event from 'dashboard/events/Event';
 import DataLayer from 'forms/DataLayer';
 import { Filter } from 'dashboard/aspects/Filter';
 
 const EventLinked = props => {
-    let p = omit(props, ['data', 'aspects']);
+    let p = _.omit(props, ['data', 'aspects']);
     let event = Object.assign({}, props.event, props.data);
     return (
         <Event
@@ -37,7 +36,7 @@ export default class EventContainer extends React.Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        if (!nextProps.events || equal(nextProps.events, this.state.events)) {
+        if (!nextProps.events || _.isEqual(nextProps.events, this.state.events)) {
             return;
         }
 

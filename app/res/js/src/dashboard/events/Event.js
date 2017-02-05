@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import equal from 'deep-equal';
+import _ from 'lodash';
 
 import { Link } from 'components/Link';
 import { Badges } from 'dashboard/aspects/Badges';
@@ -18,12 +18,12 @@ export default class Event extends React.Component {
     }
 
     shouldComponentUpdate(nextProps, nextState) {
-        return !equal(this.props.aspects, nextProps.aspects) ||
-               !equal(this.props.summary, nextProps.summary) ||
-               !equal(this.props.title, nextProps.title) ||
-               !equal(this.props.completed, nextProps.completed) ||
-               !equal(this.props.from, nextProps.from) ||
-               !equal(this.props.filter, nextProps.filter);
+        return !_.isEqual(this.props.aspects, nextProps.aspects) ||
+               !_.isEqual(this.props.summary, nextProps.summary) ||
+               !_.isEqual(this.props.title, nextProps.title) ||
+               !_.isEqual(this.props.completed, nextProps.completed) ||
+               !_.isEqual(this.props.from, nextProps.from) ||
+               !_.isEqual(this.props.filter, nextProps.filter);
     }
 
     render() {

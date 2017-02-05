@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import equal from 'deep-equal';
+import _ from 'lodash';
 
 import DataLayer from 'forms/DataLayer';
 import Form, { Group as FormGroup, Link as FormLink } from 'forms/Form';
@@ -65,7 +65,7 @@ export default class EventAspects extends React.Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        if (!nextProps.aspects || equal(nextProps.aspects, this.state.aspects)) {
+        if (!nextProps.aspects || _.isEqual(nextProps.aspects, this.state.aspects)) {
             return;
         }
 
