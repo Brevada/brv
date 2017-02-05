@@ -1,21 +1,22 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
 import classNames from 'classnames';
 
-const NavigationButton = props => {
-    let classes = classNames({
-        'navigation-btn': true,
-        'active': props.active
-    });
+/**
+ * A navigation button used mainly to switch between views.
+ *
+ * @param {object} props React props.
+ * @param {boolean} props.active Indicates whether the button is selected.
+ * @param {string} props.label The display text of the button.
+ * @param {function()} props.onClick Callback invoked upon button click.
+ */
+const NavigationButton = props => (
+    <div
+        className={classNames('navigation-btn', {
+            'active': props.active
+        })}
+        onClick={() => props.onClick && props.onClick(props.view)}>
+        {props.label}
+    </div>
+);
 
-    return (
-        <div
-            className={classes}
-            onClick={() => {
-                props.onClick(props.view);
-            }}
-        >{props.label}</div>
-    );
-};
-
-export {NavigationButton};
+export { NavigationButton };

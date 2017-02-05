@@ -1,7 +1,17 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
 import classNames from 'classnames';
 
+/**
+ * A typical hyperlink.
+ *
+ * @param {object} props
+ * @param {string} props.label The display text.
+ * @param {function(Event)} props.onClick The onClick event handler.
+ * @param {boolean} props.left Option to float left.
+ * @param {boolean} props.right Option to float right.
+ * @param {boolean} props.btnLike Option to appear as a button, rather than a link.
+ * @param {boolean} props.danger Is the button's action negative?
+ */
 const Link = props => (
     <a
         className={classNames('link', {
@@ -10,14 +20,15 @@ const Link = props => (
             'btn-like': props.btnLike === true,
             'danger': props.danger === true
         })}
-        href={'#'}
-        onClick={(e) => {
-            e.preventDefault();
+        href='#'
+        onClick={e => {
             if (props.onClick) {
+                e.preventDefault();
                 props.onClick(e);
             }
-        }}
-    >{props.label}</a>
+        }}>
+        {props.label}
+    </a>
 );
 
 export { Link };
