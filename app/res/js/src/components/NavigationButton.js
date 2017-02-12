@@ -7,7 +7,7 @@ import classNames from 'classnames';
  * @param {object} props React props.
  * @param {boolean} props.active Indicates whether the button is selected.
  * @param {string} props.label The display text of the button.
- * @param {function()} props.onClick Callback invoked upon button click.
+ * @param {function(object)} props.onClick Callback invoked upon button click.
  */
 const NavigationButton = props => (
     <div

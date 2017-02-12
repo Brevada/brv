@@ -1,12 +1,17 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
 import _ from 'lodash';
 
 import Event from 'dashboard/events/Event';
 import DataLayer from 'forms/DataLayer';
 import { Filter } from 'dashboard/aspects/Filter';
 
+/**
+ * Connects Event with data layer.
+ *
+ * @param {object} props
+ */
 const EventLinked = props => {
+    /* Don't pass in data and aspects twice. */
     let p = _.omit(props, ['data', 'aspects']);
     let event = Object.assign({}, props.event, props.data);
     return (
@@ -22,20 +27,33 @@ const EventLinked = props => {
     );
 };
 
+/**
+ * Container for collection of individual events.
+ */
 export default class EventContainer extends React.Component {
     constructor(props) {
         super(props);
+
         this.state = {
+            /* Maintain collection of events. */
             events: props.events || [],
+
+            /* Blacklist of events that have been removed and thus shouldn't
+             * be shown. */
             removed: [],
+
+            /* ES6 Map to faciliate simplier and more efficient individual
+             * event "reloading". */
             refreshes: new Map([])
         };
 
-        this.remove = this.remove.bind(this);
-        this.refreshEvent = this.refreshEvent.bind(this);
+        this.remove = ::this.remove;
+        this.refreshEvent = ::this.refreshEvent;
     }
 
     componentWillReceiveProps(nextProps) {
+        /* Load events if new events are passed in. */
+
         if (!nextProps.events || _.isEqual(nextProps.events, this.state.events)) {
             return;
         }
@@ -45,21 +63,34 @@ export default class EventContainer extends React.Component {
         });
     }
 
+    /**
+     * Add the "removed" event to the blacklist.
+     *
+     * @param {number} id The event id that has been removed.
+     */
     remove(id) {
-        this.setState({
-            removed: this.state.removed.concat([id])
-        });
+        this.setState(s => ({
+            removed: s.removed.concat([id])
+        }));
     }
 
+    /**
+     * Trigger a refresh for a particular event.
+     *
+     * @param {number} id The event id that should be refreshed.
+     */
     refreshEvent(id) {
-        let newMap = new Map(this.state.refreshes);
-        newMap.set(id, (newMap.get(id) || 0) + 1);
-        this.setState({
-            refreshes: newMap
+        this.setState(s => {
+            let newMap = new Map(s.refreshes);
+            newMap.set(id, (newMap.get(id) || 0) + 1);
+            return {
+                refreshes: newMap
+            };
         });
     }
 
     render() {
+        /* Sort events by completed status, and creation order (id). */
         return (
             <div>
                 <div className='dl xlarge hint showing'>

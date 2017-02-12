@@ -1,18 +1,24 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
 
-import { Link } from 'components/Link';
 import { Filter } from 'dashboard/aspects/Filter';
 
 import AspectContainer from 'dashboard/aspects/AspectContainer';
 import TimeFilters from 'dashboard/TimeFilters';
 
 import { DialogButtonActions } from 'dialogs/Dialog';
-import NewAspectDialog from 'dialogs/NewAspectDialog';
+import NewAspectDialog from 'dashboard/aspects/dialogs/NewAspect';
 import Loader from 'dashboard/Loader';
 
 import DataLayer from 'forms/DataLayer';
 
+/**
+ * Aspect container combined with a loading state.
+ *
+ * @param {object} props
+ * @param {boolean} props.loading Whether the aspect container is loading data.
+ * @param {string} props.filter The time filter key from Filter.
+ * @param {object} props.data Data from the data layer.
+ */
 const AspectContainerLinked = props => {
     if (props.loading || !props.data) {
         return (
@@ -30,38 +36,58 @@ const AspectContainerLinked = props => {
     }
 };
 
+/**
+ * Time filter toolbar for aspects view.
+ *
+ * @param {object} props
+ */
 const AspectTimeFilter = props => (
     <TimeFilters
         {...props}
         options={[
-            { view: 'TODAY' },
-            { view: 'PAST_WEEK' },
-            { view: 'PAST_MONTH' },
-            { view: 'ALL_TIME' }
+            { view: Filter.ensure('TODAY') },
+            { view: Filter.ensure('PAST_WEEK') },
+            { view: Filter.ensure('PAST_MONTH') },
+            { view: Filter.ensure('ALL_TIME') }
         ]}
     />
 );
 
+/**
+ * Main page view for Your Aspects.
+ */
 export default class AspectsView extends React.Component {
     constructor() {
         super();
 
         this.state = {
-            filter: 'TODAY',
+            /* Currently selected filter. */
+            filter: Filter.ensure('TODAY'),
+
+            /* Visibility of dialogs. */
             dialogs: {
                 'NEW_ASPECT': false
             },
+
+            /* Simpler enforcement of data layer refresh than checking multiple
+             * properties for a change. */
             refresh: 0
         };
 
-        this.onChangeFilter = this.onChangeFilter.bind(this);
-        this.newAspectDialogAction = this.newAspectDialogAction.bind(this);
+        this.onChangeFilter = ::this.onChangeFilter;
+        this.newAspectDialogAction = ::this.newAspectDialogAction;
     }
 
+    /**
+     * Event handler for filter change.
+     */
     onChangeFilter(filter) {
         this.setState({ filter: filter });
     }
 
+    /**
+     * Event handler for new aspect dialog action.
+     */
     newAspectDialogAction(action) {
         if (![DialogButtonActions.CLOSE,
               DialogButtonActions.OPEN,
@@ -69,13 +95,14 @@ export default class AspectsView extends React.Component {
                   return;
               }
 
-        this.setState({
-            dialogs: Object.assign(this.state.dialogs, {
+        this.setState(s => ({
+            dialogs: Object.assign(s.dialogs, {
                 'NEW_ASPECT': action === DialogButtonActions.OPEN
             })
-        }, () => {
+        }), () => {
             if (action === DialogButtonActions.SUCCESS) {
-                this.setState({ refresh: this.state.refresh+1 });
+                /* Force a data layer refresh. */
+                this.setState(s => ({ refresh: s.refresh+1 }));
             }
         });
     }
@@ -93,7 +120,7 @@ export default class AspectsView extends React.Component {
                     onChange={this.onChangeFilter}
                     filter={this.state.filter}
                     actionLabel={'+ Ask Something New'}
-                    onAction={() => {this.newAspectDialogAction(DialogButtonActions.OPEN);}}
+                    onAction={() => this.newAspectDialogAction(DialogButtonActions.OPEN)}
                 />
                 <DataLayer action="/api/aspects" data={{
                     store: this.props.storeId,
@@ -107,5 +134,4 @@ export default class AspectsView extends React.Component {
             </div>
         );
     }
-
 }

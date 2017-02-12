@@ -1,15 +1,17 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
-import classNames from 'classnames';
 
 import DataLayer from 'forms/DataLayer';
-
 import Dialog, { DialogButton, DialogButtonActions } from 'dialogs/Dialog';
 import Form, { Group as FormGroup, Label as FormLabel, Button, ErrorMessage } from 'forms/Form';
-
 import { Link } from 'components/Link';
 import AspectInputField from 'forms/AspectInputField';
 
+/**
+ * Connects Aspect Input Field with Data Layer.
+ *
+ * @param {object} props
+ * @param {object} props.data Data passed from data layer.
+ */
 const AspectInputFieldLinked = props => (
     <AspectInputField
         types={props.data.aspect_types || []}
@@ -19,7 +21,10 @@ const AspectInputFieldLinked = props => (
     />
 );
 
-export default class NewAspectDialog extends React.Component {
+/**
+ * New aspect dialog.
+ */
+export default class NewAspect extends React.Component {
     constructor() {
         super();
 
@@ -27,16 +32,22 @@ export default class NewAspectDialog extends React.Component {
             createError: null
         };
 
-        this.submitError = this.submitError.bind(this);
+        this.submitError = ::this.submitError;
     }
 
     componentWillUnmount() {
         this._unmounted = true;
     }
 
+    /**
+     * Event handler for form submission error.
+     */
     submitError(error) {
         if (this._unmounted) return;
-        this.setState({ createError: error.data.reason || `Unknown error: ${error.status}` });
+        this.setState({
+            createError: error.data.reason ||
+            `Unknown error: ${error.status}`
+        });
     }
 
     render() {
@@ -51,8 +62,7 @@ export default class NewAspectDialog extends React.Component {
                     action="/api/aspect"
                     data={{ store: this.props.storeId }}
                     onSuccess={()=>this.props.onAction(DialogButtonActions.SUCCESS)}
-                    onError={this.submitError}
-                >
+                    onError={this.submitError}>
                     { this.state.createError !== null && (
                         <ErrorMessage text={this.state.createError} />
                     ) }
@@ -64,8 +74,7 @@ export default class NewAspectDialog extends React.Component {
                         />
                         <DataLayer
                             action="/api/aspecttypes/industry"
-                            data={{exclude_store: this.props.storeId}}
-                        >
+                            data={{exclude_store: this.props.storeId}}>
                             <AspectInputFieldLinked />
                         </DataLayer>
                         <FormLabel

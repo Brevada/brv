@@ -20,10 +20,16 @@ const DropDownOption = props => (
  * A navigation button capable of displaying a dropdown of options.
  */
 class DropDownButton extends React.Component {
+
+    static propTypes = {
+        label: React.PropTypes.string.isRequired
+    };
+
     constructor() {
         super();
 
         this.state = {
+            /* Holds the dropdown menu's "open" or visible state. */
             open: false
         };
 

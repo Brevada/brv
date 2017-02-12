@@ -40,6 +40,8 @@ export default class DataLayer extends React.Component {
     }
 
     load() {
+        if (this._unmounted) return;
+
         // Skip if already downloading.
         if (this.state.loading) return;
 
@@ -50,6 +52,8 @@ export default class DataLayer extends React.Component {
             /* For debugging. */
             if (this.props.dummy) {
                 setTimeout(() => {
+                    if (this._unmounted) return;
+
                     this.setState({
                         loading: false,
                         error: null,
@@ -72,6 +76,7 @@ export default class DataLayer extends React.Component {
                 url: this.props.action
             }, data, { method: 'get' }))
             .then(response => {
+                if (this._unmounted) return;
                 this.setState({
                     result: response.data,
                     error: null
@@ -82,6 +87,7 @@ export default class DataLayer extends React.Component {
                 });
             })
             .catch(error => {
+                if (this._unmounted) return;
                 this.setState({
                     result: {},
                     error: error.response || error
@@ -92,9 +98,8 @@ export default class DataLayer extends React.Component {
                 });
             })
             .then(() => {
-                if (!this._unmounted) {
-                    this.setState({ loading: false });
-                }
+                if (this._unmounted) return;
+                this.setState({ loading: false });
             });
         });
     }

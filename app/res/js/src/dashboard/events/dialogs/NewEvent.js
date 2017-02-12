@@ -1,36 +1,45 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
-import classNames from 'classnames';
 import moment from 'moment';
 import DataLayer from 'forms/DataLayer';
 
-import Dialog, { DialogButton, DialogButtonActions } from 'dialogs/Dialog';
+import Dialog, { DialogButtonActions } from 'dialogs/Dialog';
 import Form, { Group as FormGroup, Label as FormLabel, Textbox, Button, ErrorMessage } from 'forms/Form';
 import DatePickerInput from 'forms/DatePickerInput';
 
-import { Link } from 'components/Link';
-
-export default class NewEventDialog extends React.Component {
+/**
+ * New event dialog.
+ */
+export default class NewEvent extends React.Component {
     constructor() {
         super();
 
         this.state = {
+            /* error message from failed submission */
             createError: null,
 
+            /* start date from user input */
             fromDate: null,
+
+            /* to date from user input (optional) */
             toDate: null
         };
 
-        this.submitError = this.submitError.bind(this);
+        this.submitError = ::this.submitError;
     }
 
     componentWillUnmount() {
         this._unmounted = true;
     }
 
+    /**
+     * New event submission error handler.
+     */
     submitError(error) {
         if (this._unmounted) return;
-        this.setState({ createError: error.data.reason || `Unknown error: ${error.status}` });
+        this.setState({
+            createError: error.data.reason ||
+            `Unknown error: ${error.status}`
+        });
     }
 
     render() {

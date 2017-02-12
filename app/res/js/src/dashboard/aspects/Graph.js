@@ -1,39 +1,21 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
-import moment from 'moment';
 import _ from 'lodash';
 
 import { DateCluster } from 'utils/DateCluster';
-import { ResponsiveContainer, LineChart, Tooltip, Line, XAxis, YAxis } from 'recharts';
+import { LineChart } from 'dashboard/aspects/graph/LineChart';
 
-const AspectGraphTooltip = props => {
-    if (props.active) {
-        return (
-            <div className='graph-tooltip'>
-                <span className='value'>
-                    {props.payload[0].value + props.payload[0].unit}
-                </span>
-                <span className='specific'>
-                    {moment.unix(props.timestamps[parseInt(props.payload[0].payload.label)]).format('D/MM/YYYY')}
-                </span>
-            </div>
-        );
-    }
-
-    return null;
-};
-
-const AspectXAxisTick = props => (
-    <g transform={`translate(${props.x}, ${props.y})`}>
-        <text x={0} y={0} dy={+15} textAnchor='middle' className='x-axis-text'>
-            {props.dates[parseInt(props.payload.value)]}
-        </text>
-    </g>
-);
-
+/**
+ * Aspect line chart graph.
+ */
 class Graph extends React.Component {
+
+    static propTypes = {
+        data: React.PropTypes.array
+    };
+
     constructor() {
         super();
+
         this.state = {
             data: []
         };
@@ -42,7 +24,7 @@ class Graph extends React.Component {
         this.timestamps = [];
         this.dates = [];
 
-        this.updateData = this.updateData.bind(this);
+        this.updateData = ::this.updateData;
     }
 
     shouldComponentUpdate(nextProps, nextState) {
@@ -50,6 +32,7 @@ class Graph extends React.Component {
     }
 
     componentWillReceiveProps(nextProps) {
+        /* Only update the data if there is NEW data. */
         if (!_.isEqual(nextProps.data, this.props.data)) this.updateData();
     }
 
@@ -57,9 +40,13 @@ class Graph extends React.Component {
         this.updateData();
     }
 
+    /**
+     * Calculates date groupings.
+     */
     updateData() {
         this.timestamps = this.props.data.map(d => Math.floor((d.from+d.to)/2));
         this.dates = DateCluster.getLabels(this.timestamps, {
+            /* Override default date formatter. */
             day: d => d.format('ddd').substring(0,1)
         });
 
@@ -74,35 +61,14 @@ class Graph extends React.Component {
     }
 
     render() {
+        /* Computed values are passed into a purer component. */
         return (
             <div className='graph'>
-                <ResponsiveContainer>
-                    <LineChart
-                        data={this.state.data}
-                        margin={{ top: 5, right: 30, left: 20, botom: 5 }}
-                    >
-                        <Line
-                            type="monotone"
-                            dataKey={'value'}
-                            stroke="#1bb0ff"
-                            unit="%"
-                            dot={{ stroke: '#1bb0ff', strokeWidth: 1, r: 5.5, fill: '#1bb0ff' }}
-                            activeDot={{ stroke: '#1bb0ff', strokeWidth: 1, r: 6, fill: '#1bb0ff' }}
-                        />
-                        <YAxis dataKey={'value'} domain={['auto', 'auto']} padding={{ bottom: 15, top: 15 }} hide={true} />
-                        <XAxis
-                            dataKey={'label'}
-                            axisLine={true}
-                            tickLine={false}
-                            padding={{ top: 10 }}
-                            tick={<AspectXAxisTick dates={this.dates} timestamps={this.timestamps} />}
-                        />
-                        <Tooltip
-                            content={<AspectGraphTooltip dates={this.dates} timestamps={this.timestamps} />}
-                            cursor={false}
-                        />
-                    </LineChart>
-                </ResponsiveContainer>
+                <LineChart
+                    data={this.state.data}
+                    dates={this.dates}
+                    timestamps={this.timestamps}
+                />
             </div>
         );
     }

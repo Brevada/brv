@@ -1,51 +1,16 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
 import _ from 'lodash';
 
 import DataLayer from 'forms/DataLayer';
 import Form, { Group as FormGroup, Link as FormLink } from 'forms/Form';
 import AspectInputField from 'forms/AspectInputField';
+import { EventAspectsItem } from 'dashboard/events/EventAspectsItem';
 
-import { Mood } from 'utils/Mood';
-import classNames from 'classnames';
-
-const EventAspectsItem = props => (
-    <div className='event-aspects-item'>
-        <div className='ly ly-abs-container'>
-            <div className='title left' title={props.title}>{props.title}</div>
-            <div className='detail left'>
-                { (props.responses > 0 && (
-                    <span title={
-                        (props.change > 0 ? '+' : (props.change == 0 ? '' : '-')) + Math.abs(+props.change.toFixed(2)) + '%'
-                        + ` after ${props.responses} response${props.responses>1?'s':''}`
-                    }>
-                        <span className={'change ' + Mood(props.change, -100)}>{
-                            (props.change > 0 ? '+' : (props.change == 0 ? '' : '-')) + Math.abs(+props.change.toFixed(2)) + '%'
-                        }</span>
-                        <span className='text'>
-                            {` after ${props.responses} response${props.responses>1?'s':''}`}
-                        </span>
-                    </span>
-                )) || (
-                    <span className='text' title={"no activity for this aspect"}>
-                        {"no activity for this aspect"}
-                    </span>
-                )}
-            </div>
-            <div className='control right'>
-                <Form
-                    action={`/api/event/${props.eventId}/aspect/${props.id}`}
-                    method="DELETE"
-                    onSuccess={props.onRemove}
-                    onError={()=>false}
-                >
-                    <FormLink label='Remove' submit={true} danger={true} />
-                </Form>
-            </div>
-        </div>
-    </div>
-);
-
+/**
+ * Links the aspect input field to the data layer.
+ *
+ * @param {object} props
+ */
 const AspectInputFieldLinked = props => {
     return (
         <AspectInputField
@@ -55,16 +20,75 @@ const AspectInputFieldLinked = props => {
     );
 };
 
+/**
+ * Add aspect form used to add an aspect to an event.
+ *
+ * @param {object} props
+ * @param {number} props.storeId
+ * @param {number} props.eventId
+ * @param {function} On aspect success callback.
+ */
+const AddAspect = props => (
+    <Form
+        action={`/api/event/${props.eventId}/aspect`}
+        method="POST"
+        data={{store: props.storeId}}
+        onSuccess={props.onRefresh}
+        onError={()=>false}
+    >
+        <FormGroup className='new-aspect input-like small'>
+            <DataLayer
+                action={`/api/aspecttypes/event/${props.eventId}`}>
+                <AspectInputFieldLinked
+                    name='aspect'
+                    custom={false}
+                    submitOnSelect={true}
+                    placeHolder='+ Add New Aspect'
+                />
+            </DataLayer>
+        </FormGroup>
+    </Form>
+);
+
+/**
+ * Event deletion form.
+ *
+ * @param {object} props
+ * @param {number} props.eventId
+ */
+const DeleteEvent = props => (
+    <Form
+        action={`/api/event/${props.eventId}`}
+        method="DELETE"
+        onSuccess={()=>props.onRemoveEvent(props.eventId)}
+        onError={()=>false}>
+        <FormLink label='Delete' submit={true} />
+    </Form>
+);
+
+/**
+ * Collection of aspects to display for a particular event.
+ */
 export default class EventAspects extends React.Component {
+
+    static propTypes = {
+        aspects: React.PropTypes.arrayOf(React.PropTypes.object),
+        eventId: React.PropTypes.number,
+        storeId: React.PropTypes.number
+    };
+
     constructor(props) {
         super(props);
 
         this.state = {
+            /* Internal list of event aspects to display for a given event. */
             aspects: props.aspects || []
         };
     }
 
     componentWillReceiveProps(nextProps) {
+        /* Only update event aspects list if aspects change. */
+
         if (!nextProps.aspects || _.isEqual(nextProps.aspects, this.state.aspects)) {
             return;
         }
@@ -75,6 +99,7 @@ export default class EventAspects extends React.Component {
     }
 
     render() {
+        /* Sort event aspects by name. */
         return (
             <div>
                 <div className='ly flex-v defined-size event-aspects'>
@@ -95,38 +120,19 @@ export default class EventAspects extends React.Component {
                 </div>
                 <div className='ly ly-split tools'>
                     <div className='left fill overflow'>
-                        <Form
-                            action={`/api/event/${this.props.eventId}/aspect`}
-                            method="POST"
-                            data={{store: this.props.storeId}}
-                            onSuccess={this.props.onRefresh}
-                            onError={()=>false}
-                        >
-                            <FormGroup className='new-aspect input-like small'>
-                                <DataLayer
-                                    action={`/api/aspecttypes/event/${this.props.eventId}`}>
-                                    <AspectInputFieldLinked
-                                        name='aspect'
-                                        custom={false}
-                                        submitOnSelect={true}
-                                        placeHolder='+ Add New Aspect'
-                                    />
-                                </DataLayer>
-                            </FormGroup>
-                        </Form>
+                        <AddAspect
+                            eventId={this.props.eventId}
+                            storeId={this.props.storeId}
+                            onRefresh={this.props.onRefresh}
+                        />
                     </div>
                     <div className='right'>
-                        <Form
-                            action={`/api/event/${this.props.eventId}`}
-                            method="DELETE"
-                            onSuccess={()=>this.props.onRemoveEvent(this.props.eventId)}
-                            onError={()=>false}
-                        >
-                            <FormLink label='Delete' submit={true} />
-                        </Form>
+                        <DeleteEvent
+                            eventId={this.props.eventId}
+                            onRemoveEvent={this.props.onRemoveEvent}
+                        />
                     </div>
                 </div>
-
             </div>
         );
     }
