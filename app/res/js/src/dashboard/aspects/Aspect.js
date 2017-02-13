@@ -74,7 +74,10 @@ const AspectBody = props => (
             to_industry={props.summary.to_industry}
             filter={props.filter}
         />
-        <Graph data={props.summary.data.concat().sort((a, b) => a.to-b.to)} />
+        <Graph
+            data={props.summary.data.concat().sort((a, b) => a.to-b.to)}
+            filter={props.filter}
+        />
     </div>)
 );
 

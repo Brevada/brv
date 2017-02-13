@@ -1,6 +1,14 @@
 import moment from 'moment';
 
 const DateCluster = {
+
+    /**
+     * Gets an array of labels from dates and formatter rules.
+     *
+     * @param  {number[]} dates
+     * @param  {object} formats
+     * @return {string[]}
+     */
     getLabels: function (dates, formats) {
         let size = dates.length;
 

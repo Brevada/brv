@@ -1,6 +1,7 @@
 import React from 'react';
 import _ from 'lodash';
 
+import { Filter } from 'dashboard/aspects/Filter';
 import { DateCluster } from 'utils/DateCluster';
 import { LineChart } from 'dashboard/aspects/graph/LineChart';
 
@@ -45,18 +46,27 @@ class Graph extends React.Component {
      */
     updateData() {
         this.timestamps = this.props.data.map(d => Math.floor((d.from+d.to)/2));
-        this.dates = DateCluster.getLabels(this.timestamps, {
-            /* Override default date formatter. */
-            day: d => d.format('ddd').substring(0,1)
-        });
 
+        let formatter = {};
+        if (this.props.filter === Filter.ensure('TODAY')) {
+            formatter = {
+                /* Override default date formatter. */
+                day: d => d.format('ddd').substring(0,1)
+            };
+        }
+
+        this.dates = DateCluster.getLabels(this.timestamps, formatter);
+
+        let lastValue = null;
         this.setState({
-            data: this.props.data.map((datum, index) => (
-                {
-                    value: datum.average === null ? null : +datum.average.toFixed(2),
-                    label: index
-                }
-            ))
+            data: this.props.data.map((datum, index) => {
+                lastValue = datum.average || lastValue || 0;
+                return {
+                    value: +lastValue.toFixed(2),
+                    label: index,
+                    empty: datum.average === null
+                };
+            })
         });
     }
 
