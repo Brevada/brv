@@ -16,6 +16,9 @@ trait CompanyId {
      */
     public function getCompanyId()
     {
+        if ($this->get('CompanyID') === null) {
+            return null;
+        }
         return (int) $this->get('CompanyID');
     }
 
@@ -25,7 +28,7 @@ trait CompanyId {
      */
     public function setCompanyId($id)
     {
-        $this->set('CompanyID', (int) $id);
+        $this->set('CompanyID', is_null($id) ? null : (int) $id);
         return $this->getCompanyId();
     }
 }

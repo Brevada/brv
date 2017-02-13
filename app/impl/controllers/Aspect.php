@@ -51,7 +51,7 @@ class Aspect extends Controller
         }
 
         /* User requires WRITE permission for the aspect. */
-        if ($aspect != null && $account->getPermissions($aspect)->canRead()) {
+        if ($aspect != null && $account->getPermissions($aspect)->canWrite()) {
             if ($aspect->delete($account->getCompany()->getId()) !== false) {
                 return new View([]);
             } else {

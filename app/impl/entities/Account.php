@@ -37,6 +37,28 @@ class Account extends Entity
     /* Query Functions */
 
     /**
+     * Factory method to instantiate an account entity by account id.
+     *
+     * @param integer $id The id of the account to query for.
+     * @return self
+     */
+    public static function queryId($id)
+    {
+        try {
+            $stmt = DB::get()->prepare("SELECT * FROM accounts WHERE id = :id LIMIT 1");
+            $stmt->bindValue(':id', $id, \PDO::PARAM_INT);
+            $stmt->execute();
+            if (($row = $stmt->fetch(\PDO::FETCH_ASSOC)) !== false) {
+                return self::from($row);
+            }
+        } catch (\PDOException $ex) {
+            \App::log()->error($ex->getMessage());
+        }
+
+        return null;
+    }
+
+    /**
      * Factory method to instantiate an account entity by email address.
      *
      * @param string $email The email of the account to query for.
@@ -168,7 +190,7 @@ class Account extends Entity
      */
     public function getPermissions(Entity $target)
     {
-        return new Permission((int) $this->get('id'), $target);
+        return new Permission($this->getId(), $target);
     }
 
     /**

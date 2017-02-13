@@ -16,6 +16,9 @@ trait StoreId {
      */
     public function getStoreId()
     {
+        if ($this->get('StoreID') === null) {
+            return null;
+        }
         return (int) $this->get('StoreID');
     }
 
@@ -25,7 +28,7 @@ trait StoreId {
      */
     public function setStoreId($id)
     {
-        $this->set('StoreID', (int) $id);
+        $this->set('StoreID', is_null($id) ? null : (int) $id);
         return $this->getStoreId();
     }
 }

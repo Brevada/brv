@@ -10,6 +10,12 @@ namespace Brv\core\entities;
 
 use Brv\core\entities\Entity;
 
+use Brv\impl\entities\Aspect;
+use Brv\impl\entities\Store;
+use Brv\impl\entities\Company;
+use Brv\impl\entities\Event;
+use Brv\impl\entities\Account;
+
 /**
  * Permission
  *
@@ -50,11 +56,54 @@ class Permission
      */
     public function __construct($accountId, Entity $target)
     {
-        // if $target instanceof ...
-        // $this->permissions = NO_ACCESS
-        // Ideally, use lookup permissions table.
-        // Temp.
-        $this->permissions = self::CAN_READ | self::CAN_WRITE | self::CAN_ASSIGN;
+        try {
+            if ($target instanceof Aspect) {
+                /* Aspect access is synonymous with store access in this version. */
+                $this->hydrate(new self($accountId, Store::queryId($target->getStoreId())));
+            } elseif ($target instanceof Event) {
+                /* Event access is synonymous with store access in this version. */
+                $this->hydrate(new self($accountId, Store::queryId($target->getStoreId())));
+            } elseif ($target instanceof Company) {
+                $account = Account::queryId($accountId);
+                if ($account->getCompanyId() == $target->getId()) {
+                    $this->permissions = self::CAN_READ | self::CAN_WRITE | self::CAN_ASSIGN;
+                }
+            } elseif ($target instanceof Store) {
+                $account = Account::queryId($accountId);
+                if ($account->getStoreId() == $target->getId()) {
+                    $this->permissions = self::CAN_READ | self::CAN_WRITE;
+
+                    if ($account->getCompanyId() == $target->getCompanyId()) {
+                        $this->permissions |= self::CAN_ASSIGN;
+                    }
+                }
+            } else {
+                $this->permissions = self::NO_ACCESS;
+            }
+        } catch (\Exception $ex) {
+            \App::log()->error($ex->getMessage());
+            $this->permissions = self::NO_ACCESS;
+        }
+    }
+
+    /**
+     * Hydrates the current instance using another Permission instance.
+     * @param  self $p The Permission to hydrate from.
+     * @return self
+     */
+    protected function hydrate(Permission $p)
+    {
+        $this->permissions = $p->getRawPermissions();
+        return $this;
+    }
+
+    /**
+     * Gets the raw permission value.
+     * @return integer
+     */
+    public function getRawPermissions()
+    {
+        return $this->permissions;
     }
 
     /**
