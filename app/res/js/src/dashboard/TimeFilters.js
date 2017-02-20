@@ -5,6 +5,12 @@ import { NavigationButton } from 'components/NavigationButton';
 import { Link } from 'components/Link';
 import { Filter } from 'dashboard/aspects/Filter';
 
+/**
+ * Time Interval Toolbar
+ *
+ * @param {object} props
+ * @param {object[]} props.options
+ */
 const TimeFilters = props => (
     <div className='time-filter'>
         {props.options.map(o => (

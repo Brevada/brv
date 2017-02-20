@@ -1,19 +1,22 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import classNames from 'classnames';
-
 import getFormData from 'get-form-data';
 import axios from 'axios';
 
+/**
+ * API "upload" layer. Emulates a DOM form.
+ */
 export default class Form extends React.Component {
     constructor() {
         super();
 
         this.state = {
+            /* Indicates "submitting" status (loading). */
             submitting: false
         };
 
-        this.submit = this.submit.bind(this);
+        this.submit = ::this.submit;
     }
 
     componentWillUnmount() {
@@ -24,9 +27,11 @@ export default class Form extends React.Component {
         if (e) e.preventDefault();
         if (!this._form) return;
 
-        // Skip if already submitting.
+        /* Skip if already submitting and can only submit one at a time. */
         if (this.props.once !== false && this.state.submitting) return;
 
+        /* Use DOM to retrieve form data. This allows retrieval from deeply
+         * nested elements. */
         let formData = getFormData(ReactDOM.findDOMNode(this._form));
 
         this.setState({
@@ -64,6 +69,7 @@ export default class Form extends React.Component {
     }
 
     render() {
+        /* Pass instance of this form to all its children. */
         return (
             <div className={classNames('form', {
                 submitting: this.state.submitting,
@@ -90,25 +96,37 @@ export default class Form extends React.Component {
     }
 }
 
+/**
+ * Groups form elements within a form. Supports pairing an
+ * element with a label.
+ */
 class Group extends React.Component {
     constructor(){
         super();
 
-        this.labelClicked = this.labelClicked.bind(this);
-        this.inputCallback = this.inputCallback.bind(this);
+        this.labelClicked = ::this.labelClicked;
+        this.inputCallback = ::this.inputCallback;
     }
 
+    /**
+     * If a label is clicked, and there is an input element, give focus
+     * to the input.
+     */
     labelClicked() {
         if (this._input) {
             ReactDOM.findDOMNode(this._input).focus();
         }
     }
 
+    /**
+     * Save the reference to the input. Assumes single input.
+     */
     inputCallback(input){
         this._input = input;
     }
 
     render() {
+        /* Pass form to its children and save the input reference.*/
         return (
             <div className={'form-group ' + (this.props.className || '')}>
                 {React.Children.map(this.props.children,
@@ -136,37 +154,54 @@ class Group extends React.Component {
     }
 }
 
+/**
+ * A form label.
+ * @param {string} props.text The display text.
+ * @param {boolean} props.inline Set display style to inline.
+ * @param {function} props.onClick On click event handler.
+ */
 const Label = props => (
     <label
         className={classNames('label', {
             inline: props.inline === true
         })}
-        onClick={props.onClick || (()=>(false))}>{props.text}</label>
+        onClick={props.onClick || (()=>(false))}>
+        {props.text}
+    </label>
 );
 
+/**
+ * Abstract Input class. Used for polymorphism.
+ */
 class Input extends React.Component {
     constructor(props) {
         super(props);
     }
 }
 
+/**
+ * A basic textbox.
+ */
 class Textbox extends Input {
     constructor(props) {
         super(props);
 
         this.state = {
+            /* The textbox value. */
             value: ''
         };
 
-        this.onFocus = this.onFocus.bind(this);
-        this.onChange = this.onChange.bind(this);
+        this.onFocus = ::this.onFocus;
+        this.onChange = ::this.onChange;
     }
 
     onFocus() {
+        /* On focus, direct focus to nested DOM element. */
         this._input && ReactDOM.findDOMNode(this._input).focus();
     }
 
     onChange(e) {
+        /* Save the textbox's value to the state. */
         this.setState({
             value: e.target.value || ''
         });
@@ -194,6 +229,9 @@ class Textbox extends Input {
     }
 }
 
+/**
+ * Simple button.
+ */
 const Button = props => (
     <button
         className={classNames(props.className || '', 'btn', {
@@ -208,6 +246,9 @@ const Button = props => (
     >{props.label}</button>
 );
 
+/**
+ * Simple link.
+ */
 const Link = props => (
     <button
         className={classNames(props.className || '', 'link', {
@@ -223,6 +264,9 @@ const Link = props => (
     >{props.label}</button>
 );
 
+/**
+ * Generic error message holder to be used by a Form.
+ */
 const ErrorMessage = props => (
     <div className='form-error'>{props.text}</div>
 );

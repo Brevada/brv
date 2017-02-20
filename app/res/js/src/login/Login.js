@@ -1,27 +1,39 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
 
 import Form, { Group, Label, Textbox, Button, ErrorMessage } from 'forms/Form';
 import { Link } from 'components/Link';
 
+/**
+ * Login form.
+ */
 export default class Login extends React.Component {
     constructor() {
         super();
 
         this.state = {};
 
-        this.onSuccess = this.onSuccess.bind(this);
-        this.onError = this.onError.bind(this);
+        this.onSuccess = ::this.onSuccess;
+        this.onError = ::this.onError;
     }
 
+    /**
+     * Event handler for login success.
+     * Redirect user to dashboard.
+     */
     onSuccess(response) {
         // TODO: Interesting loading graphic.
         window.location.replace('/dashboard');
     }
 
+    /**
+     * Event handler for login error.
+     */
     onError(error) {
         if (!error.data) error.data = {};
-        this.setState({ error: error.data.reason || `Unknown error: ${error.status}` });
+        this.setState({
+            error: error.data.reason ||
+            `Unknown error: ${error.status}`
+        });
     }
 
     render() {

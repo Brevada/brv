@@ -1,6 +1,4 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
-import classNames from 'classnames';
 
 import { DropDownButton, DropDownOption } from 'components/DropDownNav';
 import { NavigationButton } from 'components/NavigationButton';
@@ -11,18 +9,25 @@ const BrandBar = props => {
         <div className='brand-bar'>
             <div className='logo'></div>
             <DropDownButton label={'Account'}>
-                <DropDownOption label={'Settings'} onClick={()=>(false)} />
-                <DropDownOption label={'Logout'} onClick={()=>(false)} />
+                <DropDownOption
+                    label={'Settings'}
+                    onClick={()=>window.location.replace('/settings')}
+                />
+                <DropDownOption
+                    label={'Logout'}
+                    onClick={()=>window.location.replace('/logout')}
+                />
             </DropDownButton>
         </div>
     );
 };
 
+/**
+ * Main dashboard navigation bar. Also contains top brand bar.
+ */
 export default class NavigationBar extends React.Component {
     constructor() {
         super();
-
-        this.state = {};
     }
 
     render() {
@@ -51,6 +56,7 @@ export default class NavigationBar extends React.Component {
                     {this.props.url && (
                         <Link
                             label={`Feedback Page: brevada.com/${this.props.url}`}
+                            onClick={()=>window.location.replace(`/${this.props.url}`)}
                         />
                     )}
                 </div>

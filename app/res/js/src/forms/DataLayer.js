@@ -1,20 +1,27 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
-import classNames from 'classnames';
 import _ from 'lodash';
 import axios from 'axios';
 
+/**
+ * API getter layer which retrieves data from the backend and passes it to
+ * its children.
+ */
 export default class DataLayer extends React.Component {
     constructor() {
         super();
 
         this.state = {
+            /* Indicates loading state. */
             loading: false,
+
+            /* Result of the GET request. */
             result: {},
+
+            /* Error if API request was unsuccessful. */
             error: null
         };
 
-        this.load = this.load.bind(this);
+        this.load = ::this.load;
     }
 
     componentWillUnmount() {
@@ -22,7 +29,7 @@ export default class DataLayer extends React.Component {
     }
 
     componentDidMount() {
-        // Skip if refresh is -1, i.e. "inactive" mode.
+        /* Skip if refresh is -1, i.e. "inactive" mode. */
         if (this.props.refresh === -1) return;
 
         this.load();
@@ -30,6 +37,9 @@ export default class DataLayer extends React.Component {
 
     componentWillReceiveProps(nextProps) {
         if (this._unmounted) return;
+
+        /* Allow "forced" refresh using props.refresh. Otherwise, if not forced
+         * only repeat request when request has changed. */
 
         if ((this.props.refresh !== nextProps.refresh ||
             this.props.action !== nextProps.action ||
@@ -39,6 +49,9 @@ export default class DataLayer extends React.Component {
         }
     }
 
+    /**
+     * Perform API request.
+     */
     load() {
         if (this._unmounted) return;
 
@@ -80,22 +93,14 @@ export default class DataLayer extends React.Component {
                 this.setState({
                     result: response.data,
                     error: null
-                }, () => {
-                    if (this.props.onSuccess) {
-                        this.props.onSuccess(response);
-                    }
-                });
+                }, () => this.props.onSuccess && this.props.onSuccess(response));
             })
             .catch(error => {
                 if (this._unmounted) return;
                 this.setState({
                     result: {},
                     error: error.response || error
-                }, () => {
-                    if (this.props.onError) {
-                        this.props.onError(this.state.error);
-                    }
-                });
+                }, () => this.props.onError && this.props.onError(this.state.error));
             })
             .then(() => {
                 if (this._unmounted) return;
@@ -105,6 +110,7 @@ export default class DataLayer extends React.Component {
     }
 
     render() {
+        /* Clone element, passing in retrieved data. */
         return React.cloneElement(React.Children.only(this.props.children), Object.assign({
             data: this.state.result,
             loading: this.state.loading,

@@ -1,31 +1,50 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
 import LazilyLoad, { importLazy } from 'utils/LazilyLoad';
-import classNames from 'classnames';
-
-import DataLayer from 'forms/DataLayer';
-
 import NavigationBar from 'dashboard/NavigationBar';
 import LiveFeed from 'dashboard/livefeed/LiveFeed';
 
-/* Views */
-
+/**
+ * The dashboard view. Contains "subviews".
+ */
 export default class Dashboard extends React.Component {
+
+    static propTypes = {
+        /* Each dashboard is an instance of a specific store. */
+        storeId: React.PropTypes.number.isRequired
+    };
+
     constructor() {
         super();
 
+        /* Pull default view from URL hash. */
+        let defaultView = (window.location.hash || '#').substring(1).trim().toUpperCase();
+        if (!['ASPECTS', 'EVENTS', 'TIMELINE'].includes(defaultView)) {
+            defaultView = 'ASPECTS';
+        }
+
         this.state = {
-            view: 'EVENTS'
+            /* The currently loaded view. */
+            view: defaultView
         };
 
-        this.onChangeView = this.onChangeView.bind(this);
-        this.getView = this.getView.bind(this);
+        this.onChangeView = ::this.onChangeView;
+        this.getView = ::this.getView;
     }
 
+    /**
+     * Triggers an internal view change.
+     * @param {string} view The lookup key for the view to change to.
+     */
     onChangeView(view) {
         this.setState({ view: view });
     }
 
+    /**
+     * Returns the JSX view (page) to load into the dashboard. Each view is
+     * lazily loaded - i.e. loaded on demand.
+     *
+     * @param {string} view The lookup key for the view to return.
+     */
     getView(view) {
         /* Hardcoded (for the moment) since webpack prints a warning if an
          * expression is used in an import. */

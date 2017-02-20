@@ -1,36 +1,84 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import classNames from 'classnames';
 import _ from 'lodash';
 
 import { Input as FormInput } from 'forms/Form';
 
+/**
+ * Single aspect option.
+ * @param {function} props.onClick On click event handler.
+ */
 const AspectOption = props => (
     <div className={'option ' + (props.className || '')} onMouseDown={props.onClick}>
         {props.label}
     </div>
 );
 
+/**
+ * Aspect options drop down.
+ */
+const AspectOptions = props => (
+    <div className='aspect-options'>
+        { props.custom === true && props.id === -1 &&
+            props.value.length > 0 && (
+            <AspectOption
+                label={`"${props.value.trim()}"`}
+                className='new'
+                onClick={() => {
+                    props.onSelect({
+                        id: -1,
+                        title: props.value.trim()
+                    });
+                }}
+            />
+        ) }
+
+        { props.types.filter(type => (
+            props.value.length === 0 ||
+            type.title.toLowerCase().indexOf(props.value.toLowerCase()) >= 0
+        )).map(type => (
+            <AspectOption
+                key={type.id}
+                label={type.title}
+                onClick={()=>props.onSelect(type)}
+            />
+        )) }
+    </div>
+);
+
+/**
+ * Form input element to provide selection of aspect types.
+ */
 export default class AspectInputField extends FormInput {
     constructor(props) {
         super(props);
 
         this.state = {
+            /* Value of aspect type (label). */
             value: '',
+
+            /* Numeric id of aspect type. -1 means not set, or does not exist
+            (in which case, it may be a custom type). */
             id: -1,
+
+            /* Controls visibility of dropdown. */
             show: false,
+
+            /* Aspect types to choose from. */
             types: props.types || []
         };
 
-        this.onSelect = this.onSelect.bind(this);
-        this.onTextChange = this.onTextChange.bind(this);
-        this.onBlur = this.onBlur.bind(this);
-        this.onFocus = this.onFocus.bind(this);
-        this.onKeyPress = this.onKeyPress.bind(this);
-        this.potentialSubmit = this.potentialSubmit.bind(this);
+        this.onSelect = ::this.onSelect;
+        this.onTextChange = ::this.onTextChange;
+        this.onBlur = ::this.onBlur;
+        this.onFocus = ::this.onFocus;
+        this.onKeyPress = ::this.onKeyPress;
+        this.potentialSubmit = ::this.potentialSubmit;
     }
 
     componentWillReceiveProps(nextProps) {
+        /* Update state if aspect types differ. */
+
         if (!nextProps.types || _.isEqual(nextProps.types, this.state.types)) {
             return;
         }
@@ -44,6 +92,10 @@ export default class AspectInputField extends FormInput {
         this._unmounted = true;
     }
 
+    /**
+     * If aspect item is selected, and submitOnSelect is true, then allow
+     * submission of the form.
+     */
     potentialSubmit() {
         if (this._inputText && this.props.submitOnSelect && this.props.form) {
             this.props.form().submit();
@@ -57,15 +109,22 @@ export default class AspectInputField extends FormInput {
         }
     }
 
+    /**
+     * onKeyPress event handler. Support form submission on enter.
+     */
     onKeyPress(e) {
         if (e.key == 'Enter') {
             this.potentialSubmit();
         }
     }
 
+    /**
+     * Event handler for aspect selection.
+     */
     onSelect(type) {
         if (this._unmounted) return;
 
+        /* Update state and hide drop down. */
         this.setState({
             value: type.title,
             id: type.id,
@@ -73,6 +132,9 @@ export default class AspectInputField extends FormInput {
         }, this.potentialSubmit);
     }
 
+    /**
+     * Event handler for typing in the input. Update search/drop down.
+     */
     onTextChange(e) {
         if (this._unmounted) return;
 
@@ -90,6 +152,9 @@ export default class AspectInputField extends FormInput {
         });
     }
 
+    /**
+     * On focus, redirect focus to textbox and show drop down.
+     */
     onFocus() {
         if (this._unmounted || this.state.show) return;
 
@@ -100,6 +165,9 @@ export default class AspectInputField extends FormInput {
         });
     }
 
+    /**
+     * Blur event handler. Hide drop down.
+     */
     onBlur() {
         if (this._unmounted || !this.state.show) return;
 
@@ -134,32 +202,13 @@ export default class AspectInputField extends FormInput {
                     name={`${this.props.name}_id`}
                 />
                 { this.state.show && (
-                    <div className='aspect-options'>
-                        { this.props.custom === true && this.state.id === -1 &&
-                            this.state.value.length > 0 && (
-                            <AspectOption
-                                label={`"${this.state.value.trim()}"`}
-                                className='new'
-                                onClick={() => {
-                                    this.onSelect({
-                                        id: -1,
-                                        title: this.state.value.trim()
-                                    });
-                                }}
-                            />
-                        ) }
-
-                        { this.state.types.filter(type => (
-                            this.state.value.length === 0 ||
-                            type.title.toLowerCase().indexOf(this.state.value.toLowerCase()) >= 0
-                        )).map(type => (
-                            <AspectOption
-                                key={type.id}
-                                label={type.title}
-                                onClick={()=>this.onSelect(type)}
-                            />
-                        )) }
-                    </div>
+                    <AspectOptions
+                        id={this.state.id}
+                        custom={this.props.custom}
+                        value={this.state.value}
+                        types={this.state.types}
+                        onSelect={this.onSelect}
+                    />
                 ) }
             </div>
         );

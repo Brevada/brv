@@ -1,29 +1,43 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
 
+/**
+ * Loader animation which cycles through an array of messages.
+ */
 export default class Loader extends React.Component {
+
+    static propTypes = {
+        /* Messages to cycle through. */
+        messages: React.PropTypes.arrayOf(React.PropTypes.string)
+    }
 
     constructor(props) {
         super(props);
 
         this.state = {
+            /* The current message to display. */
             message: ''
         };
 
+        /* Internal collection of messages which are rotated through. */
         this.messages = props.messages || [];
 
-        this.cycleMessage = this.cycleMessage.bind(this);
+        this.cycleMessage = ::this.cycleMessage;
     }
 
     componentDidMount() {
+        /* Display the first message. */
         this.cycleMessage();
     }
 
+    /**
+     * Shift all messages over one.
+     */
     cycleMessage() {
         this.setState({
             message: this.messages[0]
         }, () => {
             this.messages.push(this.messages.shift());
+            /* Time between messages: random value in interval 2 - 4 seconds. */
             this.tmr = setTimeout(this.cycleMessage, Math.round(2000 + Math.random()*2000));
         });
     }

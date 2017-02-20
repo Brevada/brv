@@ -1,34 +1,45 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
 import classNames from 'classnames';
 
+/**
+ * Dialog Button Actions enums.
+ * @type {string}
+ */
 export const DialogButtonActions = Object.freeze({
     CLOSE: 'CLOSE',
     OPEN: 'OPEN',
     SUCCESS: 'SUCCESS'
 });
 
+/**
+ * Individual dialog button.
+ * @param {string} props.action The dialog button action to invoke.
+ */
 export const DialogButton = props => (
     <span
         className={'dialog-button'}
-        onClick={() => {
-            props.onClick(props.action);
-        }}
-    >
+        onClick={() => props.onClick(props.action)}>
         {props.label}
     </span>
 );
 
+/**
+ * Dialog box which overlays onto the screen, blocking input from the
+ * rest of the application until dismissed.
+ */
 export default class Dialog extends React.Component {
+
     constructor(props) {
         super(props);
-        this.onOverlayClick = this.onOverlayClick.bind(this);
+
+        this.onOverlayClick = ::this.onOverlayClick;
     }
 
+    /**
+     * Event handler when the "greyed out" area is clicked.
+     */
     onOverlayClick() {
-        if (this.props.escapable) {
-            this.props.onAction(DialogButtonActions.CLOSE);
-        }
+        this.props.escapable && this.props.onAction(DialogButtonActions.CLOSE);
     }
 
     render() {

@@ -1,11 +1,12 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import classNames from 'classnames';
-import moment from 'moment';
 import DatePicker from 'react-datepicker';
 
 import { Input as FormInput } from 'forms/Form';
 
+/**
+ * Date Picker Input based on react-datepicker
+ */
 export default class DatePickerInput extends FormInput {
     constructor(props) {
         super(props);
@@ -20,9 +21,13 @@ export default class DatePickerInput extends FormInput {
             this.state.unix = props.defaultDate.unix();
         }
 
-        this.onChange = this.onChange.bind(this);
+        this.onChange = ::this.onChange;
     }
 
+    /**
+     * Date change event handler.
+     * @param {moment} date
+     */
     onChange(date) {
         this.setState({
             date: date,
