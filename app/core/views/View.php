@@ -22,6 +22,7 @@ class View
      * type: Indicates the nature of the content, which then controls Content-Type.
      * headers: Flag indicates if headers should be sent ('no headers' is useful for embedding).
      * code: The HTTP status code. If false, it will assume.
+     * params: Parameters passed to the templating engine.
      *
      * @var array
      */
@@ -29,7 +30,8 @@ class View
         'buffered' => true,
         'type' => false,
         'headers' => true,
-        'code' => false
+        'code' => false,
+        'params' => []
     ];
 
     /** @var string Data field required for the "rendering engine". */
@@ -92,7 +94,7 @@ class View
     {
         switch ($this->opts['type']) {
             case 'twig':
-                echo self::getTwig()->render($this->data . '.twig');
+                echo self::getTwig()->render($this->data . '.twig', $this->opts['params']);
                 break;
             case 'json':
                 echo json_encode($this->data);
