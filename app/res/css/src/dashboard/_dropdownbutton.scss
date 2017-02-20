@@ -21,16 +21,20 @@
         position: absolute;
         min-width: 100%;
         font-size: 0.925rem;
-        background: $grey1;
+        background: #fff;
         border: 1px solid $grey2;
         border-bottom-left-radius: 3px;
         border-bottom-right-radius: 3px;
         z-index: 999;
+        top: calc(100% + 5px);
 
         @extend .clickable;
 
         .option {
-            padding: 0.33rem 0.35rem;
+            padding: 0.5rem 0.6rem;
+            text-align: center;
+            min-width: 100px;
+            font-size: 0.96rem;
             color: $grey4;
 
             &:hover, &:active {
