@@ -36,6 +36,7 @@ export default class Dashboard extends React.Component {
      * @param {string} view The lookup key for the view to change to.
      */
     onChangeView(view) {
+        window.location.hash = view.toLowerCase();
         this.setState({ view: view });
     }
 

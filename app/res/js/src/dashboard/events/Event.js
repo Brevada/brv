@@ -5,8 +5,7 @@ import { Link } from 'components/Link';
 import { Badges } from 'dashboard/aspects/Badges';
 import EventAspects from 'dashboard/events/EventAspects';
 import Form, { Link as FormLink } from 'forms/Form';
-
-import classNames from 'classnames';
+import { InlineRemove as InlineRemoveDialog } from 'dashboard/events/dialogs/InlineRemove';
 import moment from 'moment';
 
 /**
@@ -85,6 +84,7 @@ const EventBody = props => (
             eventId={props.eventId}
             storeId={props.storeId}
             onRefresh={props.onRefresh}
+            onDelete={props.onDelete}
         />
     </div>
 );
@@ -95,11 +95,20 @@ const EventBody = props => (
 export default class Event extends React.Component {
     constructor(props) {
         super(props);
+
+        this.state = {
+            /* Indicates user has initated delete process. */
+            deleting: false
+        };
+
+        /* User triggers deletion process for event. */
+        this.onDelete = ::this.onDelete;
     }
 
     shouldComponentUpdate(nextProps, nextState) {
         /* Update if any part of the event has changed. */
-        return !_.isEqual(this.props.aspects, nextProps.aspects) ||
+        return !_.isEqual(this.state.deleting, nextState.deleting) ||
+               !_.isEqual(this.props.aspects, nextProps.aspects) ||
                !_.isEqual(this.props.summary, nextProps.summary) ||
                !_.isEqual(this.props.title, nextProps.title) ||
                !_.isEqual(this.props.completed, nextProps.completed) ||
@@ -107,7 +116,22 @@ export default class Event extends React.Component {
                !_.isEqual(this.props.filter, nextProps.filter);
     }
 
+    onDelete() {
+        this.setState({
+            deleting: true
+        });
+    }
+
     render() {
+        /* Inline dialog shown if in remove mode. */
+        const removeDialog = this.state.deleting && (
+            <InlineRemoveDialog
+                id={this.props.id}
+                onCancel={()=>this.setState({deleting: false})}
+                onSuccess={()=>this.props.onRemove && this.props.onRemove(this.props.id)}
+            />
+        );
+
         return (
             <div className='item constrain-w event'>
                 <div className='ly constrain-w item dl event-content'>
@@ -120,13 +144,16 @@ export default class Event extends React.Component {
                         filter={this.props.filter}
                         summary={this.props.summary}
                     />
-                    <EventBody
-                        aspects={this.props.aspects}
-                        onRemove={this.props.onRemove}
-                        eventId={this.props.id}
-                        storeId={this.props.storeId}
-                        onRefresh={this.props.onRefresh}
-                    />
+                    { removeDialog || (
+                        <EventBody
+                            aspects={this.props.aspects}
+                            onRemove={this.props.onRemove}
+                            eventId={this.props.id}
+                            storeId={this.props.storeId}
+                            onRefresh={this.props.onRefresh}
+                            onDelete={this.onDelete}
+                        />
+                    ) }
                 </div>
             </div>
         );

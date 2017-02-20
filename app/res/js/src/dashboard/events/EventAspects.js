@@ -51,22 +51,6 @@ const AddAspect = props => (
 );
 
 /**
- * Event deletion form.
- *
- * @param {object} props
- * @param {number} props.eventId
- */
-const DeleteEvent = props => (
-    <Form
-        action={`/api/event/${props.eventId}`}
-        method="DELETE"
-        onSuccess={()=>props.onRemoveEvent(props.eventId)}
-        onError={()=>false}>
-        <FormLink label='Delete' submit={true} />
-    </Form>
-);
-
-/**
  * Collection of aspects to display for a particular event.
  */
 export default class EventAspects extends React.Component {
@@ -126,10 +110,10 @@ export default class EventAspects extends React.Component {
                             onRefresh={this.props.onRefresh}
                         />
                     </div>
-                    <div className='right'>
-                        <DeleteEvent
-                            eventId={this.props.eventId}
-                            onRemoveEvent={this.props.onRemoveEvent}
+                    <div className='right form'>
+                        <FormLink
+                            label='Delete'
+                            onClick={this.props.onDelete}
                         />
                     </div>
                 </div>

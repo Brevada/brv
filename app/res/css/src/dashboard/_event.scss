@@ -35,6 +35,24 @@
             }
         }
 
+        .body > .remove-dialog {
+            text-align: center;
+            max-width: 500px;
+            margin: 0 auto;
+            padding: 1em 0;
+
+            > span {
+                padding: 1.1em 0.5em;
+                display: block;
+                font-size: 1.2em;
+            }
+
+            > .form {
+                max-width: 300px;
+                margin: 0 auto;
+            }
+        }
+
         .body .tools {
             .form {
                 padding: 0 0.3em;
