@@ -1,6 +1,7 @@
 {
     "presets": [["es2015", { "modules": false }], "react"],
     "plugins": [
+        "transform-runtime",
         "transform-es2015-instanceof",
         "syntax-dynamic-import",
         "transform-function-bind",
