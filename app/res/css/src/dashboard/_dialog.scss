@@ -8,7 +8,7 @@
 
     > .content {
         background: #fff;
-        @include vendor-prefix('box-shadow', '1px 0 5px #{$grey3}');
+        @include box-shadow(1px 0 5px #{$grey3});
         color: $black;
         font-size: 1rem;
         width: 100%;

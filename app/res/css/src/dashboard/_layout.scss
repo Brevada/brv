@@ -16,8 +16,7 @@ $event_background: #fff;
 .dl {
     &.item {
         border-radius: 2px;
-        @include vendor-prefix('box-shadow', '0 0 4px #{$grey3}');
-        //overflow-x: hidden;
+        @include box-shadow(0 0 4px #{$grey3});
     }
 
     &.hint {

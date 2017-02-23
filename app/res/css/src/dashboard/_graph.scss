@@ -3,7 +3,7 @@
 .graph-tooltip {
     padding: 8px;
     background: $blue4;
-    @include vendor-prefix('box-shadow', '1px 0 5px #{$blue4}');
+    @include box-shadow(1px 0 5px #{$blue4});
     border-radius: 3px;
     display: inline-block;
     @extend .clickable;

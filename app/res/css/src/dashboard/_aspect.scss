@@ -13,7 +13,7 @@
 
         border: 1px solid $grey2;
         border-radius: 50%;
-        @include vendor-prefix('box-shadow', '1px 0 5px #{$grey3}');
+        @include box-shadow(1px 0 5px #{$grey3});
         background: #fff;
 
         padding: 2px 5px;

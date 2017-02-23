@@ -1,16 +1,10 @@
 /* Mixins */
 
-@mixin user-select($type){
-	-webkit-user-select: $type;
-	-moz-user-select: $type;
-	-ms-user-select: $type;
-	user-select: $type;
-	cursor: default;
-}
+@import 'libs/sass-flex-mixin-1.0.3/flex';
 
-@mixin vendor-prefix($name, $value) {
+@mixin vendor-prefix($name, $value...) {
   @each $vendor in ('-webkit-', '-moz-', '-ms-', '-o-', '') {
-    #{$vendor}#{$name}: #{$value};
+    #{$vendor}#{$name}: $value;
   }
 }
 
@@ -18,6 +12,19 @@
   @each $vendor in ('-webkit-', '-moz-', '-ms-', '-o-', '') {
     #{$property}: #{$vendor}#{$name}#{unquote("(")}#{$content}#{unquote(")")};
   }
+}
+
+@mixin user-select($type){
+	@include vendor-prefix(user-select, #{$type});
+	cursor: default;
+}
+
+@mixin box-shadow($value...) {
+    @include vendor-prefix(box-shadow, $value);
+}
+
+@mixin transform($value...) {
+    @include vendor-prefix(transform, $value);
 }
 
 .clearfix {
