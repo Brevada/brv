@@ -10,7 +10,7 @@ for (let view of viewFiles) {
 
 module.exports = {
     entry: Object.assign({
-        "vendor": ['moment']
+        "vendor": ['moment', 'babel-polyfill']
     }, views),
     output: {
         path: path.join(__dirname, 'app', 'res', 'js', 'dist'),
