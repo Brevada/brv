@@ -83,8 +83,7 @@
     &.ly-split {
         display: flex;
 
-        > .left, > .right {  }
-        > .left.fill, .right.fill {
+        > .fill, .fill {
             flex-grow: 1;
             &:not(.overflow) {
                 overflow: hidden;

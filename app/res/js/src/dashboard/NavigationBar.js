@@ -7,7 +7,7 @@ import { Link } from 'components/Link';
 const BrandBar = props => {
     return (
         <div className='brand-bar'>
-            <div className='logo'></div>
+            <div className='brand logo-lq logo'></div>
             <DropDownButton label={'Account'}>
                 <DropDownOption
                     label={'Settings'}

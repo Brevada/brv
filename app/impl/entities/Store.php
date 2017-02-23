@@ -80,6 +80,50 @@ class Store extends Entity
     }
 
     /**
+     * Factory method to instantiate a store entity from a store url.
+     *
+     * @param string $url The store url.
+     * @return self
+     */
+    public static function queryUrl($url)
+    {
+        try {
+            $stmt = DB::get()->prepare("
+                SELECT
+                    stores.*, UNIX_TIMESTAMP(stores.DateCreated) as sDateCreated,
+                    store_features.id as FeaturesID,
+                    store_features.CollectionTemplate,
+                    store_features.CollectionLocation,
+                    store_features.SessionCheck,
+                    store_features.WelcomeMessage,
+                    store_features.AllowComments,
+                    store_features.CommentMessage,
+                    locations.id as LocationID,
+                    locations.Country,
+                    locations.Province,
+                    locations.City,
+                    locations.PostalCode,
+                    locations.Longitude,
+                    locations.Latitude
+                FROM stores
+                JOIN store_features ON store_features.id = stores.FeaturesID
+                JOIN locations ON locations.id = stores.LocationID
+                WHERE stores.URLName = :url
+                LIMIT 1
+            ");
+            $stmt->bindValue(':url', $url, \PDO::PARAM_STR);
+            $stmt->execute();
+            if (($row = $stmt->fetch(\PDO::FETCH_ASSOC)) !== false) {
+                return self::from($row);
+            }
+        } catch (\PDOException $ex) {
+            \App::log()->error($ex->getMessage());
+        }
+
+        return null;
+    }
+
+    /**
      * Factory method to instantiate a store entity from an account.
      *
      * This chooses a default store belonging to the account.

@@ -1,0 +1,74 @@
+/* Feedback Aspects */
+
+.aspect-container {
+    margin: 0 auto;
+    padding-top: 16.5px;
+    max-width: 575px;
+
+    .aspect {
+        width: 100%;
+        margin: 10px 0;
+
+        .header {
+            font-size: 1.1em;
+            font-weight: bold;
+            color: $black;
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        &:not(:last-child)::after {
+            content: '';
+            display: block;
+            height: 1px;
+            width: 100%;
+            transform: translateX(-50%);
+            margin-left: 50%;
+            margin-top: 10px;
+            border-bottom: 1px solid $grey3;
+            filter: blur(0.5px);
+            opacity: 0.35;
+        }
+    }
+}
+
+.rating-bar {
+
+    .ratings {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+
+        .rating {
+            width: 19.5%;
+            height: 68px;
+            display: inline-block;
+            background-image: url('/images/feedback/star.png');
+            background-repeat: no-repeat;
+            background-position: center center;
+
+            @extend .clickable;
+
+            @include rating(background-color);
+            &.rating-0 { background-size: 10%; }
+            &.rating-1 { background-size: 15%; }
+            &.rating-2 { background-size: 20%; }
+            &.rating-3 { background-size: 25%; }
+            &.rating-4 { background-size: 30%; }
+
+            &:active, &:hover {
+                opacity: 0.5;
+            }
+        }
+    }
+
+    .hint {
+        display: inline-block;
+        width: 100%;
+        color: $grey3;
+        font-size: 0.925em;
+        margin-top: 3px;
+
+        @extend .clearfix;
+    }
+}

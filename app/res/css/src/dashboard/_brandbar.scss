@@ -2,16 +2,8 @@
     @extend .clearfix;
     margin-bottom: 12px;
 
-    $logo_size: 40px;
     .logo {
         float: left;
-        background: $red1;
-        width: $logo_size;
-        height: $logo_size;
-        background-image: url('/images/brand/quote-white.png');
-        background-repeat: no-repeat;
-        background-size: 60%;
-        background-position: center center;
         margin: 0 5px 0 10px;
         border: 1px solid transparent;
         border-radius: 2px;

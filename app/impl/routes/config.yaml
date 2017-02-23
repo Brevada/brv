@@ -46,3 +46,9 @@ routes:
 
     events:
         GET: [ '^\/api\/events$', auth, Event+getAll ]
+
+    feedback:
+        GET: [ '^\/api\/feedback\/config$', pass, Feedback+getConfig ]
+
+    # Catch all for feedback pages.
+    feedback_view: [ 'GET ^\/([^\/]+)\/?$', pass, Feedback+viewFeedback ]

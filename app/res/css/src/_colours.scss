@@ -31,3 +31,13 @@ $orange1: #ffb400;
     &.mood-80 { #{$property}: $green2; }
     &.mood-90, &.mood-100 { #{$property}: $green1; }
 }
+
+/* Rating Colouring */
+
+@mixin rating($property: background) {
+    &.rating-0 { #{$property}: #cc750e; }
+    &.rating-1 { #{$property}: #ccc10e; }
+    &.rating-2 { #{$property}: #afcc0e; }
+    &.rating-3 { #{$property}: #82cc0e; }
+    &.rating-4 { #{$property}: #2ecc0e; }
+}

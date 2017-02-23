@@ -5,7 +5,10 @@ $image_resize: 0.6;
 .brand {
     background-position: center center;
     background-repeat: no-repeat;
-    background-size: contain;
+
+    &.text-lq, &.text-mq, &.text-hq {
+        background-size: contain;
+    }
 
     &.text-lq {
         background-image: url('/images/brand/brevada-lq.png');
@@ -23,5 +26,16 @@ $image_resize: 0.6;
         background-image: url('/images/brand/brevada-hq.png');
         width: calc(#{$image_resize} * 800px);
         height: calc(#{$image_resize} * 173px);
+    }
+
+    &.logo-lq {
+        background-image: url('/images/brand/quote-white.png');
+        background-size: 60%;
+        background-color: $red1;
+    }
+
+    &.logo-lq {
+        width: calc(0.075 * 533px);
+        height: calc(0.075 * 533px);
     }
 }

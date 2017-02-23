@@ -1,0 +1,31 @@
+/* Normalize environment first. */
+@import '../colours';
+@import '../mixins';
+@import '../breakpoints';
+
+/* Feedback */
+
+#feedback-root {
+    min-height: 100%;
+}
+
+#feedback-root, .feedback-container {
+    width: 100%;
+    @extend .clearfix;
+
+    background: $grey5;
+    overflow: hidden;
+}
+
+.feedback-container .scrollable {
+    overflow-y: auto;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+/* Header */
+@import 'header';
+
+/* Aspects */
+@import 'aspects';
