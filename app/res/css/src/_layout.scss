@@ -9,9 +9,10 @@
     @extend .clearfix;
 
     &.flex-h, &.flex-v {
-        display: flex;
+        @include flexbox;
         &:not(.defined-size) {
-            flex-wrap: wrap;
+            // TODO: Not supported in older browsers.
+            @include flex-wrap(wrap);
         }
 
         .item:not(.ex-ly) {
@@ -20,8 +21,8 @@
         }
     }
 
-    &.flex-v { flex-direction: column; }
-    &.flex-h { flex-direction: row; }
+    &.flex-v { @include flex-direction(column); }
+    &.flex-h { @include flex-direction(row); }
 
     &.constrain-w, & .constrain-w {
         max-width: 100%;
@@ -29,7 +30,7 @@
 
     /* Content Alignment */
     &.center-c-h {
-        &.flex-v, &.flex-h { justify-content: center; }
+        &.flex-v, &.flex-h { @include justify-content(center); }
         &:not(.flex-v):not(.flex-h) { text-align: center; }
     }
 
@@ -81,10 +82,10 @@
     }
 
     &.ly-split {
-        display: flex;
+        @include flexbox;
 
         > .fill, .fill {
-            flex-grow: 1;
+            @include flex-grow(1);
             &:not(.overflow) {
                 overflow: hidden;
             }

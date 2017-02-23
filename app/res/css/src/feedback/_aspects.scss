@@ -22,12 +22,12 @@
             display: block;
             height: 1px;
             width: 100%;
-            transform: translateX(-50%);
+            @include transform(translateX(-50%));
             margin-left: 50%;
             margin-top: 10px;
             border-bottom: 1px solid $grey3;
-            filter: blur(0.5px);
-            opacity: 0.35;
+            @include blur(0.5px);
+            @include opacity(0.35);
         }
     }
 }
@@ -35,9 +35,10 @@
 .rating-bar {
 
     .ratings {
-        display: flex;
-        flex-direction: row;
-        justify-content: space-between;
+        @include flexbox;
+        @include flex-direction(row);
+        // TODO: space-* not supported in older browsers.
+        @include justify-content(space-between);
 
         .rating {
             width: 19.5%;
@@ -57,7 +58,7 @@
             &.rating-4 { background-size: 30%; }
 
             &:active, &:hover {
-                opacity: 0.5;
+                @include opacity(0.5);
             }
         }
     }

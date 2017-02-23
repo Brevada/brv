@@ -38,7 +38,7 @@ $inline_margin: 5px;
 
     .link {
         color: $blue1;
-        opacity: 0.65;
+        @include opacity(0.65);
 
         &.danger {
             color: $orange1;
@@ -67,7 +67,7 @@ $inline_margin: 5px;
         }
 
         &:hover {
-            opacity: 1;
+            @include opacity(1);
         }
     }
 
@@ -202,5 +202,5 @@ $inline_margin: 5px;
 
 .datepicker.input > div {
     max-width: 100%;
-    width: calc((#{$textbox_width} / 2) - #{$inline_margin});
+    width: ($textbox_width / 2) - $inline_margin;
 }

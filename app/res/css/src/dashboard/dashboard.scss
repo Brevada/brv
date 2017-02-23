@@ -4,7 +4,7 @@
 
 #dashboard-root {
     min-height: 100%;
-    display: flex;
+    @include flexbox;
 }
 
 #dashboard-root, .dashboard-container {
@@ -20,7 +20,7 @@
 
     .left-column {
         width: 100%;
-        display: flex;
+        @include flexbox;
         float: left;
     }
 
@@ -31,7 +31,7 @@
     }
 
     .left-column, .right-column {
-        flex-direction: column;
+        @include flex-direction(column);
         height: 100%;
     }
 
@@ -43,7 +43,7 @@
         }
 
         .right-column {
-            display: flex;
+            @include flexbox;
         }
     }
     */

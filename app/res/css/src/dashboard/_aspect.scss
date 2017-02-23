@@ -59,7 +59,7 @@
         }
 
         .blank-state {
-            height: calc(#{$aspect_graph_height} + 77px);
+            height: $aspect_graph_height + 77px;
             text-align: center;
             padding: 3em 0;
             border-top: 1px solid $grey5;
@@ -78,7 +78,7 @@
         }
 
         .remove-dialog {
-            height: calc(#{$aspect_graph_height} + 77px);
+            height: $aspect_graph_height + 77px;
             text-align: center;
             padding: 3em 0;
             border-top: 1px solid $grey5;

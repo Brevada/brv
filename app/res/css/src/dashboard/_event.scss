@@ -14,7 +14,7 @@
 
             display: block;
             @include respond-to('xsmall') {
-                display: flex;
+                @include flexbox;
             }
         }
 
@@ -59,7 +59,7 @@
             }
 
             .right {
-                align-self: center;
+                @include align-self(center);
                 padding: 0 0.55em;
                 font-size: 0.84em;
             }

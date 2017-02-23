@@ -14,6 +14,22 @@
   }
 }
 
+@function image-url($resource-name) {
+    @return url("/images/" + $resource-name);
+}
+
+@mixin image($resource-name) {
+    background-image: image-url($resource-name);
+}
+
+@mixin filter($type, $amt) {
+    @include vendor-prefix(filter, unquote($type+unquote('(#{$amt})')));
+}
+
+@mixin blur($amt) {
+    @include filter(blur, $amt);
+}
+
 @mixin user-select($type){
 	@include vendor-prefix(user-select, #{$type});
 	cursor: default;
@@ -25,6 +41,12 @@
 
 @mixin transform($value...) {
     @include vendor-prefix(transform, $value);
+}
+
+@mixin opacity($opacity) {
+    opacity: $opacity;
+    $opacity-ie: $opacity * 100;
+    filter: alpha(opacity=$opacity-ie); //IE8
 }
 
 .clearfix {

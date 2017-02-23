@@ -2,7 +2,7 @@
 
 .livefeed {
     background: $grey4;
-    flex-grow: 1;
+    @include flex-grow(1);
 
     .status-chart {
         width: 125px;
