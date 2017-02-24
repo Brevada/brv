@@ -20,13 +20,13 @@ export default class Feedback extends React.Component {
 
     render() {
         return (
-            <div className='ly flex-v ly-split feedback-container'>
+            <div className='ly flex-v defined-size feedback-container'>
                 <Header
                     name={this.props.data.name}
                     onComment={()=>false}
                     onFinish={()=>false}
                 />
-                <div className='scrollable fill'>
+                <div className='scrollable'>
                     <Aspects
                         aspects={this.props.data.aspects}
                     />

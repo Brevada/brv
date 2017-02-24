@@ -10,11 +10,13 @@
 }
 
 #feedback-root, .feedback-container {
-    width: 100%;
     @extend %clearfix;
-
+    width: 100%;
     background: $grey5;
-    overflow: hidden;
+}
+
+.feedback-container {
+    @include flex-wrap(nowrap);
 }
 
 .feedback-container .scrollable {

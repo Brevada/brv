@@ -4,10 +4,10 @@
     margin: 0 auto;
     padding-top: 16.5px;
 
-    max-width: 90%;
-    @include respond-to('small') {
-        max-width: 575px;
-    }
+    width: 90%;
+    max-width: 575px;
+    @include respond-to('small') { width: 575px; }
+    @include transition(width ease .1s);
 
     .aspect {
         width: 100%;

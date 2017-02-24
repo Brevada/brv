@@ -2,14 +2,15 @@
 
 .feedback-header {
     background: #fff;
+    width: 100%;
 
     .content {
         margin: 0 auto;
         padding: 50px 5px 15px 0;
         position: relative;
         max-width: 650px;
-
         @extend %clearfix;
+        @include font-size(16px);
 
         .brand {
             position: absolute;
@@ -18,10 +19,19 @@
         }
 
         .heading {
-            font-size: 2.4em;
             text-align: center;
             margin: 0 0 20px 0;
             color: $grey4;
+            font-size: 1.6em;
+            padding: 0 0.1em;
+            @media (min-width: 420px) {
+                font-size: 2.05em;
+            }
+            @include respond-to('small') {
+                padding: 0;
+                font-size: 2.4em;
+            }
+            @include transition(font-size ease 0.1s);
 
             span { font-weight: bold; color: $black; }
         }
@@ -31,12 +41,57 @@
         }
 
         .controls .header-btn {
-            margin: 0 5px;
-            font-size: 1.5em;
+            margin: 0 0.313em;
             max-width: 100%;
-            width: 210px;
+
+            font-size: 0.95em;
+            width: calc(50% - (0.313em*2));
+            @media (min-width: 420px) {
+                font-size: 1.05em;
+                width: 180px;
+            }
+            @include respond-to('small') {
+                font-size: 1.5em;
+                width: 210px;
+            }
+            @include transition(font-size ease 0.1s, width ease 0.1s);
         }
 
+    }
+}
+
+.feedback-header.minimized {
+    background: $grey5;
+    height: 42px;
+    @include respond-to('small') {
+        height: 60px;
+    }
+
+    .brand { display: none; }
+
+    .content {
+        position: fixed;
+        z-index: 100;
+        background: $grey5;
+        @include justify-content(center);
+        padding: 0;
+        width: 100%;
+        max-width: 100%;
+        @include flexbox;
+
+        .controls {
+            @include flex-grow(1);
+        }
+    }
+
+    .heading { display: none; }
+    .controls .btn {
+        width: 49.5%;
+        margin: 0 0.25%;
+
+        @include respond-to('xsmall') {
+            max-width: 500px;
+        }
     }
 }
 
@@ -46,7 +101,7 @@
         background: $blue1;
         color: #fff;
         text-align: center;
-        padding: 11px 18.5px;
+        padding: 0.688em 1.156em;
 
         span + i {
             display: inline-block;
@@ -57,6 +112,11 @@
 
         &:active, &:hover {
             background: $blue3;
+        }
+
+        &.disabled {
+            background: $blue3;
+            cursor: no-drop;
         }
     }
 }
