@@ -1,5 +1,5 @@
 .brand-bar {
-    @extend .clearfix;
+    @extend %clearfix;
     margin-bottom: 12px;
 
     .logo {

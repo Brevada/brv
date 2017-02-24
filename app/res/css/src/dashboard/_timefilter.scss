@@ -4,7 +4,7 @@
     font-size: 0.9rem;
     padding: 10px 16px;
     margin: 5px 0 10px 0;
-    @extend .clearfix;
+    @extend %clearfix;
 
     .navigation-btn {
         display: inline-block;
@@ -17,7 +17,7 @@
 
         transition: border 0.1s ease-out;
 
-        @extend .clickable;
+        @extend %clickable;
 
         &:not(.active):hover {
             border-color: $blue2;

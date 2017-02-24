@@ -4,7 +4,7 @@
     position: relative;
     outline: none;
 
-    @extend .clickable;
+    @extend %clickable;
 
     .label .fa {
         font-size: 0.6em;
@@ -28,7 +28,7 @@
         z-index: 999;
         top: calc(100% + 5px);
 
-        @extend .clickable;
+        @extend %clickable;
 
         .option {
             padding: 0.5rem 0.6rem;

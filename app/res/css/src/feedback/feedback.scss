@@ -11,7 +11,7 @@
 
 #feedback-root, .feedback-container {
     width: 100%;
-    @extend .clearfix;
+    @extend %clearfix;
 
     background: $grey5;
     overflow: hidden;

@@ -14,7 +14,7 @@ $inline_margin: 5px;
 
     .form-group {
         padding: 0.4rem 0;
-        @extend .clearfix;
+        @extend %clearfix;
 
         &.inline {
             display: inline-block;
@@ -29,7 +29,7 @@ $inline_margin: 5px;
         font-size: 0.9em;
         margin-bottom: 0.3em;
         color: $grey3;
-        @extend .clickable;
+        @extend %clickable;
 
         &.inline {
             display: inline;
@@ -54,7 +54,7 @@ $inline_margin: 5px;
         background: transparent;
         line-height: 1;
         padding: 0;
-        @extend .clickable;
+        @extend %clickable;
 
         &.right { float: right; }
         &.left { float: left; }
@@ -85,7 +85,7 @@ $inline_margin: 5px;
         background: $blue2;
         outline: none;
 
-        @extend .clickable;
+        @extend %clickable;
 
         &:hover {
             border-color: $blue2;

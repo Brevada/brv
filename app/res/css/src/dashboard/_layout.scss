@@ -47,7 +47,7 @@ $event_background: #fff;
             font-size: 1.4em;
             color: $black;
             padding-top: 5px;
-            @extend .ellipsis;
+            @extend %ellipsis;
         }
 
         .links {

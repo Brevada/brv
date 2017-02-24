@@ -6,7 +6,7 @@
     @include box-shadow(1px 0 5px #{$blue4});
     border-radius: 3px;
     display: inline-block;
-    @extend .clickable;
+    @extend %clickable;
     color: #fff;
 
     .value, .specific {

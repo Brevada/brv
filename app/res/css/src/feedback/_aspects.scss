@@ -3,7 +3,11 @@
 .aspect-container {
     margin: 0 auto;
     padding-top: 16.5px;
-    max-width: 575px;
+
+    max-width: 90%;
+    @include respond-to('small') {
+        max-width: 575px;
+    }
 
     .aspect {
         width: 100%;
@@ -48,7 +52,7 @@
             background-repeat: no-repeat;
             background-position: center center;
 
-            @extend .clickable;
+            @extend %clickable;
 
             @include rating(background-color);
             &.rating-0 { background-size: 10%; }
@@ -70,6 +74,6 @@
         font-size: 0.925em;
         margin-top: 3px;
 
-        @extend .clearfix;
+        @extend %clearfix;
     }
 }

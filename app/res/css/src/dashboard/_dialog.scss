@@ -37,7 +37,7 @@
         @include opacity(0.6);
 
         &.escapable {
-            @extend .clickable;
+            @extend %clickable;
         }
     }
 }
@@ -46,7 +46,7 @@
     display: inline-block;
     float: right;
     font-size: 0.93em;
-    @extend .clickable;
+    @extend %clickable;
 
     &:hover {
         color: $grey4;

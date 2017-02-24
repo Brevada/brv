@@ -6,7 +6,7 @@
         padding: 0;
     }
 
-    @extend .clearfix;
+    @extend %clearfix;
 
     &.flex-h, &.flex-v {
         @include flexbox;
@@ -99,6 +99,6 @@
 
     &.ly-abs-container {
         position: relative;
-        @extend .clearfix;
+        @extend %clearfix;
     }
 }

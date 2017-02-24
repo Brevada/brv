@@ -5,7 +5,7 @@
     .event-content {
         width: $event_width;
         background: $event_background;
-        @extend .clearfix;
+        @extend %clearfix;
 
         .header {
             font-size: 1.15em;
@@ -20,7 +20,7 @@
 
         .header .hint {
             color: $grey3;
-            @extend .ellipsis;
+            @extend %ellipsis;
 
             .delim {
                 padding: 0 0.3em;
@@ -87,7 +87,7 @@
                 font-size: 1.05em;
                 padding: 0.8em 0;
                 margin: 0 0.85em;
-                @extend .clearfix;
+                @extend %clearfix;
 
                 border-top: 1px solid transparent;
                 border-bottom: 1px solid $grey5;
@@ -107,7 +107,7 @@
 
                 .title {
                     color: $black;
-                    @extend .ellipsis;
+                    @extend %ellipsis;
 
                     min-width: 100%;
                     @include respond-to('xsmall') { min-width: 40%; }
@@ -132,7 +132,7 @@
                     @include respond-to('xlarge') { width: calc(80% - #{$right_width}); }
                     transition: width 0.1s;
 
-                    @extend .ellipsis;
+                    @extend %ellipsis;
                 }
 
                 .change {

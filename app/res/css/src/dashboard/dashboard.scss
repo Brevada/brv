@@ -9,14 +9,14 @@
 
 #dashboard-root, .dashboard-container {
     width: 100%;
-    @extend .clearfix;
+    @extend %clearfix;
 }
 
 /* Columns */
 .dashboard-container {
     $livefeed_width: 175px;
 
-    @extend .clearfix;
+    @extend %clearfix;
 
     .left-column {
         width: 100%;

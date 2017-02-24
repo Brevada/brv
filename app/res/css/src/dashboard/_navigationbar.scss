@@ -1,5 +1,5 @@
 .view-navbar {
-    @extend .clearfix;
+    @extend %clearfix;
 
     .navigation-btn, .dropdown-btn > .label {
         display: inline-block;
@@ -11,7 +11,7 @@
         border-bottom: 4px solid transparent;
         transition: border 0.1s ease-out;
         
-        @extend .clickable;
+        @extend %clickable;
 
         &:not(.active):hover {
             border-color: $blue2;
