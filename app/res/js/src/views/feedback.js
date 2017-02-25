@@ -31,7 +31,7 @@ const FeedbackLinked = props => {
 
 docReady(function() {
     ReactDOM.render(
-        (<DataLayer action="/api/feedback/config" data={{ id: window.brv.feedback.id }}>
+        (<DataLayer action="/api/feedback/config" data={{ id: brv.feedback.id() }}>
             <FeedbackLinked />
         </DataLayer>),
         document.getElementById('feedback-root')

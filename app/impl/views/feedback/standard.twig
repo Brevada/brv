@@ -9,15 +9,15 @@
 {% endblock %}
 
 {% block scripts %}
+{{ resources.script('/js/globals/feedback.js') }}
 {{ resources.script('/js/views/feedback.js') }}
 {% endblock %}
 
 {% block body %}
 <script type='text/javascript'>
-window.brv = window.brv || {};
-window.brv.feedback = {
-    id: {{ id | default('null') }}
-};
+window.brv &&
+window.brv.feedback &&
+window.brv.feedback.id({{ id | default('null') }});
 </script>
 
 <div id='feedback-root'>

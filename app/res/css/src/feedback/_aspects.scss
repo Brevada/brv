@@ -12,10 +12,12 @@
     .aspect {
         width: 100%;
         margin: 10px 0;
+        opacity: 1;
+        max-height: 150px;
+        @include user-select(none);
 
         .header {
             font-size: 1.1em;
-            font-weight: bold;
             color: $black;
             display: block;
             margin-bottom: 8px;
@@ -33,10 +35,21 @@
             @include blur(0.5px);
             @include opacity(0.35);
         }
+
+        &.submitting {
+            opacity: 0.2;
+        }
+
+        @include transition(opacity 0.25s, max-height 0.3s);
+
+        &.removing {
+            overflow: hidden;
+            max-height: 0;
+        }
     }
 }
 
-.rating-bar {
+.aspect .rating-bar {
 
     .ratings {
         @include flexbox;
@@ -64,6 +77,10 @@
             &:active, &:hover {
                 @include opacity(0.5);
             }
+
+            &:active {
+                @include box-shadow(inset 0 0 6px 1px $grey5);
+            }
         }
     }
 
@@ -76,4 +93,14 @@
 
         @extend %clearfix;
     }
+}
+
+.aspect .submitted {
+    text-align: center;
+    color: $grey4;
+    height: 68px;
+    line-height: 68px;
+    @extend %ellipsis;
+
+    @include animation(fadein .1s);
 }

@@ -81,12 +81,10 @@ $prefixes: ('-webkit-', '-moz-', '-ms-', '');
 }
 
 @mixin keyframe ($animation) {
-    $kf: keyframes; // Editor was having trouble parsing it w/o variable.
-    @each $vendor in $prefixes {
-        #{$vendor}#{$kf} #{$animation} {
-            @content;
-        }
-    }
+    @-webkit-keyframes #{$animation} { @content; }
+    @-moz-keyframes #{$animation} { @content; }
+    @-ms-keyframes #{$animation} { @content; }
+    @keyframes #{$animation} { @content; }
 }
 
 /* Extendable. */
