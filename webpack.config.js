@@ -10,7 +10,7 @@ for (let view of viewFiles) {
 
 module.exports = {
     entry: Object.assign({
-        "vendor": ['moment', 'babel-polyfill'],
+        "vendor": ['moment', 'babel-polyfill', 'classlist-polyfill'],
         "globals/feedback": ['./app/res/js/src/global/feedback.js']
     }, views),
     output: {

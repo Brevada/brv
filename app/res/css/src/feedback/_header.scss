@@ -60,11 +60,11 @@
     }
 }
 
-.feedback-header.minimized {
+body.scroll-header .feedback-header {
     background: $grey5;
-    height: 42px;
+    height: 50px;
     @include respond-to('small') {
-        height: 60px;
+        height: 70px;
     }
 
     .brand { display: none; }
