@@ -15,7 +15,24 @@ export default class Feedback extends React.Component {
     constructor() {
         super();
 
-        this.state = {     };
+        this.state = {
+            /* Indicates whether at least one aspect has been rated. */
+            feedbackGiven: false
+        };
+
+        this.onAspectSubmitted = ::this.onAspectSubmitted;
+    }
+
+    /**
+     * Handler for when feedback has been submitted for an aspect.
+     */
+    onAspectSubmitted() {
+        if (this.state.feedbackGiven) return;
+
+        /* At least one aspect has been rated. */
+        this.setState({
+            feedbackGiven: true
+        });
     }
 
     render() {
@@ -25,10 +42,12 @@ export default class Feedback extends React.Component {
                     name={this.props.data.name}
                     onComment={()=>false}
                     onFinish={()=>false}
+                    enableFinish={this.state.feedbackGiven}
                 />
                 <div className='scrollable'>
                     <Aspects
                         aspects={this.props.data.aspects}
+                        onSubmit={this.onAspectSubmitted}
                     />
                 </div>
             </div>

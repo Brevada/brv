@@ -101,7 +101,7 @@
 .controls {
     .btn {
         display: inline-block;
-        background: $blue1;
+        background-color: $blue1;
         color: #fff;
         text-align: center;
         padding: 0.688em 1.156em;
@@ -114,12 +114,13 @@
         @extend %clickable;
 
         &:active, &:hover {
-            background: $blue3;
+            background-color: $blue3;
         }
 
         &.disabled {
-            background: $blue3;
+            background-color: lighten($blue3, 20%);
             cursor: no-drop;
+            @include transition(background-color 0.25s);
         }
     }
 }

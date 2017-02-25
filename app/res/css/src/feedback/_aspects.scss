@@ -37,10 +37,10 @@
         }
 
         &.submitting {
-            opacity: 0.2;
+            opacity: 0.1;
         }
 
-        @include transition(opacity 0.25s, max-height 0.3s);
+        @include transition(opacity 0.22s, max-height 0.3s);
 
         &.removing {
             overflow: hidden;
@@ -98,8 +98,8 @@
 .aspect .submitted {
     text-align: center;
     color: $grey4;
-    height: 68px;
-    line-height: 68px;
+    height: 92px;
+    line-height: 92px;
     @extend %ellipsis;
 
     @include animation(fadein .1s);

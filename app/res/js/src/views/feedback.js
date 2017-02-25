@@ -2,6 +2,10 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import docReady from 'doc-ready';
 
+/* Fixes 300ms tap delay. */
+import initReactFastclick from 'react-fastclick';
+initReactFastclick();
+
 import DataLayer from 'forms/DataLayer';
 import Loader from 'dashboard/Loader';
 import Feedback from 'feedback/Feedback';

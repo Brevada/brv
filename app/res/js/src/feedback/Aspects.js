@@ -46,7 +46,7 @@ export default class Aspects extends React.Component {
     onSubmit(id) {
         this.setState(s => ({
             submitted: s.submitted.concat([id])
-        }));
+        }), this.props.onSubmit);
     }
 
     render() {

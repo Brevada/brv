@@ -1,12 +1,15 @@
 import React from 'react';
+import classNames from 'classnames';
 
 /**
  * Individual header button for use in header controls.
  */
 const HeaderButton = props => (
     <div
-        className='btn header-btn'
-        onClick={props.onClick}>
+        className={classNames('btn', 'header-btn', {
+            disabled: !!props.disabled
+        })}
+        onClick={() => !props.disabled && props.onClick()}>
         <span>{props.label}</span>
         <i className={`fa ${props.icon}`}></i>
     </div>
@@ -26,6 +29,7 @@ const Controls = props => (
             label='finish'
             icon='fa-check-circle-o'
             onClick={props.onFinish}
+            disabled={!props.enableFinish}
         />
     </div>
 );
@@ -58,6 +62,7 @@ export default class Header extends React.Component {
                     <Controls
                         onComment={this.props.onComment}
                         onFinish={this.props.onFinish}
+                        enableFinish={this.props.enableFinish}
                     />
                 </div>
             </div>

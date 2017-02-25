@@ -4,6 +4,9 @@
 @import '../breakpoints';
 
 /* Feedback */
+html, body {
+    -webkit-tap-highlight-color: transparent;
+}
 
 #feedback-root {
     min-height: 100%;
