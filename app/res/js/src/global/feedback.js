@@ -58,8 +58,18 @@
         for (let label of Object.keys(_scrollBreaks)) {
             let clas = `scroll-${label}`;
             if (y > _scrollBreaks[label].px) {
-                /* Add class to body. */
-                document.body.classList.add(clas);
+                /* If set, require a certain remainder to be present before applying,
+                 * scroll class. */
+                if (Math.max(
+                        document.body.scrollHeight,
+                        document.body.offsetHeight,
+                        document.documentElement.clientHeight,
+                        document.documentElement.scrollHeight,
+                        document.documentElement.offsetHeight
+                    ) - window.innerHeight > (_scrollBreaks[label].remainder || -1)) {
+                        /* Add class to body. */
+                        document.body.classList.add(clas);
+                }
             } else if(document.body.classList.contains(clas)) {
                 /* Remove class from body. */
                 document.body.classList.remove(clas);
@@ -68,6 +78,18 @@
 
         _scrollLock = false;
     });
+
+    /**
+     * Locks or Unlocks the "scroll" ability of the user.
+     * @param  {boolean} b
+     */
+    feedback.lockScroll = b => {
+        if (b) {
+            document.body.classList.add('lock-scroll');
+        } else {
+            document.body.classList.remove('lock-scroll');
+        }
+    }
 
     /* == End of Scroll Monitoring == */
 

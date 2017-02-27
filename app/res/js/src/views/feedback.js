@@ -34,7 +34,11 @@ const FeedbackLinked = props => {
 };
 
 docReady(function() {
-    brv.feedback.scrollClass({ key: 'header', px: 10 });
+    brv.feedback.scrollClass({
+        key: 'header',
+        px: 10,
+        remainder: 140 /* Max header height minus smallest height. */
+    });
 
     ReactDOM.render(
         (<DataLayer action="/api/feedback/config" data={{ id: brv.feedback.id() }}>

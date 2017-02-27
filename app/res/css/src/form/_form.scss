@@ -126,16 +126,29 @@ $inline_margin: 5px;
         background: #fff;
         text-align: left;
 
+        $input_height: 34px;
+
+        &.input-textarea, textarea {
+            height: $input_height * 5;
+        }
+
         input[type=text],
         input[type=email],
         input[type=password] {
+            height: $input_height;
+        }
+
+        textarea,
+        input[type=text],
+        input[type=email],
+        input[type=password] {
+            resize: none;
             outline: none;
             padding: 6px;
             margin: 0;
-
             width: $textbox_width;
             max-width: 100%;
-            height: 34px;
+
             font-size: 14px;
             line-height: 1.42857143;
             color: #555;
@@ -178,11 +191,18 @@ $inline_margin: 5px;
             @include user-select(none);
             cursor: text;
             position: absolute;
-            top: 50%;
-            @include transform(translateY(-50%));
             left: 6px;
             width: calc(100% - 12px);
             min-width: 12px;
+        }
+
+        :not(textarea) + .placeholder {
+            top: 50%;
+            @include transform(translateY(-50%));
+        }
+
+        textarea + .placeholder {
+            top: 6px;
         }
     }
 }

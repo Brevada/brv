@@ -8,6 +8,10 @@ html, body {
     -webkit-tap-highlight-color: transparent;
 }
 
+body.lock-scroll {
+    overflow-y: hidden;
+}
+
 #feedback-root {
     min-height: 100%;
 }
@@ -29,8 +33,6 @@ html, body {
     padding: 0;
 }
 
-/* Header */
 @import 'header';
-
-/* Aspects */
 @import 'aspects';
+@import 'dialog';

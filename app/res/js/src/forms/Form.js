@@ -73,7 +73,8 @@ export default class Form extends React.Component {
         return (
             <div className={classNames('form', {
                 submitting: this.state.submitting,
-                inline: this.props.inline === true
+                inline: !!this.props.inline,
+                center: !!this.props.center
             }, this.props.className || '')}>
                 <form onSubmit={this.submit} ref={frm=>this._form=frm}>
                     {React.Children.map(this.props.children,
@@ -210,7 +211,7 @@ class Textbox extends Input {
     render() {
         let passedProps = this.props.props || {};
         return (
-            <div className='input' tabIndex={0} onFocus={this.onFocus}>
+            <div className='input input-textbox' tabIndex={0} onFocus={this.onFocus}>
                 <input
                     className={classNames('textbox', {
                         'seamless': this.props.seamless === true
@@ -221,7 +222,56 @@ class Textbox extends Input {
                     ref={ input => (this._input = input)}
                     {...passedProps}
                 />
-                { this.state.value.length === 0 && (
+                { this.state.value.length === 0 && this.props.placeHolder && (
+                    <div className='placeholder'>{ this.props.placeHolder || '' }</div>
+                ) }
+            </div>
+        );
+    }
+}
+
+/**
+ * A basic textbox.
+ */
+class Textarea extends Input {
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            /* The textarea value. */
+            value: ''
+        };
+
+        this.onFocus = ::this.onFocus;
+        this.onChange = ::this.onChange;
+    }
+
+    onFocus() {
+        /* On focus, direct focus to nested DOM element. */
+        this._input && ReactDOM.findDOMNode(this._input).focus();
+    }
+
+    onChange(e) {
+        /* Save the textarea's value to the state. */
+        this.setState({
+            value: e.target.value || ''
+        });
+    }
+
+    render() {
+        let passedProps = this.props.props || {};
+        return (
+            <div className='input input-textarea' tabIndex={0} onFocus={this.onFocus}>
+                <textarea
+                    className={classNames('textarea', {
+                        'seamless': this.props.seamless === true
+                    })}
+                    name={this.props.name}
+                    onChange={this.onChange}
+                    ref={ input => (this._input = input)}
+                    {...passedProps}
+                />
+                { this.state.value.length === 0 && this.props.placeHolder && (
                     <div className='placeholder'>{ this.props.placeHolder || '' }</div>
                 ) }
             </div>
@@ -271,4 +321,4 @@ const ErrorMessage = props => (
     <div className='form-error'>{props.text}</div>
 );
 
-export { Input, Group, Label, Textbox, Button, Link, ErrorMessage };
+export { Input, Group, Label, Textbox, Textarea, Button, Link, ErrorMessage };

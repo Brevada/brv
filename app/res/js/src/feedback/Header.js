@@ -2,12 +2,25 @@ import React from 'react';
 import classNames from 'classnames';
 
 /**
+ * Header action constants (enum).
+ * @type {Object}
+ */
+const HeaderActions = {
+    COMMENT: 'COMMENT',
+    SUBMIT_COMMENT: 'SUBMIT_COMMENT',
+    SUBMIT_EMAIL: 'SUBMIT_EMAIL',
+    FINISH: 'FINISH',
+    CLOSE_DIALOG: 'CLOSE_DIALOG'
+};
+
+/**
  * Individual header button for use in header controls.
  */
 const HeaderButton = props => (
     <div
         className={classNames('btn', 'header-btn', {
-            disabled: !!props.disabled
+            disabled: !!props.disabled,
+            negative: !!props.negative
         })}
         onClick={() => !props.disabled && props.onClick()}>
         <span>{props.label}</span>
@@ -16,28 +29,66 @@ const HeaderButton = props => (
 );
 
 /**
- * Header controls.
+ * Header controls for main view. Contains comment and finish buttons.
  */
-const Controls = props => (
+const FeedbackControls = props => (
     <div className='controls'>
         <HeaderButton
             label='comment'
             icon='fa-commenting-o'
-            onClick={props.onComment}
+            onClick={()=>props.onAction(HeaderActions.COMMENT)}
         />
         <HeaderButton
             label='finish'
             icon='fa-check-circle-o'
-            onClick={props.onFinish}
+            onClick={()=>props.onAction(HeaderActions.FINISH)}
             disabled={!props.enableFinish}
         />
     </div>
 );
 
 /**
+ * Header controls for comment dialog.
+ */
+const CommentControls = props => (
+    <div className='controls'>
+        <HeaderButton
+            label='cancel'
+            icon='fa-times-circle'
+            negative={true}
+            onClick={()=>props.onAction(HeaderActions.CLOSE_DIALOG)}
+        />
+        <HeaderButton
+            label='submit comment'
+            icon='fa-check-circle-o'
+            onClick={()=>props.onAction(HeaderActions.SUBMIT_COMMENT)}
+        />
+    </div>
+);
+
+/**
+ * Header controls for email dialog.
+ */
+const EmailControls = props => (
+ <div className='controls'>
+     <HeaderButton
+         label='cancel'
+         icon='fa-times-circle'
+         negative={true}
+         onClick={()=>props.onAction(HeaderActions.CLOSE_DIALOG)}
+     />
+     <HeaderButton
+         label='submit email'
+         icon='fa-check-circle-o'
+         onClick={()=>props.onAction(HeaderActions.SUBMIT_EMAIL)}
+     />
+ </div>
+);
+
+/**
  * Feedback header.
  */
-export default class Header extends React.Component {
+class Header extends React.Component {
 
     static propTypes = {
         name: React.PropTypes.string,
@@ -49,6 +100,38 @@ export default class Header extends React.Component {
         super();
 
         this.state = {     };
+        this.getControls = ::this.getControls;
+    }
+
+    /**
+     * Returns the controls for the current environment.
+     */
+    getControls() {
+        if (!this.props.showDialog) {
+            return (
+                <FeedbackControls
+                    onAction={this.props.onAction}
+                    enableFinish={this.props.enableFinish}
+                />
+            );
+        }
+
+        switch (this.props.showDialog) {
+            case 'COMMENT':
+                return (
+                    <CommentControls
+                        onAction={this.props.onAction}
+                    />
+                );
+            case 'EMAIL':
+                return (
+                    <EmailControls
+                        onAction={this.props.onAction}
+                    />
+                );
+            default:
+                return null;
+        }
     }
 
     render() {
@@ -59,14 +142,11 @@ export default class Header extends React.Component {
                     <div className='heading'>
                         Give <span>{this.props.name}</span> Feedback
                     </div>
-                    <Controls
-                        onComment={this.props.onComment}
-                        onFinish={this.props.onFinish}
-                        enableFinish={this.props.enableFinish}
-                    />
+                    { this.getControls() }
                 </div>
             </div>
         );
     }
-
 }
+
+export { Header as default, HeaderActions };
