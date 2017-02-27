@@ -2,7 +2,7 @@
   "name": "brv",
   "version": "1.0.0",
   "scripts": {
-    "dev-build-css": "node-sass --include-path app/res/css/src app/res/css/src -o app/res/css/dist",
+    "dev-build-css": "node scripts/run-css",
     "dev-build-js": "webpack",
     "build-js": "webpack -p --config ./webpack.prod.config.js",
     "build-docs": "node scripts/run-phploc && node scripts/build-docs",
