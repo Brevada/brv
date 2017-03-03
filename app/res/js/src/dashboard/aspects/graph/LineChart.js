@@ -2,7 +2,9 @@ import React from 'react';
 import classNames from 'classnames';
 
 import moment from 'moment';
-import { ResponsiveContainer, LineChart as RechartsLineChart, Tooltip, Line, XAxis, YAxis } from 'recharts';
+import { ResponsiveContainer,
+         LineChart as RechartsLineChart,
+         Tooltip, Line, XAxis, YAxis } from 'recharts';
 
 /**
  * Custom recharts compat. tooltip for individual aspect graph.
@@ -90,7 +92,12 @@ const LineChart = props => {
                     connectNulls={true}
                     animationDuration={350}
                 />
-                <YAxis dataKey={'value'} domain={['auto', 'auto']} padding={{ bottom: 15, top: 15 }} hide={true} />
+                <YAxis
+                    dataKey={'value'}
+                    domain={['auto', 'auto']}
+                    padding={{ bottom: 15, top: 15 }}
+                    hide={true}
+                />
                 <XAxis
                     dataKey={'label'}
                     axisLine={true}
