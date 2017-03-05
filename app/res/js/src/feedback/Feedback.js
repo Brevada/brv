@@ -125,6 +125,7 @@ export default class Feedback extends React.Component {
                     onAction={this.onHeaderAction}
                     showDialog={this.state.showDialog}
                     enableFinish={this.state.feedbackGiven}
+                    enableComments={this.props.data.allow_comments}
                 />
                 <div className='scrollable'>
                     { this.getDialog() }

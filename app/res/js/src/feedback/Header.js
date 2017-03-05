@@ -32,12 +32,16 @@ const HeaderButton = props => (
  * Header controls for main view. Contains comment and finish buttons.
  */
 const FeedbackControls = props => (
-    <div className='controls'>
-        <HeaderButton
-            label='comment'
-            icon='fa-commenting-o'
-            onClick={()=>props.onAction(HeaderActions.COMMENT)}
-        />
+    <div className={classNames('controls', {
+        'comments': props.enableComments
+    })}>
+        { props.enableComments && (
+            <HeaderButton
+                label='comment'
+                icon='fa-commenting-o'
+                onClick={()=>props.onAction(HeaderActions.COMMENT)}
+            />
+        ) }
         <HeaderButton
             label='finish'
             icon='fa-check-circle-o'
@@ -112,6 +116,7 @@ class Header extends React.Component {
                 <FeedbackControls
                     onAction={this.props.onAction}
                     enableFinish={this.props.enableFinish}
+                    enableComments={this.props.enableComments}
                 />
             );
         }

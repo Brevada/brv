@@ -45,6 +45,19 @@
             max-width: 100%;
 
             font-size: 0.95em;
+            width: calc(100% - (0.313em*2));
+            @media (min-width: 420px) {
+                font-size: 1.05em;
+                width: 180px * 2;
+            }
+            @include respond-to('small') {
+                font-size: 1.5em;
+                width: 210px * 2;
+            }
+            @include transition(font-size ease 0.1s, width ease 0.1s);
+        }
+
+        .controls.comments .header-btn {
             width: calc(50% - (0.313em*2));
             @media (min-width: 420px) {
                 font-size: 1.05em;
@@ -54,9 +67,7 @@
                 font-size: 1.5em;
                 width: 210px;
             }
-            @include transition(font-size ease 0.1s, width ease 0.1s);
         }
-
     }
 }
 
@@ -86,9 +97,18 @@ body.scroll-header .feedback-header,
     }
 
     .heading { display: none; }
+
     .controls .btn {
-        width: 50%;
         margin: 0%;
+        width: 100%;
+
+        @include respond-to('xsmall') {
+            max-width: 1000px;
+        }
+    }
+
+    .controls.comments .btn {
+        width: 50%;
 
         &:first-child { border-right: 0.5px solid $grey5; }
         &:last-child { border-left: 0.5px solid $grey5; }

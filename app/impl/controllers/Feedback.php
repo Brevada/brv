@@ -95,8 +95,7 @@ class Feedback extends Controller
                     'title' => $aspect->getTitle()
                 ];
             }, $aspects),
-            'template' => $store->getCollectionTemplate(),
-            'template_location' => $store->getCollectionLocation(),
+            'template_location' => (int) $store->getCollectionLocation(),
             'welcome_message' => $store->getWelcomeMessage(),
             'comment_message' => $store->getCommentMessage(),
             'allow_comments' => $store->isAllowComments()
