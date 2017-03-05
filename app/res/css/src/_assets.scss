@@ -19,6 +19,8 @@ $image_resize: 0.6;
         @include image("brand/quote-white.png");
         background-size: 60%;
         background-color: $red1;
+        border-bottom-right-radius: 2.5px;
+        border-bottom-left-radius: 2.5px;
     }
 
     &.logo-lq {
