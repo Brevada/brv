@@ -1,11 +1,23 @@
 import React from 'react';
 
-const Dialog = props => (
-    <div className={'dialog-overlay ' + (props.className || '')}>
-        <div className='dialog-content'>
-            {props.children}
-        </div>
-    </div>
-);
+export default class Dialog extends React.Component {
+    constructor() { super(); }
 
-export default Dialog;
+    componentDidMount() {
+        brv && brv.feedback && brv.feedback.scroll.lock();
+    }
+
+    componentWillUnmount() {
+        brv && brv.feedback && brv.feedback.scroll.lock(false);
+    }
+
+    render() {
+        return (
+            <div className={'dialog-overlay ' + (this.props.className || '')}>
+                <div className='dialog-content'>
+                    {this.props.children}
+                </div>
+            </div>
+        );
+    }
+}

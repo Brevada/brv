@@ -46,7 +46,10 @@ export default class Form extends React.Component {
                 data = { params: data };
             }
 
-            axios(Object.assign({
+            /* If defined, use interceptor to allow offline functionality in offline modes. */
+            const ajax = (brv && brv.feedback && brv.feedback.interceptor) || axios;
+
+            ajax(Object.assign({
                 method: method,
                 url: this.props.action
             }, data))
@@ -76,7 +79,12 @@ export default class Form extends React.Component {
                 inline: !!this.props.inline,
                 center: !!this.props.center
             }, this.props.className || '')}>
-                <form onSubmit={this.submit} ref={frm=>this._form=frm}>
+                <form
+                    onSubmit={this.submit}
+                    ref={frm => {
+                        this._form = frm;
+                        this.props.form && this.props.form(this);
+                    }}>
                     {React.Children.map(this.props.children,
                      (child) => {
                          if (child && child.type.prototype instanceof React.Component) {

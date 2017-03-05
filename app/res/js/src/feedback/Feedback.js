@@ -25,6 +25,11 @@ export default class Feedback extends React.Component {
             showDialog: false
         };
 
+        /* Contains reference to current/last dialog's form.
+         * Not part of state, since it doesn't affect render and should
+         * not trigger redraw. */
+        this.dialogForm = null;
+
         this.onAspectSubmitted = ::this.onAspectSubmitted;
         this.onHeaderAction = ::this.onHeaderAction;
         this.closeDialog = ::this.closeDialog;
@@ -35,6 +40,7 @@ export default class Feedback extends React.Component {
 
     /**
      * Handler for when feedback has been submitted for an aspect.
+     * Occurs after actual submission to storage/network.
      */
     onAspectSubmitted() {
         if (this.state.feedbackGiven) return;
@@ -71,8 +77,9 @@ export default class Feedback extends React.Component {
             case HeaderActions.COMMENT:
                 this.showDialogComment();
                 break;
+            case HeaderActions.SUBMIT_EMAIL:
             case HeaderActions.SUBMIT_COMMENT:
-                /* TODO: Save comment for submission. */
+                this.dialogForm && this.dialogForm.submit();
                 break;
             case HeaderActions.FINISH:
                 break;
@@ -93,12 +100,15 @@ export default class Feedback extends React.Component {
             case 'COMMENT':
                 return (
                     <CommentDialog
-                        commentMessage={this.props.data.comment_message}
+                        message={this.props.data.comment_message}
+                        form={f => this.dialogForm = f}
                     />
                 );
             case 'EMAIL':
                 return (
-                    <EmailDialog />
+                    <EmailDialog
+                        form={f => this.dialogForm = f}
+                    />
                 );
         }
 

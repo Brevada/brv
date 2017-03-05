@@ -18,7 +18,13 @@ export default class Email extends React.Component {
     render() {
         return (
             <Dialog>
-
+                <Form
+                    center={true}
+                    form={this.props.form}>
+                    <Group>
+                        Placeholder...
+                    </Group>
+                </Form>
             </Dialog>
         );
     }

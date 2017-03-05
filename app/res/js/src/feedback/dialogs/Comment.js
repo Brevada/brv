@@ -20,13 +20,15 @@ export default class Comment extends React.Component {
         return (
             <Dialog className='dialog-comment'>
                 <Form
-                    center={true}>
+                    center={true}
+                    form={this.props.form}>
                     <Group>
                         <Textarea
                             seamless={true}
+                            name='comment'
                             props={{
                                 autoFocus: true,
-                                placeholder: this.props.commentMessage || "Write us a comment..."
+                                placeholder: this.props.message || "Write us a comment..."
                             }}
                         />
                     </Group>

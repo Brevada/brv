@@ -1,6 +1,6 @@
 import React from 'react';
 import classNames from 'classnames';
-
+import Form from 'forms/Form';
 import stateQueue from 'utils/StateQueue';
 
 /**
@@ -68,8 +68,14 @@ export default class Aspect extends React.Component {
             submitting: false,
 
             /* Indicates that the aspect is in the process of being removed. */
-            removing: false
+            removing: false,
+
+            /* Rating data. */
+            value: '',
+            ordinal: ''
         };
+
+        this.form = null;
 
         this.onSubmit = ::this.onSubmit;
     }
@@ -82,46 +88,70 @@ export default class Aspect extends React.Component {
      * Man in the Middle. When a rating is given, an animation can play
      * before the item is removed from the list.
      */
-    onSubmit() {
+    onSubmit(value, ordinal) {
         if (this.state.submitted || this.state.submitting) return;
 
-        /* Notify feedback handler of submission. */
-        brv.feedback.submit(this.props.id);
+        this.setState({
+            value: parseFloat(value),
+            ordinal: parseInt(ordinal)
+        }, () => {
+            /* Submit data. */
+            this.form && this.form.submit();
 
-        stateQueue(this, () => !this._unmounted)
-            .do({ submitting: true })
-            .wait(250)
-            .do({
-                submitted: true,
-                submitting: false
-            })
-            .wait(700)
-            .do({
-                removing: true
-            })
-            .wait(300)
-            .do(() => {
-                this.props.onSubmit(this.props.id);
-            })
-            .exec();
+            /* Play out animation. */
+            stateQueue(this, () => !this._unmounted)
+                .do({ submitting: true })
+                .wait(250)
+                .do({
+                    submitted: true,
+                    submitting: false
+                })
+                .wait(700)
+                .do({
+                    removing: true
+                })
+                .wait(300)
+                .do(() => {
+                    this.props.onSubmit(this.props.id);
+                })
+                .exec();
+        });
     }
 
     render() {
         return (
-            <div
-                className={classNames('item', 'aspect', {
-                    submitting: this.state.submitting && !this.state.submitted,
-                    removing: this.state.removing
-                })}>
-                <div className='header'>{this.props.title}</div>
-                { (this.state.submitted && (
-                    <Submitted />
-                )) || (
-                    <RatingBar
-                        onSubmit={this.onSubmit}
+            <Form
+                form={f => this.form = f}>
+                <div
+                    className={classNames('item', 'aspect', {
+                        submitting: this.state.submitting && !this.state.submitted,
+                        removing: this.state.removing
+                    })}>
+                    <div className='header'>{this.props.title}</div>
+                    { (this.state.submitted && (
+                        <Submitted />
+                    )) || (
+                        <RatingBar
+                            onSubmit={this.onSubmit}
+                        />
+                    ) }
+                    <input
+                        type='hidden'
+                        value={this.props.id}
+                        name='aspect_id'
                     />
-                ) }
-            </div>
+                    <input
+                        type='hidden'
+                        value={this.state.value}
+                        name='value'
+                    />
+                    <input
+                        type='hidden'
+                        value={this.state.ordinal}
+                        name='ordinal'
+                    />
+                </div>
+            </Form>
         );
     }
 

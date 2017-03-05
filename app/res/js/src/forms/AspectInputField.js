@@ -197,7 +197,6 @@ export default class AspectInputField extends FormInput {
                 ) }
                 <input
                     type='hidden'
-                    ref={ input => (this._inputId = input) }
                     value={this.state.id}
                     name={`${this.props.name}_id`}
                 />

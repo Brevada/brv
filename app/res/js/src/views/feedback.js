@@ -34,7 +34,7 @@ const FeedbackLinked = props => {
 };
 
 docReady(function() {
-    brv.feedback.scrollClass({
+    brv.feedback.scroll.monitor({
         key: 'header',
         px: 10,
         remainder: 140 /* Max header height minus smallest height. */
