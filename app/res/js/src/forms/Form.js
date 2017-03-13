@@ -47,7 +47,7 @@ export default class Form extends React.Component {
             }
 
             /* If defined, use interceptor to allow offline functionality in offline modes. */
-            const ajax = (brv && brv.feedback && brv.feedback.interceptor) || axios;
+            const ajax = (typeof brv !== 'undefined' && brv.feedback && brv.feedback.interceptor) || axios;
 
             ajax(Object.assign({
                 method: method,
