@@ -62,7 +62,7 @@ export default class AspectsView extends React.Component {
 
         this.state = {
             /* Currently selected filter. */
-            filter: Filter.ensure('TODAY'),
+            filter: Filter.ensure('ALL_TIME'),
 
             /* Visibility of dialogs. */
             dialogs: {

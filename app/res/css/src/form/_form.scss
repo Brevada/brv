@@ -82,17 +82,13 @@ $inline_margin: 5px;
         color: #fff;
         border: 1px solid $blue1;
         border-radius: 3px;
-        background: $blue2;
+        background: $blue3;
         outline: none;
 
         @extend %clickable;
 
-        &:hover {
-            border-color: $blue2;
-        }
-
-        &:active, &:focus {
-            border-color: $blue1;
+        &:hover, &:active, &:focus {
+            background: $blue1;
         }
     }
 
@@ -192,6 +188,7 @@ $inline_margin: 5px;
             cursor: text;
             position: absolute;
             left: 6px;
+            margin-top: 1px;
             width: calc(100% - 12px);
             min-width: 12px;
         }

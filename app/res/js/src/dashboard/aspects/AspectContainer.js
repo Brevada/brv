@@ -47,7 +47,7 @@ export default class AspectContainer extends React.Component {
         /* Sort aspects by title, and remove blacklisted aspects
          * (removed list). */
         return (
-            <div className='ly flex-h center-c-h aspect-container'>
+            <div className='ly flex-h aspect-container'>
                 {this.state.aspects
                     .concat()
                     .filter(a => !this.state.removed.includes(a.id))

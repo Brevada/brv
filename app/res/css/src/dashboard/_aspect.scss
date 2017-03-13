@@ -1,7 +1,29 @@
 /* Aspect */
 
+.aspect-container {
+    @include justify-content(center);
+    @include respond-to('medium') {
+        @include justify-content(flex-start);
+    }
+}
+
+@function aspect-margin($ncols) {
+    $total_width: $ncols * $aspect_width;
+    $denom: 2 * $ncols;
+    @return calc((100% - #{$total_width}) / #{$denom});
+}
+
 .aspect-container .aspect {
-    margin: 5px 15px 10px 15px;
+    margin-top: 5px;
+    margin-bottom: 10px;
+
+    margin-right: 5px;
+    margin-left: 5px;
+
+    @include respond-to('medium') {
+        margin-right: aspect-margin(3);
+        margin-left: aspect-margin(3);
+    }
 
     .hidden { /* Aspect Hidden State */ }
 

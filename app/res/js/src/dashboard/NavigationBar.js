@@ -36,12 +36,6 @@ export default class NavigationBar extends React.Component {
                 <BrandBar />
                 <div className='view-navbar'>
                     <NavigationButton
-                        label={'Timeline'}
-                        view={'TIMELINE'}
-                        onClick={this.props.onChangeView}
-                        active={this.props.view === 'TIMELINE'}
-                    />
-                    <NavigationButton
                         label={'Your Aspects'}
                         view={'ASPECTS'}
                         onClick={this.props.onChangeView}
@@ -55,7 +49,7 @@ export default class NavigationBar extends React.Component {
                     />
                     {this.props.url && (
                         <Link
-                            label={`Feedback Page: brevada.com/${this.props.url}`}
+                            label={`brevada.com/${this.props.url}`}
                             onClick={()=>window.location.replace(`/${this.props.url}`)}
                         />
                     )}

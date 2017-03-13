@@ -1,6 +1,9 @@
 .view-navbar {
     @extend %clearfix;
 
+    max-width: 1000px;
+    margin: 0 auto;
+
     .navigation-btn, .dropdown-btn > .label {
         display: inline-block;
         font-size: 1.125em;
@@ -10,7 +13,7 @@
         color: $black;
         border-bottom: 4px solid transparent;
         transition: border 0.1s ease-out;
-        
+
         @extend %clickable;
 
         &:not(.active):hover {

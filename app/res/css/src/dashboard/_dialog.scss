@@ -25,6 +25,12 @@
         @include respond-to('large') {
             padding: 2rem 7rem;
         }
+
+        > .form {
+            max-width: 1000px;
+            margin-left: auto;
+            margin-right: auto;
+        }
     }
 
     > .overlay {

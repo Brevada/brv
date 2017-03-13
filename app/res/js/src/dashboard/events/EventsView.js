@@ -61,7 +61,7 @@ export default class EventsView extends React.Component {
 
         this.state = {
             /* Currently selected filter. */
-            filter: Filter.ensure('PAST_MONTH'),
+            filter: Filter.ensure('ALL_TIME'),
 
             /* Visibility of dialogs. */
             dialogs: {
