@@ -21,6 +21,9 @@ export default class Feedback extends React.Component {
             /* Indicates whether at least one aspect has been rated. */
             feedbackGiven: false,
 
+            /* Indicates that a comment is ready for submission. */
+            pendingComment: false,
+
             /* Determines which dialog to show if any. */
             showDialog: false
         };
@@ -100,8 +103,10 @@ export default class Feedback extends React.Component {
             case 'COMMENT':
                 return (
                     <CommentDialog
-                        message={this.props.data.comment_message}
                         form={f => this.dialogForm = f}
+                        message={this.props.data.comment_message}
+                        onValid={()=>this.setState({ pendingComment: true })}
+                        onInvalid={()=>this.setState({ pendingComment: false })}
                     />
                 );
             case 'EMAIL':
@@ -124,8 +129,12 @@ export default class Feedback extends React.Component {
                     name={this.props.data.name}
                     onAction={this.onHeaderAction}
                     showDialog={this.state.showDialog}
-                    enableFinish={this.state.feedbackGiven}
                     enableComments={this.props.data.allow_comments}
+                    enableSubmit={
+                        (this.state.showDialog == 'COMMENT' && this.state.pendingComment) ||
+                        this.state.showDialog == 'EMAIL' ||
+                        (!this.state.showDialog && this.state.feedbackGiven)
+                    }
                 />
                 <div className='scrollable'>
                     { this.getDialog() }

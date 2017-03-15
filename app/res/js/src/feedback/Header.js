@@ -46,7 +46,7 @@ const FeedbackControls = props => (
             label='finish'
             icon='fa-check-circle-o'
             onClick={()=>props.onAction(HeaderActions.FINISH)}
-            disabled={!props.enableFinish}
+            disabled={!props.enableSubmit}
         />
     </div>
 );
@@ -66,6 +66,7 @@ const CommentControls = props => (
             label='submit comment'
             icon='fa-check-circle-o'
             onClick={()=>props.onAction(HeaderActions.SUBMIT_COMMENT)}
+            disabled={!props.enableSubmit}
         />
     </div>
 );
@@ -85,6 +86,7 @@ const EmailControls = props => (
          label='submit email'
          icon='fa-check-circle-o'
          onClick={()=>props.onAction(HeaderActions.SUBMIT_EMAIL)}
+         disabled={!props.enableSubmit}
      />
  </div>
 );
@@ -111,11 +113,15 @@ class Header extends React.Component {
      * Returns the controls for the current environment.
      */
     getControls() {
+        const props = {
+            onAction: this.props.onAction,
+            enableSubmit: this.props.enableSubmit
+        };
+
         if (!this.props.showDialog) {
             return (
                 <FeedbackControls
-                    onAction={this.props.onAction}
-                    enableFinish={this.props.enableFinish}
+                    {...props}
                     enableComments={this.props.enableComments}
                 />
             );
@@ -123,17 +129,9 @@ class Header extends React.Component {
 
         switch (this.props.showDialog) {
             case 'COMMENT':
-                return (
-                    <CommentControls
-                        onAction={this.props.onAction}
-                    />
-                );
+                return (<CommentControls {...props} />);
             case 'EMAIL':
-                return (
-                    <EmailControls
-                        onAction={this.props.onAction}
-                    />
-                );
+                return (<EmailControls {...props} />);
             default:
                 return null;
         }

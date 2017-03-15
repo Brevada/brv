@@ -204,6 +204,13 @@ class Textbox extends Input {
         this.onChange = ::this.onChange;
     }
 
+    componentDidMount() {
+        /* Passes reference to self to parent. */
+        if (this.props.input) {
+            this.props.input(this);
+        }
+    }
+
     onFocus() {
         /* On focus, direct focus to nested DOM element. */
         this._input && ReactDOM.findDOMNode(this._input).focus();
@@ -213,6 +220,8 @@ class Textbox extends Input {
         /* Save the textbox's value to the state. */
         this.setState({
             value: e.target.value || ''
+        }, () => {
+            if (this.props.onChange) this.props.onChange(this.state.value);
         });
     }
 
@@ -254,6 +263,13 @@ class Textarea extends Input {
         this.onChange = ::this.onChange;
     }
 
+    componentDidMount() {
+        /* Passes reference to self to parent. */
+        if (this.props.input) {
+            this.props.input(this);
+        }
+    }
+
     onFocus() {
         /* On focus, direct focus to nested DOM element. */
         this._input && ReactDOM.findDOMNode(this._input).focus();
@@ -263,6 +279,8 @@ class Textarea extends Input {
         /* Save the textarea's value to the state. */
         this.setState({
             value: e.target.value || ''
+        }, () => {
+            if (this.props.onChange) this.props.onChange(this.state.value);
         });
     }
 
