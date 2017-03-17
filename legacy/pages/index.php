@@ -1,5 +1,5 @@
 <?php
-if(Brevada::IsLoggedIn()){ Brevada::Redirect('/dashboard'); }
+if(Brevada::IsLoggedIn()){ Brevada::Redirect(BETA_URL . 'dashboard'); }
 
 if(Brevada::IsMobile()){
 	$this->addResource("<meta name='viewport' content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0'/>", true, true);
@@ -26,11 +26,11 @@ $this->add(new View('../template/home_header.php'));
 ?>
 
     <div class="wrapper">
-        
+
 		<!-- How it works -->
         <section id="about">
             <div class="container">
-                
+
                 <div class="section-heading scrollpoint sp-effect3">
                     <h1><?php _e("How It Works"); ?></h1>
                     <div class="divider"></div>
@@ -73,7 +73,7 @@ $this->add(new View('../template/home_header.php'));
                 </div>
             </div>
         </section>
-		
+
 		<!-- Benefits -->
         <section id="features">
             <div class="container">
@@ -84,7 +84,7 @@ $this->add(new View('../template/home_header.php'));
                 </div>
                 <div class="row">
                     <div class="side col-md-4 col-sm-4 scrollpoint sp-effect1">
-                        
+
                         <div class="media feature">
                             <a class="pull-right">
                                 <i class="fa fa-envelope fa-2x"></i>
@@ -94,7 +94,7 @@ $this->add(new View('../template/home_header.php'));
                                 <?php _e("Forget surveys! We make giving feedback quick and easy."); ?>
                             </div>
                         </div>
-                        
+
                         <div class="media feature ">
                             <a class="pull-right">
                                 <i class="fa fa-cogs fa-2x"></i>
@@ -121,7 +121,7 @@ $this->add(new View('../template/home_header.php'));
 
 
                     <div class="side col-md-4 col-sm-4 scrollpoint sp-effect2">
-                        
+
                         <div class="media feature">
                             <a class="pull-left">
                                 <i class="fa fa-comments fa-2x"></i>
@@ -194,7 +194,7 @@ $this->add(new View('../template/home_header.php'));
                 </div>
             </div>
         </section>
-		
+
 		<!-- PRICING -->
         <section id="screens">
                 <div class="container scrollpoint sp-effect3">

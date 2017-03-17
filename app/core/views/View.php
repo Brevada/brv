@@ -23,6 +23,7 @@ class View
      * headers: Flag indicates if headers should be sent ('no headers' is useful for embedding).
      * code: The HTTP status code. If false, it will assume.
      * params: Parameters passed to the templating engine.
+     * matches: Pattern matches from route rule.
      *
      * @var array
      */
@@ -31,7 +32,8 @@ class View
         'type' => false,
         'headers' => true,
         'code' => false,
-        'params' => []
+        'params' => [],
+        'matches' => []
     ];
 
     /** @var string Data field required for the "rendering engine". */
@@ -120,6 +122,12 @@ class View
             case 'json':
                 header('Content-type: application/json;charset=utf-8');
                 break;
+            case 'external':
+                \App::redirect(preg_replace_callback('|(\[([0-9]+)\])|', function($matches) {
+                    if (isset($this->opts['matches'][intval($matches[2])])) {
+                        return $this->opts['matches'][intval($matches[2])];
+                    }
+                }, $this->data), true);
             default:
                 break;
         }

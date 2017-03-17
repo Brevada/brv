@@ -9,6 +9,14 @@ define('DEBUG', true);
 define('ROOT_PATH', '/');
 define('URL', 'http://brevada.com/');
 
+if (DEBUG) {
+    define('BETA_URL', 'http://beta.' . $_SERVER['HTTP_HOST'] . '/');
+} else {
+    define('BETA_URL', 'http://beta.' . 'brevada.com' . '/');
+}
+
+session_name('brevada_session');
+session_set_cookie_params(0, '/', '.' . (DEBUG ? $_SERVER['HTTP_HOST'] : 'brevada.com'));
 session_start();
 //session_regenerate_id();
 
@@ -72,7 +80,7 @@ if(!file_exists($viewPath)){
 		}
 		exit;
 	} else {
-	
+
 		if(preg_match('#qr/([a-z0-9_\-]+)#i', $page, $matches)){
 			$_GET['name'] = $matches[1];
 			$viewPath = "../pages/qr.php";
@@ -81,7 +89,7 @@ if(!file_exists($viewPath)){
 			$viewPath = "../pages/profile/scores/scores.php";
 		} else if(preg_match('#([a-z0-9_\-\s]+)/?#i', $page, $matches)){
 			$_GET['name'] = $matches[1];
-			$viewPath = "../pages/profile/profileloader.php";		
+			$viewPath = "../pages/profile/profileloader.php";
 		} else {
 			$viewPath = '../pages/404.php';
 		}

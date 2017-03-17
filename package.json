@@ -6,10 +6,11 @@
     "dev-build-js": "webpack",
     "build-js": "webpack -p --config ./webpack.prod.config.js",
     "build-docs": "node scripts/run-phploc && node scripts/build-docs",
-    "clean": "node scripts/run-clean",
-    "test": "node scripts/run-backend-tests",
+    "clean": "scripts/run-clean.js",
+    "test": "scripts/run-backend-tests.js",
     "dev-build": "npm run dev-build-css && npm run dev-build-js",
-    "build": "npm run dev-build-css && npm run build-js"
+    "build": "npm run dev-build-css && npm run build-js",
+    "postinstall": "scripts/post-install.js"
   },
   "repository": {
     "type": "git",

@@ -66,7 +66,6 @@ export default class Login extends React.Component {
                         />
                     </Group>
                     <Group>
-                        <Link label='Forgot your password?' left={true} btnLike={true} />
                         <Button label='Login' right={true} submit={true} />
                     </Group>
                 </Form>

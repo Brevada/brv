@@ -53,6 +53,17 @@ class Authentication extends Controller
     {
         MiddleAuth::set(null);
 
+        /* Legacy session set. */
+        // @TODO Phase out.
+        unset($_SESSION['AccountID']);
+        unset($_SESSION['CompanyID']);
+        unset($_SESSION['StoreID']);
+        unset($_SESSION['Corporate']);
+        unset($_SESSION['Permissions']);
+        unset($_SESSION['ip']);
+        unset($_SESSION['time']);
+        /* End of legacy session set. */
+
         /* Remove all state data. */
         \App::clearState();
 
@@ -79,7 +90,9 @@ class Authentication extends Controller
 
         v::email()->check($email);
         // TODO: Enforce password rules.
-        v::stringType()->min(1)->check($password);
+        if (!v::stringType()->notEmpty()->length(1, null)->validate($password)) {
+            self::fail("Invalid email and/or password.", \HTTP::BAD_PARAMS);
+        }
 
         if ($email == null || $password == null) {
             self::fail("Invalid email and/or password.", \HTTP::BAD_PARAMS);
@@ -93,6 +106,18 @@ class Authentication extends Controller
         if (password_verify($password, $account->getPassword())) {
             /* Deter session hijacking. */
             session_regenerate_id();
+
+            /* Legacy session set. */
+            // @TODO Phase out.
+            $_SESSION['AccountID'] = $account->getId();
+            $_SESSION['CompanyID'] = $account->getCompanyId();
+            $_SESSION['StoreID'] = $account->getStoreId();
+            $_SESSION['Corporate'] = false;
+            $_SESSION['Permissions'] = $account->getLegacyPermissions();
+            $_SESSION['ip'] = $_SERVER['REMOTE_ADDR'];
+            $_SESSION['time'] = time();
+            /* End of legacy session set. */
+
             MiddleAuth::set($account);
             return new View([
                 "destination" => \App::getState(\STATES::LOGIN_DEST)

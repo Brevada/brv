@@ -29,6 +29,8 @@ class App
      */
     public static function start()
     {
+        session_name('brevada_session');
+        session_set_cookie_params(0, '/', '.' . (DEBUG ? DEV_HOST : HOST));
         session_start();
 
         Router::execute();
@@ -47,6 +49,10 @@ class App
         if (isset($_SERVER['SERVER_PROTOCOL']) && strcasecmp($_SERVER['SERVER_PROTOCOL'], 'HTTP/1.0') === 0) {
             $code = 302;
         }
+
+        // Allows use of "token" to represent the host name (helpful for dev
+        // environment).
+        $dest = str_replace(HOST_TOKEN, DEBUG ? DEV_HOST : HOST, $dest);
 
         header('Location: ' . $dest, true, $code);
         exit();

@@ -9,6 +9,12 @@
 const DEBUG = true;
 const APP_NAME = 'Brevada';
 
+const HOST_TOKEN = '[HOST_TOKEN]';
+const HOST = 'brevada.com';
+const DEV_HOST = 'brevada.local';
+const MAIN_HOST = 'beta.' . HOST_TOKEN;
+const LEGACY_HOST = HOST_TOKEN;
+
 const NAMESPACE_PREFIX = 'Brv\\';
 const NAMESPACE_CORE_PREFIX = 'core\\';
 const NAMESPACE_IMPL_PREFIX = 'impl\\';
@@ -40,7 +46,17 @@ function brv_scheme()
  */
 function brv_host()
 {
-    return DEBUG ? $_SERVER['HTTP_HOST'] : 'brevada.com';
+    return str_replace(HOST_TOKEN, DEBUG ? DEV_HOST : HOST, MAIN_HOST);
+}
+
+/**
+ * brv_legacy_host Returns the "legacy" HTTP_HOST. Should differ by subdomain.
+ * @deprecated Legacy should be phased out.
+ * @return string The "legacy" HTTP HOST.
+ */
+function brv_legacy_host()
+{
+    return str_replace(HOST_TOKEN, DEBUG ? DEV_HOST : HOST, LEGACY_HOST);
 }
 
 /**
@@ -50,4 +66,14 @@ function brv_host()
 function brv_url()
 {
     return brv_scheme() . brv_host();
+}
+
+/**
+ * brv_url Returns the legacy SCHEME + HOST
+ * @deprecated
+ * @return string SCHEME + HOST
+ */
+function brv_legacy_url()
+{
+    return brv_scheme() . brv_legacy_host();
 }

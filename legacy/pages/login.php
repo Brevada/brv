@@ -1,3 +1,3 @@
 <?php
-Brevada::Redirect('/home/login');
+Brevada::Redirect(BETA_URL . 'login');
 ?>

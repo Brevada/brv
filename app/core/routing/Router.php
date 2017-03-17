@@ -44,7 +44,10 @@ class Router
                      if ($result === null) throw new \Exception("Invalid controller.");
                  } else {
                      // Invalid controller, assume type.
-                     $result = new View($route->getControllerArgument(), [ 'type' => $route->getController() ]);
+                     $result = new View($route->getControllerArgument(), [
+                         'type' => $route->getController(),
+                         'matches' => $route->getMatches()
+                     ]);
                  }
              } catch (ControllerException $ex) {
                  $result = new View(

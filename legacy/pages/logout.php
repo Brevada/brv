@@ -1,3 +1,3 @@
 <?php
-Brevada::Redirect('/home/logout');
+Brevada::Redirect(BETA_URL . 'logout');
 ?>

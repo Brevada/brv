@@ -159,7 +159,9 @@ class Route
      */
     protected function matchMethod()
     {
-        return trim(strtolower($this->method)) == trim(strtolower($_SERVER['REQUEST_METHOD']));
+        // Allow wildcard to match all methods.
+        return trim(strtolower($this->method)) == '*' ||
+               trim(strtolower($this->method)) == trim(strtolower($_SERVER['REQUEST_METHOD']));
     }
 
     /**

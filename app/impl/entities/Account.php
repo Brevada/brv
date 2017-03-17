@@ -183,6 +183,17 @@ class Account extends Entity
     }
 
     /**
+     * Gets the legacy Permissions integer.
+     *
+     * @deprecated
+     * @return integer
+     */
+    public function getLegacyPermissions()
+    {
+        return $this->get('Permissions');
+    }
+
+    /**
      * Gets the Permissions between an account and a target entity.
      *
      * @param  Entity $target The target entity the user is attempting to access.

@@ -14,7 +14,7 @@ if(!Brevada::IsLoggedIn()){
 $name = Database::query("SELECT `Name` FROM `companies` WHERE `companies`.`id` = {$_SESSION['CompanyID']} LIMIT 1")->fetch_assoc()['Name'];
 
 $section = Brevada::FromGET('section');
-$acceptableSections = ['account', 'feedback', 'billing', 'tablets', 'logins', 'stores', 'emails', 'personalize'];
+$acceptableSections = ['account', 'billing', 'tablets', 'logins', 'stores', 'emails', 'personalize'];
 if(!in_array($section, $acceptableSections)){ $section = 'account'; }
 ?>
 <div class='top-fixed'>
@@ -45,10 +45,9 @@ if(!in_array($section, $acceptableSections)){ $section = 'account'; }
 		<div class='col-sm-2 col-md-2 sidebar'>
 			<ul class='nav nav-sidebar'>
 				<li data-page='account'><a href='?section=account'><?php _e("Account"); ?></a></li>
-				<li data-page='feedback'><a href='?section=feedback'><?php _e("Feedback"); ?></a></li>
 				<li data-page='emails'><a href='?section=emails'><?php _e("Customer Emails"); ?></a></li>
 				<li data-page='personalize'><a href='?section=personalize'><?php _e("Personalize"); ?></a></li>
-				
+
 				<?php if(($_SESSION['Corporate'] && Permissions::has(Permissions::MODIFY_COMPANY_STORES)) || (!$_SESSION['Corporate'] && Permissions::has(Permissions::MODIFY_STORE))){ ?>
 				<li data-page='billing'><a href='?section=billing'><?php _e("Billing"); ?></a></li>
 				<li data-page='logins'><a href='?section=logins'><?php _e("Manage Logins"); ?></a></li>
@@ -61,16 +60,16 @@ if(!in_array($section, $acceptableSections)){ $section = 'account'; }
 				<?php } ?>
 			</ul>
 		</div>
-		
+
 		<script type='text/javascript'>
 		$('ul.nav-sidebar > li').removeClass('active');
 		$('ul.nav-sidebar > li[data-page="<?php echo $section;?>"]').addClass('active');
 		</script>
-		
+
 		<div class='col-sm-10 col-md-6 panel panel-default'>
 			<div class='panel-heading'><?php echo ucfirst($section); ?></div>
 			<div class='panel-body'>
-			<?php	
+			<?php
 			$this->add(new View("../pages/settings/section_{$section}.php", array('valid' => true, 'POST' => $_POST, 'GET' => $_GET)));
 			?>
 			</div>

@@ -1,4 +1,3 @@
 <?php
-Brevada::Logout();
-Brevada::Redirect('/home/login.php');
+Brevada::Redirect(BETA_URL . 'logout');
 ?>
