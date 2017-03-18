@@ -1,0 +1,126 @@
+/* Aspect */
+
+.aspect-container {
+    @include justify-content(center);
+    @include respond-to('medium') {
+        @include justify-content(flex-start);
+    }
+}
+
+@function aspect-margin($ncols) {
+    $total_width: $ncols * $aspect_width;
+    $denom: 2 * $ncols;
+    @return calc((100% - #{$total_width}) / #{$denom});
+}
+
+.aspect-container .aspect {
+    margin-top: 5px;
+    margin-bottom: 10px;
+
+    margin-right: 5px;
+    margin-left: 5px;
+
+    @include respond-to('medium') {
+        margin-right: aspect-margin(3);
+        margin-left: aspect-margin(3);
+    }
+
+    .hidden { /* Aspect Hidden State */ }
+
+    .hidden-badge {
+        position: absolute;
+        top: -0.6rem;
+        left: -0.5rem;
+        z-index: 2;
+
+        border: 1px solid $grey2;
+        border-radius: 50%;
+        @include box-shadow(1px 0 5px #{$grey3});
+        background: #fff;
+
+        padding: 2px 5px;
+        color: $grey3;
+        font-size: 1.5rem;
+    }
+
+    .aspect-content {
+        width: $aspect_width;
+
+        background: $aspect_background;
+
+        .header { text-align: center; }
+        .header .hint {
+            position: absolute;
+            top: 4px;
+            right: 4px;
+        }
+
+        .badges {
+            padding: 15px 3px 10px 3px;
+            border-top: 1px solid $grey5;
+            border-bottom: 1px solid $grey5;
+        }
+
+        .graph {
+            height: $aspect_graph_height;
+            width: 96%;
+            margin: 0 auto;
+
+            .recharts-x-axis .recharts-cartesian-axis-line {
+                stroke: $grey2;
+            }
+
+            .x-axis-text {
+                font-size: 0.78rem;
+                fill: $grey3;
+            }
+
+            .recharts-tooltip-cursor {
+                display: none;
+            }
+        }
+
+        .blank-state {
+            height: $aspect_graph_height + 77px;
+            text-align: center;
+            padding: 3em 0;
+            border-top: 1px solid $grey5;
+            @include user-select(none);
+
+            i {
+                font-size: 4em;
+                color: $blue1;
+            }
+
+            span {
+                font-size: 1.45em;
+                padding: 0.6em 0.2em;
+                display: block;
+            }
+        }
+
+        .remove-dialog {
+            height: $aspect_graph_height + 77px;
+            text-align: center;
+            padding: 3em 0;
+            border-top: 1px solid $grey5;
+            @include user-select(none);
+
+            > span {
+                font-size: 1.2em;
+                padding: 0.6em 0.5em;
+                display: block;
+
+                .aspect-name {
+                    font-style: italic;
+                }
+            }
+
+            form {
+                width: 80%;
+                margin: 1.5em auto 0 auto;
+            }
+        }
+
+    }
+}

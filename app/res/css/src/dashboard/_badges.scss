@@ -1,0 +1,40 @@
+/* Badges */
+
+.badges {
+    @include flexbox;
+    &.inline {
+        display: inline-flex;
+    }
+
+    @include flex-direction(row);
+    @include justify-content(center);
+
+    @include user-select(none);
+    text-align: center;
+}
+
+.badges .badge {
+    @include flexbox;
+    @include flex-direction(column);
+    @include align-items(center);
+    margin: 0 6px;
+
+    .value {
+        color: #fff;
+        width: 57px;
+        padding: 8.5px 0;
+        border-radius: 3px;
+        font-size: 0.95rem;
+        @include flexbox;
+        @include flex-direction(row);
+        @include justify-content(center);
+
+        @include moods(background);
+    }
+
+    .label {
+        color: $grey4;
+        font-size: 0.65em;
+        margin: 3px 0 2px 0;
+    }
+}

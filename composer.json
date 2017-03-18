@@ -1,0 +1,12 @@
+{
+    "require": {
+        "monolog/monolog": "^1.21",
+        "respect/validation": "^1.1",
+        "twig/twig": "~1.0"
+    },
+    "require-dev": {
+        "phploc/phploc": "^3.0",
+        "phpunit/phpunit": "^5.5",
+        "theseer/phpdox": "dev-master"
+    }
+}

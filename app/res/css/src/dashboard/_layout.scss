@@ -1,0 +1,75 @@
+/* Dashboard Layout & Configuration */
+
+/* Aspects */
+
+$aspect_width: 300px;
+$aspect_background: #fff;
+$aspect_graph_height: 180px;
+
+/* Events */
+
+$event_width: 100%;
+$event_background: #fff;
+
+/* Dashboard Layout */
+
+.dl {
+    &.item {
+        border-radius: 2px;
+        @include box-shadow(0 0 4px #{$grey3});
+    }
+
+    &.hint {
+        color: $grey2;
+        font-size: 1.1em;
+    }
+
+    &.showing {
+        padding: 0 1em 0.5em 1.25em;
+        @include user-select(none);
+
+        > span {
+            font-weight: bold;
+            color: $grey3;
+        }
+    }
+
+    &.header {
+        padding: 10px 10px 0 10px;
+        position: relative;
+
+        .hint {
+            font-size: 0.75em;
+            color: $grey2;
+        }
+
+        .title {
+            font-size: 1.4em;
+            color: $black;
+            padding-top: 5px;
+            @extend %ellipsis;
+        }
+
+        .links {
+            font-size: 0.915rem;
+            margin: 5px;
+
+            .link {
+                color: $blue2;
+                text-decoration: none;
+                margin: 0 10px;
+
+                &:hover {
+                    color: $blue1;
+                }
+            }
+        }
+
+        .links.filler::before {
+            content: '\00a0';
+            font-size: 0.915rem;
+            margin: 5px;
+        }
+
+    }
+}

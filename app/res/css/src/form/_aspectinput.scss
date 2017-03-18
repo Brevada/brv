@@ -1,0 +1,113 @@
+/* Aspect Input */
+
+.form-group.new-aspect {
+    margin: 0 0 1em 0;
+
+    text-align: center;
+
+    .label {
+        font-size: 1.6em;
+        color: $black;
+    }
+
+    .aspect-input {
+        margin: 0 0.55em;
+        display: inline-block;
+        border-bottom: 2px solid $grey4;
+        position: relative;
+        width: 300px;
+        max-width: 100%;
+        padding: 0.25em;
+        font-size: 1em;
+
+        input, .placeholder {
+            font-size: 1.6em;
+
+            text-align: left;
+            width: 100%;
+            border: 0;
+            outline: none;
+            color: $blue1;
+            background: transparent;
+        }
+
+        input:focus + .placeholder {
+            visibility: hidden;
+        }
+
+        .placeholder {
+            color: $blue2;
+            @include user-select(none);
+            cursor: text;
+            position: absolute;
+            top: 0.25em;
+            left: 0.25em;
+            width: calc(100% - 0.5em);
+        }
+    }
+
+    .aspect-options {
+        position: absolute;
+        width: 100%;
+        background: #fff;
+        border: 1px solid $blue2;
+        border-top-color: transparent;
+        border-bottom-left-radius: 3px;
+        border-bottom-right-radius: 3px;
+        overflow-y: auto;
+        text-align: left;
+        z-index: 10;
+
+        font-size: 1.3em;
+
+        .option {
+            @extend %clickable;
+            padding: 0.1em 0.5em;
+            color: $grey3;
+
+            &.new {
+                font-size: 0.93em;
+                font-style: italic;
+            }
+
+            &:hover {
+                color: $blue1;
+            }
+        }
+    }
+}
+
+.form-group.input-like {
+    margin: 0;
+    font-size: 1em;
+
+    text-align: left;
+    @include respond-to('large') {
+        text-align: left;
+    }
+
+    &.small {
+        .aspect-options {
+            font-size: 0.99em;
+            @include respond-to('small') {
+                font-size: 1.1em;
+            }
+            @include respond-to('large') {
+                font-size: 1.4em;
+            }
+        }
+
+        .aspect-input input, .aspect-input .placeholder {
+            font-size: 1em;
+            @include respond-to('large') {
+                font-size: 1.1em;
+            }
+        }
+    }
+
+    .aspect-input {
+        margin: 0 0.55em;
+        width: 100%;
+        border-bottom: 0;
+    }
+}

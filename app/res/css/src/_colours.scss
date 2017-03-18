@@ -1,0 +1,43 @@
+/* Colour Guide */
+
+$black: #333;
+
+$red1: #ff271d;
+$blue1: #1bb0ff;
+$blue2: #a2dfff;
+$blue3: #64caff;
+$blue4: #0a2d42;
+$green1: #20ce00;
+$green2: #66ce00;
+$green3: #8dce00;
+$green4: #aece00;
+$green5: #ccce00;
+$grey1: #f7f7f7;
+$grey2: #c7d0d6;
+$grey3: #8fa1ad;
+$grey4: #4c5f6b;
+$grey5: rgb(234, 234, 234);
+$orange1: #ffb400;
+
+/* Mood Colouring */
+
+@mixin moods($property: background) {
+    &.mood-0 { #{$property}: $red1; }
+    &.mood-10 { #{$property}: $red1; }
+    &.mood-20, &.mood-30, &.mood-40 { #{$property}: $green5; }
+    &.mood-50 { #{$property}: $green5; }
+    &.mood-60 { #{$property}: $green4; }
+    &.mood-70 { #{$property}: $green3; }
+    &.mood-80 { #{$property}: $green2; }
+    &.mood-90, &.mood-100 { #{$property}: $green1; }
+}
+
+/* Rating Colouring */
+
+@mixin rating($property: background) {
+    &.rating-0 { #{$property}: #cc750e; }
+    &.rating-1 { #{$property}: #ccc10e; }
+    &.rating-2 { #{$property}: #afcc0e; }
+    &.rating-3 { #{$property}: #82cc0e; }
+    &.rating-4 { #{$property}: #2ecc0e; }
+}

@@ -1,0 +1,23 @@
+{% import "macros/_resources.twig" as resources %}
+
+<!DOCTYPE html>
+<html>
+    <head>
+
+    <!-- Metadata -->
+    {% block metadata %}{% endblock %}
+
+    <!-- Scripts -->
+    {{ resources.script('/js/chunks.js') }}
+    {{ resources.script('/js/vendor.js') }}
+    {% block scripts %}{% endblock %}
+
+    <!-- Themes -->
+    {{ resources.style('/css/theme.css') }}
+    {% block styles %}{% endblock %}
+
+    </head>
+    <body>
+        {% block body %}{% endblock %}
+    </body>
+</html>

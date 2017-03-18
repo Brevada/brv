@@ -1,0 +1,29 @@
+.brand-bar {
+    @extend %clearfix;
+    margin-bottom: 12px;
+
+    .logo {
+        float: left;
+        margin: 0 5px 0 10px;
+        border: 1px solid transparent;
+        border-radius: 2px;
+    }
+
+    .dropdown-btn {
+        float: right;
+        margin: 5px;
+        font-size: 0.85em;
+
+        .label {
+            color: $grey3;
+        }
+
+        .options {
+            right: 0;
+
+            .option {
+                padding: 0.33rem 0.45rem;
+            }
+        }
+    }
+}

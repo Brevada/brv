@@ -1,0 +1,59 @@
+{
+  "name": "brv",
+  "version": "1.0.0",
+  "scripts": {
+    "dev-build-css": "node scripts/run-css",
+    "dev-build-js": "webpack",
+    "build-js": "webpack -p --config ./webpack.prod.config.js",
+    "build-docs": "node scripts/run-phploc && node scripts/build-docs",
+    "clean": "scripts/run-clean.js",
+    "test": "scripts/run-backend-tests.js",
+    "dev-build": "npm run dev-build-css && npm run dev-build-js",
+    "build": "npm run dev-build-css && npm run build-js",
+    "postinstall": "scripts/post-install.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/RobbieGoldfarb/brv.git"
+  },
+  "bugs": {
+    "url": "https://github.com/RobbieGoldfarb/brv/issues"
+  },
+  "homepage": "https://github.com/RobbieGoldfarb/brv#readme",
+  "devDependencies": {
+    "babel-cli": "^6.18.0",
+    "babel-core": "^6.18.2",
+    "babel-loader": "^6.2.7",
+    "babel-plugin-lodash": "^3.2.11",
+    "babel-plugin-syntax-dynamic-import": "^6.18.0",
+    "babel-plugin-transform-class-properties": "^6.22.0",
+    "babel-plugin-transform-es2015-instanceof": "^6.18.0",
+    "babel-plugin-transform-function-bind": "^6.22.0",
+    "babel-plugin-transform-react-jsx": "^6.8.0",
+    "babel-preset-es2015": "^6.18.0",
+    "babel-preset-react": "^6.16.0",
+    "chalk": "^1.1.3",
+    "del": "^2.2.2",
+    "lodash-webpack-plugin": "^0.11.0",
+    "node-sass": "^4.5.0",
+    "nodemon": "^1.11.0",
+    "webpack": "^2.2.1"
+  },
+  "dependencies": {
+    "axios": "^0.15.3",
+    "babel-polyfill": "^6.23.0",
+    "classlist-polyfill": "^1.0.3",
+    "classnames": "^2.2.5",
+    "doc-ready": "^1.0.4",
+    "expose-loader": "^0.7.1",
+    "get-form-data": "^1.2.5",
+    "immutability-helper": "^2.0.0",
+    "lodash": "^4.17.4",
+    "moment": "^2.16.0",
+    "react": "^15.3.2",
+    "react-datepicker": "^0.39.0",
+    "react-dom": "^15.3.2",
+    "react-fastclick": "^3.0.1",
+    "recharts": "^0.20.6"
+  }
+}

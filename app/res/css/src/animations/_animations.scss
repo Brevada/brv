@@ -1,0 +1,16 @@
+/* Animations */
+
+@include keyframe(fadein) {
+    0% { opacity: 0; }
+    100% { opacity: 1; }
+}
+
+@include keyframe(fadeout) {
+    0% { opacity: 1; }
+    100% { opacity: 0; }
+}
+
+@include keyframe(sk-bouncedelay) {
+    0%, 80%, 100% { @include transform(scale(0)); }
+    40% { @include transform(scale(1.0)); }
+}

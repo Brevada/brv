@@ -1,0 +1,58 @@
+/* Dialog */
+
+.dialog-overlay {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+
+    /* Specifically lower than header content z-index. */
+    z-index: 990;
+
+    &::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+
+        background: $grey2;
+    }
+
+    &:not(.as-page)::before {
+        @include opacity(0.9);
+    }
+
+    /* Accounts for buttons. */
+    padding-top: 50px;
+    @include respond-to('small') {
+        padding-top: 70px;
+    }
+}
+
+.dialog-overlay.dialog-comment {
+    width: 100%;
+    max-height: 100%;
+    max-height: 100vh;
+
+    .form .input-textarea {
+        background: $grey5;
+        width: 80%;
+        max-width: 600px;
+        border-radius: 4px;
+        margin-top: 1em;
+        max-height: 95%;
+
+        &, textarea {
+            height: 200px;
+        }
+
+        textarea {
+            width: 100%;
+            max-width: 100%;
+            font-size: 1.4em;
+        }
+    }
+}

@@ -1,0 +1,61 @@
+# Routes Configuration
+
+middleware:
+    auth: Authentication
+
+routes:
+    login:
+        GET: [ '^\/login(\/to\/(.+))?$', pass, Authentication+viewLogin ]
+        POST: [ '^\/login\/?$', pass, Authentication+password ]
+
+    logout: [ 'GET ^\/logout$', pass, Authentication+logout ]
+
+    dashboard: [ 'GET ^\/dashboard\/?$', auth, twig+dashboard/dashboard]
+
+    # REST
+    store:
+        GET: [ '^\/api\/store(\/(\d+))?$', auth, Store+get ]
+
+    stores:
+        GET: [ '^\/api\/stores?$', auth, Store+getAll ]
+
+    aspect:
+        GET: [ '^\/api\/aspect\/(\d+)$', auth, Aspect+get ]
+        DELETE: [ '^\/api\/aspect\/(\d+)$', auth, Aspect+delete ]
+        POST: [ '^\/api\/aspect$', auth, Aspect+create ]
+
+    aspects:
+        GET: [ '^\/api\/aspects$', auth, Aspect+getAll ]
+
+    aspect_type:
+        GET: [ '^\/api\/aspecttypes\/industry$', auth, AspectType+getIndustry ]
+
+    event:
+        GET: [ '^\/api\/event\/(\d+)$', auth, Event+get ]
+        DELETE: [ '^\/api\/event\/(\d+)$', auth, Event+delete ]
+        POST: [ '^\/api\/event$', auth, Event+create ]
+
+    event_status:
+        POST: [ '^\/api\/event\/(\d+)\/complete$', auth, Event+complete ]
+
+    event_aspect:
+        POST: [ '^\/api\/event\/(\d+)\/aspect$', auth, Event+aspectLink ]
+        DELETE: [ '^\/api\/event\/(\d+)\/aspect\/(\d+)$', auth, Event+aspectDelete ]
+
+    event_aspect_type:
+        GET: [ '^\/api\/aspecttypes\/event\/(\d+)$', auth, AspectType+getEvent ]
+
+    events:
+        GET: [ '^\/api\/events$', auth, Event+getAll ]
+
+    feedback:
+        GET: [ '^\/api\/feedback\/config$', pass, Feedback+getConfig ]
+
+    # Catch all for feedback pages.
+    # feedback_view: [ 'GET ^\/([^\/]+)\/?$', pass, Feedback+viewFeedback ]
+
+    # Temp. mappings per issue 193.
+    map_index: [ 'GET ^\/?$', pass, 'external+//[HOST_TOKEN]' ]
+    map_settings: [ 'GET ^\/settings\/?$', pass, 'external+//[HOST_TOKEN]/settings' ]
+    map_admin: [ 'GET ^\/admin\/?$', pass, 'external+//[HOST_TOKEN]/admin' ]
+    map_feedback: [ 'GET ^\/([^\/]+)\/?$', pass, 'external+//[HOST_TOKEN]/[1]' ]

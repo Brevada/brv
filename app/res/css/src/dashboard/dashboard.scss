@@ -1,0 +1,87 @@
+@import '../theme';
+
+/* Dashboard */
+
+#dashboard-root {
+    min-height: 100%;
+    @include flexbox;
+}
+
+#dashboard-root, .dashboard-container {
+    width: 100%;
+    @extend %clearfix;
+}
+
+/* Columns */
+.dashboard-container {
+    $livefeed_width: 175px;
+
+    @extend %clearfix;
+
+    .left-column {
+        width: 100%;
+        @include flexbox;
+        float: left;
+    }
+
+    .right-column {
+        display: none;
+        width: #{$livefeed_width};
+        float: right;
+    }
+
+    .left-column, .right-column {
+        @include flex-direction(column);
+        height: 100%;
+    }
+
+    /*
+    // No sidebar at the moment.
+    @include respond-to('xsmall') {
+        .left-column {
+            width: calc(100% - #{$livefeed_width});
+        }
+
+        .right-column {
+            @include flexbox;
+        }
+    }
+    */
+
+}
+
+/* Dialog */
+@import 'dialog';
+
+/* Brand Bar */
+@import 'brandbar';
+
+/* DropDownButton */
+@import 'dropdownbutton';
+
+/* Navigation Bar */
+@import 'navigationbar';
+
+/* View */
+@import 'view';
+
+/* Dashboard Layout */
+@import 'layout';
+
+/* Livefeed */
+@import 'livefeed';
+
+/* Time Filter */
+@import 'timefilter';
+
+/* Aspect */
+@import 'aspect';
+
+/* Event */
+@import 'event';
+
+/* Graph */
+@import 'graph';
+
+/* Badges */
+@import 'badges';

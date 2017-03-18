@@ -1,0 +1,159 @@
+/* Event */
+.event-container .event {
+    margin: 5px 15px 20px 15px;
+
+    .event-content {
+        width: $event_width;
+        background: $event_background;
+        @extend %clearfix;
+
+        .header {
+            font-size: 1.15em;
+            padding-bottom: 0.4em;
+            border-bottom: 1px solid #{$grey2};
+
+            display: block;
+            @include respond-to('xsmall') {
+                @include flexbox;
+            }
+        }
+
+        .header .hint {
+            color: $grey3;
+            @extend %ellipsis;
+
+            .delim {
+                padding: 0 0.3em;
+            }
+
+            .to.incomplete {
+                margin: 0;
+
+                &:hover {
+                    border-bottom: 1px dotted $green2;
+                }
+            }
+        }
+
+        .body > .remove-dialog {
+            text-align: center;
+            max-width: 500px;
+            margin: 0 auto;
+            padding: 1em 0;
+
+            > span {
+                padding: 1.1em 0.5em;
+                display: block;
+                font-size: 1.2em;
+            }
+
+            > .form {
+                max-width: 300px;
+                margin: 0 auto;
+            }
+        }
+
+        .body .tools {
+            .form {
+                padding: 0 0.3em;
+            }
+
+            .right {
+                @include align-self(center);
+                padding: 0 0.55em;
+                font-size: 0.84em;
+            }
+        }
+
+        .header > .right {
+            text-align: center;
+            @include respond-to('xsmall') {
+                text-align: left;
+            }
+        }
+
+        .badges {
+            margin: 10px;
+            @include respond-to('xsmall') {
+                float: right;
+                margin: 0;
+            }
+        }
+
+        .event-aspects {
+            padding: 0 0.1em;
+
+            .event-aspects-item {
+                font-size: 1.05em;
+                padding: 0.8em 0;
+                margin: 0 0.85em;
+                @extend %clearfix;
+
+                border-top: 1px solid transparent;
+                border-bottom: 1px solid $grey5;
+
+                > .ly {
+                    @include respond-to('xsmall') {
+                        white-space: nowrap;
+                    }
+                }
+
+                .title, .detail, .control {
+                    display: block;
+                    @include respond-to('xsmall') {
+                        display: inline-block;
+                    }
+                }
+
+                .title {
+                    color: $black;
+                    @extend %ellipsis;
+
+                    min-width: 100%;
+                    @include respond-to('xsmall') { min-width: 40%; }
+                    @include respond-to('medium') { min-width: 30%; }
+                    @include respond-to('large') { min-width: 24%; }
+                    @include respond-to('xlarge') { min-width: 20%; }
+                    transition: min-width 0.1s;
+                }
+
+                .detail {
+                    padding: 0;
+                    @include respond-to('xsmall') {
+                        padding: 0 0.8em;
+                    }
+                    color: $grey4;
+
+                    $right_width: 75px;
+                    width: 100%;
+                    @include respond-to('xsmall') { width: calc(60% - #{$right_width}); }
+                    @include respond-to('medium') { width: calc(70% - #{$right_width}); }
+                    @include respond-to('large') { width: calc(74% - #{$right_width}); }
+                    @include respond-to('xlarge') { width: calc(80% - #{$right_width}); }
+                    transition: width 0.1s;
+
+                    @extend %ellipsis;
+                }
+
+                .change {
+                    //@include moods(color);
+                    color: $green1;
+                }
+
+                .text {
+
+                }
+
+                .control {
+                    font-size: 0.84em;
+                    display: none;
+                    @include respond-to('xsmall') {
+                        display: inline-block;
+                        position: absolute;
+                        right: 0;
+                    }
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,52 @@
+/* DropDownButton */
+.dropdown-btn {
+    display: inline-block;
+    position: relative;
+    outline: none;
+
+    @extend %clickable;
+
+    .label .fa {
+        font-size: 0.6em;
+        margin: 0 5px;
+        position: relative;
+        top: -0.3em;
+    }
+
+    &:not(.open) .options {
+        display: none;
+    }
+
+    .options {
+        position: absolute;
+        min-width: 100%;
+        font-size: 0.925rem;
+        background: #fff;
+        border: 1px solid $grey2;
+        border-bottom-left-radius: 3px;
+        border-bottom-right-radius: 3px;
+        z-index: 999;
+        top: calc(100% + 5px);
+
+        @extend %clickable;
+
+        .option {
+            padding: 0.65rem 0.6rem;
+            text-align: center;
+            white-space: nowrap;
+            min-width: 100px;
+            font-size: 0.96rem;
+            color: $grey4;
+
+            &.active {
+                color: $blue2;
+                text-decoration: underline;
+                cursor: default;
+            }
+
+            &:not(.active):hover, &:not(.active):active {
+                color: $blue1;
+            }
+        }
+    }
+}

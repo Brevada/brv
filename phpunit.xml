@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<phpunit bootstrap="./_index.php">
+    <php>
+        <env name="BRV_DB_HOST" value="localhost" />
+        <env name="BRV_DB_SCHEMA" value="brevada_test" />
+        <env name="BRV_DB_USERNAME" value="root" />
+        <env name="BRV_DB_PASSWORD" value= "root" />
+    </php>
+
+    <testsuites>
+        <testsuite name="Sanity">
+            <file>./specs/SanityTest.php</file>
+        </testsuite>
+        <testsuite name="Database">
+            <directory>./specs/schema</directory>
+        </testsuite>
+        <testsuite name="Entities">
+            <directory>./specs/entities</directory>
+        </testsuite>
+    </testsuites>
+
+    <filter>
+        <whitelist processUncoveredFilesFromWhitelist="true">
+            <directory suffix=".php">./specs</directory>
+        </whitelist>
+    </filter>
+    <logging>
+        <log type="coverage-xml" target="./docs/phpunit" />
+    </logging>
+</phpunit>

@@ -1,0 +1,104 @@
+/* Layout */
+
+.ly {
+    &:not(.keep-spacing) {
+        margin: 0;
+        padding: 0;
+    }
+
+    @extend %clearfix;
+
+    &.flex-h, &.flex-v {
+        @include flexbox;
+        &:not(.defined-size) {
+            // TODO: Not supported in older browsers.
+            @include flex-wrap(wrap);
+        }
+
+        .item:not(.ex-ly) {
+            display: inline-block;
+            position: relative;
+        }
+    }
+
+    &.flex-v { @include flex-direction(column); }
+    &.flex-h { @include flex-direction(row); }
+
+    &.constrain-w, & .constrain-w {
+        max-width: 100%;
+    }
+
+    /* Content Alignment */
+    &.center-c-h {
+        &.flex-v, &.flex-h { @include justify-content(center); }
+        &:not(.flex-v):not(.flex-h) { text-align: center; }
+    }
+
+    /* Container Alignment */
+    &.center-h {
+        margin: 0 auto;
+    }
+
+    &.offset-v {
+        margin-top: 9em;
+        margin-bottom: 9em;
+    }
+
+    &.xsmall {
+        max-width: 90%;
+
+        &:not(.center-h) {
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        @include respond-to('xsmall') {
+            max-width: 300px;
+        }
+    }
+
+    &.top-level {
+        > header {
+            margin-bottom: 1em;
+        }
+
+        > footer {
+            margin-top: 2em;
+            font-size: 12px;
+            text-align: center;
+        }
+    }
+
+    &.ly-half {
+        width: 49%;
+
+        &.left {
+            margin-right: 1%;
+        }
+
+        &.right {
+            margin-left: 1%;
+        }
+    }
+
+    &.ly-split {
+        @include flexbox;
+
+        > .fill, .fill {
+            @include flex-grow(1);
+            &:not(.overflow) {
+                overflow: hidden;
+            }
+        }
+    }
+
+    &.ly-float {
+        > .left { float: left; }
+        > .right { float: right; }
+    }
+
+    &.ly-abs-container {
+        position: relative;
+        @extend %clearfix;
+    }
+}
