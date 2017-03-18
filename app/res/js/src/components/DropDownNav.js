@@ -10,7 +10,9 @@ import classNames from 'classnames';
  */
 const DropDownOption = props => (
     <div
-        className='option'
+        className={classNames('option', {
+            active: !!props.active
+        })}
         onClick={props.onClick}>
         {props.label}
     </div>

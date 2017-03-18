@@ -16,6 +16,9 @@ routes:
     store:
         GET: [ '^\/api\/store(\/(\d+))?$', auth, Store+get ]
 
+    stores:
+        GET: [ '^\/api\/stores?$', auth, Store+getAll ]
+
     aspect:
         GET: [ '^\/api\/aspect\/(\d+)$', auth, Aspect+get ]
         DELETE: [ '^\/api\/aspect\/(\d+)$', auth, Aspect+delete ]

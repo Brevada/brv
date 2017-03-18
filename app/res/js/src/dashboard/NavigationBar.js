@@ -8,7 +8,7 @@ const BrandBar = props => {
     return (
         <div className='brand-bar'>
             <div className='brand logo-lq logo'></div>
-            <DropDownButton label={'Account'}>
+            <DropDownButton className='account' label={'Account'}>
                 <DropDownOption
                     label={'Settings'}
                     onClick={()=>window.location.replace('/settings')}
@@ -18,6 +18,22 @@ const BrandBar = props => {
                     onClick={()=>window.location.replace('/logout')}
                 />
             </DropDownButton>
+            { props.stores && props.stores.length > 1 && (
+                <DropDownButton className='stores' label={'Change Store'}>
+                    {props.stores.map(store => (
+                        <DropDownOption
+                            label={store.name}
+                            key={store.id}
+                            active={store.id === props.storeId}
+                            onClick={() => {
+                                if (store.id !== props.storeId) {
+                                    props.onStoreChange(store.id)
+                                }
+                            }}
+                        />
+                    ))}
+                </DropDownButton>
+            ) }
         </div>
     );
 };
@@ -33,17 +49,21 @@ export default class NavigationBar extends React.Component {
     render() {
         return (
             <div className='navigation-bar'>
-                <BrandBar />
+                <BrandBar
+                    onStoreChange={this.props.onStoreChange}
+                    stores={this.props.stores}
+                    storeId={this.props.storeId}
+                />
                 <div className='view-navbar'>
                     <NavigationButton
                         label={'Your Aspects'}
-                        view={'ASPECTS'}
+                        value={'ASPECTS'}
                         onClick={this.props.onChangeView}
                         active={this.props.view === 'ASPECTS'}
                     />
                     <NavigationButton
                         label={'Events'}
-                        view={'EVENTS'}
+                        value={'EVENTS'}
                         onClick={this.props.onChangeView}
                         active={this.props.view === 'EVENTS'}
                     />

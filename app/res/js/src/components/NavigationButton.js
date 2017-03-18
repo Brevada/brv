@@ -14,7 +14,7 @@ const NavigationButton = props => (
         className={classNames('navigation-btn', {
             'active': props.active
         })}
-        onClick={() => props.onClick && props.onClick(props.view)}>
+        onClick={() => props.onClick && props.onClick(props.value)}>
         {props.label}
     </div>
 );

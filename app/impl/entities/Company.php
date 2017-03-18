@@ -269,6 +269,16 @@ class Company extends Entity
     }
 
     /**
+     * Checks if company's plan is expired.
+     *
+     * @return boolean
+     */
+    public function isExpired()
+    {
+        return $this->getExpiryDate() < time();
+    }
+
+    /**
      * Gets the company's website.
      *
      * @return string

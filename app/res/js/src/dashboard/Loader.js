@@ -50,7 +50,11 @@ export default class Loader extends React.Component {
         return (
             <div className={this.props.className}>
                 <div className='loader'>
-                    <i className='fa fa-spin fa-circle-o-notch'></i>
+                    <div className='spinner'>
+                        <div className='bounce1'></div>
+                        <div className='bounce2'></div>
+                        <div className='bounce3'></div>
+                    </div>
                     <div className='tip'>
                         <span>{this.state.message || 'Loading...'}</span>
                     </div>

@@ -17,7 +17,7 @@ const TimeFilters = props => (
             <NavigationButton
                 key={o.view}
                 label={o.label || Filter.toLabel(o.view)}
-                view={o.view}
+                value={o.view}
                 onClick={props.onChange}
                 active={props.filter === o.view}
             />

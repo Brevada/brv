@@ -170,6 +170,50 @@ class Store extends Entity
         return null;
     }
 
+    /**
+     * Factory method to instantiate a collection of store entities from a
+     * company id.
+     *
+     * @param integer $id The company id.
+     * @return self[]
+     */
+    public static function queryCompany($companyId)
+    {
+        try {
+            $stmt = DB::get()->prepare("
+                SELECT
+                    stores.*, UNIX_TIMESTAMP(stores.DateCreated) as sDateCreated,
+                    store_features.id as FeaturesID,
+                    store_features.CollectionTemplate,
+                    store_features.CollectionLocation,
+                    store_features.SessionCheck,
+                    store_features.WelcomeMessage,
+                    store_features.AllowComments,
+                    store_features.CommentMessage,
+                    locations.id as LocationID,
+                    locations.Country,
+                    locations.Province,
+                    locations.City,
+                    locations.PostalCode,
+                    locations.Longitude,
+                    locations.Latitude
+                FROM stores
+                JOIN store_features ON store_features.id = stores.FeaturesID
+                JOIN locations ON locations.id = stores.LocationID
+                WHERE stores.CompanyID = :id
+            ");
+            $stmt->bindValue(':id', (int) $companyId, \PDO::PARAM_INT);
+            $stmt->execute();
+            return array_map(function ($row) {
+                return self::from($row);
+            }, $stmt->fetchAll(\PDO::FETCH_ASSOC));
+        } catch (\PDOException $ex) {
+            \App::log()->error($ex->getMessage());
+        }
+
+        return null;
+    }
+
     /* Instance Methods */
 
     /**

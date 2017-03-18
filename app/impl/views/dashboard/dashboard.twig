@@ -27,12 +27,14 @@
         </div>
         <script type='text/javascript'>
             setTimeout(function(){
-                var rootLoader = document.querySelector('#dashboard-root > .root-loader');
-                if (rootLoader) {
-                    rootLoader.querySelector('i').className = 'fa fa-exclamation-triangle';
-                    rootLoader.querySelector('.tip > .message').style.display = 'none';
-                    rootLoader.querySelector('.tip > .error').style.display = 'inline-block';
-                }
+                try {
+                    var rootLoader = document.querySelector('#dashboard-root > .root-loader');
+                    if (rootLoader) {
+                        rootLoader.querySelector('i').className = 'fa fa-exclamation-triangle';
+                        rootLoader.querySelector('.tip > .message').style.display = 'none';
+                        rootLoader.querySelector('.tip > .error').style.display = 'inline-block';
+                    }
+                } catch (e) {}
             }, 8000);
         </script>
     </div>

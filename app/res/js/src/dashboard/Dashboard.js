@@ -76,8 +76,11 @@ export default class Dashboard extends React.Component {
                 <div className='left-column'>
                     <NavigationBar
                         onChangeView={this.onChangeView}
+                        onStoreChange={this.props.onStoreChange}
+                        stores={this.props.stores}
+                        storeId={this.props.storeId}
                         view={this.state.view}
-                        url={this.props.data.url}
+                        url={this.props.url}
                     />
                     { this.getView(this.state.view) }
                 </div>

@@ -31,14 +31,21 @@
         @extend %clickable;
 
         .option {
-            padding: 0.5rem 0.6rem;
+            padding: 0.65rem 0.6rem;
             text-align: center;
+            white-space: nowrap;
             min-width: 100px;
             font-size: 0.96rem;
             color: $grey4;
 
-            &:hover, &:active {
-                background: $grey2;
+            &.active {
+                color: $blue2;
+                text-decoration: underline;
+                cursor: default;
+            }
+
+            &:not(.active):hover, &:not(.active):active {
+                color: $blue1;
             }
         }
     }
