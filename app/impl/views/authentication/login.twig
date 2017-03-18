@@ -1,0 +1,21 @@
+{% extends "_structure.twig" %}
+
+{% block scripts %}
+{{ resources.script('/js/views/login.js') }}
+{% endblock %}
+
+{% block body %}
+<div class='ly center-h offset-v xsmall flex-v top-level'>
+    <header>
+        <div class='brand text-lq'></div>
+    </header>
+    <div>
+        <div id='login-root'>
+            <i class='fa fa-circle-o-notch fa-spin root-loader'></i>
+        </div>
+    </div>
+    <footer class='wbr'>
+        Need support? Toll Free: <a href='tel:1-855-484-7451' class='phone'>1 (855) 484-7451</a>
+    </footer>
+</div>
+{% endblock %}

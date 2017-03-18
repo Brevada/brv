@@ -1,0 +1,166 @@
+/* Feedback Header */
+
+.feedback-header {
+    background: #fff;
+    width: 100%;
+
+    .content {
+        margin: 0 auto;
+        max-width: 650px;
+        padding: 50px 5px 15px 5px;
+        position: relative;
+        width: 100%;
+        @extend %clearfix;
+        @include font-size(16px);
+
+        .brand {
+            position: absolute;
+            top: 0;
+            left: 5px;
+        }
+
+        .heading {
+            text-align: center;
+            margin: 0 auto 20px auto;
+            color: $grey4;
+            font-size: 1.6em;
+            padding: 0 0.1em;
+            @media (min-width: 420px) {
+                font-size: 2.05em;
+            }
+            @include respond-to('small') {
+                padding: 0;
+                font-size: 2.4em;
+            }
+            @include transition(font-size ease 0.1s);
+
+            span { font-weight: bold; color: $black; }
+        }
+
+        .controls {
+            text-align: center;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .controls .header-btn {
+            margin: 0 0.313em;
+            max-width: 100%;
+
+            font-size: 0.95em;
+            width: calc(100% - (0.313em*2));
+            @media (min-width: 420px) {
+                font-size: 1.05em;
+                width: 180px * 2;
+            }
+            @include respond-to('small') {
+                font-size: 1.5em;
+                width: 210px * 2;
+            }
+            @include transition(font-size ease 0.1s, width ease 0.1s);
+        }
+
+        .controls.comments .header-btn {
+            width: calc(50% - (0.313em*2));
+            @media (min-width: 420px) {
+                font-size: 1.05em;
+                width: 180px;
+            }
+            @include respond-to('small') {
+                font-size: 1.5em;
+                width: 210px;
+            }
+        }
+    }
+}
+
+body.scroll-header .feedback-header,
+.feedback-container:not(.dialog-none) .feedback-header {
+    background: $grey5;
+    height: 50px;
+    @include respond-to('small') {
+        height: 70px;
+    }
+
+    .brand { display: none; }
+
+    .content {
+        position: fixed;
+        z-index: 1000;
+        background: $grey5;
+        @include justify-content(center);
+        padding: 0;
+        width: 100%;
+        max-width: 100%;
+        @include flexbox;
+
+        .controls {
+            @include flex-grow(1);
+        }
+    }
+
+    .heading { display: none; }
+
+    .controls .btn {
+        margin: 0%;
+        width: 100%;
+
+        @include respond-to('xsmall') {
+            max-width: 1000px;
+        }
+    }
+
+    .controls.comments .btn {
+        width: 50%;
+
+        &:first-child { border-right: 0.5px solid $grey5; }
+        &:last-child { border-left: 0.5px solid $grey5; }
+
+        @include respond-to('xsmall') {
+            max-width: 500px;
+        }
+    }
+}
+
+/* Slight style changes for dialog buttons. */
+.feedback-container:not(.dialog-none) .controls .btn {
+    $negative_width: 40%;
+    &:not(.negative) { width: 100% - $negative_width; }
+    &.negative {
+        width: $negative_width;
+        max-width: 500px * ($negative_width / (100% - $negative_width));
+    }
+}
+
+.controls {
+    .btn {
+        display: inline-block;
+        color: #fff;
+        text-align: center;
+        padding: 0.688em 1.156em;
+        background-color: $blue1;
+        &.negative {
+            background-color: $grey3;
+        }
+
+        span + i {
+            display: inline-block;
+            float: right;
+        }
+
+        @extend %clickable;
+
+        &:active, &:hover {
+            background-color: $blue3;
+            &.negative {
+                background-color: $grey2;
+            }
+        }
+
+        &.disabled {
+            background-color: lighten($blue3, 20%);
+            cursor: no-drop;
+            @include transition(background-color 0.25s);
+        }
+    }
+}

@@ -1,0 +1,38 @@
+/* Normalize environment first. */
+@import '../colours';
+@import '../mixins';
+@import '../breakpoints';
+
+/* Feedback */
+html, body {
+    -webkit-tap-highlight-color: transparent;
+}
+
+body.lock-scroll {
+    overflow-y: hidden;
+}
+
+#feedback-root {
+    min-height: 100%;
+}
+
+#feedback-root, .feedback-container {
+    @extend %clearfix;
+    width: 100%;
+    background: $grey5;
+}
+
+.feedback-container {
+    @include flex-wrap(nowrap);
+}
+
+.feedback-container .scrollable {
+    overflow-y: auto;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+@import 'header';
+@import 'aspects';
+@import 'dialog';

@@ -1,0 +1,106 @@
+/* Feedback Aspects */
+
+.aspect-container {
+    margin: 0 auto;
+    padding-top: 16.5px;
+
+    width: 90%;
+    max-width: 575px;
+    @include respond-to('small') { width: 575px; }
+    @include transition(width ease .1s);
+
+    .aspect {
+        width: 100%;
+        margin: 10px 0;
+        opacity: 1;
+        max-height: 150px;
+        @include user-select(none);
+
+        .header {
+            font-size: 1.1em;
+            color: $black;
+            display: block;
+            margin-bottom: 8px;
+        }
+
+        &:not(:last-child)::after {
+            content: '';
+            display: block;
+            height: 1px;
+            width: 100%;
+            @include transform(translateX(-50%));
+            margin-left: 50%;
+            margin-top: 10px;
+            border-bottom: 1px solid $grey3;
+            @include blur(0.5px);
+            @include opacity(0.35);
+        }
+
+        &.submitting {
+            opacity: 0.1;
+        }
+
+        @include transition(opacity 0.22s, max-height 0.3s);
+
+        &.removing {
+            overflow: hidden;
+            max-height: 0;
+        }
+    }
+}
+
+.aspect .rating-bar {
+
+    .ratings {
+        @include flexbox;
+        @include flex-direction(row);
+        // TODO: space-* not supported in older browsers.
+        @include justify-content(space-between);
+
+        .rating {
+            width: 19.5%;
+            height: 68px;
+            display: inline-block;
+            background-image: url('/images/feedback/star.png');
+            background-repeat: no-repeat;
+            background-position: center center;
+
+            @extend %clickable;
+
+            @include rating(background-color);
+            &.rating-0 { background-size: 10%; }
+            &.rating-1 { background-size: 15%; }
+            &.rating-2 { background-size: 20%; }
+            &.rating-3 { background-size: 25%; }
+            &.rating-4 { background-size: 30%; }
+
+            &:active, &:hover {
+                @include opacity(0.5);
+            }
+
+            &:active {
+                @include box-shadow(inset 0 0 6px 1px $grey5);
+            }
+        }
+    }
+
+    .hint {
+        display: inline-block;
+        width: 100%;
+        color: $grey3;
+        font-size: 0.925em;
+        margin-top: 3px;
+
+        @extend %clearfix;
+    }
+}
+
+.aspect .submitted {
+    text-align: center;
+    color: $grey4;
+    height: 92px;
+    line-height: 92px;
+    @extend %ellipsis;
+
+    @include animation(fadein .1s);
+}

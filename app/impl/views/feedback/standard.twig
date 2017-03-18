@@ -1,0 +1,46 @@
+{% extends "_structure.twig" %}
+
+{% block metadata %}
+<meta name='viewport' content='width=device-width, user-scalable=no'>
+{% endblock %}
+
+{% block styles %}
+{{ resources.style('/css/feedback/feedback.css') }}
+{% endblock %}
+
+{% block scripts %}
+{{ resources.script('/js/globals/feedback.js') }}
+{{ resources.script('/js/views/feedback.js') }}
+{% endblock %}
+
+{% block body %}
+<script type='text/javascript'>
+window.brv &&
+window.brv.feedback &&
+window.brv.feedback.id({{ id | default('null') }});
+</script>
+
+<div id='feedback-root'>
+    <div class='root-loader'>
+        <i class='fa fa-circle-o-notch fa-spin'></i>
+        <div class='tip'>
+            <span class='message'>Configuring Brevada for {{ name }}...</span>
+            <span class='error' style='display:none;'>
+                A critical error has occured. If this error persists after
+                refreshing the page, please contact Brevada customer support at
+                <a href='tel:1-855-484-7451' class='phone'>1 (855) 484-7451</a>
+            </span>
+        </div>
+        <script type='text/javascript'>
+            setTimeout(function(){
+                var rootLoader = document.querySelector('#feedback-root > .root-loader');
+                if (rootLoader) {
+                    rootLoader.querySelector('i').className = 'fa fa-exclamation-triangle';
+                    rootLoader.querySelector('.tip > .message').style.display = 'none';
+                    rootLoader.querySelector('.tip > .error').style.display = 'inline-block';
+                }
+            }, window.brv.feedback && 8000 || 0);
+        </script>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,12 @@
+/* LiveFeed */
+
+.livefeed {
+    background: $grey4;
+    @include flex-grow(1);
+
+    .status-chart {
+        width: 125px;
+        height: 125px;
+        margin: 0 auto;
+    }
+}

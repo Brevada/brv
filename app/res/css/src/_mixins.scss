@@ -1,0 +1,110 @@
+/* Mixins */
+
+/* Cross-Browser Flex support */
+@import 'libs/sass-flex-mixin-1.0.3/flex';
+
+/* Vendor Prefixes */
+$prefixes: ('-webkit-', '-moz-', '-ms-', '');
+
+@mixin vendor-prefix($name, $value...) {
+  @each $vendor in $prefixes {
+    #{$vendor}#{$name}: $value;
+  }
+}
+
+@mixin vendor-prefix-key($property, $name, $content) {
+  @each $vendor in $prefixes {
+    #{$property}: #{$vendor}#{$name}#{unquote("(")}#{$content}#{unquote(")")};
+  }
+}
+
+/* Assets */
+
+@function image-url($resource-name) {
+    @return url("/images/" + $resource-name);
+}
+
+@mixin image($resource-name) {
+    background-image: image-url($resource-name);
+}
+
+/* Font */
+
+@function calculateRem($size) {
+    $remSize: $size / 16px;
+    @return $remSize * 1rem;
+}
+
+/* IE support. */
+@mixin font-size($size) {
+    font-size: $size;
+    font-size: calculateRem($size);
+}
+
+/* Filters */
+
+@mixin filter($type, $amt) {
+    @include vendor-prefix(filter, unquote($type+unquote('(#{$amt})')));
+}
+
+@mixin blur($amt) {
+    @include filter(blur, $amt);
+}
+
+@mixin opacity($opacity) {
+    opacity: $opacity;
+    $opacity-ie: $opacity * 100;
+    filter: alpha(opacity=$opacity-ie); //IE8
+}
+
+@mixin user-select($type){
+	@include vendor-prefix(user-select, #{$type});
+	cursor: default;
+}
+
+@mixin box-shadow($value...) {
+    @include vendor-prefix(box-shadow, $value);
+}
+
+@mixin transform($value...) {
+    @include vendor-prefix(transform, $value);
+}
+
+/* Animation Support */
+
+@mixin animation ($animation) {
+    @include vendor-prefix(animation, $animation);
+}
+
+@mixin transition ($transition...) {
+    @include vendor-prefix(transition, $transition);
+}
+
+@mixin keyframe ($animation) {
+    @-webkit-keyframes #{$animation} { @content; }
+    @-moz-keyframes #{$animation} { @content; }
+    @-ms-keyframes #{$animation} { @content; }
+    @keyframes #{$animation} { @content; }
+}
+
+/* Extendable. */
+
+%clearfix {
+    *zoom: 1;
+	&:after {
+		content: '';
+		display: table;
+		clear: both;
+	}
+}
+
+%clickable {
+	@include user-select(none);
+	cursor: pointer;
+}
+
+%ellipsis {
+	overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}

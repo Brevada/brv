@@ -1,0 +1,33 @@
+####################
+# GZIP COMPRESSION #
+####################
+SetOutputFilter DEFLATE
+AddOutputFilterByType DEFLATE text/html text/css text/plain text/xml application/x-javascript application/x-httpd-php
+BrowserMatch ^Mozilla/4 gzip-only-text/html
+BrowserMatch ^Mozilla/4\.0[678] no-gzip
+BrowserMatch \bMSIE !no-gzip !gzip-only-text/html
+BrowserMatch \bMSI[E] !no-gzip !gzip-only-text/html
+SetEnvIfNoCase Request_URI \.(?:gif|jpe?g|png|bmp|ico)$ no-gzip
+Header append Vary User-Agent env=!dont-vary
+
+DirectorySlash Off
+
+RewriteEngine On
+RewriteBase /
+
+# Always allow access to Controller script.
+RewriteCond %{REQUEST_URI} ^(\/?framework\/Controller\.php)
+RewriteRule ^(.*)$ - [L]
+
+# Rewrite brevada.com to brevada.com/index
+RewriteRule ^$ framework/Controller.php?page=index [NC,L,DPI]
+
+# Don't allow access to framework/pages/template/widgets.
+RewriteCond %{REQUEST_URI} ^\/?(framework|pages|template|widgets).*(\.).* [NC]
+RewriteRule ^\b([^\\\.*]+\/?[a-z-A-Z0-9\-]+\.?[a-zA-Z0-9\-]+)?\/?$ 404 [NC,L,R] #add P for proxy
+
+# If file exists and is not contained in restricted directory, don't rewrite.
+RewriteCond %{REQUEST_URI} ^\/?(framework|pages|template|widgets) [NC,OR]
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^\b([^\\\.*]+\/?[a-z-A-Z0-9\-]+\.?[a-zA-Z0-9\-]+)?\/?$ framework/Controller.php?page=$1 [NC,L,QSA,DPI] #add P for proxy

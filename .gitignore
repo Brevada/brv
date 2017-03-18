@@ -1,10 +1,36 @@
-user_data
-framework/logs
+# Legacy
+user_data/
+framework/logs/
 
+# Logging
+app/log/
+*.log
+
+# Built Assets
+app/res/css/dist/*
+app/res/js/dist/*
+
+# Package Managers
+node_modules/
+vendor/
+
+# Compiled + Cache
 *.pyc
+*.cache
+app/views_cache/*
 
 # OS generated
 Thumbs.db
 .DS_Store
 .Spotlight-V100
 .Trashes
+
+./*.phar
+
+# Auto-generated Docs
+docs/build/*
+docs/cache/*
+docs/phpunit/*
+docs/phploc/*
+
+!*.gitkeep

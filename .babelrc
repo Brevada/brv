@@ -1,0 +1,10 @@
+{
+    "presets": [["es2015", { "modules": false }], "react"],
+    "plugins": [
+        "transform-es2015-instanceof",
+        "syntax-dynamic-import",
+        "transform-function-bind",
+        "transform-class-properties",
+        "lodash"
+    ]
+}

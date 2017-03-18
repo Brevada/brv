@@ -1,0 +1,30 @@
+/* Assets */
+
+$image_resize: 0.6;
+
+.brand {
+    background-position: center center;
+    background-repeat: no-repeat;
+
+    @each $lvl, $width in (lq: 300px, mq: 600px, hq: 800px) {
+        &.text-#{$lvl} {
+            @include image("brand/brevada-#{$lvl}.png");
+            width: $image_resize * $width;
+            height: $image_resize * ((13/60) * $width);
+            background-size: contain;
+        }
+    }
+
+    &.logo-lq {
+        @include image("brand/quote-white.png");
+        background-size: 60%;
+        background-color: $red1;
+        border-bottom-right-radius: 2.5px;
+        border-bottom-left-radius: 2.5px;
+    }
+
+    &.logo-lq {
+        width: 0.075 * 533px;
+        height: 0.075 * 533px;
+    }
+}

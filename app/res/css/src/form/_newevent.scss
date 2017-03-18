@@ -1,0 +1,105 @@
+/* New Event Form */
+
+.form-group.new-event {
+    margin: 0 0 1em 0;
+
+    text-align: center;
+
+    .label {
+        font-size: 1.6em;
+        color: $black;
+    }
+
+    .input {
+        margin: 0 0.55em;
+        display: inline-block;
+        border-bottom: 2px solid $grey4;
+        position: relative;
+        width: 300px;
+        max-width: 100%;
+        font-size: 1em;
+
+        input, .placeholder {
+            font-size: 1.6em;
+            transition: font-size 0.1s linear;
+
+            text-align: left;
+            width: 100%;
+            border: 0;
+            outline: none;
+            background: transparent;
+        }
+
+        input {
+            color: $blue1;
+        }
+    }
+}
+
+.form-group.new-event ~ .form-group.date {
+    text-align: center;
+    width: 100%;
+    max-width: 100%;
+
+    @include respond-to('xsmall') {
+        text-align: left;
+        max-width: 100%;
+        margin: 0 4% 0 4%;
+        width: 42%;
+    }
+
+    @media (max-width: 655px) {
+        text-align: left;
+        max-width: 100%;
+        margin: 0 2% 0 2%;
+        width: 46%;
+    }
+
+    @media (max-width: 575px) {
+        width: 100%;
+        max-width: 300px;
+        margin: 0 auto;
+    }
+
+    @include respond-to('medium') {
+        text-align: left;
+        width: calc((655px / 2) - 30px);
+        margin: 0 15px -7px 0;
+    }
+
+    > .label {
+        color: $black;
+        font-size: 1.1em;
+    }
+
+    > .datepicker {
+        width: 100%;
+        text-align: center;
+        @include respond-to('small') {
+            text-align: left;
+        }
+
+        > div {
+            width: 100%;
+        }
+
+        .datepicker-input {
+            @include box-shadow(none);
+            border-style: none;
+            border-bottom: 2px solid $grey4;
+            color: $blue1;
+            font-size: 1.6em;
+            border-radius: 0;
+        }
+    }
+}
+
+.form-group.new-event ~ .form-group.date ~ .form-group.date {
+    @include respond-to('medium') {
+        margin: 0 0 0 15px;
+    }
+}
+
+.form-group.new-event ~ .form-group.date {
+    margin-bottom: 10px;
+}
