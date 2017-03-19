@@ -6,12 +6,13 @@
  * as it contains global constants, functions, autoloading, error handling,
  * and environment configurations.
  *
- * @version v0.0.1 (Dec. 21, 2016)
- * @copyright Copyright (c) 2016, Brevada
+ * @version v0.0.1 (Mar. 18, 2017)
+ * @copyright Copyright (c) 2017, Brevada
  */
 
 /* Require constants first so that we may use them in PHP env settings. */
 require_once 'app/constants.php';
+require_once 'app/config.php';
 
 /* PHP Environment Variables */
 date_default_timezone_set('America/New_York');
