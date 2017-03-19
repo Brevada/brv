@@ -14,13 +14,6 @@ namespace Brv\core\libs\database;
  */
 class Database
 {
-    /* BEGIN: Private env configuration. */
-    const DB_USERNAME = 'root';
-    const DB_PASSWORD = 'root';
-    const DB_HOST = 'localhost';
-    const DB_SCHEMA = 'redreadu_brevada';
-    /* END: Private env configuration. */
-
     /** @var \PDO A single PDO instance to persist a single connection. */
     private static $connection = null;
 
@@ -34,12 +27,14 @@ class Database
     {
         if (empty(self::$connection)) {
             try {
-                $target = sprintf("mysql:host=%s;dbname=%s", self::DB_HOST, self::DB_SCHEMA);
-                self::$connection = new \PDO($target, self::DB_USERNAME, self::DB_PASSWORD);
+                $target = sprintf("mysql:host=%s;dbname=%s", DB_HOST, DB_SCHEMA);
+                self::$connection = new \PDO($target, DB_USERNAME, DB_PASSWORD);
                 self::$connection->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
                 self::$connection->setAttribute(\PDO::MYSQL_ATTR_INIT_COMMAND, "SET NAMES 'utf8'");
             } catch (\PDOException $ex) {
                 \App::log()->error('PDOException: ' . $ex->getMessage());
+                http_response_code(500);
+                die("Sorry, we are having difficulty connecting to our system at the moment. Our technical team has been notified.");
             }
         }
 

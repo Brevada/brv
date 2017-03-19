@@ -16,7 +16,12 @@ require_once 'app/App.php';
 
 /* Check that we are not in an unsafe environment. */
 if (DEBUG && $_SERVER['HTTP_HOST'] !== brv_host()) {
-    exit("Unsafe environment; host does not match. Application will abort.");
+    die("Unsafe environment; host does not match. Application will abort.");
+}
+
+if (MAINTENANCE_MODE) {
+    http_response_code(500);
+    die("Sorry, we are currently down for maintenance. Please check back in 10 minutes.");
 }
 
 App::start();

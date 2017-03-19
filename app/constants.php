@@ -6,14 +6,9 @@
  * @copyright Copyright (c) 2016, Brevada
  */
 
-const DEBUG = true;
 const APP_NAME = 'Brevada';
 
-const HOST_TOKEN = '[HOST_TOKEN]';
-const HOST = 'brevada.com';
-const DEV_HOST = 'brevada.local';
-const MAIN_HOST = 'beta.' . HOST_TOKEN;
-const LEGACY_HOST = HOST_TOKEN;
+const HOST_TOKEN = '{HOST}';
 
 const NAMESPACE_PREFIX = 'Brv\\';
 const NAMESPACE_CORE_PREFIX = 'core\\';
@@ -22,8 +17,6 @@ const NAMESPACE_IMPL_PREFIX = 'impl\\';
 const NAMESPACE_DIR = __DIR__ . '/';
 const NAMESPACE_CORE_DIR = __DIR__ . '/core/';
 const NAMESPACE_IMPL_DIR = __DIR__ . '/impl/';
-
-const LOG_DIRECTORY = __DIR__ . '/log/';
 
 const ROUTER_CONFIG_PATH = NAMESPACE_IMPL_DIR . 'routes/config.yaml';
 

@@ -84,7 +84,7 @@ class Store extends Controller
 
         $stores = EStore::queryCompany($company->getId());
         if ($stores === null) {
-            $stores = [];
+            self::fail("An unexpected error has occured retrieving your account information.", \HTTP::SERVER);
         }
 
         /* Require READ permissions on the store. */
