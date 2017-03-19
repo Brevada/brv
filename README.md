@@ -11,11 +11,43 @@ All `PHP` code should be documented.
 
 ## Developer Environment Setup
 
+Requires min. `PHP 5.6`.
+
 ### Clone Repository
 
 ```
 > mkdir brv && cd brv
 > git clone https://github.com/RobbieGoldfarb/brv.git .
+```
+
+### Configuration File
+
+Create an .ini file outside of the project's root directory. Save the absolute path to the .ini file in an environment variable with the name `BRV_CONFIG_PATH`. Configure the file appropriately.
+
+```
+> export BRV_CONFIG_PATH=/etc/.../brevada.ini
+```
+
+Example Configuration (commented out lines are optional):
+```
+[general]
+; debug = false
+; maintenance_mode = false
+
+[host]
+host = "brevada.com"
+dev_host = "brevada.local"
+main_host = "beta.{HOST}"
+legacy_host = "{HOST}"
+
+[database]
+db_username = 'root'
+db_password = 'root'
+db_host = 'localhost'
+db_schema = 'redreadu_brevada'
+
+[log]
+; log_directory = "/"
 ```
 
 ### Run Installation and Resolve Dependencies
@@ -24,7 +56,6 @@ The latest version of `npm` and `composer` are required.
 
 ```
 > npm install
-> composer update
 ```
 
 ### Build
@@ -69,4 +100,10 @@ To clean the distribution files (remove them):
 
 ## Deployment Process
 
-TODO: Deployment documentation is in progress.
+Configure the environment configuration (ini) file if not already configured. Apply any schema changes per the latest PR request or Slack communication.
+
+Execute as root:
+
+```
+> sh /home/brevadat/update_brevada.sh
+```

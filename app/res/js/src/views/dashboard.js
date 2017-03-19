@@ -76,6 +76,14 @@ class DashboardLoader extends React.Component {
             );
         }
 
+        if (this.props.error) {
+            return (
+                <Message
+                    text={"An unexpected error has occured. You may try refresh the page."}
+                />
+            );
+        }
+
         if (!this.props.data.stores) {
             return (
                 <Message

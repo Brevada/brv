@@ -31,10 +31,10 @@ class TestDatabase
             throw new \Exception("DEBUG environment required!");
         }
 
-        $host = getenv('BRV_DB_HOST');
-        $schema = getenv('BRV_DB_SCHEMA');
-        $username = getenv('BRV_DB_USERNAME');
-        $password = getenv('BRV_DB_PASSWORD');
+        $host = getenv('BRV_DEV_DB_HOST');
+        $schema = getenv('BRV_DEV_DB_SCHEMA');
+        $username = getenv('BRV_DEV_DB_USERNAME');
+        $password = getenv('BRV_DEV_DB_PASSWORD');
 
         if (empty($host) || empty($schema) || empty($username)) {
             throw new \Exception("DEBUG database configuration must be set!");
@@ -44,7 +44,7 @@ class TestDatabase
             $password = '';
         }
 
-        if ($host == Database::DB_HOST && $schema == Database::DB_SCHEMA) {
+        if ($host == DB_HOST && $schema == DB_SCHEMA) {
             throw new \Exception("DEBUG database configuration must be different than production!");
         }
 

@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <phpunit bootstrap="./_index.php">
     <php>
-        <env name="BRV_DB_HOST" value="localhost" />
-        <env name="BRV_DB_SCHEMA" value="brevada_test" />
-        <env name="BRV_DB_USERNAME" value="root" />
-        <env name="BRV_DB_PASSWORD" value= "root" />
+        <env name="BRV_DEV_DB_HOST" value="localhost" />
+        <env name="BRV_DEV_DB_SCHEMA" value="brevada_test" />
+        <env name="BRV_DEV_DB_USERNAME" value="root" />
+        <env name="BRV_DEV_DB_PASSWORD" value= "root" />
     </php>
 
     <testsuites>
