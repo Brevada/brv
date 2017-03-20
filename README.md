@@ -105,5 +105,5 @@ Configure the environment configuration (ini) file if not already configured. Ap
 Execute as root:
 
 ```
-> sh /home/brevadat/update_brevada.sh
+> ./home/brevadat/update_brevada.sh
 ```
