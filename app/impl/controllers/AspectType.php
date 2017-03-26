@@ -58,7 +58,7 @@ class AspectType extends Controller
                 return [
                     'id' => $type->getId(),
                     'title' => $type->getTitle(),
-                    'custom' => $type->getCustom()
+                    'custom' => $type->isCustom()
                 ];
             }, $aspectTypes))
         ]);
@@ -110,7 +110,7 @@ class AspectType extends Controller
                 return [
                     'id' => $type->getId(),
                     'title' => $type->getTitle(),
-                    'custom' => $type->getCustom()
+                    'custom' => $type->isCustom()
                 ];
             }, $filtered))
         ]);
