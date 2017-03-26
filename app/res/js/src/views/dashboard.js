@@ -56,7 +56,7 @@ class DashboardLoader extends React.Component {
     onStoreChange(id) {
         this.setState({
             storeId: id,
-            store: this.data.stores.filter(s => s.id === id)[0]
+            store: this.props.data.stores.filter(s => s.id === id)[0]
         });
     }
 
