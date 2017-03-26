@@ -216,7 +216,7 @@ class Aspect extends Entity
                 $stmt = DB::get()->prepare("INSERT INTO aspects (AspectTypeID, StoreID, Active) VALUES (:aspectType, :store, :active)");
                 $stmt->bindValue(':aspectType', $this->getAspectTypeId(), \PDO::PARAM_INT);
                 $stmt->bindValue(':store', $this->getStoreId(), \PDO::PARAM_INT);
-                $stmt->bindValue(':active', (int) $this->getActive(), \PDO::PARAM_INT);
+                $stmt->bindValue(':active', (int) $this->isActive(), \PDO::PARAM_INT);
                 $stmt->execute();
                 $this->set('id', (int) DB::get()->lastInsertId());
                 return $this->getId();
@@ -365,7 +365,7 @@ class Aspect extends Entity
      *
      * @return boolean
      */
-    public function getCustom()
+    public function isCustom()
     {
         return ((int) $this->get('custom')) === 1;
     }
