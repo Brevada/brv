@@ -219,7 +219,7 @@ class Textbox extends Input {
     onChange(e) {
         /* Save the textbox's value to the state. */
         this.setState({
-            value: e.target.value || ''
+            value: (e.target && e.target.value) || e.value || ''
         }, () => {
             if (this.props.onChange) this.props.onChange(this.state.value);
         });
@@ -236,6 +236,7 @@ class Textbox extends Input {
                     name={this.props.name}
                     type={this.props.type || 'text'}
                     onChange={this.onChange}
+                    value={this.state.value}
                     ref={ input => (this._input = input)}
                     {...passedProps}
                 />
@@ -278,7 +279,7 @@ class Textarea extends Input {
     onChange(e) {
         /* Save the textarea's value to the state. */
         this.setState({
-            value: e.target.value || ''
+            value: (e.target && e.target.value) || e.value || ''
         }, () => {
             if (this.props.onChange) this.props.onChange(this.state.value);
         });
@@ -294,6 +295,7 @@ class Textarea extends Input {
                     })}
                     name={this.props.name}
                     onChange={this.onChange}
+                    value={this.state.value}
                     ref={ input => (this._input = input)}
                     {...passedProps}
                 />

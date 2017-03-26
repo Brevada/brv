@@ -77,7 +77,7 @@ const CommentControls = props => (
 const EmailControls = props => (
  <div className='controls'>
      <HeaderButton
-         label='cancel'
+         label='skip'
          icon='fa-times-circle'
          negative={true}
          onClick={()=>props.onAction(HeaderActions.CLOSE_DIALOG)}

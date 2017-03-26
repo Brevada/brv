@@ -25,7 +25,7 @@ export default class Feedback extends React.Component {
             pendingComment: false,
 
             /* Determines which dialog to show if any. */
-            showDialog: false
+            showDialog: 'EMAIL'
         };
 
         /* Contains reference to current/last dialog's form.

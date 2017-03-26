@@ -1,0 +1,76 @@
+$toggle_width: 100px;
+$toggle_height: 30px;
+
+.toggle-input {
+    width: $toggle_width;
+    height: $toggle_height;
+    display: inline-block;
+
+    > div {
+        @extend %clickable;
+        position: relative;
+        height: 100%;
+
+        background: #fff;
+        border-radius: 2.8px;
+        font-size: 0.95em;
+        overflow: hidden;
+
+        .left, .right {
+            position: absolute;
+            display: inline-block;
+            width: $toggle_width / 2;
+            color: $grey2;
+            text-align: center;
+            padding: 5.5px 12px;
+            height: 100%;
+
+            top: 50%;
+            @include transform(translateY(-50%));
+            @include transition(color 0.1s ease);
+        }
+
+        .left { left: 0; }
+        .right { right: 0; }
+
+        .slider {
+            position: absolute;
+            width: $toggle_width / 2;
+            height: 100%;
+            top: 0;
+
+            @include transition(left 0.2s ease-in-out);
+        }
+
+        &.positive .slider { background: $green1; }
+        &.positive.inverted .slider { left: $toggle_width / 2; }
+        &.positive:not(.inverted) .slider { left: 0; }
+
+        &.negative .slider { background: $orange1; }
+        &.negative.inverted .slider { left: 0; }
+        &.negative:not(.inverted) .slider { left: $toggle_width / 2; }
+
+        &.positive:not(.inverted) .left,
+        &.negative:not(.inverted) .right,
+        &.positive.inverted .right,
+        &.negative.inverted .left { color: #fff; }
+    }
+}
+
+.form .form-group.toggle {
+    @extend %clearfix;
+
+    > .label {
+        display: inline-block;
+        text-align: left;
+        float: left;
+        width: calc(100% - #{$toggle_width} - 20px);
+        line-height: $toggle_height;
+        font-size: 1em;
+        color: $black;
+    }
+
+    > .toggle-input {
+        float: right;
+    }
+}

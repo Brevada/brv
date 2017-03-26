@@ -52,10 +52,9 @@ routes:
         GET: [ '^\/api\/feedback\/config$', pass, Feedback+getConfig ]
 
     # Catch all for feedback pages.
-    # feedback_view: [ 'GET ^\/([^\/]+)\/?$', pass, Feedback+viewFeedback ]
+    feedback_view: [ 'GET ^\/([^\/]+)\/?$', pass, Feedback+viewFeedback ]
 
     # Temp. mappings per issue 193.
-    map_index: [ 'GET ^\/?$', pass, 'external+//[HOST_TOKEN]' ]
-    map_settings: [ 'GET ^\/settings\/?$', pass, 'external+//[HOST_TOKEN]/settings' ]
-    map_admin: [ 'GET ^\/admin\/?$', pass, 'external+//[HOST_TOKEN]/admin' ]
-    map_feedback: [ 'GET ^\/([^\/]+)\/?$', pass, 'external+//[HOST_TOKEN]/[1]' ]
+    map_index: [ 'GET ^\/?$', pass, 'external+//{HOST}' ]
+    map_settings: [ 'GET ^\/settings\/?$', pass, 'external+//{HOST}/settings' ]
+    map_admin: [ 'GET ^\/admin\/?$', pass, 'external+//{HOST}/admin' ]

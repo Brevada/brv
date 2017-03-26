@@ -216,6 +216,8 @@ $inline_margin: 5px;
 
 @import './aspectinput';
 @import './newevent';
+@import './intelliemail';
+@import './toggle';
 
 .datepicker.input > div {
     max-width: 100%;
