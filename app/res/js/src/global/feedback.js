@@ -19,6 +19,8 @@
 
     fbk.scroll = require('global/feedback/scroll')();
     fbk.interceptor = require('global/feedback/interceptor')();
+    fbk.state = require('global/feedback/state')();
+    fbk.session = require('global/feedback/session')();
 
     /* Export to the global scope. */
     window.brv = window.brv || {};
