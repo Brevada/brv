@@ -51,11 +51,19 @@ export default class Aspects extends React.Component {
 
     render() {
         /* Don't show blacklisted aspects (removed list). */
+        let aspects = this.state.aspects
+            .concat()
+            .filter(a => !this.state.submitted.includes(a.id));
+
+        if (brv.feedback) {
+            brv.feedback.session.setRemainingCount(
+                this.state.aspects.length - aspects.length
+            );
+        }
+
         return (
             <div className='ly keep-spacing flex-v center-c-h aspect-container'>
-                {this.state.aspects
-                    .concat()
-                    .filter(a => !this.state.submitted.includes(a.id))
+                {aspects
                     .map(aspect => (
                         <Aspect
                             key={aspect.id}

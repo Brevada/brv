@@ -60,7 +60,7 @@
             @include transition(font-size ease 0.1s, width ease 0.1s);
         }
 
-        .controls.comments .header-btn {
+        .controls:not(.single) .header-btn {
             width: calc(50% - (0.313em*2));
             @media (min-width: 420px) {
                 font-size: 1.05em;
@@ -74,8 +74,8 @@
     }
 }
 
-body.scroll-header .feedback-header,
-.feedback-container:not(.dialog-none) .feedback-header {
+body.scroll-header .feedback-header:not(.miny-header),
+.feedback-container:not(.dialog-none) .feedback-header:not(.miny-header) {
     background: $grey5;
     height: 50px;
     @include respond-to('small') {
@@ -110,7 +110,7 @@ body.scroll-header .feedback-header,
         }
     }
 
-    .controls.comments .btn {
+    .controls:not(.single) .btn {
         width: 50%;
 
         &:first-child { border-right: 0.5px solid $grey5; }

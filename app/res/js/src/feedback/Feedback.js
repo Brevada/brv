@@ -1,6 +1,6 @@
 import React from 'react';
 
-import Header, { HeaderActions } from 'feedback/Header';
+import Header, { MinyHeader, HeaderActions } from 'feedback/Header';
 import Aspects from 'feedback/Aspects';
 import CommentDialog from 'feedback/dialogs/Comment';
 import EmailDialog from 'feedback/dialogs/Email';
@@ -14,19 +14,36 @@ export default class Feedback extends React.Component {
         storeId: React.PropTypes.number.isRequired
     };
 
-    constructor() {
-        super();
+    constructor(props) {
+        super(props);
 
-        this.state = {
+        this.RESET_DURATION = 10000;
+
+        this._initialState = {
             /* Indicates whether at least one aspect has been rated. */
             feedbackGiven: false,
 
             /* Indicates that a comment is ready for submission. */
             pendingComment: false,
+            /* Indicates a comment has been submitted. */
+            commentGiven: false,
 
             /* Determines which dialog to show if any. */
-            showDialog: false
+            showDialog: false,
+
+            /* Indicates user's session is complete. */
+            done: false,
+
+            /* Used to force entire vdom reset. */
+            reset: 1
         };
+
+        /* Default to EMAIL screen if config set. */
+        if (props.data && props.data.template_location === 3) {
+            this._initialState.showDialog = 'EMAIL';
+        }
+
+        this.state = this._initialState;
 
         /* Contains reference to current/last dialog's form.
          * Not part of state, since it doesn't affect render and should
@@ -37,8 +54,51 @@ export default class Feedback extends React.Component {
         this.onHeaderAction = ::this.onHeaderAction;
         this.closeDialog = ::this.closeDialog;
         this.showDialogComment = ::this.showDialogComment;
+        this.showDialogEmail = ::this.showDialogEmail;
+
+        this.onFinish = ::this.onFinish;
+        this.onCommentSubmit = ::this.onCommentSubmit;
+        this.onEmailSubmit = ::this.onEmailSubmit;
+
+        this.reset = ::this.reset;
+        this.completeSession = ::this.completeSession;
 
         this.getDialog = ::this.getDialog;
+
+        this._tmrReset = undefined;
+
+        brv.feedback && brv.feedback.session.init();
+    }
+
+    componentWillUnmount() {
+        this._unmounted = true;
+    }
+
+    /**
+     * Resets session.
+     */
+    reset() {
+        clearTimeout(this._tmrReset);
+        brv.feedback && brv.feedback.session.init();
+        if (this._unmounted) return;
+        this.setState(s => (Object.assign({}, this._initialState, {
+            reset: (s.reset+1) % 100 /* Arbitrary cycle length. */
+        })));
+    }
+
+    /**
+     * Completes the current session.
+     */
+    completeSession() {
+        clearTimeout(this._tmrReset);
+
+        /* Complete session. */
+        this.setState({
+            done: true
+        }, () => {
+            brv.feedback.session && brv.feedback.session.complete();
+            this._tmrReset = setTimeout(this.reset, this.RESET_DURATION);
+        });
     }
 
     /**
@@ -51,6 +111,11 @@ export default class Feedback extends React.Component {
         /* At least one aspect has been rated. */
         this.setState({
             feedbackGiven: true
+        }, () => {
+            /* If a comment has been given and there are no more aspects, consider
+             * this a finish event. */
+            if (!this.state.commentGiven || brv.feedback.session.getRemainingCount() !== 0) return;
+            this.onFinish();
         });
     }
 
@@ -73,6 +138,15 @@ export default class Feedback extends React.Component {
     }
 
     /**
+     * Shows the email dialog.
+     */
+    showDialogEmail() {
+        this.setState({
+            showDialog: 'EMAIL'
+        });
+    }
+
+    /**
      * Handles header button click event.
      */
     onHeaderAction(action) {
@@ -85,11 +159,45 @@ export default class Feedback extends React.Component {
                 this.dialogForm && this.dialogForm.submit();
                 break;
             case HeaderActions.FINISH:
+                this.onFinish();
                 break;
             case HeaderActions.CLOSE_DIALOG:
                 this.closeDialog();
                 break;
         }
+    }
+
+    /**
+     * On finish event.
+     */
+    onFinish() {
+        if ((this.props.data.template_location === 1 && brv.feedback.session.hasPoor()) ||
+            this.props.data.template_location === 2) {
+            this.showDialogEmail();
+        } else {
+            /* Do not show email dialog. Complete the session. */
+            this.completeSession();
+        }
+    }
+
+    /**
+     * On email submitted event.
+     */
+    onEmailSubmit() {
+        if (this.props.data.template_location === 3) {
+            this.closeDialog();
+        } else {
+            this.completeSession();
+        }
+    }
+
+    /**
+     * On comment submitted event.
+     */
+    onCommentSubmit() {
+        this.setState({
+            commentGiven: true
+        }, () => this.closeDialog());
     }
 
     /**
@@ -107,12 +215,14 @@ export default class Feedback extends React.Component {
                         message={this.props.data.comment_message}
                         onValid={()=>this.setState({ pendingComment: true })}
                         onInvalid={()=>this.setState({ pendingComment: false })}
+                        onSubmit={this.onCommentSubmit}
                     />
                 );
             case 'EMAIL':
                 return (
                     <EmailDialog
                         form={f => this.dialogForm = f}
+                        onSubmit={this.onEmailSubmit}
                     />
                 );
         }
@@ -123,8 +233,26 @@ export default class Feedback extends React.Component {
     render() {
         const dialogClass = (this.state.showDialog || 'none').toLowerCase();
 
+        if (this.state.done) {
+            return (
+                <div className={`ly flex-v defined-size feedback-container dialog-none state-done`}>
+                    <MinyHeader name={this.props.data.name} />
+                    <div className='thanks'>
+                        <span>Thank you for giving feedback!</span>
+                        <div
+                            className='btn btn-refresh'
+                            onClick={this.reset}>
+                            <i className={`fa fa-refresh`}></i>
+                        </div>
+                    </div>
+                </div>
+            );
+        }
+
         return (
-            <div className={`ly flex-v defined-size feedback-container dialog-${dialogClass}`}>
+            <div
+                key={this.state.reset}
+                className={`ly flex-v defined-size feedback-container dialog-${dialogClass}`}>
                 <Header
                     name={this.props.data.name}
                     onAction={this.onHeaderAction}

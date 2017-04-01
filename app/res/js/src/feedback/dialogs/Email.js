@@ -20,7 +20,8 @@ export default class Email extends React.Component {
                 className='dialog-email as-page'>
                 <Form
                     center={true}
-                    form={this.props.form}>
+                    form={this.props.form}
+                    onSuccess={()=>this.props.onSubmit()}>
                     <Group className='email'>
                         <IntelliEmailInput
                             name='email'

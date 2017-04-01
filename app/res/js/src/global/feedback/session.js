@@ -4,7 +4,23 @@
 module.exports = function() {
     var session = {};
 
-    session.new = () => ();
+    let _token = undefined;
+    let _remainingCnt = 0;
+
+    let newToken = () => _token = require('crypto').randomBytes(64).toString('hex');
+    newToken();
+
+    session.init = () => {
+        newToken();
+
+    };
+
+    session.complete = () => {
+
+    };
+
+    session.getRemainingCount = () => _remainingCnt;
+    session.setRemainingCount = n => _remainingCnt = n;
 
     return session;
 };

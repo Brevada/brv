@@ -33,7 +33,7 @@ const HeaderButton = props => (
  */
 const FeedbackControls = props => (
     <div className={classNames('controls', {
-        'comments': props.enableComments
+        'single': !props.enableComments
     })}>
         { props.enableComments && (
             <HeaderButton
@@ -89,6 +89,20 @@ const EmailControls = props => (
          disabled={!props.enableSubmit}
      />
  </div>
+);
+
+/**
+ * Minified & simplistic header.
+ */
+const MinyHeader = props => (
+    <div className='feedback-header miny-header'>
+        <div className='content'>
+            <div className='brand logo-lq'></div>
+            <div className='heading'>
+                Give <span>{props.name}</span> Feedback
+            </div>
+        </div>
+    </div>
 );
 
 /**
@@ -152,4 +166,4 @@ class Header extends React.Component {
     }
 }
 
-export { Header as default, HeaderActions };
+export { Header as default, MinyHeader, HeaderActions };

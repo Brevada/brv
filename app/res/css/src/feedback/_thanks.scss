@@ -1,0 +1,36 @@
+.thanks {
+    text-align: center;
+    display: inline-block;
+    margin: 18% auto 0 auto;
+    padding: 1em 2.5em;
+    background: $grey1;
+
+    > span {
+        font-size: 1.8em;
+        padding: 0.8em 0;
+        display: block;
+    }
+
+    .btn.btn-refresh {
+        display: inline-block;
+        font-size: 1.3em;
+        color: #fff;
+        text-align: center;
+        padding: 0.688em 1.156em;
+        margin-top: 0.2em 0;
+        background-color: $blue1;
+        &.negative {
+            background-color: $grey3;
+        }
+
+        span + i {
+            display: inline-block;
+        }
+
+        @extend %clickable;
+
+        &:active, &:hover {
+            background-color: $blue3;
+        }
+    }
+}
