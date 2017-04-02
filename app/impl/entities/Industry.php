@@ -115,7 +115,7 @@ class Industry extends Entity
     {
         $keywords = $this->getKeywords();
         if ($keywords === null) {
-            $keywords = [];
+            $keywords = [-1];
         }
         $keywords = '('.implode(',', $keywords).')';
 
