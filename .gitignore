@@ -9,6 +9,8 @@ app/log/
 # Built Assets
 app/res/css/dist/*
 app/res/js/dist/*
+app/resp/feedback/*
+app/resp/device_cache/*
 
 # Package Managers
 node_modules/
