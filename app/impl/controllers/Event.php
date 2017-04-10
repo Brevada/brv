@@ -117,7 +117,7 @@ class Event extends Controller
         /* Defined account is a precondition due to middleware. */
         $account = MiddleAuth::get();
 
-        $storeId = self::from('store', $this->getBody(), null);
+        $storeId = self::from('store', self::getBody(), null);
         if ($storeId === null) {
             self::fail("A store must be specified.");
         }
@@ -129,7 +129,7 @@ class Event extends Controller
             self::fail("Store is invalid or missing necessary permissions.", \HTTP::BAD_PARAMS);
         }
 
-        $title = self::from('title', $this->getBody(), null);
+        $title = self::from('title', self::getBody(), null);
         if ($title === null) {
             self::fail("An event title is required.");
         }
@@ -140,7 +140,7 @@ class Event extends Controller
 
         $maxTime = time() + (\Brv\core\data\Data::SECONDS_YEAR * 10);
 
-        $from = self::from('from_unix', $this->getBody(), null);
+        $from = self::from('from_unix', self::getBody(), null);
         if ($from === null) {
             self::fail("A from date must be specified.");
         }
@@ -149,7 +149,7 @@ class Event extends Controller
             self::fail("You cannot plan an event that far in advance.");
         }
 
-        $to = self::from('to_unix', $this->getBody(), null);
+        $to = self::from('to_unix', self::getBody(), null);
         if ($to == -1) {
             $to = null;
         }
@@ -412,7 +412,7 @@ class Event extends Controller
         $aspect = null;
 
         /* Load a Store Model. */
-        $storeId = self::from('store', $this->getBody());
+        $storeId = self::from('store', self::getBody());
         if ($storeId != null) {
             v::intVal()->min(0)->check($storeId);
             $store = EStore::queryId(intval($storeId));
@@ -434,7 +434,7 @@ class Event extends Controller
         }
 
         /* Load aspect by aspect type. */
-        $aspectTypeId = self::from('aspect_id', $this->getBody());
+        $aspectTypeId = self::from('aspect_id', self::getBody());
         if ($aspectTypeId != null) {
             v::intVal()->min(0)->check($aspectTypeId);
             $aspect = EAspect::queryTypeId(intval($aspectTypeId), $store->getId());

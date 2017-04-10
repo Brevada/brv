@@ -15,7 +15,7 @@ require_once '_index.php';
 require_once 'app/App.php';
 
 /* Check that we are not in an unsafe environment. */
-if (DEBUG && $_SERVER['HTTP_HOST'] !== brv_host()) {
+if (!DEBUG && $_SERVER['HTTP_HOST'] !== brv_host()) {
     die("Unsafe environment; host does not match. Application will abort.");
 }
 

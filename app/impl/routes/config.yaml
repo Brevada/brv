@@ -2,6 +2,7 @@
 
 middleware:
     auth: Authentication
+    device: DeviceAuthentication
 
 routes:
     login:
@@ -48,13 +49,24 @@ routes:
     events:
         GET: [ '^\/api\/events$', auth, Event+getAll ]
 
+    # Temp. mappings per issue 193.
+    map_index: [ 'GET ^\/?$', pass, 'external+//{HOST}' ]
+    map_settings: [ 'GET ^\/settings\/?$', pass, 'external+//{HOST}/settings' ]
+    map_admin: [ 'GET ^\/admin\/?$', pass, 'external+//{HOST}/admin' ]
+
     feedback:
         GET: [ '^\/api\/feedback\/config$', pass, Feedback+getConfig ]
 
     # Catch all for feedback pages.
     feedback_view: [ 'GET ^\/([^\/]+)\/?$', pass, Feedback+viewFeedback ]
 
-    # Temp. mappings per issue 193.
-    map_index: [ 'GET ^\/?$', pass, 'external+//{HOST}' ]
-    map_settings: [ 'GET ^\/settings\/?$', pass, 'external+//{HOST}/settings' ]
-    map_admin: [ 'GET ^\/admin\/?$', pass, 'external+//{HOST}/admin' ]
+    # Device authorization
+    issue_request_token: [ 'POST ^\/api\/device\/issue?$', auth, DeviceAuthentication+issueRequestToken ]
+    device_auth_register: [ 'POST ^\/api\/v1\.1\/device\/register$', pass, DeviceAuthentication+register ]
+    device_auth_renew: [ 'POST ^\/api\/v1\.1\/device\/renew$', pass, DeviceAuthentication+renew ]
+
+    # Tablet APIs
+    api_feedback_version: [ 'GET ^\/api\/v1\.1\/feedback\/version$', device, Feedback+getVersion ]
+    api_feedback_bundle: [ 'GET ^\/api\/v1\.1\/feedback\/bundle$', device, Feedback+getBundle ]
+    api_feedback_bundle_single: [ 'GET ^\/api\/v1\.1\/feedback\/bundle\/([a-zA-Z0-9]+)$', device, Feedback+getBundleItem ]
+    api_tablet_announce: [ 'POST ^\/api\/v1\.1\/device\/announce$', device, pass ]

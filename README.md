@@ -46,6 +46,9 @@ db_password = 'root'
 db_host = 'localhost'
 db_schema = 'redreadu_brevada'
 
+[api]
+; feedback_version =
+
 [log]
 ; log_directory = "/"
 ```

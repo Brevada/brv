@@ -23,4 +23,10 @@ class STATES
 
     /** @var string References the URL the active user attempted to access w/o auth. */
     const LOGIN_DEST = 'LOGIN_DEST';
+
+    /** @var string References feedback bundle metadata. */
+    const FB_BUNDLE = 'FEEDBACK_BUNDLE';
+
+    /** @var string References the currently authenticated device's UUID. */
+    const DEVICE_UUID = 'DEVICE_UUID';
 }
