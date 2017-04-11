@@ -22,6 +22,39 @@ use Respect\Validation\Validator as v;
 class DeviceAuthentication extends Controller
 {
     /**
+     * Issues a request token to a specific store via a GET request.
+     *
+     * NOTE: This is a temporary workaround until the settings system is implemented.
+     * As a result, this WILL be restricted to admin accounts only.
+     *
+     * @api
+     * @deprecated
+     *
+     * @throws \Respect\Validation\Exceptions\ValidationException on invalid input.
+     * @throws \Brv\core\routing\ControllerException on failure.
+     *
+     * @param array $params URL parameters from the route pattern.
+     * @return View
+     */
+    public function issueRequestTokenT(array $params)
+    {
+        /* Defined account is a precondition due to middleware. */
+        $account = MiddleAuth::get();
+
+        if ($account === null || $account->getLegacyPermissions() != 255) {
+            self::fail("You do not have the necessary permissions to perform this action.", \HTTP::FORBIDDEN);
+        }
+
+        $storeId = self::from('store', $_GET, null);
+        if ($storeId === null) {
+            self::fail("A store must be specified.");
+        }
+        v::intVal()->min(0)->check($storeId);
+
+        return $this->issueRequestToken($params, $storeId);
+    }
+
+    /**
      * Issues a request token to a specific store.
      *
      * @api
@@ -30,22 +63,25 @@ class DeviceAuthentication extends Controller
      * @throws \Brv\core\routing\ControllerException on failure.
      *
      * @param array $params URL parameters from the route pattern.
+     * @param integer $storeId Allow store id to be passed into function.
      * @return View
      */
-    public function issueRequestToken(array $params)
+    public function issueRequestToken(array $params, $storeId = null)
     {
         /* Defined account is a precondition due to middleware. */
         $account = MiddleAuth::get();
 
-        $storeId = self::from('store', self::getBody(), null);
         if ($storeId === null) {
-            self::fail("A store must be specified.");
+            $storeId = self::from('store', self::getBody(), null);
+            if ($storeId === null) {
+                self::fail("A store must be specified.");
+            }
+            v::intVal()->min(0)->check($storeId);
         }
-        v::intVal()->min(0)->check($storeId);
 
         /* Check WRITE permissions for store. */
         $store = EStore::queryId($storeId);
-        if ($store == null || !$account->getPermissions($store)->canWrite()) {
+        if ($store === null || !$account->getPermissions($store)->canWrite()) {
             self::fail("Store is invalid or missing necessary permissions.", \HTTP::BAD_PARAMS);
         }
 
@@ -54,7 +90,7 @@ class DeviceAuthentication extends Controller
         try {
             $attempts = 0;
             do {
-                /* Generates a random token of form: XXX-XXX-XXX. */
+                /* Generates a random token of form: XXXX-XXXX-XXXX. */
                 $requestToken = implode('-', str_split(bin2hex(openssl_random_pseudo_bytes(6)), 4));
 
                 $stmt = DB::get()->prepare("
@@ -78,12 +114,12 @@ class DeviceAuthentication extends Controller
             self::fail("Issue generating request token.", \HTTP::SERVER);
         }
 
-        if (requestToken === null) {
+        if ($requestToken === null) {
             self::fail("Issue generating request token.", \HTTP::SERVER);
         }
 
         return new View([
-            "request_token" => $requestToken
+            "request_token" => strtoupper($requestToken)
         ]);
     }
 
@@ -97,32 +133,42 @@ class DeviceAuthentication extends Controller
      */
     private function consumeRequest($requestToken)
     {
+        /* Change "_" to "-". Mainly for ease of entry, doesn't really reduce
+         * entropy since we are only generating tokens with alphanumeric chars. */
+        $storeId = null;
+
         try {
             /* Attempt to "consume" request token. */
             $stmt = DB::get()->prepare("
-                SELECT StoreID FROM `device_request_tokens`
-                WHERE `RequestToken` = :token AND `ExpiryDate` > UNIX_TIMESTAMP(NOW())
+                SELECT StoreID FROM `device_request_tokens` WHERE
+                (`RequestToken` = :token OR `RequestToken` = :token_alt)
+                AND `ExpiryDate` > UNIX_TIMESTAMP(NOW())
             ");
             $stmt->bindValue(':token', $requestToken, \PDO::PARAM_STR);
+            $stmt->bindValue(':token_alt', str_replace('_', '-', $requestToken), \PDO::PARAM_STR);
             $stmt->execute();
             if ($row = $stmt->fetch(\PDO::FETCH_ASSOC)) {
-                return @intval($row['StoreID']);
+                $storeId = @intval($row['StoreID']);
             } else {
                 self::fail("Invalid request token.", \HTTP::FORBIDDEN);
             }
 
             $stmt = DB::get()->prepare("
                 DELETE FROM `device_request_tokens`
-                WHERE `RequestToken` = :token OR `ExpiryDate` < UNIX_TIMESTAMP(NOW())
+                WHERE
+                `RequestToken` = :token OR
+                `RequestToken` = :token_alt OR
+                `ExpiryDate` < UNIX_TIMESTAMP(NOW())
             ");
             $stmt->bindValue(':token', $requestToken, \PDO::PARAM_STR);
+            $stmt->bindValue(':token_alt', str_replace('_', '-', $requestToken), \PDO::PARAM_STR);
             $stmt->execute();
         } catch (\PDOException $ex) {
             \App::log()->error($ex->getMessage());
             self::fail("Issue validating request token.", \HTTP::SERVER);
         }
 
-        return null;
+        return $storeId;
     }
 
     /**

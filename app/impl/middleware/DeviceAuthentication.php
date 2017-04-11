@@ -10,6 +10,7 @@ namespace Brv\impl\middleware;
 
 use Brv\core\routing\Middleware;
 use Brv\core\libs\database\Database as DB;
+use Brv\core\views\View;
 
 /**
  * Authentication middleware which enforces that the device be authenticated.

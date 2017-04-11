@@ -12,8 +12,8 @@ use Brv\core\routing\Controller;
 use Brv\core\views\View;
 use Brv\impl\entities\Store;
 use Brv\impl\entities\Aspect;
-
 use Respect\Validation\Validator as v;
+use Brv\core\libs\DeviceCache;
 
 /**
  * The Feedback API.
@@ -148,10 +148,7 @@ class Feedback extends Controller
      */
     public function getBundle(array $params = [])
     {
-        $deviceId = self::from('device_id', $_GET, null);
-        if (is_null($deviceId)) {
-            self::fail("A device identifer is required.", \HTTP::BAD_PARAMS);
-        }
+        $deviceId = \App::getState(\STATES::DEVICE_UUID);
 
         $cache = self::from('cache', $_GET, true);
         if ($cache === 'false') {
@@ -162,7 +159,7 @@ class Feedback extends Controller
             $cache = (bool) $cache;
         }
 
-        if ($cache && ($bundle = \App::getState(\STATES::FB_BUNDLE)) !== null) {
+        if ($cache && ($bundle = DeviceCache::load($deviceId)) !== null) {
             return new View([
                 "files" => $bundle['files']
             ]);
@@ -189,10 +186,10 @@ class Feedback extends Controller
         }
 
         /* Save id map. */
-        \App::setState(\STATES::FB_BUNDLE, [
+        DeviceCache::save($deviceId, [
             "files" => $files,
             "metadata" => $metadata
-        ], true);
+        ]);
 
         return new View([
             "files" => $files
@@ -214,8 +211,8 @@ class Feedback extends Controller
     public function getBundleItem(array $params = [])
     {
         /* Check session and send file from session. */
-
-        $bundle = \App::getState(\STATES::FB_BUNDLE);
+        $deviceId = \App::getState(\STATES::DEVICE_UUID);
+        $bundle = DeviceCache::load($deviceId);
         if (is_null($bundle)) self::fail("No bundle initialized.", \HTTP::BAD_REQUEST);
 
         if (!isset($bundle['metadata'][$params[1]])) {

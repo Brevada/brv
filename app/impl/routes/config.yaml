@@ -61,7 +61,9 @@ routes:
     feedback_view: [ 'GET ^\/([^\/]+)\/?$', pass, Feedback+viewFeedback ]
 
     # Device authorization
+    issue_request_token_t: [ 'GET ^\/api\/device\/issue?$', pass, DeviceAuthentication+issueRequestTokenT ]
     issue_request_token: [ 'POST ^\/api\/device\/issue?$', auth, DeviceAuthentication+issueRequestToken ]
+
     device_auth_register: [ 'POST ^\/api\/v1\.1\/device\/register$', pass, DeviceAuthentication+register ]
     device_auth_renew: [ 'POST ^\/api\/v1\.1\/device\/renew$', pass, DeviceAuthentication+renew ]
 
