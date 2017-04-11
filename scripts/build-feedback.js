@@ -8,7 +8,7 @@ const del = require('del');
 const config = {
     entry: {
         /* We enforce ordering by numbering entries. */
-        '0_feedback_brv': path.join(__dirname, '..', 'app', 'res', 'js', 'src', 'globals', 'feedback.js'),
+        '0_feedback_brv': path.join(__dirname, '..', 'app', 'res', 'js', 'src', 'global', 'feedback.js'),
         '1_feedback_view': path.join(__dirname, '..', 'app', 'res', 'js', 'src', 'views', 'feedback.js')
     },
     output: {
