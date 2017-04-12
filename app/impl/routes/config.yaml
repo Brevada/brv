@@ -3,6 +3,7 @@
 middleware:
     auth: Authentication
     device: DeviceAuthentication
+    optional_device: [ DeviceAuthentication, Discard ]
 
 routes:
     login:
@@ -55,7 +56,7 @@ routes:
     map_admin: [ 'GET ^\/admin\/?$', pass, 'external+//{HOST}/admin' ]
 
     feedback:
-        GET: [ '^\/api\/feedback\/config$', pass, Feedback+getConfig ]
+        GET: [ '^\/api\/feedback\/config$', optional_device, Feedback+getConfig ]
 
     # Catch all for feedback pages.
     feedback_view: [ 'GET ^\/([^\/]+)\/?$', pass, Feedback+viewFeedback ]

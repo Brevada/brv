@@ -181,10 +181,15 @@ class Route
 
         $sanitized = [];
         foreach ($this->middleware as $m) {
-            if (isset($reference[$m])) {
-                $sanitized[] = $reference[$m];
+            $ref = isset($reference[$m]) ? $reference[$m] : $m;
+            if (is_array($ref)) {
+                foreach ($ref as $refm) {
+                    if (strcasecmp($refm, "pass") === 0) continue;
+                    $sanitized[] = isset($reference[$refm]) ? $reference[$refm] : $refm;
+                }
             } else {
-                $sanitized[] = $m;
+                if (strcasecmp($m, "pass") === 0) continue;
+                $sanitized[] = isset($reference[$m]) ? $reference[$m] : $m;
             }
         }
 

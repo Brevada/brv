@@ -41,7 +41,7 @@ docReady(function() {
     });
 
     ReactDOM.render(
-        (<DataLayer action="/api/feedback/config" data={{ id: brv.feedback.id() }}>
+        (<DataLayer action="/api/feedback/config" data={{ id: brv.feedback.id() || false }}>
             <FeedbackLinked />
         </DataLayer>),
         document.getElementById('feedback-root')

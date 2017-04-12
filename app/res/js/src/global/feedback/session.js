@@ -12,12 +12,9 @@ module.exports = function() {
 
     session.init = () => {
         newToken();
-
     };
 
-    session.complete = () => {
-
-    };
+    session.complete = () => false;
 
     session.getRemainingCount = () => _remainingCnt;
     session.setRemainingCount = n => _remainingCnt = n;

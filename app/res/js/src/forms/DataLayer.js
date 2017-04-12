@@ -85,7 +85,9 @@ export default class DataLayer extends React.Component {
 
             let data = { params: Object.assign({}, this.props.data) };
 
-            axios(Object.assign({
+            const ajax = brv.feedback.interceptor || axios;
+
+            ajax(Object.assign({
                 url: this.props.action
             }, data, { method: 'get' }))
             .then(response => {

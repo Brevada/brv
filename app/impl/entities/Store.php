@@ -214,6 +214,31 @@ class Store extends Entity
         return null;
     }
 
+    /**
+     * Factory method to instantiate a store entity from a device UUID.
+     *
+     * @param string $id The device id.
+     * @return self
+     */
+    public static function queryDeviceId($id)
+    {
+        try {
+            $stmt = DB::get()->prepare("
+                SELECT StoreID FROM tablets
+                WHERE tablets.SerialCode = :id
+            ");
+            $stmt->bindValue(':id', $id, \PDO::PARAM_STR);
+            $stmt->execute();
+            if (($row = $stmt->fetch(\PDO::FETCH_ASSOC)) !== false) {
+                return self::queryId((int) $row['StoreID']);
+            }
+        } catch (\PDOException $ex) {
+            \App::log()->error($ex->getMessage());
+        }
+
+        return null;
+    }
+
     /* Instance Methods */
 
     /**

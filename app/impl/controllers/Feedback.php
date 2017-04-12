@@ -62,12 +62,17 @@ class Feedback extends Controller
      */
     public function getConfig(array $params)
     {
-        /* Sanity check. */
-        $storeId = self::from('id', $_GET, null);
-        v::intVal()->min(0)->check($storeId);
+        $deviceId = \App::getState(\STATES::DEVICE_UUID);
+        if ($deviceId === null) {
+            /* Not entering via device route.  */
+            $storeId = self::from('id', $_GET, null);
+            v::intVal()->min(0)->check($storeId);
+            $store = Store::queryId($storeId);
+        } else {
+            /* Being accessed through device API */
+            $store = Store::queryDeviceId($deviceId);
+        }
 
-        /* Load store from URL. */
-        $store = Store::queryId($storeId);
         if (is_null($store)) {
             self::fail("Invalid store id.", \HTTP::BAD_PARAMS);
         }
@@ -169,7 +174,7 @@ class Feedback extends Controller
         $metadata = [];
 
         /* Prepare list of all dependencies in "feedback" bundle. */
-        $deps = glob(NAMESPACE_DIR . "resp/feedback/*.js");
+        $deps = glob(NAMESPACE_DIR . "resp/feedback/*.{js,css,json}", GLOB_BRACE);
         foreach($deps as $dep) {
             if (is_dir($dep)) continue;
             if (strpos($dep, '.') === 0) continue;
