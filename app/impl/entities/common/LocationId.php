@@ -16,7 +16,8 @@ trait LocationId {
      */
     public function getLocationId()
     {
-        return (int) $this->get('LocationID');
+        $id = $this->get('LocationID');
+        return is_null($id) ? null : (int) $id;
     }
 
     /**
@@ -25,7 +26,7 @@ trait LocationId {
      */
     protected function setLocationId($id)
     {
-        $this->set('LocationID', (int) $id);
+        $this->set('LocationID', is_null($id) ? null : (int) $id);
         return $this->getLocationId();
     }
 }

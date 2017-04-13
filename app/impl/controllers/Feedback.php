@@ -201,10 +201,8 @@ class Feedback extends Controller
         $response->setIPAddress();
         $response->setUserAgent(isset($_SERVER['HTTP_USER_AGENT']) ? $_SERVER['HTTP_USER_AGENT'] : null);
 
-        $date = time();
-        $response->setDate($date);
-
         $date = $this->getSubmissionTime($body);
+        $response->setDate($date);    
 
         if ($response->commit() === null) {
             self::fail("Unable to accept response.", \HTTP::SERVER);
