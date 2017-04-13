@@ -124,6 +124,7 @@ class Feedback extends Controller
 
         $time = self::from('_timestamp', $payload);
         if ($time === null) return $time;
+        $time = @intval($time);
 
         $SIX_MONTHS = 3600 * 24 * 30 * 6;
 
@@ -202,7 +203,7 @@ class Feedback extends Controller
         $response->setUserAgent(isset($_SERVER['HTTP_USER_AGENT']) ? $_SERVER['HTTP_USER_AGENT'] : null);
 
         $date = $this->getSubmissionTime($body);
-        $response->setDate($date);    
+        $response->setDate($date);
 
         if ($response->commit() === null) {
             self::fail("Unable to accept response.", \HTTP::SERVER);

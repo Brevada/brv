@@ -111,16 +111,22 @@ export default class Feedback extends React.Component {
      * Occurs after actual submission to storage/network.
      */
     onAspectSubmitted() {
-        if (this.state.feedbackGiven) return;
-
         /* At least one aspect has been rated. */
         this.setState({
             feedbackGiven: true
         }, () => {
             /* If a comment has been given and there are no more aspects, consider
              * this a finish event. */
-            if (!this.state.commentGiven || brv.feedback.session.getRemainingCount() !== 0) return;
-            this.onFinish();
+            if (brv.feedback.session.getRemainingCount() === 0) {
+                /* No aspects left. */
+                if (!this.state.commentGiven && this.props.data.allow_comments) {
+                    /* Prompt for comment. */
+                    this.showDialogComment();
+                    return;
+                }
+
+                this.onFinish();
+            }
         });
     }
 
@@ -167,6 +173,12 @@ export default class Feedback extends React.Component {
                 this.onFinish();
                 break;
             case HeaderActions.CLOSE_DIALOG:
+                if (this.state.showDialog === 'COMMENT' &&
+                    brv.feedback.session.getRemainingCount() === 0) {
+                    /* Closing comment but no aspects remaining. Consider this finished. */
+                    this.onFinish();
+                    return;
+                }
                 this.closeDialog();
                 break;
         }

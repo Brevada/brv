@@ -41,7 +41,7 @@ export default class Aspects extends React.Component {
      * Handles submit event from an aspect. "Submitting" the aspect, removes
      * it from the displayed list (via a blacklist).
      *
-     * @param {number} The id of the aspect that has been submitted.
+     * @param {number} id The id of the aspect that has been submitted.
      */
     onSubmit(id) {
         this.setState(s => ({
@@ -56,9 +56,7 @@ export default class Aspects extends React.Component {
             .filter(a => !this.state.submitted.includes(a.id));
 
         if (brv.feedback) {
-            brv.feedback.session.setRemainingCount(
-                this.state.aspects.length - aspects.length
-            );
+            brv.feedback.session.setRemainingCount(aspects.length);
         }
 
         return (

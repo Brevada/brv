@@ -112,6 +112,7 @@ export default class Aspect extends React.Component {
                 })
                 .wait(300)
                 .do(() => {
+                    brv.feedback.session.onSubmit(value, ordinal);
                     this.props.onSubmit(this.props.id);
                 })
                 .exec();

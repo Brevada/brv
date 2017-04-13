@@ -54,22 +54,26 @@ const FeedbackControls = props => (
 /**
  * Header controls for comment dialog.
  */
-const CommentControls = props => (
-    <div className='controls'>
-        <HeaderButton
-            label='cancel'
-            icon='fa-times-circle'
-            negative={true}
-            onClick={()=>props.onAction(HeaderActions.CLOSE_DIALOG)}
-        />
-        <HeaderButton
-            label='submit comment'
-            icon='fa-check-circle-o'
-            onClick={()=>props.onAction(HeaderActions.SUBMIT_COMMENT)}
-            disabled={!props.enableSubmit}
-        />
-    </div>
-);
+const CommentControls = props => {
+    let lastForm = brv.feedback.session.getRemainingCount() === 0;
+
+    return (
+        <div className='controls'>
+            <HeaderButton
+                label={lastForm ? 'skip' : 'cancel'}
+                icon='fa-times-circle'
+                negative={true}
+                onClick={()=>props.onAction(HeaderActions.CLOSE_DIALOG)}
+            />
+            <HeaderButton
+                label='submit comment'
+                icon='fa-check-circle-o'
+                onClick={()=>props.onAction(HeaderActions.SUBMIT_COMMENT)}
+                disabled={!props.enableSubmit}
+            />
+        </div>
+    );
+};
 
 /**
  * Header controls for email dialog.
