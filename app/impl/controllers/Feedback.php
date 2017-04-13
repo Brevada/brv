@@ -358,13 +358,18 @@ class Feedback extends Controller
     {
         $version = FEEDBACK_VERSION;
         if ($version === null) {
-            $version = exec("git rev-parse --short HEAD");
+            $deps = glob(NAMESPACE_DIR . "resp/feedback/*.{js,css,json}", GLOB_BRACE);
+            $str = '';
+            foreach($deps as $dep) {
+                if (is_dir($dep)) continue;
+                if (strpos($dep, '.') === 0) continue;
+                $str .= hash_file('sha1', $dep);
+            }
+
+            $version = hash('sha1', $str);
+
             if (empty($version)) {
                 self::fail("Failed to retrieve version identifier.", \HTTP::SERVER);
-            } else {
-                /* Clip hash. We just need enough to prevent collisions between
-                 * adjacent versions (even 2 would probably work). */
-                $version = substr($version, 7);
             }
         }
 

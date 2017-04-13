@@ -9,8 +9,9 @@ const config = {
     entry: {
         /* We enforce ordering by numbering entries. */
         '0_vendor': ['moment'],
-        '1_feedback_brv': path.join(__dirname, '..', 'app', 'res', 'js', 'src', 'global', 'feedback.js'),
-        '2_feedback_view': path.join(__dirname, '..', 'app', 'res', 'js', 'src', 'views', 'feedback.js')
+        '1_device': path.join(__dirname, '..', 'app', 'res', 'js', 'src', 'device', 'device.js'),
+        '2_feedback_brv': path.join(__dirname, '..', 'app', 'res', 'js', 'src', 'global', 'feedback.js'),
+        '3_feedback_view': path.join(__dirname, '..', 'app', 'res', 'js', 'src', 'views', 'feedback.js')
     },
     output: {
         path: path.join(__dirname, '..', 'app', 'resp', 'feedback'),
@@ -40,7 +41,7 @@ const config = {
                 NODE_ENV: JSON.stringify('production')
             }
         }),
-        new webpack.optimize.UglifyJsPlugin(),
+        /*new webpack.optimize.UglifyJsPlugin(),*/
         new LodashModuleReplacementPlugin({
             collections: true,
             shorthands: true,

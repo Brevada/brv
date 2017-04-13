@@ -214,7 +214,14 @@ export default class Feedback extends React.Component {
     onCommentSubmit() {
         this.setState({
             commentGiven: true
-        }, () => this.closeDialog());
+        }, () => {
+            if (brv.feedback.session.getRemainingCount() === 0) {
+                this.onFinish();
+                return;
+            }
+
+            this.closeDialog();
+        });
     }
 
     /**

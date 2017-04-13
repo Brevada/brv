@@ -74,4 +74,5 @@ routes:
     api_feedback_version: [ 'GET ^\/api\/v1\.1\/feedback\/version$', device, Feedback+getVersion ]
     api_feedback_bundle: [ 'GET ^\/api\/v1\.1\/feedback\/bundle$', device, Feedback+getBundle ]
     api_feedback_bundle_single: [ 'GET ^\/api\/v1\.1\/feedback\/bundle\/([a-zA-Z0-9]+)$', device, Feedback+getBundleItem ]
-    api_tablet_announce: [ 'POST ^\/api\/v1\.1\/device\/announce$', device, pass ]
+    api_tablet_announce: [ 'POST ^\/api\/v1\.1\/device\/announce$', device, Device+announce ]
+    api_tablet_commands: [ 'GET ^\/api\/v1\.1\/device\/commands$', device, Device+getCommands ]

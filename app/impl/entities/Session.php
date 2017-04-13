@@ -61,7 +61,7 @@ class Session extends Entity
     /**
      * Factory method to instantiate a session entity from a session code.
      *
-     * @param integer $code
+     * @param string $code
      * @return self
      */
     public static function queryCode($code)
@@ -119,7 +119,7 @@ class Session extends Entity
                 INSERT INTO session_data_field
                 (SessionDataID, DataLabel, DataKey, DataValueLarge, DataValueSmall)
                 VALUES (:id, :label, :key, :large, :small)
-                ON DUPLICATE KEY UPDATE 
+                ON DUPLICATE KEY UPDATE
                 DataLabel = :label, DataValueLarge = :large, DataValueSmall = :small
             ");
 

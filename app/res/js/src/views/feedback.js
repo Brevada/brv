@@ -41,12 +41,16 @@ docReady(function() {
     });
 
     ReactDOM.render(
-        (<DataLayer action="/api/feedback/config" data={{ id: brv.feedback.id() || false }}>
+        (<DataLayer
+            action="/api/feedback/config"
+            data={{ id: brv.feedback.id() || false }}
+            readCache={brv.feedback.getConfig}
+            writeCache={brv.feedback.saveConfig}>
             <FeedbackLinked />
         </DataLayer>),
         document.getElementById('feedback-root'),
         () => {
-            brv.env && brv.env.onReady && brv.env.onReady();
+            brv.env && brv.env.fireReady && brv.env.fireReady();
         }
     );
 });
