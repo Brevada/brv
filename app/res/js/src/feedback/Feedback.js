@@ -35,7 +35,10 @@ export default class Feedback extends React.Component {
             done: false,
 
             /* Used to force entire vdom reset. */
-            reset: 1
+            reset: 1,
+
+            /* Unique session token to group customer responses. */
+            session: ''
         };
 
         /* Default to EMAIL screen if config set. */
@@ -68,6 +71,7 @@ export default class Feedback extends React.Component {
         this._tmrReset = undefined;
 
         brv.feedback && brv.feedback.session.init();
+        this.state.session = brv.feedback.session.getToken();
     }
 
     componentWillUnmount() {
@@ -82,7 +86,8 @@ export default class Feedback extends React.Component {
         brv.feedback && brv.feedback.session.init();
         if (this._unmounted) return;
         this.setState(s => (Object.assign({}, this._initialState, {
-            reset: (s.reset+1) % 100 /* Arbitrary cycle length. */
+            reset: (s.reset+1) % 100, /* Arbitrary cycle length. */
+            session: brv.feedback.session.getToken()
         })));
     }
 
@@ -212,6 +217,7 @@ export default class Feedback extends React.Component {
                 return (
                     <CommentDialog
                         form={f => this.dialogForm = f}
+                        session={this.state.session}
                         message={this.props.data.comment_message}
                         onValid={()=>this.setState({ pendingComment: true })}
                         onInvalid={()=>this.setState({ pendingComment: false })}
@@ -222,6 +228,7 @@ export default class Feedback extends React.Component {
                 return (
                     <EmailDialog
                         form={f => this.dialogForm = f}
+                        session={this.state.session}
                         onSubmit={this.onEmailSubmit}
                     />
                 );
@@ -269,6 +276,7 @@ export default class Feedback extends React.Component {
                     <Aspects
                         aspects={this.props.data.aspects}
                         onSubmit={this.onAspectSubmitted}
+                        session={this.state.session}
                     />
                 </div>
             </div>

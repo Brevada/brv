@@ -12,6 +12,8 @@ use Brv\core\routing\Controller;
 use Brv\core\views\View;
 use Brv\impl\entities\Store;
 use Brv\impl\entities\Aspect;
+use Brv\impl\entities\Response;
+use Brv\impl\entities\Session;
 use Respect\Validation\Validator as v;
 use Brv\core\libs\DeviceCache;
 
@@ -104,6 +106,241 @@ class Feedback extends Controller
             'welcome_message' => $store->getWelcomeMessage(),
             'comment_message' => $store->getCommentMessage(),
             'allow_comments' => $store->isAllowComments()
+        ]);
+    }
+
+    /**
+     * Gets the submission time of the payload.
+     *
+     * @param array $payload
+     * @return integer
+     */
+    private function getSubmissionTime($payload)
+    {
+        $deviceId = \App::getState(\STATES::DEVICE_UUID);
+        $time = time();
+
+        if ($deviceId === null) return $time;
+
+        $time = self::from('_timestamp', $payload);
+        if ($time === null) return $time;
+
+        $SIX_MONTHS = 3600 * 24 * 30 * 6;
+
+        if (!v::intVal()->min(time() - $SIX_MONTHS)->max(time() + (60*5))->validate($time)) {
+            /* Timestamp more than 5 min in future or more than 6 months behind. */
+            \App::log()->info("Suspicious timestamp.");
+            self::fail("Suspicious response. Event logged.", \HTTP::BAD_REQUEST);
+        } else {
+            if (!v::intVal()->min(time() - (60*15))->max(time() + (60*5))->validate($time)) {
+                /* Time window slightly out of sync. Just make note. */
+                \App::log()->info("Out of sync timestamp.");
+            }
+        }
+
+        return $time;
+    }
+
+    /**
+     * Posts a new response.
+     *
+     * @api
+     *
+     * @throws \Respect\Validation\Exceptions\ValidationException on invalid input.
+     * @throws \Brv\core\routing\ControllerException on failure.
+     *
+     * @param array $params URL parameters from the route pattern.
+     * @return View
+     */
+    public function postResponse(array $params)
+    {
+        $body = self::getBody();
+
+        $deviceId = \App::getState(\STATES::DEVICE_UUID);
+        if ($deviceId === null) {
+            /* Not entering via device route.  */
+            $storeId = self::from('store', $body, null);
+            v::intVal()->min(0)->check($storeId);
+            $store = Store::queryId($storeId);
+        } else {
+            /* Being accessed through device API */
+            $store = Store::queryDeviceId($deviceId);
+        }
+
+        if (is_null($store)) {
+            self::fail("Invalid store id.", \HTTP::BAD_PARAMS);
+        }
+
+        if (!$store->isActive()) {
+            self::fail("The store exists but is inactive.");
+        }
+
+        $sessionCode = self::from('session', $body);
+        /* Bit of an arbitrary length distinction, but should catch
+         * some faulty inputs/tampering. More of a sanity check. */
+        v::stringType()->length(10, null)->check($sessionCode);
+
+        $aspectId = self::from('aspect_id', $body);
+        v::intVal()->min(0)->check($aspectId);
+
+        $value = self::from('value', $body);
+        v::intVal()->min(20)->max(100)->check($value);
+
+        //$ordinal = self::from('ordinal', $body);
+
+        /* check if valid aspect... */
+        $aspect = Aspect::queryId((int) $aspectId);
+        if ($aspect === null) {
+            self::fail("Invalid aspect.", \HTTP::BAD_REQUEST);
+        }
+
+        $response = new Response();
+        $response->setSessionCode($sessionCode);
+        $response->setAspectId($aspectId);
+        $response->setValue($value);
+        $response->setIPAddress();
+        $response->setUserAgent(isset($_SERVER['HTTP_USER_AGENT']) ? $_SERVER['HTTP_USER_AGENT'] : null);
+
+        $date = time();
+        $response->setDate($date);
+
+        $date = $this->getSubmissionTime($body);
+
+        if ($response->commit() === null) {
+            self::fail("Unable to accept response.", \HTTP::SERVER);
+        }
+
+        return new View([
+            'timestamp' => time()
+        ]);
+    }
+
+    /**
+     * Posts a new email response.
+     *
+     * @api
+     *
+     * @throws \Respect\Validation\Exceptions\ValidationException on invalid input.
+     * @throws \Brv\core\routing\ControllerException on failure.
+     *
+     * @param array $params URL parameters from the route pattern.
+     * @return View
+     */
+    public function postEmail(array $params)
+    {
+        $body = self::getBody();
+
+        $deviceId = \App::getState(\STATES::DEVICE_UUID);
+        if ($deviceId === null) {
+            /* Not entering via device route.  */
+            $storeId = self::from('store', $body, null);
+            v::intVal()->min(0)->check($storeId);
+            $store = Store::queryId($storeId);
+        } else {
+            /* Being accessed through device API */
+            $store = Store::queryDeviceId($deviceId);
+        }
+
+        if (is_null($store)) {
+            self::fail("Invalid store id.", \HTTP::BAD_PARAMS);
+        }
+
+        if (!$store->isActive()) {
+            self::fail("The store exists but is inactive.");
+        }
+
+        $sessionCode = self::from('session', $body);
+        /* Bit of an arbitrary length distinction, but should catch
+         * some faulty inputs/tampering. More of a sanity check. */
+        v::stringType()->length(10, null)->check($sessionCode);
+
+        $email = self::from('email', $body);
+        if ($email === null) {
+            self::fail("No email given.", \HTTP::BAD_PARAMS);
+        }
+
+        if (!v::email()->validate($email)) {
+            \App::log("Bad email submitted for store #" . $store->getId());
+            self::fail("Invalid email.", \HTTP::BAD_PARAMS);
+        }
+
+        /* "Favour" no consent. */
+        $contactConsent = self::from('contact_consent', $body);
+        $contactConsent = !($contactConsent === 'false' || !((bool) $contactConsent));
+
+        /* "Favour" no consent. */
+        $subscribe = self::from('subscribe', $body);
+        $subscribe = !($subscribe === 'false' || !((bool) $subscribe));
+
+        $session = new Session();
+        $session->setSessionCode($sessionCode);
+        $session->setSubmissionTime($this->getSubmissionTime($body));
+        $session->setField('email', $email);
+        $session->setField('contact_consent', (int) $contactConsent);
+        $session->setField('subscribe', (int) $subscribe);
+
+        if ($session->commit() === null) {
+            self::fail("Unable to accept email.", \HTTP::SERVER);
+        }
+
+        return new View([
+            'timestamp' => time()
+        ]);
+    }
+
+    /**
+     * Posts a new comment response.
+     *
+     * @api
+     *
+     * @throws \Respect\Validation\Exceptions\ValidationException on invalid input.
+     * @throws \Brv\core\routing\ControllerException on failure.
+     *
+     * @param array $params URL parameters from the route pattern.
+     * @return View
+     */
+    public function postComment(array $params)
+    {
+        $body = self::getBody();
+
+        $deviceId = \App::getState(\STATES::DEVICE_UUID);
+        if ($deviceId === null) {
+            /* Not entering via device route.  */
+            $storeId = self::from('store', $body, null);
+            v::intVal()->min(0)->check($storeId);
+            $store = Store::queryId($storeId);
+        } else {
+            /* Being accessed through device API */
+            $store = Store::queryDeviceId($deviceId);
+        }
+
+        if (is_null($store)) {
+            self::fail("Invalid store id.", \HTTP::BAD_PARAMS);
+        }
+
+        if (!$store->isActive()) {
+            self::fail("The store exists but is inactive.");
+        }
+
+        $sessionCode = self::from('session', $body);
+        /* Bit of an arbitrary length distinction, but should catch
+         * some faulty inputs/tampering. More of a sanity check. */
+        v::stringType()->length(10, null)->check($sessionCode);
+
+        $comment = self::from('comment', $body);
+        v::stringType()->length(1, null)->check($comment);
+
+        $session = new Session();
+        $session->setSessionCode($sessionCode);
+        $session->setSubmissionTime($this->getSubmissionTime($body));
+        $session->setField('comment', $comment);
+
+        if ($session->commit() === null) {
+            self::fail("Unable to accept comment.", \HTTP::SERVER);
+        }
+
+        return new View([
+            'timestamp' => time()
         ]);
     }
 

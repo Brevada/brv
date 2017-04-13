@@ -32,6 +32,7 @@ body.lock-scroll {
 
 .feedback-container .scrollable {
     overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
     width: 100%;
     margin: 0;
     padding: 0;

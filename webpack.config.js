@@ -5,7 +5,6 @@ var path = require('path');
 var views = {};
 var viewFiles = glob.sync('./app/res/js/src/views/*.js');
 for (let view of viewFiles) {
-    if (path.basename(view, '.js') == 'feedback') continue;
     views['views/' + path.basename(view, '.js')] = view;
 }
 

@@ -87,7 +87,7 @@ export default class IntelliEmailInput extends Input {
      */
     onMailboxChange(mailbox) {
         if (mailbox === this.state.mailbox) return;
-        
+
         this.setState({
             mailbox: mailbox,
             value: mailbox + (
@@ -108,7 +108,8 @@ export default class IntelliEmailInput extends Input {
                     placeHolder={this.state.domain === -1 ? 'full email address' : 'email name'}
                     onChange={this.onMailboxChange}
                     props={{
-                        autoFocus: true
+                        autoFocus: true,
+                        autoComplete: "off"
                     }}
                     input={txt => this._mailbox = txt}
                 />

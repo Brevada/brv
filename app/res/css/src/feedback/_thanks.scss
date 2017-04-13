@@ -29,7 +29,11 @@
 
         @extend %clickable;
 
-        &:active, &:hover {
+        &:active {
+            background-color: $blue3;
+        }
+
+        @at-root body:not(.touch-device) #{&}:hover {
             background-color: $blue3;
         }
     }

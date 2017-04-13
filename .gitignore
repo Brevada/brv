@@ -20,6 +20,7 @@ vendor/
 *.pyc
 *.cache
 app/views_cache/*
+.php_cs.cache
 
 # OS generated
 Thumbs.db

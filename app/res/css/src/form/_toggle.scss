@@ -1,5 +1,5 @@
-$toggle_width: 100px;
-$toggle_height: 30px;
+$toggle_width: 6.25em;
+$toggle_height: 1.875em;
 
 .toggle-input {
     width: $toggle_width;
@@ -21,8 +21,7 @@ $toggle_height: 30px;
             display: inline-block;
             width: $toggle_width / 2;
             color: $grey2;
-            text-align: center;
-            padding: 5.5px 12px;
+            padding: 0.367em 0.8em;
             height: 100%;
 
             top: 50%;
@@ -30,12 +29,12 @@ $toggle_height: 30px;
             @include transition(color 0.1s ease);
         }
 
-        .left { left: 0; }
-        .right { right: 0; }
+        .left { left: 0; text-align: right; }
+        .right { right: 0; text-align: left; }
 
         .slider {
             position: absolute;
-            width: $toggle_width / 2;
+            width: 50%;
             height: 100%;
             top: 0;
 
@@ -43,12 +42,12 @@ $toggle_height: 30px;
         }
 
         &.positive .slider { background: $green1; }
-        &.positive.inverted .slider { left: $toggle_width / 2; }
+        &.positive.inverted .slider { left: 50%; }
         &.positive:not(.inverted) .slider { left: 0; }
 
         &.negative .slider { background: $orange1; }
         &.negative.inverted .slider { left: 0; }
-        &.negative:not(.inverted) .slider { left: $toggle_width / 2; }
+        &.negative:not(.inverted) .slider { left: 50%; }
 
         &.positive:not(.inverted) .left,
         &.negative:not(.inverted) .right,
@@ -59,15 +58,20 @@ $toggle_height: 30px;
 
 .form .form-group.toggle {
     @extend %clearfix;
+    @include flexbox;
+    @include align-items(center);
+    @include justify-content(space-between);
 
     > .label {
         display: inline-block;
         text-align: left;
         float: left;
-        width: calc(100% - #{$toggle_width} - 20px);
-        line-height: $toggle_height;
+        width: calc(100% - #{$toggle_width} - 1.3em);
         font-size: 1em;
         color: $black;
+        cursor: default;
+        margin: 0;
+        padding: 0;
     }
 
     > .toggle-input {

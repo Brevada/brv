@@ -20,6 +20,12 @@ export default class Email extends React.Component {
                 className='dialog-email as-page'>
                 <Form
                     center={true}
+                    method="POST"
+                    action="/api/feedback/email"
+                    data={{
+                        store: brv.feedback.id() || false,
+                        session: this.props.session
+                    }}
                     form={this.props.form}
                     onSuccess={()=>this.props.onSubmit()}>
                     <Group className='email'>

@@ -74,7 +74,11 @@
             &.rating-3 { background-size: 25%; }
             &.rating-4 { background-size: 30%; }
 
-            &:active, &:hover {
+            &:active {
+                @include opacity(0.5);
+            }
+
+            @at-root body:not(.touch-device) #{&}:hover {
                 @include opacity(0.5);
             }
 

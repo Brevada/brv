@@ -6,6 +6,10 @@
     height: 100%;
     top: 0;
     left: 0;
+    right: 0;
+    bottom: 0;
+
+    -webkit-overflow-scrolling: touch;
 
     /* Specifically lower than header content z-index. */
     z-index: 990;
@@ -33,6 +37,7 @@
 
     > .dialog-content {
         position: relative;
+        -webkit-overflow-scrolling: touch;
     }
 }
 
@@ -49,7 +54,7 @@
         width: 80%;
         max-width: 600px;
         border-radius: 4px;
-        margin-top: 1em;
+        margin-top: 1.5em;
         max-height: 95%;
 
         &, textarea {
@@ -67,5 +72,19 @@
 .dialog-overlay.dialog-email .form {
     width: 90%;
     max-width: 600px;
-    margin: 0 auto;
+    margin: 1.5em auto 0 auto;
+    max-height: 95%;
+
+    .form-group.email {
+        margin-bottom: 0.5em;
+    }
+
+    .form-group.toggle {
+        font-size: 1.175em;
+
+        .toggle-input {
+            font-size: 1.1em;
+            margin: 0.15em 0 0.15em 0.15em;
+        }
+    }
 }

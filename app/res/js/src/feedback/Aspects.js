@@ -70,6 +70,7 @@ export default class Aspects extends React.Component {
                             id={aspect.id}
                             title={aspect.title}
                             onSubmit={this.onSubmit}
+                            session={this.props.session}
                         />
                 ))}
             </div>

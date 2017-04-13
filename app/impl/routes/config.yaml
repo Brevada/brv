@@ -55,8 +55,10 @@ routes:
     map_settings: [ 'GET ^\/settings\/?$', pass, 'external+//{HOST}/settings' ]
     map_admin: [ 'GET ^\/admin\/?$', pass, 'external+//{HOST}/admin' ]
 
-    feedback:
-        GET: [ '^\/api\/feedback\/config$', optional_device, Feedback+getConfig ]
+    feedback_config: [ 'GET ^\/api\/feedback\/config$', optional_device, Feedback+getConfig ]
+    feedback_response: [ 'POST ^\/api\/feedback\/response$', optional_device, Feedback+postResponse ]
+    feedback_email: [ 'POST ^\/api\/feedback\/email$', optional_device, Feedback+postEmail ]
+    feedback_comment: [ 'POST ^\/api\/feedback\/comment$', optional_device, Feedback+postComment ]
 
     # Catch all for feedback pages.
     feedback_view: [ 'GET ^\/([^\/]+)\/?$', pass, Feedback+viewFeedback ]

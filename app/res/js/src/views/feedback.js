@@ -24,7 +24,7 @@ const FeedbackLinked = props => {
             <Loader
                 className='view'
                 messages={[
-                    "Updating your system..."
+                    "Loading..."
                 ]}
             />
         );
@@ -44,6 +44,9 @@ docReady(function() {
         (<DataLayer action="/api/feedback/config" data={{ id: brv.feedback.id() || false }}>
             <FeedbackLinked />
         </DataLayer>),
-        document.getElementById('feedback-root')
+        document.getElementById('feedback-root'),
+        () => {
+            brv.env && brv.env.onReady && brv.env.onReady();
+        }
     );
 });
