@@ -97,7 +97,7 @@ class AspectType extends Entity
      *
      * @return boolean
      */
-    public function getCustom()
+    public function isCustom()
     {
         return ((int) $this->get('custom')) === 1;
     }
