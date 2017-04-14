@@ -16,12 +16,12 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/RobbieGoldfarb/brv.git"
+    "url": "git+https://github.com/Brevada/brv.git"
   },
   "bugs": {
-    "url": "https://github.com/RobbieGoldfarb/brv/issues"
+    "url": "https://github.com/Brevada/brv/issues"
   },
-  "homepage": "https://github.com/RobbieGoldfarb/brv#readme",
+  "homepage": "https://github.com/Brevada/brv#readme",
   "devDependencies": {
     "babel-cli": "^6.18.0",
     "babel-core": "^6.18.2",

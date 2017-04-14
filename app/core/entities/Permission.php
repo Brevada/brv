@@ -76,6 +76,11 @@ class Permission
                     if ($account->getLegacyPermissions() == 255 || $account->getCompanyId() == $target->getCompanyId()) {
                         $this->permissions |= self::CAN_ASSIGN;
                     }
+                } elseif ($account->getStoreId() === null) {
+                    /* If 'corporate' account (no store set === wildcard matching all stores) */
+                    if ($account->getCompanyId() == $target->getCompanyId()) {
+                        $this->permissions = self::CAN_READ | self::CAN_WRITE | self::CAN_ASSIGN;
+                    }
                 }
             } else {
                 $this->permissions = self::NO_ACCESS;

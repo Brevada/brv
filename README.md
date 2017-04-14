@@ -17,7 +17,7 @@ Requires min. `PHP 5.6`.
 
 ```
 > mkdir brv && cd brv
-> git clone https://github.com/RobbieGoldfarb/brv.git .
+> git clone https://github.com/Brevada/brv.git .
 ```
 
 ### Configuration File
