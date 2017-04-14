@@ -19,26 +19,28 @@ use Respect\Validation\Validator as v;
  */
 class Device extends Controller
 {
-
-
     /**
      * Gets the time of the request.
      *
      * @param array $payload
-     * @return integer
+     * @return int
      */
     private function getRequestTime($payload)
     {
         $deviceId = \App::getState(\STATES::DEVICE_UUID);
-        if ($deviceId === null) return null;
+        if ($deviceId === null) {
+            return null;
+        }
 
         $time = self::from('_timestamp', $payload);
-        if ($time === null) return null;
-        $time = @intval($time);
+        if ($time === null) {
+            return null;
+        }
+        $time = (int) $time;
 
         $SIX_MONTHS = 3600 * 24 * 30 * 6;
 
-        if (!v::intVal()->min(time() - (60*15))->max(time() + (60*5))->validate($time)) {
+        if (!v::intVal()->min(time() - (60 * 15))->max(time() + (60 * 5))->validate($time)) {
             /* Time window slightly out of sync. Just make note. */
             \App::log()->info("Out of sync timestamp for: ${deviceId}.");
             return null;
@@ -52,10 +54,10 @@ class Device extends Controller
      *
      * @api
      *
-     * @throws \Respect\Validation\Exceptions\ValidationException on invalid input.
-     * @throws \Brv\core\routing\ControllerException on failure.
      *
      * @param array $params URL parameters from the route pattern.
+     * @throws \Respect\Validation\Exceptions\ValidationException on invalid input.
+     * @throws \Brv\core\routing\ControllerException on failure.
      * @return View
      */
     public function announce(array $params)
@@ -64,7 +66,7 @@ class Device extends Controller
         $deviceId = \App::getState(\STATES::DEVICE_UUID);
 
         $time = $this->getRequestTime($body);
-        if ($time === null || $time < time() - (5*60) || $time > time() + 60) {
+        if ($time === null || $time < time() - (5 * 60) || $time > time() + 60) {
             self::fail("Invalid timestamp.", \HTTP::BAD_REQUEST);
         }
 
@@ -126,10 +128,10 @@ class Device extends Controller
      *
      * @api
      *
-     * @throws \Respect\Validation\Exceptions\ValidationException on invalid input.
-     * @throws \Brv\core\routing\ControllerException on failure.
      *
      * @param array $params URL parameters from the route pattern.
+     * @throws \Respect\Validation\Exceptions\ValidationException on invalid input.
+     * @throws \Brv\core\routing\ControllerException on failure.
      * @return View
      */
     public function getCommands(array $params)
