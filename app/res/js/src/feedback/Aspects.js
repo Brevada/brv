@@ -41,7 +41,7 @@ export default class Aspects extends React.Component {
      * Handles submit event from an aspect. "Submitting" the aspect, removes
      * it from the displayed list (via a blacklist).
      *
-     * @param {number} The id of the aspect that has been submitted.
+     * @param {number} id The id of the aspect that has been submitted.
      */
     onSubmit(id) {
         this.setState(s => ({
@@ -51,17 +51,24 @@ export default class Aspects extends React.Component {
 
     render() {
         /* Don't show blacklisted aspects (removed list). */
+        let aspects = this.state.aspects
+            .concat()
+            .filter(a => !this.state.submitted.includes(a.id));
+
+        if (brv.feedback) {
+            brv.feedback.session.setRemainingCount(aspects.length);
+        }
+
         return (
             <div className='ly keep-spacing flex-v center-c-h aspect-container'>
-                {this.state.aspects
-                    .concat()
-                    .filter(a => !this.state.submitted.includes(a.id))
+                {aspects
                     .map(aspect => (
                         <Aspect
                             key={aspect.id}
                             id={aspect.id}
                             title={aspect.title}
                             onSubmit={this.onSubmit}
+                            session={this.props.session}
                         />
                 ))}
             </div>

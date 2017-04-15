@@ -46,6 +46,9 @@ db_password = 'root'
 db_host = 'localhost'
 db_schema = 'redreadu_brevada'
 
+[api]
+; feedback_version =
+
 [log]
 ; log_directory = "/"
 ```
@@ -105,5 +108,5 @@ Configure the environment configuration (ini) file if not already configured. Ap
 Execute as root:
 
 ```
-> sh /home/brevadat/update_brevada.sh
+> ./home/brevadat/update_brevada.sh
 ```

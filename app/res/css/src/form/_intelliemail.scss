@@ -1,0 +1,133 @@
+.intelli-email-input {
+    width: 100%;
+    padding: 0;
+    margin: 5px 0 15px 0;
+    font-size: 1em;
+
+    @include flexbox;
+    @include align-items(flex-start);
+    @include justify-content(space-between);
+
+    @media (max-width: 400px) {
+        display: block;
+    }
+
+    .input {
+        border-bottom: 2px solid #fff;
+        background: transparent;
+        max-width: 300px;
+        width: calc(50% - 36px);
+        margin-right: 20px;
+        @include flex-grow(1);
+
+        @media (max-width: 400px) {
+            display: block;
+            width: 100%;
+            margin: 0 auto;
+        }
+
+        input {
+            background: transparent;
+            text-align: center;
+        }
+
+        .placeholder {
+            color: $grey3;
+            text-align: center;
+        }
+
+        input, .placeholder {
+            font-size: 1.45em !important;
+        }
+    }
+
+    > .at, .domains {
+        display: inline-block;
+        color: $black;
+        font-size: 1.8em;
+    }
+
+    > .at {
+        font-size: 1.9em;
+        line-height: 36px;
+
+        @media (max-width: 400px) {
+            display: none;
+        }
+    }
+
+    .domains {
+        text-align: right;
+        padding-left: 10px;
+        margin-left: 5px;
+        margin-top: -4px;
+        @include flex-shrink(1);
+
+        .at { display: none; }
+
+        @media (max-width: 400px) {
+            text-align: center;
+            margin-top: 4px;
+
+            .at { display: inline-block; }
+        }
+
+        .domain-option {
+            margin: 0;
+            padding: 4px 0 4px 0;
+
+            @extend %clickable;
+
+            span {
+                color: $grey2;
+                @include transition(color 0.3s ease);
+            }
+        }
+
+        .domain-option.active span {
+            color: $black;
+        }
+
+        .domain-option:not(.active) {
+            &:active span, &:hover span {
+                color: $black;
+                @include opacity(0.8);
+            }
+        }
+
+        .domain-option:last-child span {
+            font-weight: bold;
+        }
+    }
+
+    &.other {
+        display: block;
+        margin: 0 0 15px 0;
+
+        .input {
+            display: block;
+            width: 100%;
+            max-width: 400px;
+            margin: 0 auto;
+        }
+
+        .at { display: none; }
+
+        .domains {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+
+            .domain-option.active span {
+                font-size: 0.7em;
+                color: $grey4;
+            }
+
+            .domain-option:active, .domain-option:hover {
+                span {
+                    color: $black;
+                }
+            }
+        }
+    }
+}

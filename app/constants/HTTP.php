@@ -25,6 +25,9 @@ class HTTP
     /** @var integer HTTP Code 400: Bad Request */
     const BAD_REQUEST = 400;
 
+    /** @var integer HTTP Code 401: Unauthorized */
+    const UNAUTHORIZED = 401;
+
     /** @var integer HTTP Code 403: Forbidden */
     const LOGIN_REQUIRED = 403;
 

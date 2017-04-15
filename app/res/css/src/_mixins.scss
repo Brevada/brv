@@ -30,9 +30,9 @@ $prefixes: ('-webkit-', '-moz-', '-ms-', '');
 
 /* Font */
 
-@function calculateRem($size) {
-    $remSize: $size / 16px;
-    @return $remSize * 1rem;
+@function calculateRem($px) {
+    $remSize: $px / 16px;
+    @return #{$remSize}rem;
 }
 
 /* IE support. */

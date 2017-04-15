@@ -28,9 +28,12 @@ abstract class Middleware implements IMiddleware
     /**
      * Middleware is instantiated with the "next" View.
      *
-     * @param Brv\core\views\View $view The view which is to be intercepted.
+     * A view can be "true" which is equivalent to "passing" to the next
+     * middleware/controller.
+     *
+     * @param Brv\core\views\View|boolean $view The view which is to be intercepted.
      */
-    public function __construct(View $view)
+    public function __construct($view)
     {
         $this->next = $view;
     }

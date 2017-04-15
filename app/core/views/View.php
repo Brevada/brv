@@ -30,7 +30,7 @@ class View
     private $opts = [
         'buffered' => true,
         'type' => false,
-        'headers' => true,
+        'headers' => [],
         'code' => false,
         'params' => [],
         'matches' => []
@@ -101,6 +101,9 @@ class View
             case 'json':
                 echo json_encode($this->data);
                 break;
+            case 'download':
+                readfile($this->data['path']);
+                break;
             default:
                 break;
         }
@@ -113,6 +116,13 @@ class View
     {
         if ($this->opts['code'] !== false) {
             http_response_code($this->opts['code']);
+        }
+
+        /* Send custom view specific headers. */
+        if ($this->opts['headers'] !== false && is_array($this->opts['headers'])) {
+            foreach ($this->opts['headers'] as $headr) {
+                header(trim($headr));
+            }
         }
 
         switch ($this->opts['type']) {
@@ -128,6 +138,7 @@ class View
                         return $this->opts['matches'][intval($matches[2])];
                     }
                 }, $this->data), true);
+                break;
             default:
                 break;
         }
@@ -138,7 +149,7 @@ class View
      */
     public function render()
     {
-        if ($this->opts['headers'] === true) {
+        if ($this->opts['headers'] !== false) {
             $this->sendHeaders();
         }
 

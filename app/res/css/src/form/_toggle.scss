@@ -1,0 +1,80 @@
+$toggle_width: 6.25em;
+$toggle_height: 1.875em;
+
+.toggle-input {
+    width: $toggle_width;
+    height: $toggle_height;
+    display: inline-block;
+
+    > div {
+        @extend %clickable;
+        position: relative;
+        height: 100%;
+
+        background: #fff;
+        border-radius: 2.8px;
+        font-size: 0.95em;
+        overflow: hidden;
+
+        .left, .right {
+            position: absolute;
+            display: inline-block;
+            width: $toggle_width / 2;
+            color: $grey2;
+            padding: 0.367em 0.8em;
+            height: 100%;
+
+            top: 50%;
+            @include transform(translateY(-50%));
+            @include transition(color 0.1s ease);
+        }
+
+        .left { left: 0; text-align: right; }
+        .right { right: 0; text-align: left; }
+
+        .slider {
+            position: absolute;
+            width: 50%;
+            height: 100%;
+            top: 0;
+
+            @include transition(left 0.2s ease-in-out);
+        }
+
+        &.positive .slider { background: $green1; }
+        &.positive.inverted .slider { left: 50%; }
+        &.positive:not(.inverted) .slider { left: 0; }
+
+        &.negative .slider { background: $orange1; }
+        &.negative.inverted .slider { left: 0; }
+        &.negative:not(.inverted) .slider { left: 50%; }
+
+        &.positive:not(.inverted) .left,
+        &.negative:not(.inverted) .right,
+        &.positive.inverted .right,
+        &.negative.inverted .left { color: #fff; }
+    }
+}
+
+.form .form-group.toggle {
+    @extend %clearfix;
+    @include flexbox;
+    @include align-items(center);
+    @include justify-content(space-between);
+
+    > .label {
+        display: inline-block;
+        text-align: left;
+        float: left;
+        width: calc(100% - #{$toggle_width} - 1.3em);
+        font-size: 1em;
+        color: $black;
+        cursor: default;
+        margin: 0;
+        padding: 0;
+    }
+
+    > .toggle-input {
+        float: right;
+    }
+}

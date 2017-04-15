@@ -45,7 +45,14 @@ export default class Comment extends React.Component {
                 onAttention={this.focusToInput}>
                 <Form
                     center={true}
-                    form={this.props.form}>
+                    method="POST"
+                    action="/api/feedback/comment"
+                    data={{
+                        store: brv.feedback.id() || false,
+                        session: this.props.session
+                    }}
+                    form={this.props.form}
+                    onSuccess={()=>this.props.onSubmit()}>
                     <Group>
                         <Textarea
                             seamless={true}

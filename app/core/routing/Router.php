@@ -35,13 +35,26 @@ class Router
 
              try {
                  if (self::isValidController($route->getController())) {
-                     $result = self::resolveController(
-                         $route->getController(),
-                         $route->getControllerArgument(),
-                         $route->getMatches()
-                     );
 
-                     if ($result === null) throw new \Exception("Invalid controller.");
+                     /* Controller is valid. Traverse middleware. */
+                     $result = self::resolveMiddleware($route->getMiddleware());
+                     if ($result === false) {
+                         continue;
+                     }
+
+                     if ($result === true) {
+                         /* All middleware passed; no new View constructed.
+                          * Fallback to controller. */
+                         $result = self::resolveController(
+                             $route->getController(),
+                             $route->getControllerArgument(),
+                             $route->getMatches()
+                         );
+
+                         if ($result === null) throw new \Exception("Invalid controller.");
+                     }
+
+                     if ($result === null) throw new \Exception("Invalid view.");
                  } else {
                      // Invalid controller, assume type.
                      $result = new View($route->getControllerArgument(), [
@@ -65,11 +78,6 @@ class Router
              }
 
              if ($result !== false) {
-                 $result = self::resolveMiddleware($result, $route->getMiddleware());
-                 if ($result === false) {
-                     continue;
-                 }
-
                  \App::setState(\STATES::VIEW, $result);
                  $result->render();
                  return;
@@ -129,13 +137,17 @@ class Router
      /**
       * Resolves a chain of middleware and returns the result.
       *
-      * @param View $view The initial View.
+      * At any point in the chain (including end result): view=false implies
+      * 404 and the chain stops, view=true means to continue on to controller,
+      * while view=instanceof View means to render that View.
+      *
       * @param array|string $middlewares A single middleware class name or chain of class names.
       * @return View|boolean
       */
-     public static function resolveMiddleware($view, $middlewares)
+     public static function resolveMiddleware($middlewares)
      {
          // Chained left to right.
+         $view = true;
 
          while (!empty($middlewares)) {
              if ($view === false) {

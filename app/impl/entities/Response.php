@@ -17,6 +17,14 @@ use Brv\core\libs\database\Database as DB;
  */
 class Response extends Entity implements IResponse
 {
+    use common\Location,
+        common\LocationId,
+        common\UserAgent,
+        common\UserAgentId,
+        common\Session,
+        common\IPAddress,
+        common\AspectId;
+
     /**
      * Instantiates a response entity from a data row.
      *
@@ -104,6 +112,95 @@ class Response extends Entity implements IResponse
     /* Instance Methods */
 
     /**
+     * Commits Response to database.
+     *
+     * @return integer The id of the newly created/updated response.
+     */
+    public function commit()
+    {
+        if ($this->has('id') && $this->get('id') !== -1) {
+            throw new \Exception("Responses cannot be modified.");
+        } else {
+            /* New response. INSERT. */
+            if ($this->getAspectId() === null) {
+                throw new \Exception("Response must be associated with an aspect.");
+            }
+
+            try {
+                DB::get()->beginTransaction();
+
+                /* create session if doesn't exist */
+                $stmt = DB::get()->prepare("
+                    INSERT IGNORE INTO session_data
+                    (SessionCode, SubmissionTime, Acknowledged)
+                    VALUES (:session, :date, 0)
+                ");
+                $stmt->bindValue(':session', $this->getSessionCode(), \PDO::PARAM_STR);
+                $stmt->bindValue(':date', $this->getDate(), \PDO::PARAM_INT);
+                $stmt->execute();
+
+                /* Create location entry. Optional. */
+                if ($this->getCountry() !== null) {
+                    $stmt = DB::get()->prepare("
+                        INSERT INTO locations
+                        (Country, Province, City, PostalCode, Longitude, Latitude)
+                        VALUES (:country, :province, :city, :postalcode, :longitude, :latitude)
+                    ");
+                    $stmt->bindValue(':country', $this->getCountry(), \PDO::PARAM_STR);
+                    $stmt->bindValue(':province', $this->getProvince(), \PDO::PARAM_STR);
+                    $stmt->bindValue(':city', $this->getCity(), \PDO::PARAM_STR);
+                    $stmt->bindValue(':postalcode', $this->getPostalCode(), \PDO::PARAM_STR);
+                    $stmt->bindValue(':longitude', $this->getLongitude(), \PDO::PARAM_STR);
+                    $stmt->bindValue(':latitude', $this->getLatitude(), \PDO::PARAM_STR);
+                    $stmt->execute();
+                    $this->setLocationId(DB::get()->lastInsertId());
+                }
+
+                // create user agent entry.
+                $stmt = DB::get()->prepare("
+                    INSERT INTO user_agents
+                    (UserAgent, TabletID)
+                    VALUES (:userAgent, :tabletId)
+                ");
+                $stmt->bindValue(':userAgent', $this->getUserAgent(), \PDO::PARAM_STR);
+                $stmt->bindValue(':tabletId', $this->getTabletId(), \PDO::PARAM_INT);
+                $stmt->execute();
+                $this->setUserAgentId(DB::get()->lastInsertId());
+
+                $stmt = DB::get()->prepare("
+                    INSERT INTO feedback SET
+                    AspectID = :aspectId, Date = FROM_UNIXTIME(:date),
+                    Rating = :value, IPAddress = :ipAddress,
+                    SessionCode = :session, UserAgentID = :userAgentId,
+                    LocationID = :locationId
+                ");
+                $stmt->bindValue(':value', $this->getValue(), \PDO::PARAM_STR);
+                $stmt->bindValue(':aspectId', $this->getAspectId(), \PDO::PARAM_INT);
+                $stmt->bindValue(':date', $this->getDate(), \PDO::PARAM_INT);
+                $stmt->bindValue(':ipAddress', $this->getIPAddress(), \PDO::PARAM_STR);
+                $stmt->bindValue(':session', $this->getSessionCode(), \PDO::PARAM_STR);
+                $stmt->bindValue(':userAgentId', $this->getUserAgentId(), \PDO::PARAM_INT);
+                $stmt->bindValue(':locationId', $this->getLocationId(), \PDO::PARAM_INT);
+                $stmt->execute();
+                $this->set('id', (int) DB::get()->lastInsertId());
+
+                DB::get()->commit();
+
+                return $this->getId();
+            } catch (\PDOException $ex) {
+                \App::log()->error($ex->getMessage());
+                try {
+                    DB::get()->rollBack();
+                } catch (\PDOException $ex) {
+                    \App::log()->error($ex->getMessage());
+                }
+            }
+        }
+
+        return null;
+    }
+
+    /**
      * Gets the response rating value.
      *
      * @return double
@@ -111,6 +208,18 @@ class Response extends Entity implements IResponse
     public function getValue()
     {
         return (double) $this->get('value');
+    }
+
+    /**
+     * Sets the response rating value.
+     *
+     * @param double $v
+     * @return double
+     */
+    public function setValue($v)
+    {
+        $this->set('value', (double) $v);
+        return $this->getValue();
     }
 
     /**
@@ -124,12 +233,36 @@ class Response extends Entity implements IResponse
     }
 
     /**
-     * Gets the Aspect Type Id.
+     * Sets the response date in seconds since epoch (unix time).
+     *
+     * @param integer $v
+     * @return integer
+     */
+    public function setDate($v)
+    {
+        $this->set('date', (int) $v);
+        return $this->getDate();
+    }
+
+    /**
+     * Gets the aspect type id.
      *
      * @return integer
      */
     public function getAspectTypeId()
     {
         return (int) $this->get('typeId');
+    }
+
+    /**
+     * Sets the aspect type id.
+     *
+     * @param integer $v
+     * @return integer
+     */
+    public function setAspectTypeId($v)
+    {
+        $this->set('typeId', (int) $v);
+        return $this->getAspectTypeId();
     }
 }

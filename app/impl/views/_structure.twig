@@ -13,7 +13,9 @@
     {% block scripts %}{% endblock %}
 
     <!-- Themes -->
+    {% if ignore_theme|default(false) == false %}
     {{ resources.style('/css/theme.css') }}
+    {% endif %}
     {% block styles %}{% endblock %}
 
     </head>

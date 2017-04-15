@@ -1,6 +1,7 @@
 {
   "name": "brv",
   "version": "1.0.0",
+  "private": true,
   "scripts": {
     "dev-build-css": "node scripts/run-css",
     "dev-build-js": "webpack",
@@ -10,6 +11,7 @@
     "test": "scripts/run-backend-tests.js",
     "dev-build": "npm run dev-build-css && npm run dev-build-js",
     "build": "npm run dev-build-css && npm run build-js",
+    "build-feedback": "node scripts/build-feedback",
     "postinstall": "scripts/post-install.js"
   },
   "repository": {
@@ -34,9 +36,14 @@
     "babel-preset-react": "^6.16.0",
     "chalk": "^1.1.3",
     "del": "^2.2.2",
+    "fs-extra": "^2.1.2",
     "lodash-webpack-plugin": "^0.11.0",
+    "ncp": "^2.0.0",
+    "node-fs-extra": "^0.8.2",
     "node-sass": "^4.5.0",
     "nodemon": "^1.11.0",
+    "progress": "^2.0.0",
+    "sass-inline-image": "0.0.3",
     "webpack": "^2.2.1"
   },
   "dependencies": {
@@ -44,6 +51,7 @@
     "babel-polyfill": "^6.23.0",
     "classlist-polyfill": "^1.0.3",
     "classnames": "^2.2.5",
+    "crypto": "0.0.3",
     "doc-ready": "^1.0.4",
     "expose-loader": "^0.7.1",
     "get-form-data": "^1.2.5",
@@ -54,6 +62,7 @@
     "react-datepicker": "^0.39.0",
     "react-dom": "^15.3.2",
     "react-fastclick": "^3.0.1",
+    "react-touch": "^0.4.2",
     "recharts": "^0.20.6"
   }
 }

@@ -33,7 +33,7 @@ const HeaderButton = props => (
  */
 const FeedbackControls = props => (
     <div className={classNames('controls', {
-        'comments': props.enableComments
+        'single': !props.enableComments
     })}>
         { props.enableComments && (
             <HeaderButton
@@ -54,22 +54,26 @@ const FeedbackControls = props => (
 /**
  * Header controls for comment dialog.
  */
-const CommentControls = props => (
-    <div className='controls'>
-        <HeaderButton
-            label='cancel'
-            icon='fa-times-circle'
-            negative={true}
-            onClick={()=>props.onAction(HeaderActions.CLOSE_DIALOG)}
-        />
-        <HeaderButton
-            label='submit comment'
-            icon='fa-check-circle-o'
-            onClick={()=>props.onAction(HeaderActions.SUBMIT_COMMENT)}
-            disabled={!props.enableSubmit}
-        />
-    </div>
-);
+const CommentControls = props => {
+    let lastForm = brv.feedback.session.getRemainingCount() === 0;
+
+    return (
+        <div className='controls'>
+            <HeaderButton
+                label={lastForm ? 'skip' : 'cancel'}
+                icon='fa-times-circle'
+                negative={true}
+                onClick={()=>props.onAction(HeaderActions.CLOSE_DIALOG)}
+            />
+            <HeaderButton
+                label='submit comment'
+                icon='fa-check-circle-o'
+                onClick={()=>props.onAction(HeaderActions.SUBMIT_COMMENT)}
+                disabled={!props.enableSubmit}
+            />
+        </div>
+    );
+};
 
 /**
  * Header controls for email dialog.
@@ -77,7 +81,7 @@ const CommentControls = props => (
 const EmailControls = props => (
  <div className='controls'>
      <HeaderButton
-         label='cancel'
+         label='skip'
          icon='fa-times-circle'
          negative={true}
          onClick={()=>props.onAction(HeaderActions.CLOSE_DIALOG)}
@@ -89,6 +93,20 @@ const EmailControls = props => (
          disabled={!props.enableSubmit}
      />
  </div>
+);
+
+/**
+ * Minified & simplistic header.
+ */
+const MinyHeader = props => (
+    <div className='feedback-header miny-header'>
+        <div className='content'>
+            <div className='brand logo-lq'></div>
+            <div className='heading'>
+                Give <span>{props.name}</span> Feedback
+            </div>
+        </div>
+    </div>
 );
 
 /**
@@ -152,4 +170,4 @@ class Header extends React.Component {
     }
 }
 
-export { Header as default, HeaderActions };
+export { Header as default, MinyHeader, HeaderActions };

@@ -78,7 +78,7 @@ class Aspect extends Controller
         /* Defined account is a precondition due to middleware. */
         $account = MiddleAuth::get();
 
-        $storeId = self::from('store', $this->getBody(), null);
+        $storeId = self::from('store', self::getBody(), null);
         if ($storeId === null) {
             self::fail("A store must be specified.");
         }
@@ -90,13 +90,13 @@ class Aspect extends Controller
             self::fail("Store is invalid or missing necessary permissions.", \HTTP::BAD_PARAMS);
         }
 
-        $id = self::from('aspect_id', $this->getBody(), -1);
+        $id = self::from('aspect_id', self::getBody(), -1);
         if ($id !== null) {
             v::intVal()->min(-1)->check($id);
             $id = intval($id);
         }
 
-        $title = self::from('aspect', $this->getBody(), null);
+        $title = self::from('aspect', self::getBody(), null);
         if ($title !== null) {
             $title = trim($title);
             /* 50 char limit is schema restriction. */

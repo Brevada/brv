@@ -7,6 +7,7 @@ console.log("");
 
 let args = [
     '--output-style compressed',
+    '--functions ' + path.join(__dirname, 'sass/functions.js'),
     '--include-path app/res/css/src',
     'app/res/css/src',
     '-o app/res/css/dist'
