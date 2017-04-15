@@ -8,7 +8,7 @@ $image_resize: 0.6;
 
     @each $lvl, $width in (lq: 300px, mq: 600px, hq: 800px) {
         &.text-#{$lvl} {
-            @include image("brand/brevada-#{$lvl}.png");
+            background-image: url(inline-image("brand/brevada-#{$lvl}.png"));
             width: $image_resize * $width;
             height: $image_resize * ((13/60) * $width);
             background-size: contain;
@@ -16,7 +16,7 @@ $image_resize: 0.6;
     }
 
     &.logo-lq {
-        @include image("brand/quote-white.png");
+        background-image: url(inline-image("brand/quote-white.png"));
         background-size: 60%;
         background-color: $red1;
         border-bottom-right-radius: 2.5px;

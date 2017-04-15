@@ -112,6 +112,7 @@ export default class Aspect extends React.Component {
                 })
                 .wait(300)
                 .do(() => {
+                    brv.feedback.session.onSubmit(value, ordinal);
                     this.props.onSubmit(this.props.id);
                 })
                 .exec();
@@ -121,6 +122,15 @@ export default class Aspect extends React.Component {
     render() {
         return (
             <Form
+                method="POST"
+                action="/api/feedback/response"
+                data={{
+                    store: brv.feedback.id() || false,
+                    session: this.props.session,
+                    aspect_id: this.props.id,
+                    value: this.state.value,
+                    ordinal: this.state.ordinal
+                }}
                 form={f => this.form = f}>
                 <div
                     className={classNames('item', 'aspect', {
@@ -135,21 +145,6 @@ export default class Aspect extends React.Component {
                             onSubmit={this.onSubmit}
                         />
                     ) }
-                    <input
-                        type='hidden'
-                        value={this.props.id}
-                        name='aspect_id'
-                    />
-                    <input
-                        type='hidden'
-                        value={this.state.value}
-                        name='value'
-                    />
-                    <input
-                        type='hidden'
-                        value={this.state.ordinal}
-                        name='ordinal'
-                    />
                 </div>
             </Form>
         );

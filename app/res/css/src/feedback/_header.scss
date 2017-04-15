@@ -1,5 +1,47 @@
 /* Feedback Header */
 
+// Default header button styles
+.controls {
+    .btn {
+        display: inline-block;
+        color: #fff;
+        text-align: center;
+        padding: 0.688em 1.156em;
+        background-color: $blue1;
+        &.negative {
+            background-color: $grey3;
+        }
+
+        span + i {
+            display: inline-block;
+            float: right;
+        }
+
+        @extend %clickable;
+
+        &:active {
+            background-color: $blue3;
+            &.negative {
+                background-color: $grey2;
+            }
+        }
+
+        @at-root body:not(.touch-device) #{&}:hover {
+            background-color: $blue3;
+            &.negative {
+                background-color: $grey2;
+            }
+        }
+
+        &.disabled {
+            background-color: lighten($blue3, 20%);
+            cursor: no-drop;
+        }
+
+        @include transition(background-color 0.25s);
+    }
+}
+
 .feedback-header {
     background: #fff;
     width: 100%;
@@ -60,7 +102,7 @@
             @include transition(font-size ease 0.1s, width ease 0.1s);
         }
 
-        .controls.comments .header-btn {
+        .controls:not(.single) .header-btn {
             width: calc(50% - (0.313em*2));
             @media (min-width: 420px) {
                 font-size: 1.05em;
@@ -74,13 +116,12 @@
     }
 }
 
-body.scroll-header .feedback-header,
-.feedback-container:not(.dialog-none) .feedback-header {
+body.scroll-header .feedback-header:not(.miny-header),
+.feedback-container:not(.dialog-none) .feedback-header:not(.miny-header) {
+    // Styles for when dialog is visible.
+
     background: $grey5;
-    height: 50px;
-    @include respond-to('small') {
-        height: 70px;
-    }
+    height: 60px;
 
     .brand { display: none; }
 
@@ -104,63 +145,27 @@ body.scroll-header .feedback-header,
     .controls .btn {
         margin: 0%;
         width: 100%;
-
-        @include respond-to('xsmall') {
-            max-width: 1000px;
-        }
     }
 
-    .controls.comments .btn {
+    .controls:not(.single) .btn {
         width: 50%;
 
         &:first-child { border-right: 0.5px solid $grey5; }
         &:last-child { border-left: 0.5px solid $grey5; }
-
-        @include respond-to('xsmall') {
-            max-width: 500px;
-        }
     }
 }
 
-/* Slight style changes for dialog buttons. */
+/* Slight width changes for dialog buttons. */
 .feedback-container:not(.dialog-none) .controls .btn {
     $negative_width: 40%;
     &:not(.negative) { width: 100% - $negative_width; }
     &.negative {
         width: $negative_width;
-        max-width: 500px * ($negative_width / (100% - $negative_width));
     }
-}
 
-.controls {
-    .btn {
-        display: inline-block;
-        color: #fff;
-        text-align: center;
-        padding: 0.688em 1.156em;
-        background-color: $blue1;
-        &.negative {
-            background-color: $grey3;
-        }
-
-        span + i {
-            display: inline-block;
-            float: right;
-        }
-
-        @extend %clickable;
-
-        &:active, &:hover {
-            background-color: $blue3;
-            &.negative {
-                background-color: $grey2;
-            }
-        }
-
-        &.disabled {
-            background-color: lighten($blue3, 20%);
-            cursor: no-drop;
-            @include transition(background-color 0.25s);
+    @at-root body.touch-device & {
+        @media (min-width: 450px) {
+            font-size: 1.4em;
         }
     }
 }

@@ -65,15 +65,15 @@ class Permission
                 $this->hydrate(new self($accountId, Store::queryId($target->getStoreId())));
             } elseif ($target instanceof Company) {
                 $account = Account::queryId($accountId);
-                if ($account->getCompanyId() == $target->getId()) {
+                if ($account->getLegacyPermissions() == 255 || $account->getCompanyId() == $target->getId()) {
                     $this->permissions = self::CAN_READ | self::CAN_WRITE | self::CAN_ASSIGN;
                 }
             } elseif ($target instanceof Store) {
                 $account = Account::queryId($accountId);
-                if ($account->getStoreId() == $target->getId()) {
+                if ($account->getLegacyPermissions() == 255 || $account->getStoreId() == $target->getId()) {
                     $this->permissions = self::CAN_READ | self::CAN_WRITE;
 
-                    if ($account->getCompanyId() == $target->getCompanyId()) {
+                    if ($account->getLegacyPermissions() == 255 || $account->getCompanyId() == $target->getCompanyId()) {
                         $this->permissions |= self::CAN_ASSIGN;
                     }
                 } elseif ($account->getStoreId() === null) {

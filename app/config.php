@@ -31,6 +31,8 @@ function load_config() {
         "db_host" => "localhost",
         "db_schema" => null,
 
+        "feedback_version" => null,
+
         "log_directory" => __DIR__ . '/log/'
     ];
 

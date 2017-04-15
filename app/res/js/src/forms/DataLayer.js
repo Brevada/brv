@@ -85,7 +85,9 @@ export default class DataLayer extends React.Component {
 
             let data = { params: Object.assign({}, this.props.data) };
 
-            axios(Object.assign({
+            const ajax = brv.feedback.interceptor || axios;
+
+            ajax(Object.assign({
                 url: this.props.action
             }, data, { method: 'get' }))
             .then(response => {
@@ -93,14 +95,39 @@ export default class DataLayer extends React.Component {
                 this.setState({
                     result: response.data,
                     error: null
-                }, () => this.props.onSuccess && this.props.onSuccess(response));
+                }, () => {
+                    if (this.props.writeCache && typeof this.props.writeCache === 'function') {
+                        /* Makes use of cache, save data to cache. */
+                        this.props.writeCache(response.data || {}).catch(() => false);
+                    }
+
+                    this.props.onSuccess && this.props.onSuccess(response)
+                });
             })
             .catch(error => {
                 if (this._unmounted) return;
-                this.setState({
-                    result: {},
-                    error: error.response || error
-                }, () => this.props.onError && this.props.onError(this.state.error));
+
+                if (this.props.readCache && typeof this.props.readCache === 'function') {
+                    /* Upon failure check for cache. */
+                    Promise.resolve(this.props.readCache()).then(cachedData => {
+                        this.setState({
+                            result: cachedData,
+                            error: null
+                        }, () => this.props.onSuccess && this.props.onSuccess({
+                            data: cachedData
+                        }));
+                    }).catch(() => {
+                        this.setState({
+                            result: {},
+                            error: error.response || error
+                        }, () => this.props.onError && this.props.onError(this.state.error));
+                    });
+                } else {
+                    this.setState({
+                        result: {},
+                        error: error.response || error
+                    }, () => this.props.onError && this.props.onError(this.state.error));
+                }
             })
             .then(() => {
                 if (this._unmounted) return;

@@ -6,6 +6,10 @@
     height: 100%;
     top: 0;
     left: 0;
+    right: 0;
+    bottom: 0;
+
+    -webkit-overflow-scrolling: touch;
 
     /* Specifically lower than header content z-index. */
     z-index: 990;
@@ -18,7 +22,7 @@
         width: 100%;
         height: 100%;
 
-        background: $grey2;
+        background: $grey5;
     }
 
     &:not(.as-page)::before {
@@ -26,23 +30,43 @@
     }
 
     /* Accounts for buttons. */
-    padding-top: 50px;
-    @include respond-to('small') {
-        padding-top: 70px;
+    padding-top: 70px;
+
+    > .dialog-content {
+        position: relative;
+        -webkit-overflow-scrolling: touch;
+        height: 100%;
+
+        .form {
+            height: 95%;
+
+            form {
+                height: 100%;
+                @include flexbox;
+                @include flex-direction(column);
+            }
+        }
     }
 }
 
-.dialog-overlay.dialog-comment {
+.dialog-overlay.dialog-comment,
+.dialog-overlay.dialog-email {
     width: 100%;
     max-height: 100%;
     max-height: 100vh;
 
+    &, .form {
+        margin: 0 auto;
+    }
+}
+
+.dialog-overlay.dialog-comment {
     .form .input-textarea {
-        background: $grey5;
+        background: $grey1;
         width: 80%;
         max-width: 600px;
         border-radius: 4px;
-        margin-top: 1em;
+        margin-top: 1.5em;
         max-height: 95%;
 
         &, textarea {
@@ -53,6 +77,51 @@
             width: 100%;
             max-width: 100%;
             font-size: 1.4em;
+        }
+    }
+}
+
+.dialog-overlay.dialog-email .form {
+    width: 90%;
+    max-width: 600px;
+    max-height: 95%;
+
+    .form-group.email {
+        margin-bottom: 0.5em;
+    }
+
+    .form-group.toggle {
+        font-size: 1.175em;
+
+        .toggle-input {
+            font-size: 1.1em;
+            margin: 0.15em 0 0.15em 0.15em;
+        }
+    }
+}
+
+.dialog-overlay.dialog-inactivity {
+    z-index: 5000;
+    text-align: center;
+
+    .message {
+        font-size: 2.8em;
+        width: 80%;
+        display: inline-block;
+        margin: 0 auto;
+        padding: 0.5em;
+        background: $grey4;
+        color: #fff;
+        @include opacity(0.95);
+        border-radius: 4px;
+        @include box-shadow(0 0 5px $grey3);
+
+        span {
+            display: block;
+        }
+
+        i {
+            margin: 0.65em 0 0 0;
         }
     }
 }

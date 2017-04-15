@@ -61,7 +61,7 @@
             width: 19.5%;
             height: 68px;
             display: inline-block;
-            background-image: url('/images/feedback/star.png');
+            background-image: url(inline-image("feedback/star.png"));
             background-repeat: no-repeat;
             background-position: center center;
 
@@ -74,7 +74,11 @@
             &.rating-3 { background-size: 25%; }
             &.rating-4 { background-size: 30%; }
 
-            &:active, &:hover {
+            &:active {
+                @include opacity(0.5);
+            }
+
+            @at-root body:not(.touch-device) #{&}:hover {
                 @include opacity(0.5);
             }
 

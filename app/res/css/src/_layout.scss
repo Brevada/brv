@@ -64,7 +64,7 @@
 
         > footer {
             margin-top: 2em;
-            font-size: 12px;
+            @include font-size(12px);
             text-align: center;
         }
     }

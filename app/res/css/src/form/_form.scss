@@ -1,7 +1,7 @@
 /* Form */
 
-$textbox_width: 500px;
-$inline_margin: 5px;
+$textbox_width: calculateRem(500px);
+$inline_margin: calculateRem(5px);
 
 .form {
     &.inline {
@@ -76,7 +76,7 @@ $inline_margin: 5px;
         &.left { float: left; margin-right: 2px; }
 
         display: inline-block;
-        font-size: 14px;
+        @include font-size(14px);
         line-height: 1.42857143;
         padding: 4.5px 8px;
         color: #fff;
@@ -122,10 +122,12 @@ $inline_margin: 5px;
         background: #fff;
         text-align: left;
 
-        $input_height: 34px;
+        $input_height_px: 34px;
+        $input_height: calculateRem(#{$input_height_px});
 
         &.input-textarea, textarea {
-            height: $input_height * 5;
+            height: #{$input_height_px} * 5;
+            height: #{$input_height} * 5;
         }
 
         input[type=text],
@@ -145,7 +147,7 @@ $inline_margin: 5px;
             width: $textbox_width;
             max-width: 100%;
 
-            font-size: 14px;
+            @include font-size(14px);
             line-height: 1.42857143;
             color: #555;
 
@@ -216,6 +218,8 @@ $inline_margin: 5px;
 
 @import './aspectinput';
 @import './newevent';
+@import './intelliemail';
+@import './toggle';
 
 .datepicker.input > div {
     max-width: 100%;
