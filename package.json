@@ -62,7 +62,7 @@
     "react-datepicker": "^0.39.0",
     "react-dom": "^15.3.2",
     "react-fastclick": "^3.0.1",
-    "react-touch-events": "^2.0.0",
+    "react-touch": "^0.4.2",
     "recharts": "^0.20.6"
   }
 }

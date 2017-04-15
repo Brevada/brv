@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 
 import { Input } from 'forms/Form';
-import ReactTouchEvents from 'react-touch-events';
+import { Swipeable } from 'react-touch';
 
 /**
  * Toggle input.
@@ -15,16 +15,8 @@ export default class Toggle extends Input {
             checked: !!props.default
         };
 
-        this.onToggle = ::this.onToggle;
         this.onClickLeft = ::this.onClickLeft;
         this.onClickRight = ::this.onClickRight;
-        this.onSwipe = ::this.onSwipe;
-    }
-
-    onToggle() {
-        this.setState(s => ({
-            checked: !s.checked
-        }));
     }
 
     onClickLeft() {
@@ -39,23 +31,17 @@ export default class Toggle extends Input {
         });
     }
 
-    onSwipe(direction) {
-        if (direction === 'left') {
-            this.onClickLeft();
-        } else if (direction === 'right') {
-            this.onClickRight();
-        }
-    }
-
     render() {
         return (
-            <ReactTouchEvents onSwipe={this.onSwipe}>
+            <Swipeable
+                onSwipeLeft={this.onClickLeft}
+                onSwipeRight={this.onClickRight}>
                 <div className='toggle-input'>
                     <div className={
                         (this.state.checked ? 'positive' : 'negative') +
                         (this.props.inverted ? ' inverted' : '')
                     }>
-                        <div className='slider' onClick={this.onToggle}></div>
+                        <div className='slider'></div>
                         <div className='left' onClick={this.onClickLeft}>
                             {
                                 this.props.inverted ?
