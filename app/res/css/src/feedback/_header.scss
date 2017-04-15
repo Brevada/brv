@@ -121,10 +121,7 @@ body.scroll-header .feedback-header:not(.miny-header),
     // Styles for when dialog is visible.
 
     background: $grey5;
-    height: 50px;
-    @include respond-to('small') {
-        height: 70px;
-    }
+    height: 60px;
 
     .brand { display: none; }
 
@@ -148,10 +145,6 @@ body.scroll-header .feedback-header:not(.miny-header),
     .controls .btn {
         margin: 0%;
         width: 100%;
-
-        @include respond-to('xsmall') {
-            max-width: 1000px;
-        }
     }
 
     .controls:not(.single) .btn {
@@ -159,10 +152,6 @@ body.scroll-header .feedback-header:not(.miny-header),
 
         &:first-child { border-right: 0.5px solid $grey5; }
         &:last-child { border-left: 0.5px solid $grey5; }
-
-        @include respond-to('xsmall') {
-            max-width: 500px;
-        }
     }
 }
 
@@ -172,6 +161,11 @@ body.scroll-header .feedback-header:not(.miny-header),
     &:not(.negative) { width: 100% - $negative_width; }
     &.negative {
         width: $negative_width;
-        max-width: 500px * ($negative_width / (100% - $negative_width));
+    }
+
+    @at-root body.touch-device & {
+        @media (min-width: 450px) {
+            font-size: 1.4em;
+        }
     }
 }

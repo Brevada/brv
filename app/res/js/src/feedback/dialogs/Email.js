@@ -39,24 +39,26 @@ export default class Email extends React.Component {
                             ]}
                         />
                     </Group>
-                    <Group className='toggle consent'>
-                        <Label text='I would like to be contacted about my experience' />
-                        <Toggle
-                            positiveLabel='Yes'
-                            negativeLabel='No'
-                            default={true}
-                            name='contact_consent'
-                        />
-                    </Group>
-                    <Group className='toggle subscribe'>
-                        <Label text='Send me promotional offers and updates' />
-                        <Toggle
-                            positiveLabel='Yes'
-                            negativeLabel='No'
-                            default={true}
-                            name='subscribe'
-                        />
-                    </Group>
+                    <div className='consents'>
+                        <Group className='toggle consent'>
+                            <Label text='I would like to be contacted about my experience' />
+                            <Toggle
+                                positiveLabel='Yes'
+                                negativeLabel='No'
+                                default={true}
+                                name='contact_consent'
+                            />
+                        </Group>
+                        <Group className='toggle subscribe'>
+                            <Label text='Send me promotional offers and updates' />
+                            <Toggle
+                                positiveLabel='Yes'
+                                negativeLabel='No'
+                                default={true}
+                                name='subscribe'
+                            />
+                        </Group>
+                    </div>
                 </Form>
             </Dialog>
         );

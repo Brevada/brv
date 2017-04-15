@@ -479,7 +479,9 @@ class Feedback extends Controller
                 "Content-Description: File Transfer",
                 "Content-Type: application/octet-stream",
                 "Content-Disposition: attachment; filename={$params[1]}",
-                "Cache-Control: must-revalidate",
+                "Cache-Control: no-cache",
+                "Pragma: no-cache",
+                "Expires: 0",
                 "Content-Length: " . filesize($file)
             ]
         ]);

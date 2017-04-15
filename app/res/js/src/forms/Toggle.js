@@ -63,7 +63,7 @@ export default class Toggle extends Input {
                         name={this.props.name}
                     />
                 </div>
-            </ReactTouchEvents>
+            </Swipeable>
         );
     }
 }

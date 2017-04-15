@@ -4,6 +4,7 @@ import Header, { MinyHeader, HeaderActions } from 'feedback/Header';
 import Aspects from 'feedback/Aspects';
 import CommentDialog from 'feedback/dialogs/Comment';
 import EmailDialog from 'feedback/dialogs/Email';
+import InactivityDialog from 'feedback/dialogs/Inactivity';
 
 /**
  * The feedback view.
@@ -18,6 +19,9 @@ export default class Feedback extends React.Component {
         super(props);
 
         this.RESET_DURATION = 10000;
+        this.INACTIVITY_DURATION = 20000;
+        this.INACTIVITY_COMMENT_DURATION = 25000;
+        this.INACTIVITY_WARNING_DURATION = 8000;
 
         this._initialState = {
             /* Indicates whether at least one aspect has been rated. */
@@ -27,6 +31,9 @@ export default class Feedback extends React.Component {
             pendingComment: false,
             /* Indicates a comment has been submitted. */
             commentGiven: false,
+
+            /* Indicates whether an email has been submitted. */
+            emailGiven: false,
 
             /* Determines which dialog to show if any. */
             showDialog: false,
@@ -38,7 +45,10 @@ export default class Feedback extends React.Component {
             reset: 1,
 
             /* Unique session token to group customer responses. */
-            session: ''
+            session: '',
+
+            /* Indicates visibility of inactivity warning */
+            showInactivityWarning: false
         };
 
         /* Default to EMAIL screen if config set. */
@@ -69,6 +79,9 @@ export default class Feedback extends React.Component {
         this.getDialog = ::this.getDialog;
 
         this._tmrReset = undefined;
+        this._tmrInactivity = undefined;
+        this.onInactive = ::this.onInactive;
+        this.resetInactivity = ::this.resetInactivity;
 
         brv.feedback && brv.feedback.session.init();
         this.state.session = brv.feedback.session.getToken();
@@ -89,6 +102,60 @@ export default class Feedback extends React.Component {
             reset: (s.reset+1) % 100, /* Arbitrary cycle length. */
             session: brv.feedback.session.getToken()
         })));
+
+        this.resetInactivity();
+    }
+
+    /**
+     * Resets inactivity timer.
+     */
+    resetInactivity() {
+        clearTimeout(this._tmrInactivity);
+
+        if (this._unmounted) return;
+        if (!(window.brv && window.brv.env && window.brv.env.IS_DEVICE)) return;
+
+        if (this.state.showInactivityWarning) {
+            this.setState({
+                showInactivityWarning: false
+            });
+        }
+
+        /* If on comment screen, wait longer. */
+        this._tmrInactivity = setTimeout(this.onInactive, (
+            this.state.showDialog === 'COMMENT' ?
+            this.INACTIVITY_COMMENT_DURATION :
+            this.INACTIVITY_DURATION
+        ));
+    }
+
+    /**
+     * User is inactive.
+     */
+    onInactive() {
+        if (this._unmounted) return;
+
+        if (this.state.showInactivityWarning) {
+            /* Warning has already been shown. */
+            this.reset();
+        } else {
+            /* Don't do anything if session hasn't "started". */
+            if ((!this.state.feedbackGiven && !(this.state.commentGiven ||
+                this.state.pendingComment) && !this.state.emailGiven) || this.state.done) {
+                return;
+            }
+
+            /* Set timeout for warning. */
+            this.setState({
+                showInactivityWarning: true
+            }, () => {
+                clearTimeout(this._tmrInactivity);
+                this._tmrInactivity = setTimeout(
+                    this.onInactive,
+                    this.INACTIVITY_WARNING_DURATION
+                );
+            });
+        }
     }
 
     /**
@@ -102,7 +169,13 @@ export default class Feedback extends React.Component {
             done: true
         }, () => {
             brv.feedback.session && brv.feedback.session.complete();
-            this._tmrReset = setTimeout(this.reset, this.RESET_DURATION);
+
+            /* If it's a device, reset screen after timeout. */
+            if (window.brv && window.brv.env && window.brv.env.IS_DEVICE) {
+                this._tmrReset = setTimeout(this.reset, this.RESET_DURATION);
+            }
+
+            this.resetInactivity();
         });
     }
 
@@ -111,6 +184,8 @@ export default class Feedback extends React.Component {
      * Occurs after actual submission to storage/network.
      */
     onAspectSubmitted() {
+        this.resetInactivity();
+
         /* At least one aspect has been rated. */
         this.setState({
             feedbackGiven: true
@@ -161,6 +236,8 @@ export default class Feedback extends React.Component {
      * Handles header button click event.
      */
     onHeaderAction(action) {
+        this.resetInactivity();
+
         switch (action) {
             case HeaderActions.COMMENT:
                 this.showDialogComment();
@@ -201,11 +278,15 @@ export default class Feedback extends React.Component {
      * On email submitted event.
      */
     onEmailSubmit() {
-        if (this.props.data.template_location === 3) {
-            this.closeDialog();
-        } else {
-            this.completeSession();
-        }
+        this.setState({
+            emailGiven: true
+        }, () => {
+            if (this.props.data.template_location === 3) {
+                this.closeDialog();
+            } else {
+                this.completeSession();
+            }
+        });
     }
 
     /**
@@ -265,11 +346,13 @@ export default class Feedback extends React.Component {
                     <MinyHeader name={this.props.data.name} />
                     <div className='thanks'>
                         <span>Thank you for giving feedback!</span>
-                        <div
-                            className='btn btn-refresh'
-                            onClick={this.reset}>
-                            <i className={`fa fa-refresh`}></i>
-                        </div>
+                        { (window.brv && window.brv.env && window.brv.env.IS_DEVICE) && (
+                            <div
+                                className='btn btn-refresh'
+                                onClick={this.reset}>
+                                <i className={`fa fa-refresh`}></i>
+                            </div>
+                        ) }
                     </div>
                 </div>
             );
@@ -278,16 +361,23 @@ export default class Feedback extends React.Component {
         return (
             <div
                 key={this.state.reset}
-                className={`ly flex-v defined-size feedback-container dialog-${dialogClass}`}>
+                className={`ly flex-v defined-size feedback-container dialog-${dialogClass}`}
+                onClick={this.resetInactivity}
+                onMouseMove={this.resetInactivity}>
+
+                { this.state.showInactivityWarning && (
+                    <InactivityDialog onClick={this.resetInactivity} />
+                ) }
+
                 <Header
                     name={this.props.data.name}
                     onAction={this.onHeaderAction}
                     showDialog={this.state.showDialog}
-                    enableComments={this.props.data.allow_comments}
+                    enableComments={this.props.data.allow_comments && !this.state.commentGiven}
                     enableSubmit={
                         (this.state.showDialog == 'COMMENT' && this.state.pendingComment) ||
                         this.state.showDialog == 'EMAIL' ||
-                        (!this.state.showDialog && this.state.feedbackGiven)
+                        (!this.state.showDialog && (this.state.feedbackGiven || this.state.commentGiven))
                     }
                 />
                 <div className='scrollable'>
