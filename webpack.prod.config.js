@@ -6,14 +6,10 @@ module.exports = Object.assign(devConfig, {
     'plugins': [
         new webpack.optimize.CommonsChunkPlugin({
             /* Don't add content to vendor and globals. */
-            names: ['vendor'].concat(Object.keys(devConfig.entry).filter(
-                p => p.indexOf('globals/') === 0
-            )),
+            names: ['vendor'],
             minChunks: Infinity
         }),
-        new webpack.optimize.CommonsChunkPlugin({
-            name: 'chunks'
-        }),
+        new webpack.optimize.CommonsChunkPlugin('chunks'),
         new webpack.optimize.UglifyJsPlugin(),
         new webpack.optimize.AggressiveMergingPlugin(),
         new webpack.optimize.OccurrenceOrderPlugin(),
