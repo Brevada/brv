@@ -12,7 +12,7 @@
     "dev-build": "npm run dev-build-css && npm run dev-build-js",
     "build": "npm run dev-build-css && npm run build-js",
     "build-feedback": "node scripts/build-feedback",
-    "postinstall": "scripts/post-install.js"
+    "postinstall": "scripts/post-install.js && npm run build-feedback"
   },
   "repository": {
     "type": "git",
