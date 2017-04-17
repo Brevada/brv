@@ -40,7 +40,7 @@
             opacity: 0.1;
         }
 
-        @include transition(opacity 0.22s, max-height 0.3s);
+        @include transition(opacity 0.22s, max-height 0.15s);
 
         &.removing {
             overflow: hidden;

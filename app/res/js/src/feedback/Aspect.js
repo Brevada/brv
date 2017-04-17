@@ -101,16 +101,16 @@ export default class Aspect extends React.Component {
             /* Play out animation. */
             stateQueue(this, () => !this._unmounted)
                 .do({ submitting: true })
-                .wait(250)
+                .wait(150)
                 .do({
                     submitted: true,
                     submitting: false
                 })
-                .wait(700)
+                .wait(400)
                 .do({
                     removing: true
                 })
-                .wait(300)
+                .wait(140)
                 .do(() => {
                     brv.feedback.session.onSubmit(value, ordinal);
                     this.props.onSubmit(this.props.id);
