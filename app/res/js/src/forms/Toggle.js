@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 
 import { Input } from 'forms/Form';
-import { Swipeable } from 'react-touch';
+import { Swipeable, defineSwipe } from 'react-touch';
 
 /**
  * Toggle input.
@@ -32,8 +32,11 @@ export default class Toggle extends Input {
     }
 
     render() {
+        const swipe = defineSwipe({ swipeDistance: 50 });
+
         return (
             <Swipeable
+                config={swipe}
                 onSwipeLeft={this.onClickLeft}
                 onSwipeRight={this.onClickRight}>
                 <div className='toggle-input'>

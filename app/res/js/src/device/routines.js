@@ -46,7 +46,8 @@ module.exports = function() {
     routines.Commands = (new Routine(() => {
         return brv.env.isOnline().then(() => ajax({
             method: 'GET',
-            url: brv.env.API_URL + '/device/commands' /*data.actions is an ordered array*/
+            url: brv.env.API_URL + '/device/commands', /*data.actions is an ordered array*/
+            params: {}
         }).then(resp => brv.env.execute(resp.data.actions || [])));
     }, 60)).execute();
 
