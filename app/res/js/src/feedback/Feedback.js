@@ -193,13 +193,6 @@ export default class Feedback extends React.Component {
             /* If a comment has been given and there are no more aspects, consider
              * this a finish event. */
             if (brv.feedback.session.getRemainingCount() === 0) {
-                /* No aspects left. */
-                if (!this.state.commentGiven && this.props.data.allow_comments) {
-                    /* Prompt for comment. */
-                    this.showDialogComment();
-                    return;
-                }
-
                 this.onFinish();
             }
         });
@@ -252,10 +245,21 @@ export default class Feedback extends React.Component {
             case HeaderActions.CLOSE_DIALOG:
                 if (this.state.showDialog === 'COMMENT' &&
                     brv.feedback.session.getRemainingCount() === 0) {
-                    /* Closing comment but no aspects remaining. Consider this finished. */
+                    /* Closing comment but no aspects remaining.
+                     * Consider this finished. */
                     this.onFinish();
                     return;
                 }
+
+                if (this.state.showDialog === 'EMAIL') {
+                    /* Email is shown at "end". */
+                    if (this.props.data.template_location === 1 ||
+                        this.props.data.template_location === 2) {
+                        this.completeSession();
+                        return;
+                    }
+                }
+
                 this.closeDialog();
                 break;
         }

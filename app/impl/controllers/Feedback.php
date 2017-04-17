@@ -423,6 +423,9 @@ class Feedback extends Controller
             $id = bin2hex(openssl_random_pseudo_bytes(8));
             $name = basename($dep);
 
+            $ext = pathinfo($name, PATHINFO_EXTENSION);
+            $name = basename($name, $ext) . time() . ".{$ext}";
+
             $files[] = [
                 "id" => $id,
                 "name" => $name
