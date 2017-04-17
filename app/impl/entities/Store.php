@@ -64,7 +64,7 @@ class Store extends Entity
                     locations.Latitude
                 FROM stores
                 JOIN store_features ON store_features.id = stores.FeaturesID
-                LEFT JOIN locations ON locations.id = stores.LocationID
+                JOIN locations ON locations.id = stores.LocationID
                 WHERE stores.id = :id
             ");
             $stmt->bindValue(':id', (int) $id, \PDO::PARAM_INT);
@@ -107,7 +107,7 @@ class Store extends Entity
                     locations.Latitude
                 FROM stores
                 JOIN store_features ON store_features.id = stores.FeaturesID
-                LEFT JOIN locations ON locations.id = stores.LocationID
+                JOIN locations ON locations.id = stores.LocationID
                 WHERE stores.URLName = :url
                 LIMIT 1
             ");
@@ -153,7 +153,7 @@ class Store extends Entity
                     locations.Latitude
                 FROM stores
                 JOIN store_features ON store_features.id = stores.FeaturesID
-                LEFT JOIN locations ON locations.id = stores.LocationID
+                JOIN locations ON locations.id = stores.LocationID
                 JOIN accounts ON accounts.CompanyID = stores.CompanyID
                 WHERE accounts.StoreID = stores.id AND accounts.id = :id
                 LIMIT 1
@@ -199,7 +199,7 @@ class Store extends Entity
                     locations.Latitude
                 FROM stores
                 JOIN store_features ON store_features.id = stores.FeaturesID
-                LEFT JOIN locations ON locations.id = stores.LocationID
+                JOIN locations ON locations.id = stores.LocationID
                 WHERE stores.CompanyID = :id
             ");
             $stmt->bindValue(':id', (int) $companyId, \PDO::PARAM_INT);
@@ -252,45 +252,24 @@ class Store extends Entity
             /*
              * UPDATE rather than INSERT.
              */
-			if ($this->getLocationId() !== null) {
-				try {
-					$stmt = DB::get()->prepare("
-						UPDATE locations SET
-						Country = :country, Province = :province, City = :city,
-						PostalCode = :postalcode, Longitude = :longitude, Latitude = :latitude
-						WHERE id = :id
-					");
-					$stmt->bindValue(':id', $this->getLocationId(), \PDO::PARAM_INT);
-					$stmt->bindValue(':country', $this->getCountry(), \PDO::PARAM_STR);
-					$stmt->bindValue(':province', $this->getProvince(), \PDO::PARAM_STR);
-					$stmt->bindValue(':city', $this->getCity(), \PDO::PARAM_STR);
-					$stmt->bindValue(':postalcode', $this->getPostalCode(), \PDO::PARAM_STR);
-					$stmt->bindValue(':longitude', $this->getLongitude(), \PDO::PARAM_STR);
-					$stmt->bindValue(':latitude', $this->getLatitude(), \PDO::PARAM_STR);
-					$stmt->execute();
-				} catch (\PDOException $ex) {
-					\App::log()->error($ex->getMessage());
-				}
-			} else {
-				// create Store location entry.
-				try {
-					$stmt = DB::get()->prepare("
-						INSERT INTO locations
-						(Country, Province, City, PostalCode, Longitude, Latitude)
-						VALUES (:country, :province, :city, :postalcode, :longitude, :latitude)
-					");
-					$stmt->bindValue(':country', $this->getCountry(), \PDO::PARAM_STR);
-					$stmt->bindValue(':province', $this->getProvince(), \PDO::PARAM_STR);
-					$stmt->bindValue(':city', $this->getCity(), \PDO::PARAM_STR);
-					$stmt->bindValue(':postalcode', $this->getPostalCode(), \PDO::PARAM_STR);
-					$stmt->bindValue(':longitude', $this->getLongitude(), \PDO::PARAM_STR);
-					$stmt->bindValue(':latitude', $this->getLatitude(), \PDO::PARAM_STR);
-					$stmt->execute();
-					$this->setLocationId(DB::get()->lastInsertId());
-				} catch (\PDOException $ex) {
-					\App::log()->error($ex->getMessage());
-				}
-			}
+            try {
+                $stmt = DB::get()->prepare("
+                    UPDATE locations SET
+                    Country = :country, Province = :province, City = :city,
+                    PostalCode = :postalcode, Longitude = :longitude, Latitude = :latitude
+                    WHERE id = :id
+                ");
+                $stmt->bindValue(':id', $this->getLocationId(), \PDO::PARAM_INT);
+                $stmt->bindValue(':country', $this->getCountry(), \PDO::PARAM_STR);
+                $stmt->bindValue(':province', $this->getProvince(), \PDO::PARAM_STR);
+                $stmt->bindValue(':city', $this->getCity(), \PDO::PARAM_STR);
+                $stmt->bindValue(':postalcode', $this->getPostalCode(), \PDO::PARAM_STR);
+                $stmt->bindValue(':longitude', $this->getLongitude(), \PDO::PARAM_STR);
+                $stmt->bindValue(':latitude', $this->getLatitude(), \PDO::PARAM_STR);
+                $stmt->execute();
+            } catch (\PDOException $ex) {
+                \App::log()->error($ex->getMessage());
+            }
 
             try {
                 $stmt = DB::get()->prepare("
