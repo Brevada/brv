@@ -92,7 +92,7 @@ export default class Fetch extends Component {
             /* Now loading. Clear errors. */
             loading: true,
             error: null
-        }).then(() => ajaz(Object.assign(
+        }).then(() => ajax(Object.assign(
             { url: this.props.action, method: 'get' },
             data
         ))).then(response => {
