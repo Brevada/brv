@@ -10,6 +10,10 @@ RewriteRule (^(fonts|images)\/.*)$ app/res/$1 [L,NC,END]
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteRule (^(css|js)(\/.*))$ app/res/$2/dist/$3 [L,NC,END]
 
+# Favicon
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteRule ^favicon.ico$ app/res/images/favicon.ico [L,NC,END]
+
 # Map all else to the entry point.
 RewriteCond %{REQUEST_URI} !^\/\.well-known\/acme-challenge/[^\/]+
 RewriteRule ^ index.php [L]
