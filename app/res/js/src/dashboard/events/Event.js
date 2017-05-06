@@ -1,6 +1,7 @@
 import React from 'react';
 import _ from 'lodash';
 
+import classNames from 'classnames';
 import { Badges } from 'dashboard/aspects/Badges';
 import EventAspects from 'dashboard/events/EventAspects';
 import Form from 'forms/Form';
@@ -98,16 +99,23 @@ export default class Event extends React.Component {
 
         this.state = {
             /* Indicates user has initiated delete process. */
+            confirmingDelete: false,
+
+            /* Indicates waiting on a response from the server regarding deletion. */
             deleting: false
         };
 
         /* User triggers deletion process for event. */
-        this.onDelete = ::this.onDelete;
+        this.onPromptConfirm = ::this.onPromptConfirm;
+
+        this.onDeleteConfirmed = ::this.onDeleteConfirmed;
+        this.onDeleteCanceled = ::this.onDeleteCanceled;
+        this.onDeleteStarted = ::this.onDeleteStarted;
     }
 
     shouldComponentUpdate(nextProps, nextState) {
         /* Update if any part of the event has changed. */
-        return !_.isEqual(this.state.deleting, nextState.deleting) ||
+        return !_.isEqual(this.state, nextState) ||
                !_.isEqual(this.props.aspects, nextProps.aspects) ||
                !_.isEqual(this.props.summary, nextProps.summary) ||
                !_.isEqual(this.props.title, nextProps.title) ||
@@ -116,7 +124,27 @@ export default class Event extends React.Component {
                !_.isEqual(this.props.filter, nextProps.filter);
     }
 
-    onDelete() {
+    onPromptConfirm() {
+        this.setState({
+            confirmingDelete: true,
+            deleting: false
+        });
+    }
+
+    onDeleteConfirmed() {
+        if (this.props.onRemove) {
+            this.props.onRemove(this.props.id);
+        }
+    }
+
+    onDeleteCanceled() {
+        this.setState({
+            confirmingDelete: false,
+            deleting: false
+        });
+    }
+
+    onDeleteStarted() {
         this.setState({
             deleting: true
         });
@@ -124,16 +152,20 @@ export default class Event extends React.Component {
 
     render() {
         /* Inline dialog shown if in remove mode. */
-        const removeDialog = this.state.deleting && (
+        const removeDialog = this.state.confirmingDelete && (
             <InlineRemoveDialog
                 id={this.props.id}
-                onCancel={()=>this.setState({deleting: false})}
-                onSuccess={()=>this.props.onRemove && this.props.onRemove(this.props.id)}
+                onCancel={this.onDeleteCanceled}
+                onSuccess={this.onDeleteConfirmed}
+                onError={this.onDeleteCanceled}
+                onBegin={this.onDeleteStarted}
             />
         );
 
         return (
-            <div className='item constrain-w event'>
+            <div className={classNames('item constrain-w event', {
+                removing: this.state.confirmingDelete && this.state.deleting
+            })}>
                 <div className='ly constrain-w item dl event-content'>
                     <EventHeader
                         title={this.props.title}
@@ -151,7 +183,7 @@ export default class Event extends React.Component {
                             eventId={this.props.id}
                             storeId={this.props.storeId}
                             onRefresh={this.props.onRefresh}
-                            onDelete={this.onDelete}
+                            onDelete={this.onPromptConfirm}
                         />
                     ) }
                 </div>

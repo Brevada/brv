@@ -48,6 +48,14 @@ export default class Form extends Component {
         center: PropTypes.bool,
 
         /* Reference callback for the form instance. Similar to ref. */
+        form: PropTypes.func,
+
+        /* Callback called when form submission begins. Use onSuccess and
+         * and onFailure to handle complete. */
+        onBegin: PropTypes.func
+    };
+
+    static childContextTypes = {
         form: PropTypes.func
     };
 
@@ -64,6 +72,12 @@ export default class Form extends Component {
 
     componentWillUnmount() {
         this._unmounted = true;
+    }
+
+    getChildContext() {
+        return {
+            form: () => this._form && this
+        };
     }
 
     /**
@@ -97,6 +111,8 @@ export default class Form extends Component {
                      window.brv.feedback.interceptor || axios :
                      axios;
 
+        if (this.props.onBegin) this.props.onBegin();
+        
         setStatePromise.call(this, {
             submitting: true
         })
@@ -131,15 +147,7 @@ export default class Form extends Component {
                         this._form = frm;
                         this.props.form && this.props.form(this);
                     }}>
-                    {React.Children.map(this.props.children, (child) => {
-                        if (child && child.type.prototype instanceof React.Component) {
-                            return React.cloneElement(child, {
-                                form: () => this._form && this
-                            });
-                        }
-
-                        return child;
-                     })}
+                    {this.props.children}
                 </form>
             </div>
         );
@@ -151,10 +159,6 @@ export default class Form extends Component {
  * element with a label.
  */
 class Group extends Component {
-
-    static propTypes = {
-        form: PropTypes.func
-    };
 
     constructor(){
         super();
@@ -179,7 +183,7 @@ class Group extends Component {
     }
 
     render() {
-        /* Pass form to its children and save the input reference. */
+        /* Save the input reference and label if exists. */
         return (
             <div className={'form-group ' + (this.props.className || '')}>
                 {React.Children.map(this.props.children,
@@ -191,12 +195,7 @@ class Group extends Component {
                              });
                          } else if (child.type.prototype instanceof Input) {
                              return React.cloneElement(child, {
-                                 ref: this.inputCallback,
-                                 form: this.props.form
-                             });
-                         } else if (child.type.prototype instanceof React.Component) {
-                             return React.cloneElement(child, {
-                                 form: this.props.form
+                                 ref: this.inputCallback
                              });
                          }
                      }

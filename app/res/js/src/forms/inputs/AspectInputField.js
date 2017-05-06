@@ -1,5 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import PropTypes from 'prop-types';
 import _ from 'lodash';
 
 import { Input } from 'forms/Form';
@@ -50,6 +51,11 @@ const AspectOptions = props => (
  * Form input element to provide selection of aspect types.
  */
 export default class AspectInputField extends Input {
+
+    static contextTypes = {
+        form: PropTypes.func
+    };
+
     constructor(props) {
         super(props);
 
@@ -97,8 +103,8 @@ export default class AspectInputField extends Input {
      * submission of the form.
      */
     potentialSubmit() {
-        if (this._inputText && this.props.submitOnSelect && this.props.form) {
-            this.props.form().submit();
+        if (this._inputText && this.props.submitOnSelect && this.context.form()) {
+            this.context.form().submit();
             if (!this._unmounted) {
                 this.setState({
                     value: '',

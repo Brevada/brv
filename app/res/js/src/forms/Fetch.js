@@ -155,9 +155,7 @@ export default class Fetch extends Component {
                 data: this.state.result,
                 loading: this.state.loading,
                 error: this.state.error
-            }, this.props.form && {
-                form: this.props.form
-            } || {})
+            })
         );
     }
 }

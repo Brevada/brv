@@ -153,7 +153,35 @@
                         right: 0;
                     }
                 }
+
+                @include transition(
+                    -webkit-blur 0.5s ease-out,
+                    -moz-blur 0.5s ease-out,
+                    -ms-blur 0.5s ease-out,
+                    filter 0.5s ease-out,
+                    blur 0.5s ease-out,
+                    opacity 0.5s ease-out
+                );
+                &.removing {
+                    @include opacity(0.4);
+                    @include blur(2.5px);
+                    cursor: default;
+                }
             }
         }
+    }
+
+    @include transition(
+        -webkit-blur 0.5s ease-out,
+        -moz-blur 0.5s ease-out,
+        -ms-blur 0.5s ease-out,
+        filter 0.5s ease-out,
+        blur 0.5s ease-out,
+        opacity 0.5s ease-out
+    );
+    &.removing {
+        @include opacity(0.4);
+        @include blur(2.5px);
+        cursor: default;
     }
 }

@@ -10,6 +10,7 @@ import { Button } from 'forms/inputs/Button';
  * @param {number} id The id of the event to be deleted.
  * @param {function} onSuccess Callback to be invoked upon successful delete.
  * @param {function} onCancel Callback to be invoked upon cancel.
+ * @param {function} onBegin Callback to be invoked upon start of deletion.
  */
 const InlineRemove = props => (
     <div className='body'>
@@ -21,7 +22,8 @@ const InlineRemove = props => (
                 method="DELETE"
                 action={`/api/event/${props.id}`}
                 onSuccess={props.onSuccess}
-                onError={()=>false}>
+                onError={props.onError}
+                onBegin={props.onBegin}>
                 <Group
                     className='link-style'>
                     <Button
