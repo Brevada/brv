@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import _ from 'lodash';
 
-import { Input as FormInput } from 'forms/Form';
+import { Input } from 'forms/Form';
 
 /**
  * Single aspect option.
@@ -49,7 +49,7 @@ const AspectOptions = props => (
 /**
  * Form input element to provide selection of aspect types.
  */
-export default class AspectInputField extends FormInput {
+export default class AspectInputField extends Input {
     constructor(props) {
         super(props);
 

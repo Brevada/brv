@@ -151,11 +151,13 @@ export default class Fetch extends Component {
     render() {
         /* Clone element, passing in retrieved data. */
         return React.cloneElement(
-            React.Children.only(this.props.children), {
+            React.Children.only(this.props.children), Object.assign({
                 data: this.state.result,
                 loading: this.state.loading,
                 error: this.state.error
-            }
+            }, this.props.form && {
+                form: this.props.form
+            } || {})
         );
     }
 }

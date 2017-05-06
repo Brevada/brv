@@ -117,7 +117,7 @@ export default class EventContainer extends React.Component {
                                 store: this.props.storeId,
                                 days: Filter.toDays(this.props.filter)
                             }} refresh={this.state.refreshes.get(event.id) || -1} key={event.id}>
-                            <EventLinked
+                            <FetchedEvent
                                 key={event.id}
                                 id={event.id}
                                 event={event}

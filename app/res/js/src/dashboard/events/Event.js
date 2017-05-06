@@ -97,7 +97,7 @@ export default class Event extends React.Component {
         super(props);
 
         this.state = {
-            /* Indicates user has initated delete process. */
+            /* Indicates user has initiated delete process. */
             deleting: false
         };
 

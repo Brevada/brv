@@ -125,7 +125,7 @@ export default class EventsView extends React.Component {
                     days: Filter.toDays(this.state.filter)
                 }}
                 refresh={this.state.refresh}>
-                    <EventContainerLinked
+                    <FetchedEventContainer
                         filter={this.state.filter}
                         storeId={this.props.storeId}
                     />
