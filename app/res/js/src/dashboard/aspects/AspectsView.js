@@ -9,7 +9,7 @@ import { DialogButtonActions } from 'dialogs/Dialog';
 import NewAspectDialog from 'dashboard/aspects/dialogs/NewAspect';
 import Loader from 'dashboard/Loader';
 
-import DataLayer from 'forms/DataLayer';
+import Fetch from 'forms/Fetch';
 
 /**
  * Aspect container combined with a loading state.
@@ -19,21 +19,17 @@ import DataLayer from 'forms/DataLayer';
  * @param {string} props.filter The time filter key from Filter.
  * @param {object} props.data Data from the data layer.
  */
-const AspectContainerLinked = props => {
+const FetchedAspectContainer = props => {
     if (props.loading || !props.data) {
-        return (
-            <Loader
-                messages={['Loading aspects...']}
-            />
-        );
-    } else {
-        return (
-            <AspectContainer
-                filter={props.filter}
-                aspects={props.data.aspects}
-            />
-        );
+        return (<Loader messages={['Loading aspects...']} />);
     }
+
+    return (
+        <AspectContainer
+            filter={props.filter}
+            aspects={props.data.aspects}
+        />
+    );
 };
 
 /**
@@ -122,15 +118,18 @@ export default class AspectsView extends React.Component {
                     actionLabel={'+ Ask Something New'}
                     onAction={() => this.newAspectDialogAction(DialogButtonActions.OPEN)}
                 />
-                <DataLayer action="/api/aspects" data={{
-                    store: this.props.storeId,
-                    days: Filter.toDays(this.state.filter),
-                    points: Filter.toPoints(this.state.filter)
-                }} refresh={this.state.refresh}>
-                    <AspectContainerLinked
+                <Fetch
+                    action="/api/aspects"
+                    data={{
+                        store: this.props.storeId,
+                        days: Filter.toDays(this.state.filter),
+                        points: Filter.toPoints(this.state.filter)
+                    }}
+                    refresh={this.state.refresh}>
+                    <FetchedAspectContainer
                         filter={this.state.filter}
                     />
-                </DataLayer>
+                </Fetch>
             </div>
         );
     }

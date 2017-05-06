@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 import { Mood } from 'utils/Mood';
 import classNames from 'classnames';
@@ -62,13 +63,13 @@ class Badges extends React.Component {
 
     static propTypes = {
         /* Display badges inline with text. */
-        inline: React.PropTypes.bool,
+        inline: PropTypes.bool,
 
         /* 4 possible stats are displayed (all numeric). */
-        average: React.PropTypes.number,
-        responses: React.PropTypes.number,
-        to_all_time: React.PropTypes.number,
-        to_industry: React.PropTypes.number
+        average: PropTypes.number,
+        responses: PropTypes.number,
+        to_all_time: PropTypes.number,
+        to_industry: PropTypes.number
     };
 
     static defaultProps = {

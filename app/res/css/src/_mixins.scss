@@ -87,6 +87,11 @@ $prefixes: ('-webkit-', '-moz-', '-ms-', '');
     @keyframes #{$animation} { @content; }
 }
 
+@mixin fontawesome($code) {
+    content: $code;
+    font-family: 'FontAwesome';
+}
+
 /* Extendable. */
 
 %clearfix {

@@ -1,5 +1,6 @@
 import React from 'react';
-import Form, { Group, Button, Group as FormGroup } from 'forms/Form';
+import Form, { Group } from 'forms/Form';
+import { Button } from 'forms/inputs/Button';
 
 /**
  * Inline dialog to display when user initiates removal of an event.
@@ -21,7 +22,7 @@ const InlineRemove = props => (
                 action={`/api/event/${props.id}`}
                 onSuccess={props.onSuccess}
                 onError={()=>false}>
-                <FormGroup
+                <Group
                     className='link-style'>
                     <Button
                         label="Delete"
@@ -31,7 +32,7 @@ const InlineRemove = props => (
                         label="Cancel"
                         left={true}
                         onClick={props.onCancel} />
-                </FormGroup>
+                </Group>
             </Form>
         </div>
     </div>

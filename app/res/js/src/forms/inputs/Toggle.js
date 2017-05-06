@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-import { Input } from 'forms/Form';
+import Input from 'forms/Input';
 import { Swipeable, defineSwipe } from 'react-touch';
 
 /**

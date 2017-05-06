@@ -42,7 +42,7 @@ a.phone {
     line-height: 1.5em;
 
     &:before {
-        content: "\260e";
+        @include fontawesome("\f095");
         margin-right: 0.25em;
         margin-left: 0.15em;
     }

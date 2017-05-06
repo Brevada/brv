@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 /**
  * Loader animation which cycles through an array of messages.
@@ -7,7 +8,7 @@ export default class Loader extends React.Component {
 
     static propTypes = {
         /* Messages to cycle through. */
-        messages: React.PropTypes.arrayOf(React.PropTypes.string)
+        messages: PropTypes.arrayOf(PropTypes.string)
     }
 
     constructor(props) {

@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 
 import { NavigationButton } from 'components/NavigationButton';
-import { Link } from 'components/Link';
+import { HyperLink } from 'components/HyperLink';
 import { Filter } from 'dashboard/aspects/Filter';
 
 /**
@@ -22,7 +22,7 @@ const TimeFilters = props => (
                 active={props.filter === o.view}
             />
         ))}
-        <Link label={props.actionLabel} onClick={props.onAction} />
+        <HyperLink label={props.actionLabel} onClick={props.onAction} />
     </div>
 );
 

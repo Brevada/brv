@@ -1,10 +1,10 @@
 import React from 'react';
 
-import DataLayer from 'forms/DataLayer';
+import Fetch from 'forms/Fetch';
 import Dialog, { DialogButton, DialogButtonActions } from 'dialogs/Dialog';
-import Form, { Group as FormGroup, Label as FormLabel, Button, ErrorMessage } from 'forms/Form';
-import { Link } from 'components/Link';
-import AspectInputField from 'forms/AspectInputField';
+import Form, { Group, Label, ErrorMessage } from 'forms/Form';
+import { Button } from 'forms/inputs/Button';
+import AspectInputField from 'forms/inputs/AspectInputField';
 
 /**
  * Connects Aspect Input Field with Data Layer.
@@ -12,7 +12,7 @@ import AspectInputField from 'forms/AspectInputField';
  * @param {object} props
  * @param {object} props.data Data passed from data layer.
  */
-const AspectInputFieldLinked = props => (
+const FetchedAspectInputField = props => (
     <AspectInputField
         types={props.data.aspect_types || []}
         name='aspect'
@@ -55,8 +55,7 @@ export default class NewAspect extends React.Component {
             <Dialog
                 defaultShow={this.props.show}
                 onAction={this.props.onAction}
-                escapable={true}
-            >
+                escapable={true}>
                 <Form
                     method="POST"
                     action="/api/aspect"
@@ -67,22 +66,22 @@ export default class NewAspect extends React.Component {
                         <ErrorMessage text={this.state.createError} />
                     ) }
 
-                    <FormGroup className='new-aspect'>
-                        <FormLabel
+                    <Group className='new-aspect'>
+                        <Label
                             text={'How satisfied are customers with'}
                             inline={true}
                         />
-                        <DataLayer
+                        <Fetch
                             action="/api/aspecttypes/industry"
                             data={{exclude_store: this.props.storeId}}>
-                            <AspectInputFieldLinked />
-                        </DataLayer>
-                        <FormLabel
+                            <FetchedAspectInputField />
+                        </Fetch>
+                        <Label
                             text={'?'}
                             inline={true}
                         />
-                    </FormGroup>
-                    <FormGroup className='dialog-controls link-style'>
+                    </Group>
+                    <Group className='dialog-controls link-style'>
                         <Button
                             label='Add Question'
                             submit={true}
@@ -93,7 +92,7 @@ export default class NewAspect extends React.Component {
                             onClick={()=>this.props.onAction(DialogButtonActions.CLOSE)}
                             right={true}
                         />
-                    </FormGroup>
+                    </Group>
                 </Form>
             </Dialog>
         );

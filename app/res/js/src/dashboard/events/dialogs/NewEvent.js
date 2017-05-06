@@ -1,10 +1,11 @@
 import React from 'react';
 import moment from 'moment';
-import DataLayer from 'forms/DataLayer';
+import Fetch from 'forms/Fetch';
 
 import Dialog, { DialogButtonActions } from 'dialogs/Dialog';
-import Form, { Group as FormGroup, Label as FormLabel, Textbox, Button, ErrorMessage } from 'forms/Form';
-import DatePickerInput from 'forms/DatePickerInput';
+import Form, { Group, Label, Textbox, ErrorMessage } from 'forms/Form';
+import { Button } from 'forms/inputs/Button';
+import DatePickerInput from 'forms/inputs/DatePickerInput';
 
 /**
  * New event dialog.
@@ -47,22 +48,20 @@ export default class NewEvent extends React.Component {
             <Dialog
                 defaultShow={this.props.show}
                 onAction={this.props.onAction}
-                escapable={true}
-            >
+                escapable={true}>
                 <Form
                     method="POST"
                     action="/api/event"
                     data={{ store: this.props.storeId }}
                     onSuccess={()=>this.props.onAction(DialogButtonActions.SUCCESS)}
                     onError={this.submitError}
-                    className='center'
-                >
+                    className='center'>
                     { this.state.createError !== null && (
                         <ErrorMessage text={this.state.createError} />
                     ) }
 
-                    <FormGroup className='new-event'>
-                        <FormLabel
+                    <Group className='new-event'>
+                        <Label
                             text={'What is the title of the event?'}
                             inline={true}
                         />
@@ -71,9 +70,9 @@ export default class NewEvent extends React.Component {
                             name='title'
                             seamless={true}
                         />
-                    </FormGroup>
-                    <FormGroup className='date inline left'>
-                        <FormLabel
+                    </Group>
+                    <Group className='date inline left'>
+                        <Label
                             text={'Choose a start date:'}
                         />
                         <DatePickerInput
@@ -84,9 +83,9 @@ export default class NewEvent extends React.Component {
                             endDate={this.state.toDate}
                             onDateChange={d=>this.setState({ fromDate: d })}
                             isClearable={false} />
-                    </FormGroup>
-                    <FormGroup className='date inline right'>
-                        <FormLabel
+                    </Group>
+                    <Group className='date inline right'>
+                        <Label
                             text={'Choose an optional end date:'}
                         />
                         <DatePickerInput
@@ -96,8 +95,8 @@ export default class NewEvent extends React.Component {
                             endDate={this.state.toDate}
                             onDateChange={d=>this.setState({ toDate: d })}
                             isClearable={true} />
-                    </FormGroup>
-                    <FormGroup className='dialog-controls link-style'>
+                    </Group>
+                    <Group className='dialog-controls link-style'>
                         <Button
                             label='Add Event'
                             submit={true}
@@ -108,7 +107,7 @@ export default class NewEvent extends React.Component {
                             onClick={()=>this.props.onAction(DialogButtonActions.CLOSE)}
                             right={true}
                         />
-                    </FormGroup>
+                    </Group>
                 </Form>
             </Dialog>
         );

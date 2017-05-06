@@ -1,7 +1,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import classNames from 'classnames';
 
-import { Input, Textbox } from 'forms/Form';
+import Input from 'forms/Input';
+import { Textbox } from 'forms/Form';
 
 /**
  * Preset domain option for email input.
@@ -100,7 +102,9 @@ export default class IntelliEmailInput extends Input {
 
     render() {
         return (
-            <div className={'intelli-email-input' + (this.state.domain === -1 ? ' other' : '')}>
+            <div className={classNames('intelli-email-input', {
+                'other': this.state.domain === -1
+            })}>
                 <Textbox
                     className='mailbox'
                     name='mailbox'

@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import classNames from 'classnames';
 
 /**
@@ -115,9 +116,9 @@ const MinyHeader = props => (
 class Header extends React.Component {
 
     static propTypes = {
-        name: React.PropTypes.string,
-        onComment: React.PropTypes.func,
-        onFinish: React.PropTypes.func
+        name: PropTypes.string,
+        onComment: PropTypes.func,
+        onFinish: PropTypes.func
     };
 
     constructor() {

@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import Form from 'forms/Form';
 import stateQueue from 'utils/StateQueue';
@@ -51,9 +52,9 @@ const Submitted = props => (
 export default class Aspect extends React.Component {
 
     static propTypes = {
-        id: React.PropTypes.number,
-        title: React.PropTypes.string,
-        onSubmit: React.PropTypes.func
+        id: PropTypes.number,
+        title: PropTypes.string,
+        onSubmit: PropTypes.func
     };
 
     constructor() {

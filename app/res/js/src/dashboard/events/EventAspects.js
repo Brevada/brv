@@ -1,9 +1,11 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import _ from 'lodash';
 
-import DataLayer from 'forms/DataLayer';
-import Form, { Group as FormGroup, Link as FormLink } from 'forms/Form';
-import AspectInputField from 'forms/AspectInputField';
+import Fetch from 'forms/Fetch';
+import Form, { Group } from 'forms/Form';
+import { Link as FormLink } from 'forms/inputs/Button';
+import AspectInputField from 'forms/inputs/AspectInputField';
 import { EventAspectsItem } from 'dashboard/events/EventAspectsItem';
 
 /**
@@ -11,7 +13,7 @@ import { EventAspectsItem } from 'dashboard/events/EventAspectsItem';
  *
  * @param {object} props
  */
-const AspectInputFieldLinked = props => {
+const FetchedAspectInputField = props => {
     return (
         <AspectInputField
             types={props.data.aspect_types || []}
@@ -34,19 +36,18 @@ const AddAspect = props => (
         method="POST"
         data={{store: props.storeId}}
         onSuccess={props.onRefresh}
-        onError={()=>false}
-    >
-        <FormGroup className='new-aspect input-like small'>
-            <DataLayer
+        onError={()=>false}>
+        <Group className='new-aspect input-like small'>
+            <Fetch
                 action={`/api/aspecttypes/event/${props.eventId}`}>
-                <AspectInputFieldLinked
+                <FetchedAspectInputField
                     name='aspect'
                     custom={false}
                     submitOnSelect={true}
                     placeHolder='+ Add New Aspect'
                 />
-            </DataLayer>
-        </FormGroup>
+            </Fetch>
+        </Group>
     </Form>
 );
 
@@ -56,9 +57,9 @@ const AddAspect = props => (
 export default class EventAspects extends React.Component {
 
     static propTypes = {
-        aspects: React.PropTypes.arrayOf(React.PropTypes.object),
-        eventId: React.PropTypes.number,
-        storeId: React.PropTypes.number
+        aspects: PropTypes.arrayOf(PropTypes.object),
+        eventId: PropTypes.number,
+        storeId: PropTypes.number
     };
 
     constructor(props) {

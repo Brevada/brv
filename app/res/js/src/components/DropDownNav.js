@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import classNames from 'classnames';
 
 /**
@@ -24,7 +25,7 @@ const DropDownOption = props => (
 class DropDownButton extends React.Component {
 
     static propTypes = {
-        label: React.PropTypes.string.isRequired
+        label: PropTypes.string.isRequired
     };
 
     constructor() {

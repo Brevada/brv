@@ -2,12 +2,12 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import DatePicker from 'react-datepicker';
 
-import { Input as FormInput } from 'forms/Form';
+import Input from 'forms/Input';
 
 /**
  * Date Picker Input based on react-datepicker
  */
-export default class DatePickerInput extends FormInput {
+export default class DatePickerInput extends Input {
     constructor(props) {
         super(props);
 

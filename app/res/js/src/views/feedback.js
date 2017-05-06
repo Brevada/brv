@@ -6,7 +6,7 @@ import docReady from 'doc-ready';
 import initReactFastclick from 'react-fastclick';
 initReactFastclick();
 
-import DataLayer from 'forms/DataLayer';
+import Fetch from 'forms/Fetch';
 import Loader from 'dashboard/Loader';
 import Feedback from 'feedback/Feedback';
 
@@ -18,7 +18,7 @@ import Feedback from 'feedback/Feedback';
  * @param {number} props.data.id The store id.
  * @param {boolean} props.loading Whether the store id is still being retrieved.
  */
-const FeedbackLinked = props => {
+const FetchedFeedback = props => {
     if (!props.data.id || props.loading) {
         return (
             <Loader
@@ -41,13 +41,13 @@ docReady(function() {
     });
 
     ReactDOM.render(
-        (<DataLayer
+        (<Fetch
             action="/api/feedback/config"
             data={{ id: brv.feedback.id() || false }}
             readCache={brv.feedback.getConfig}
             writeCache={brv.feedback.saveConfig}>
             <FeedbackLinked />
-        </DataLayer>),
+        </Fetch>),
         document.getElementById('feedback-root'),
         () => {
             brv.env && brv.env.fireReady && brv.env.fireReady();

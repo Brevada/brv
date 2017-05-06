@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 import Header, { MinyHeader, HeaderActions } from 'feedback/Header';
 import Aspects from 'feedback/Aspects';
@@ -12,7 +13,7 @@ import InactivityDialog from 'feedback/dialogs/Inactivity';
 export default class Feedback extends React.Component {
 
     static propTypes = {
-        storeId: React.PropTypes.number.isRequired
+        storeId: PropTypes.number.isRequired
     };
 
     constructor(props) {

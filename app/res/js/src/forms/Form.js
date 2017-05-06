@@ -1,13 +1,56 @@
-import React from 'react';
+import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
+import PropTypes from 'prop-types';
+
+import setStatePromise from 'utils/StatePromise';
 import classNames from 'classnames';
 import getFormData from 'get-form-data';
 import axios from 'axios';
 
+import Input from 'forms/Input';
+import Textarea from 'forms/inputs/Textarea';
+import Textbox from 'forms/inputs/Textbox';
+
 /**
  * API "upload" layer. Emulates a DOM form.
  */
-export default class Form extends React.Component {
+export default class Form extends Component {
+
+    static defaultProps = {
+        once: true,
+        method: 'post',
+        center: false,
+        inline: false
+    };
+
+    static propTypes = {
+        /* Whether to restrict submissions to one at a time. */
+        once: PropTypes.bool,
+
+        /* The API endpoint. */
+        action: PropTypes.string.isRequired,
+
+        /* HTTP method to use in sending the data. */
+        method: PropTypes.string,
+
+        /* Data to pass to server endpoint. This is concatenated with any
+         * form data. */
+        data: PropTypes.object,
+
+        /* Success and Error callbacks. */
+        onSuccess: PropTypes.func,
+        onError: PropTypes.func,
+
+        /* Whether to apply inline styling. */
+        inline: PropTypes.bool,
+
+        /* Whether to apply center styling. */
+        center: PropTypes.bool,
+
+        /* Reference callback for the form instance. Similar to ref. */
+        form: PropTypes.func
+    };
+
     constructor() {
         super();
 
@@ -23,6 +66,12 @@ export default class Form extends React.Component {
         this._unmounted = true;
     }
 
+    /**
+     * Submit handler for forms. Packages form data and submits the data
+     * to the server (or local interceptor).
+     *
+     * @param  {Event} e
+     */
     submit(e) {
         if (e) e.preventDefault();
         if (!this._form) return;
@@ -34,40 +83,37 @@ export default class Form extends React.Component {
          * nested elements. */
         let formData = getFormData(ReactDOM.findDOMNode(this._form));
 
-        this.setState({
+        let method = (this.props.method || 'post').trim().toLowerCase();
+
+        let data = Object.assign({}, formData || {}, this.props.data),
+            dataKey = ['put', 'post', 'patch'].includes(method) ?
+                      'data' :
+                      'params';
+
+        data = { [dataKey]: data };
+
+        /* If defined, use interceptor to allow offline functionality in offline modes. */
+        const ajax = (window.brv && window.brv.feedback) ?
+                     window.brv.feedback.interceptor || axios :
+                     axios;
+
+        setStatePromise.call(this, {
             submitting: true
-        }, () => {
-            let method = (this.props.method || 'post').trim().toLowerCase();
-
-            let data = Object.assign({}, formData || {}, this.props.data);
-            if (['put', 'post', 'patch'].includes(method)) {
-                data = { data: data };
-            } else {
-                data = { params: data };
-            }
-
-            /* If defined, use interceptor to allow offline functionality in offline modes. */
-            const ajax = (window.brv && window.brv.feedback && window.brv.feedback.interceptor) || axios;
-
+        })
+        .then(() => (
             ajax(Object.assign({
                 method: method,
                 url: this.props.action
             }, data))
-            .then(response => {
-                if (this.props.onSuccess) {
-                    this.props.onSuccess(response);
-                }
-            })
-            .catch(error => {
-                if (this.props.onError) {
-                    this.props.onError(error.response || error);
-                }
-            })
-            .then(() => {
-                if (!this._unmounted) {
-                    this.setState({ submitting: false });
-                }
-            });
+        ))
+        .then(response => {
+            if (this.props.onSuccess) this.props.onSuccess(response);
+        })
+        .catch(error => {
+            if (this.props.onError) this.props.onError(error.response || error);
+        })
+        .then(() => {
+            if (!this._unmounted) this.setState({ submitting: false });
         });
     }
 
@@ -85,19 +131,14 @@ export default class Form extends React.Component {
                         this._form = frm;
                         this.props.form && this.props.form(this);
                     }}>
-                    {React.Children.map(this.props.children,
-                     (child) => {
-                         if (child && child.type.prototype instanceof React.Component) {
-                             return React.cloneElement(child, {
-                                 form: () => {
-                                     if(this._form){
-                                         return this;
-                                     }
-                                 }
-                             })
-                         } else {
-                             return child;
-                         }
+                    {React.Children.map(this.props.children, (child) => {
+                        if (child && child.type.prototype instanceof React.Component) {
+                            return React.cloneElement(child, {
+                                form: () => this._form && this
+                            });
+                        }
+
+                        return child;
                      })}
                 </form>
             </div>
@@ -109,7 +150,12 @@ export default class Form extends React.Component {
  * Groups form elements within a form. Supports pairing an
  * element with a label.
  */
-class Group extends React.Component {
+class Group extends Component {
+
+    static propTypes = {
+        form: PropTypes.func
+    };
+
     constructor(){
         super();
 
@@ -122,9 +168,7 @@ class Group extends React.Component {
      * to the input.
      */
     labelClicked() {
-        if (this._input) {
-            ReactDOM.findDOMNode(this._input).focus();
-        }
+        if (this._input) ReactDOM.findDOMNode(this._input).focus();
     }
 
     /**
@@ -135,7 +179,7 @@ class Group extends React.Component {
     }
 
     render() {
-        /* Pass form to its children and save the input reference.*/
+        /* Pass form to its children and save the input reference. */
         return (
             <div className={'form-group ' + (this.props.className || '')}>
                 {React.Children.map(this.props.children,
@@ -149,13 +193,14 @@ class Group extends React.Component {
                              return React.cloneElement(child, {
                                  ref: this.inputCallback,
                                  form: this.props.form
-                             })
+                             });
                          } else if (child.type.prototype instanceof React.Component) {
                              return React.cloneElement(child, {
                                  form: this.props.form
-                             })
+                             });
                          }
                      }
+
                      return child;
                  })}
             </div>
@@ -165,6 +210,7 @@ class Group extends React.Component {
 
 /**
  * A form label.
+ * @param {object} props
  * @param {string} props.text The display text.
  * @param {boolean} props.inline Set display style to inline.
  * @param {function} props.onClick On click event handler.
@@ -180,173 +226,17 @@ const Label = props => (
 );
 
 /**
- * Abstract Input class. Used for polymorphism.
- */
-class Input extends React.Component {
-    constructor(props) {
-        super(props);
-    }
-}
-
-/**
- * A basic textbox.
- */
-class Textbox extends Input {
-    constructor(props) {
-        super(props);
-
-        this.state = {
-            /* The textbox value. */
-            value: ''
-        };
-
-        this.onFocus = ::this.onFocus;
-        this.onChange = ::this.onChange;
-    }
-
-    componentDidMount() {
-        /* Passes reference to self to parent. */
-        if (this.props.input) {
-            this.props.input(this);
-        }
-    }
-
-    onFocus() {
-        /* On focus, direct focus to nested DOM element. */
-        this._input && ReactDOM.findDOMNode(this._input).focus();
-    }
-
-    onChange(e) {
-        /* Save the textbox's value to the state. */
-        this.setState({
-            value: (e.target && e.target.value) || e.value || ''
-        }, () => {
-            if (this.props.onChange) this.props.onChange(this.state.value);
-        });
-    }
-
-    render() {
-        let passedProps = this.props.props || {};
-        return (
-            <div className='input input-textbox' tabIndex={0} onFocus={this.onFocus}>
-                <input
-                    className={classNames('textbox', {
-                        'seamless': this.props.seamless === true
-                    })}
-                    name={this.props.name}
-                    type={this.props.type || 'text'}
-                    onChange={this.onChange}
-                    value={this.state.value}
-                    ref={ input => (this._input = input)}
-                    {...passedProps}
-                />
-                { this.state.value.length === 0 && this.props.placeHolder && (
-                    <div className='placeholder'>{ this.props.placeHolder || '' }</div>
-                ) }
-            </div>
-        );
-    }
-}
-
-/**
- * A basic textbox.
- */
-class Textarea extends Input {
-    constructor(props) {
-        super(props);
-
-        this.state = {
-            /* The textarea value. */
-            value: ''
-        };
-
-        this.onFocus = ::this.onFocus;
-        this.onChange = ::this.onChange;
-    }
-
-    componentDidMount() {
-        /* Passes reference to self to parent. */
-        if (this.props.input) {
-            this.props.input(this);
-        }
-    }
-
-    onFocus() {
-        /* On focus, direct focus to nested DOM element. */
-        this._input && ReactDOM.findDOMNode(this._input).focus();
-    }
-
-    onChange(e) {
-        /* Save the textarea's value to the state. */
-        this.setState({
-            value: (e.target && e.target.value) || e.value || ''
-        }, () => {
-            if (this.props.onChange) this.props.onChange(this.state.value);
-        });
-    }
-
-    render() {
-        let passedProps = this.props.props || {};
-        return (
-            <div className='input input-textarea' tabIndex={0} onFocus={this.onFocus}>
-                <textarea
-                    className={classNames('textarea', {
-                        'seamless': this.props.seamless === true
-                    })}
-                    name={this.props.name}
-                    onChange={this.onChange}
-                    value={this.state.value}
-                    ref={ input => (this._input = input)}
-                    {...passedProps}
-                />
-                { this.state.value.length === 0 && this.props.placeHolder && (
-                    <div className='placeholder'>{ this.props.placeHolder || '' }</div>
-                ) }
-            </div>
-        );
-    }
-}
-
-/**
- * Simple button.
- */
-const Button = props => (
-    <button
-        className={classNames(props.className || '', 'btn', {
-            'submit': props.submit === true,
-            'right': props.right === true,
-            'left': props.left === true
-        })}
-        type={props.submit === true ? 'submit' : 'button'}
-        onClick={() => {
-            if (props.onClick) props.onClick();
-        }}
-    >{props.label}</button>
-);
-
-/**
- * Simple link.
- */
-const Link = props => (
-    <button
-        className={classNames(props.className || '', 'link', {
-            'submit': props.submit === true,
-            'right': props.right === true,
-            'left': props.left === true,
-            'danger': props.danger === true
-        })}
-        type={props.submit === true ? 'submit' : 'button'}
-        onClick={() => {
-            if (props.onClick) props.onClick();
-        }}
-    >{props.label}</button>
-);
-
-/**
  * Generic error message holder to be used by a Form.
  */
 const ErrorMessage = props => (
     <div className='form-error'>{props.text}</div>
 );
 
-export { Input, Group, Label, Textbox, Textarea, Button, Link, ErrorMessage };
+export {
+    Input,
+    Group,
+    Label,
+    Textbox,
+    Textarea,
+    ErrorMessage
+};

@@ -1,6 +1,7 @@
 import React from 'react';
 
-import Form, { Group as FormGroup, Link as FormLink } from 'forms/Form';
+import Form from 'forms/Form';
+import { Link } from 'forms/inputs/Button';
 import { Mood } from 'utils/Mood';
 
 /**
@@ -16,9 +17,8 @@ const DeleteAspect = props => (
         action={`/api/event/${props.eventId}/aspect/${props.id}`}
         method="DELETE"
         onSuccess={props.onRemove}
-        onError={()=>false}
-    >
-        <FormLink label='Remove' submit={true} danger={true} />
+        onError={()=>false}>
+        <Link label='Remove' submit={true} danger={true} />
     </Form>
 );
 

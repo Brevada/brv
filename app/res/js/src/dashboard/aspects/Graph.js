@@ -1,5 +1,6 @@
 import React from 'react';
 import _ from 'lodash';
+import PropTypes from 'prop-types';
 
 import { Filter } from 'dashboard/aspects/Filter';
 import { DateCluster } from 'utils/DateCluster';
@@ -11,7 +12,7 @@ import { LineChart } from 'dashboard/aspects/graph/LineChart';
 class Graph extends React.Component {
 
     static propTypes = {
-        data: React.PropTypes.array
+        data: PropTypes.array
     };
 
     constructor() {

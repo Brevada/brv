@@ -1,7 +1,8 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import classNames from 'classnames';
 
-import { Link } from 'components/Link';
+import { HyperLink } from 'components/HyperLink';
 import { Badges } from 'dashboard/aspects/Badges';
 import { Graph } from 'dashboard/aspects/Graph';
 import { Filter } from 'dashboard/aspects/Filter';
@@ -22,7 +23,7 @@ const AspectHeader = props => (
         <div className='title'>{props.title}</div>
         { (!props.removing && (
             <div className='links'>
-                <Link label={'Remove'} onClick={props.onRemove} />
+                <HyperLink label={'Remove'} onClick={props.onRemove} />
             </div>
         )) || (
             <div className='links filler'></div>
@@ -87,8 +88,8 @@ const AspectBody = props => (
 export default class Aspect extends React.Component {
 
     static propTypes = {
-        title: React.PropTypes.string.isRequired,
-        id: React.PropTypes.number.isRequired
+        title: PropTypes.string.isRequired,
+        id: PropTypes.number.isRequired
     };
 
     constructor(props) {

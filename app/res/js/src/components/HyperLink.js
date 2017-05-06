@@ -12,7 +12,7 @@ import classNames from 'classnames';
  * @param {boolean} props.btnLike Option to appear as a button, rather than a link.
  * @param {boolean} props.danger Is the button's action negative?
  */
-const Link = props => (
+const HyperLink = props => (
     <a
         className={classNames('link', {
             left: props.left === true,
@@ -31,4 +31,4 @@ const Link = props => (
     </a>
 );
 
-export { Link };
+export { HyperLink };

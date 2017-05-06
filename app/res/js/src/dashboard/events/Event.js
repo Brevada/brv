@@ -1,10 +1,10 @@
 import React from 'react';
 import _ from 'lodash';
 
-import { Link } from 'components/Link';
 import { Badges } from 'dashboard/aspects/Badges';
 import EventAspects from 'dashboard/events/EventAspects';
-import Form, { Link as FormLink } from 'forms/Form';
+import Form from 'forms/Form';
+import { Link } from 'forms/inputs/Button';
 import { InlineRemove as InlineRemoveDialog } from 'dashboard/events/dialogs/InlineRemove';
 import moment from 'moment';
 
@@ -29,7 +29,7 @@ const EventHint = props => (
                 inline={true}
                 onSuccess={props.onRefresh}
                 onError={()=>false}>
-                <FormLink
+                <Link
                     className='to incomplete'
                     submit={true}
                     label={'Still Active'} />

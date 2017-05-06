@@ -1,8 +1,8 @@
 import React from 'react';
 import Dialog from 'feedback/Dialog';
 import Form, { Group, Label } from 'forms/Form';
-import IntelliEmailInput from 'forms/IntelliEmailInput';
-import Toggle from 'forms/Toggle';
+import IntelliEmailInput from 'forms/inputs/IntelliEmailInput';
+import Toggle from 'forms/inputs/Toggle';
 
 /**
  * Email dialog.

@@ -2,7 +2,7 @@ import React from 'react';
 import _ from 'lodash';
 
 import Event from 'dashboard/events/Event';
-import DataLayer from 'forms/DataLayer';
+import Fetch from 'forms/Fetch';
 import { Filter } from 'dashboard/aspects/Filter';
 
 /**
@@ -10,7 +10,7 @@ import { Filter } from 'dashboard/aspects/Filter';
  *
  * @param {object} props
  */
-const EventLinked = props => {
+const FetchedEvent = props => {
     /* Don't pass in data and aspects twice. */
     let p = _.omit(props, ['data', 'aspects']);
     let event = Object.assign({}, props.event, props.data);
@@ -113,7 +113,7 @@ export default class EventContainer extends React.Component {
                             )))
                         ))
                         .map(event => (
-                            <DataLayer action={`/api/event/${event.id}`} data={{
+                            <Fetch action={`/api/event/${event.id}`} data={{
                                 store: this.props.storeId,
                                 days: Filter.toDays(this.props.filter)
                             }} refresh={this.state.refreshes.get(event.id) || -1} key={event.id}>
@@ -126,7 +126,7 @@ export default class EventContainer extends React.Component {
                                 onRemove={this.remove}
                                 onRefresh={()=>this.refreshEvent(event.id)}
                             />
-                            </DataLayer>
+                            </Fetch>
                     ))}
                 </div>
             </div>

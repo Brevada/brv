@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import LazilyLoad, { importLazy } from 'utils/LazilyLoad';
 import NavigationBar from 'dashboard/NavigationBar';
 import LiveFeed from 'dashboard/livefeed/LiveFeed';
@@ -10,7 +11,7 @@ export default class Dashboard extends React.Component {
 
     static propTypes = {
         /* Each dashboard is an instance of a specific store. */
-        storeId: React.PropTypes.number.isRequired
+        storeId: PropTypes.number.isRequired
     };
 
     constructor() {

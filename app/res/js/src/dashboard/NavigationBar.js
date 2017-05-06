@@ -2,7 +2,7 @@ import React from 'react';
 
 import { DropDownButton, DropDownOption } from 'components/DropDownNav';
 import { NavigationButton } from 'components/NavigationButton';
-import { Link } from 'components/Link';
+import { HyperLink } from 'components/HyperLink';
 
 const BrandBar = props => {
     return (
@@ -68,7 +68,7 @@ export default class NavigationBar extends React.Component {
                         active={this.props.view === 'EVENTS'}
                     />
                     {this.props.url && (
-                        <Link
+                        <HyperLink
                             label={`brevada.com/${this.props.url}`}
                             onClick={()=>window.location.replace(`/${this.props.url}`)}
                         />

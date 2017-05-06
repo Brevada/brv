@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
+import PropTypes from 'prop-types';
 import docReady from 'doc-ready';
 
-import DataLayer from 'forms/DataLayer';
+import Fetch from 'forms/Fetch';
 import Loader from 'dashboard/Loader';
 import Dashboard from 'dashboard/Dashboard';
 
@@ -22,7 +23,14 @@ const Message = props => (
 /**
  * Connects dashboard with data layer and handles multiple store scenarios.
  */
-class DashboardLoader extends React.Component {
+class DashboardLoader extends Component {
+
+    static propTypes = {
+        loading: PropTypes.bool,
+        error: PropTypes.object,
+        data: PropTypes.object
+    };
+
     constructor(props) {
         super(props);
 
@@ -114,6 +122,7 @@ class DashboardLoader extends React.Component {
                     storeId={this.state.storeId}
                     url={this.state.store.url}
                     stores={this.props.data.stores}
+
                     onStoreChange={this.onStoreChange}
                 />
             );
@@ -125,9 +134,9 @@ class DashboardLoader extends React.Component {
 
 docReady(function() {
     ReactDOM.render(
-        (<DataLayer action="/api/stores">
+        (<Fetch action="/api/stores">
             <DashboardLoader />
-        </DataLayer>),
+        </Fetch>),
         document.getElementById('dashboard-root')
     );
 });

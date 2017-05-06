@@ -6,7 +6,7 @@ import TimeFilters from 'dashboard/TimeFilters';
 import { DialogButtonActions } from 'dialogs/Dialog';
 import NewEventDialog from 'dashboard/events/dialogs/NewEvent';
 import Loader from 'dashboard/Loader';
-import DataLayer from 'forms/DataLayer';
+import Fetch from 'forms/Fetch';
 
 /**
  * Links event container with loader and data layer.
@@ -17,7 +17,7 @@ import DataLayer from 'forms/DataLayer';
  * @param {string} props.filter The time filter key from Filter.
  * @param {object} props.data Data from the data layer.
  */
-const EventContainerLinked = props => {
+const FetchedEventContainer = props => {
     if (props.loading || !props.data) {
         return (
             <Loader
@@ -120,7 +120,7 @@ export default class EventsView extends React.Component {
                     actionLabel='+ Create a New Event'
                     onAction={() => {this.newEventDialogAction(DialogButtonActions.OPEN);}}
                 />
-                <DataLayer action="/api/events" data={{
+                <Fetch action="/api/events" data={{
                     store: this.props.storeId,
                     days: Filter.toDays(this.state.filter)
                 }}
@@ -129,7 +129,7 @@ export default class EventsView extends React.Component {
                         filter={this.state.filter}
                         storeId={this.props.storeId}
                     />
-                </DataLayer>
+                </Fetch>
             </div>
         );
     }

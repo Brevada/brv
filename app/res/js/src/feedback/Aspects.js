@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import _ from 'lodash';
 
 import Aspect from 'feedback/Aspect';
@@ -9,7 +10,7 @@ import Aspect from 'feedback/Aspect';
 export default class Aspects extends React.Component {
 
     static propTypes = {
-        aspects: React.PropTypes.array
+        aspects: PropTypes.array
     };
 
     constructor(props) {

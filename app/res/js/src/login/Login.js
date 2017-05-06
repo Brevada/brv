@@ -1,7 +1,7 @@
 import React from 'react';
 
-import Form, { Group, Label, Textbox, Button, ErrorMessage } from 'forms/Form';
-import { Link } from 'components/Link';
+import Form, { Group, Label, Textbox, ErrorMessage } from 'forms/Form';
+import { Button } from 'forms/inputs/Button';
 
 /**
  * Login form.
@@ -21,7 +21,6 @@ export default class Login extends React.Component {
      * Redirect user to dashboard.
      */
     onSuccess(response) {
-        // TODO: Interesting loading graphic.
         window.location.replace('/dashboard');
     }
 
@@ -52,6 +51,7 @@ export default class Login extends React.Component {
                             name='email'
                             placeHolder='Email'
                             type='email'
+                            requireAttempt={true}
                             props={{
                                 autoFocus: true
                             }}
@@ -63,6 +63,7 @@ export default class Login extends React.Component {
                             name='password'
                             placeHolder='Password'
                             type='password'
+                            requireAttempt={true}
                         />
                     </Group>
                     <Group>
