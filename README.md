@@ -65,20 +65,20 @@ The latest version of `npm` and `composer` are required.
 
 To build all assets (css/javascript) in a development environment:
 ```
-> npm run dev-build
+> npm run build:dev
 ```
 
 Which is equivalent to:
 ```
-> npm run dev-build-css && npm run dev-build-js
+> npm run build:css && npm run build:js:dev
 ```
 
 To build documentation:
 ```
-> npm run build-docs
+> npm run build:docs
 ```
 
-To build for production, omit the "dev-" prefix:
+To build for production, omit the ":dev" suffix:
 ```
 > npm run build
 ```

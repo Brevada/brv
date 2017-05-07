@@ -3,16 +3,16 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "dev-build-css": "node scripts/run-css",
-    "dev-build-js": "webpack",
-    "build-js": "webpack -p --config ./webpack.prod.config.js",
-    "build-docs": "node scripts/run-phploc && node scripts/build-docs",
-    "clean": "scripts/run-clean.js",
-    "test": "scripts/run-backend-tests.js",
-    "dev-build": "npm run dev-build-css && npm run dev-build-js",
-    "build": "npm run dev-build-css && npm run build-js",
-    "build-feedback": "node scripts/build-feedback",
-    "postinstall": "scripts/post-install.js && npm run build-feedback"
+    "build:css": "node scripts/run-css",
+    "build:js": "webpack -p --config ./webpack.prod.config.js",
+    "build:js:dev": "webpack",
+    "build:docs": "node scripts/run-phploc && node scripts/build-docs",
+    "build:feedback": "node scripts/build-feedback",
+    "build": "npm run build:css && npm run build:js",
+    "build:dev": "npm run build:css && npm run build:js:dev",
+    "clean": "node scripts/run-clean",
+    "test": "node scripts/run-backend-tests",
+    "postinstall": "node scripts/post-install && npm run build:feedback"
   },
   "repository": {
     "type": "git",
