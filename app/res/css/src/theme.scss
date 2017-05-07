@@ -1,7 +1,7 @@
 /* Core Theme */
 
 /* Normalize environment first. */
-@import 'libs/normalize';
+@import '~normalize.css/normalize';
 
 /* Colour guide. */
 @import 'colours';
@@ -16,7 +16,8 @@
 @import 'htmlDefaults';
 
 /* Font Awesome */
-@import 'libs/font-awesome/scss/font-awesome';
+@import '~font-awesome/scss/font-awesome';
+@import '_font-awesome_config';
 
 /* Assets */
 @import 'assets';

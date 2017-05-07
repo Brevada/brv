@@ -97,7 +97,7 @@ class EventAspectsItem extends Component {
     render () {
         return (
             <div className={classNames('event-aspects-item', {
-                removing: this.state.removing
+                'state-removing': this.state.removing
             })}>
                 <div className='ly ly-abs-container'>
                     <div

@@ -41,9 +41,11 @@
     "ncp": "^2.0.0",
     "node-fs-extra": "^0.8.2",
     "node-sass": "^4.5.0",
+    "node-sass-tilde-importer": "^1.0.0",
     "nodemon": "^1.11.0",
     "progress": "^2.0.0",
     "sass-inline-image": "0.0.3",
+    "sass-module-importer": "^1.4.0",
     "webpack": "^2.2.1"
   },
   "dependencies": {
@@ -54,16 +56,19 @@
     "crypto": "0.0.3",
     "doc-ready": "^1.0.4",
     "expose-loader": "^0.7.1",
+    "font-awesome": "^4.7.0",
     "get-form-data": "^1.2.5",
     "immutability-helper": "^2.0.0",
     "lodash": "^4.17.4",
     "moment": "^2.16.0",
+    "normalize.css": "^7.0.0",
     "prop-types": "^15.5.8",
     "react": "^15.3.2",
     "react-datepicker": "^0.39.0",
     "react-dom": "^15.3.2",
     "react-fastclick": "^3.0.1",
     "react-touch": "^0.4.2",
-    "recharts": "^0.20.6"
+    "recharts": "^0.20.6",
+    "sass-flex-mixin": "^1.0.3"
   }
 }

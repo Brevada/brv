@@ -164,7 +164,7 @@ export default class Event extends React.Component {
 
         return (
             <div className={classNames('item constrain-w event', {
-                removing: this.state.confirmingDelete && this.state.deleting
+                'state-removing': this.state.confirmingDelete && this.state.deleting
             })}>
                 <div className='ly constrain-w item dl event-content'>
                     <EventHeader
