@@ -89,7 +89,7 @@ To build for production, omit the ":dev" suffix:
 in the shell's environment variables.
 
 ```
-> npm test
+> npm test:backend
 ```
 
 Arguments supplied to the test command are forwarded to `phpunit`.

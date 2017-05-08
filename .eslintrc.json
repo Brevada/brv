@@ -1,0 +1,180 @@
+{
+    "env": {
+        "browser": true,
+        "es6": true
+    },
+    "extends": "eslint:recommended",
+    "parserOptions": {
+        "ecmaFeatures": {
+            "experimentalObjectRestSpread": true,
+            "jsx": true,
+            "impliedStrict": true
+        },
+        "sourceType": "module"
+    },
+    "plugins": [
+        "react"
+    ],
+    "rules": {
+        "quotes": [
+            "error",
+            "double"
+        ],
+        "semi": [
+            "error",
+            "always"
+        ],
+        "no-compare-neg-zero": "warn",
+        "no-extra-parens": "warn",
+        "valid-jsdoc": "error",
+        "block-scoped-var": "error",
+        "class-methods-use-this": "error",
+        "complexity": [
+            "error",
+            4
+        ],
+        "consistent-return": "error",
+        "no-alert": "error",
+        "no-caller": "error",
+        "no-div-regex": "error",
+        "no-eq-null": "error",
+        "no-eval": "error",
+        "no-extra-bind": "warn",
+        "no-labels": "error",
+        "no-invalid-this": "error",
+        "no-lone-blocks": "error",
+        "no-magic-numbers": "warn",
+        "no-loop-func": "warn",
+        "no-multi-str": "warn",
+        "no-self-compare": "error",
+        "no-return-assign": "warn",
+        "no-script-url": "error",
+        "no-throw-literal": "error",
+        "no-useless-call": "warn",
+        "no-useless-return": "warn",
+        "vars-on-top": "warn",
+        "wrap-iife": "error",
+        "no-undef": "error",
+        "no-undefined": "error",
+        "no-use-before-define": "warn",
+        "no-path-concat": "error",
+        "yoda": "warn",
+        "newline-per-chained-call": [
+            "error",
+            {
+                "ignoreChainWithDepth": 2
+            }
+        ],
+        "newline-before-return": "error",
+        "newline-after-var": [
+            "error",
+            "always"
+        ],
+        "new-parens": "error",
+        "new-cap": "error",
+        "max-statements-per-line": "error",
+        "max-statements": [
+            "warn",
+            10
+        ],
+        "max-params": [
+            "warn",
+            5
+        ],
+        "max-nested-callbacks": [
+            "error",
+            8
+        ],
+        "max-len": [
+            "error",
+            120
+        ],
+        "max-depth": [
+            "error",
+            5
+        ],
+        "lines-around-directive": "error",
+        "lines-around-comment": "warn",
+        "linebreak-style": [
+            "error",
+            "unix"
+        ],
+        "keyword-spacing": "error",
+        "key-spacing": "error",
+        "jsx-quotes": [
+            "error",
+            "prefer-double"
+        ],
+        "indent": [
+            "error",
+            4
+        ],
+        "id-match": [
+            "warn",
+            "^(([a-z]+([A-Z][a-z]+)*)|(_[a-z]+))$"
+        ],
+        "func-call-spacing": "error",
+        "eol-last": "error",
+        "comma-style": [
+            "error",
+            "last"
+        ],
+        "comma-spacing": [
+            "error",
+            {
+                "before": false,
+                "after": true
+            }
+        ],
+        "comma-dangle": [
+            "error",
+            "never"
+        ],
+        "brace-style": [
+            "error",
+            "1tbs"
+        ],
+        "block-spacing": [
+            "error",
+            "always"
+        ],
+        "unicode-bom": "error",
+        "space-infix-ops": "error",
+        "spaced-comment": "error",
+        "require-jsdoc": [
+            "error",
+            {
+                "require": {
+                    "FunctionDeclaration": true,
+                    "MethodDefinition": true,
+                    "ClassDeclaration": true,
+                    "ArrowFunctionExpression": true
+                }
+            }
+        ],
+        "no-unneeded-ternary": "error",
+        "no-trailing-spaces": "error",
+        "no-tabs": "error",
+        "no-nested-ternary": "warn",
+        "no-mixed-operators": "error",
+        "arrow-spacing": [
+            "error",
+            {
+                "before": true,
+                "after": true
+            }
+        ],
+        "generator-star-spacing": [
+            "error",
+            {
+                "before": false,
+                "after": true
+            }
+        ],
+        "no-confusing-arrow": "error",
+        "no-duplicate-imports": "error",
+        "prefer-const": "error",
+        "prefer-arrow-callback": "warn",
+        "object-shorthand": "error"
+    }
+}
