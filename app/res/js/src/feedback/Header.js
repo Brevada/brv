@@ -1,126 +1,202 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import classNames from 'classnames';
+/* global brv */
+
+import React, { Component } from "react";
+import PropTypes from "prop-types";
+import classNames from "classnames";
+
+import HeaderButton from "feedback/HeaderButton";
 
 /**
  * Header action constants (enum).
  * @type {Object}
  */
 const HeaderActions = {
-    COMMENT: 'COMMENT',
-    SUBMIT_COMMENT: 'SUBMIT_COMMENT',
-    SUBMIT_EMAIL: 'SUBMIT_EMAIL',
-    FINISH: 'FINISH',
-    CLOSE_DIALOG: 'CLOSE_DIALOG'
+    COMMENT: "COMMENT",
+    SUBMIT_COMMENT: "SUBMIT_COMMENT",
+    SUBMIT_EMAIL: "SUBMIT_EMAIL",
+    FINISH: "FINISH",
+    CLOSE_DIALOG: "CLOSE_DIALOG"
 };
 
 /**
- * Individual header button for use in header controls.
- */
-const HeaderButton = props => (
-    <div
-        className={classNames('btn', 'header-btn', {
-            disabled: !!props.disabled,
-            negative: !!props.negative
-        })}
-        onClick={() => !props.disabled && props.onClick()}>
-        <span>{props.label}</span>
-        <i className={`fa ${props.icon}`}></i>
-    </div>
-);
-
-/**
  * Header controls for main view. Contains comment and finish buttons.
+ * @param   {object} props React props
+ * @param   {boolean} props.enableComments Display option to comment.
+ * @param   {boolean} props.enableSubmit Allow user to submit form (of dialog).
+ * @param   {function} props.onAction Handles button click event, or any other action.
+ * @returns {JSX}
  */
-const FeedbackControls = props => (
-    <div className={classNames('controls', {
-        'single': !props.enableComments
-    })}>
-        { props.enableComments && (
-            <HeaderButton
-                label='comment'
-                icon='fa-commenting-o'
-                onClick={()=>props.onAction(HeaderActions.COMMENT)}
-            />
-        ) }
-        <HeaderButton
-            label='finish'
-            icon='fa-check-circle-o'
-            onClick={()=>props.onAction(HeaderActions.FINISH)}
-            disabled={!props.enableSubmit}
-        />
-    </div>
-);
+const FeedbackControls = props => {
+    // eslint-disable-next-line require-jsdoc
+    const onCommentClicked = () => (props.onAction(HeaderActions.COMMENT));
+    // eslint-disable-next-line require-jsdoc
+    const onFinishClicked = () => (props.onAction(HeaderActions.FINISH));
 
-/**
- * Header controls for comment dialog.
- */
-const CommentControls = props => {
-    let lastForm = brv.feedback.session.getRemainingCount() === 0;
+    const commentBtn = props.enableComments && (
+        <HeaderButton
+            label="comment"
+            icon="fa-commenting-o"
+            onClick={onCommentClicked}
+        />
+    );
 
     return (
-        <div className='controls'>
+        <div
+            className={classNames("controls", {
+                "single": !props.enableComments
+            })}>
+            {commentBtn}
             <HeaderButton
-                label={lastForm ? 'skip' : 'cancel'}
-                icon='fa-times-circle'
-                negative={true}
-                onClick={()=>props.onAction(HeaderActions.CLOSE_DIALOG)}
-            />
-            <HeaderButton
-                label='submit comment'
-                icon='fa-check-circle-o'
-                onClick={()=>props.onAction(HeaderActions.SUBMIT_COMMENT)}
+                label="finish"
+                icon="fa-check-circle-o"
+                onClick={onFinishClicked}
                 disabled={!props.enableSubmit}
             />
         </div>
     );
 };
 
+FeedbackControls.propTypes = {
+    enableComments: PropTypes.bool,
+    enableSubmit: PropTypes.bool,
+    onAction: PropTypes.func.isRequired
+};
+
+FeedbackControls.defaultProps = {
+    enableComments: false,
+    enableSubmit: true
+};
+
+/**
+ * Header controls for comment dialog.
+ * @param   {object} props React props
+ * @param   {function} props.onAction Handles button click event or other dialog action.
+ * @param   {boolean} props.enableSubmit Allow user to submit form (or dialog).
+ * @returns {JSX}
+ */
+const CommentControls = props => {
+    const lastForm = brv.feedback.session.getRemainingCount() === 0;
+
+    // eslint-disable-next-line require-jsdoc
+    const onCancel = () => (props.onAction(HeaderActions.CLOSE_DIALOG));
+    // eslint-disable-next-line require-jsdoc
+    const onSubmit = () => (props.onAction(HeaderActions.SUBMIT_COMMENT));
+
+    return (
+        <div className="controls">
+            <HeaderButton
+                label={lastForm ? "skip" : "cancel"}
+                icon="fa-times-circle"
+                negative={true}
+                onClick={onCancel}
+            />
+            <HeaderButton
+                label="submit comment"
+                icon="fa-check-circle-o"
+                onClick={onSubmit}
+                disabled={!props.enableSubmit}
+            />
+        </div>
+    );
+};
+
+CommentControls.propTypes = {
+    enableSubmit: PropTypes.bool,
+    onAction: PropTypes.func.isRequired
+};
+
+CommentControls.defaultProps = {
+    enableSubmit: true
+};
+
 /**
  * Header controls for email dialog.
+ * @param   {object} props React props
+ * @param   {function} props.onAction Handles button click event or other dialog action.
+ * @param   {boolean} props.enableSubmit Allow user to submit form (or dialog).
+ * @returns {JSX}
  */
-const EmailControls = props => (
- <div className='controls'>
-     <HeaderButton
-         label='skip'
-         icon='fa-times-circle'
-         negative={true}
-         onClick={()=>props.onAction(HeaderActions.CLOSE_DIALOG)}
-     />
-     <HeaderButton
-         label='submit email'
-         icon='fa-check-circle-o'
-         onClick={()=>props.onAction(HeaderActions.SUBMIT_EMAIL)}
-         disabled={!props.enableSubmit}
-     />
- </div>
-);
+const EmailControls = props => {
+    // eslint-disable-next-line require-jsdoc
+    const onCancel = () => (props.onAction(HeaderActions.CLOSE_DIALOG));
+    // eslint-disable-next-line require-jsdoc
+    const onSubmit = () => (props.onAction(HeaderActions.SUBMIT_EMAIL));
+
+    return (
+        <div className="controls">
+            <HeaderButton
+                label="skip"
+                icon="fa-times-circle"
+                negative={true}
+                onClick={onCancel}
+            />
+            <HeaderButton
+                label="submit email"
+                icon="fa-check-circle-o"
+                onClick={onSubmit}
+                disabled={!props.enableSubmit}
+            />
+        </div>
+    );
+};
+
+EmailControls.propTypes = {
+    enableSubmit: PropTypes.bool,
+    onAction: PropTypes.func.isRequired
+};
+
+EmailControls.defaultProps = {
+    enableSubmit: true
+};
 
 /**
  * Minified & simplistic header.
+ * @param   {object} props React props
+ * @param   {string} props.name Store name
+ * @returns {JSX}
  */
 const MinyHeader = props => (
-    <div className='feedback-header miny-header'>
-        <div className='content'>
-            <div className='brand logo-lq'></div>
-            <div className='heading'>
-                Give <span>{props.name}</span> Feedback
+    <div className="feedback-header miny-header">
+        <div className="content">
+            <div className="brand logo-lq"></div>
+            <div className="heading">
+                {"Give "}<span>{props.name}</span>{" Feedback"}
             </div>
         </div>
     </div>
 );
 
+MinyHeader.propTypes = {
+    name: PropTypes.string.isRequired
+};
+
 /**
  * Feedback header.
  */
-class Header extends React.Component {
+class Header extends Component {
 
     static propTypes = {
-        name: PropTypes.string,
+        name: PropTypes.string.isRequired,
         onComment: PropTypes.func,
-        onFinish: PropTypes.func
+        onFinish: PropTypes.func,
+        showDialog: PropTypes.string,
+        enableComments: PropTypes.bool,
+        onAction: PropTypes.func,
+        enableSubmit: PropTypes.bool
     };
 
+    static defaultProps = {
+        onComment: () => { /* no op */ },
+        onFinish: () => { /* no op */ },
+        onAction: () => { /* no op */ },
+        enableComments: false,
+        enableSubmit: false,
+        showDialog: null
+    };
+
+    /**
+     * @constructor
+     */
     constructor() {
         super();
 
@@ -130,6 +206,7 @@ class Header extends React.Component {
 
     /**
      * Returns the controls for the current environment.
+     * @returns {JSX}
      */
     getControls() {
         const props = {
@@ -146,23 +223,24 @@ class Header extends React.Component {
             );
         }
 
-        switch (this.props.showDialog) {
-            case 'COMMENT':
-                return (<CommentControls {...props} />);
-            case 'EMAIL':
-                return (<EmailControls {...props} />);
-            default:
-                return null;
-        }
+        const dialog = ({
+            "COMMENT": (<CommentControls {...props} />),
+            "EMAIL": (<EmailControls {...props} />)
+        })[this.props.showDialog];
+
+        return dialog || null;
     }
 
+    /**
+     * @override
+     */
     render() {
         return (
-            <div className='feedback-header'>
-                <div className='content'>
-                    <div className='brand logo-lq'></div>
-                    <div className='heading'>
-                        Give <span>{this.props.name}</span> Feedback
+            <div className="feedback-header">
+                <div className="content">
+                    <div className="brand logo-lq"></div>
+                    <div className="heading">
+                        {"Give "}<span>{this.props.name}</span>{" Feedback"}
                     </div>
                     { this.getControls() }
                 </div>

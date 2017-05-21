@@ -1,9 +1,14 @@
 {
     "env": {
         "browser": true,
+        "node": true,
         "es6": true
     },
-    "extends": "eslint:recommended",
+    "extends": [
+        "eslint:recommended",
+        "plugin:react/recommended"
+    ],
+    "parser": "babel-eslint",
     "parserOptions": {
         "ecmaFeatures": {
             "experimentalObjectRestSpread": true,
@@ -15,6 +20,7 @@
     "plugins": [
         "react"
     ],
+    "globals": {},
     "rules": {
         "quotes": [
             "error",
@@ -25,8 +31,14 @@
             "always"
         ],
         "no-compare-neg-zero": "warn",
-        "no-extra-parens": "warn",
-        "valid-jsdoc": "error",
+        "no-extra-parens": "off",
+        "valid-jsdoc": ["error", {
+            "prefer": {
+                "return": "returns"
+            },
+            "requireReturnType": false,
+            "requireReturnDescription": false
+        }],
         "block-scoped-var": "error",
         "class-methods-use-this": "error",
         "complexity": [
@@ -37,13 +49,11 @@
         "no-alert": "error",
         "no-caller": "error",
         "no-div-regex": "error",
-        "no-eq-null": "error",
         "no-eval": "error",
         "no-extra-bind": "warn",
         "no-labels": "error",
         "no-invalid-this": "error",
         "no-lone-blocks": "error",
-        "no-magic-numbers": "warn",
         "no-loop-func": "warn",
         "no-multi-str": "warn",
         "no-self-compare": "error",
@@ -54,8 +64,6 @@
         "no-useless-return": "warn",
         "vars-on-top": "warn",
         "wrap-iife": "error",
-        "no-undef": "error",
-        "no-undefined": "error",
         "no-use-before-define": "warn",
         "no-path-concat": "error",
         "yoda": "warn",
@@ -94,7 +102,21 @@
             5
         ],
         "lines-around-directive": "error",
-        "lines-around-comment": "warn",
+        "lines-around-comment": [
+            "warn",
+            {
+                "beforeBlockComment": true,
+                "afterBlockComment": false,
+                "beforeLineComment": true,
+                "afterLineComment": false,
+                "allowBlockStart": true,
+                "allowBlockEnd": true,
+                "allowObjectStart": true,
+                "allowObjectEnd": true,
+                "allowArrayStart": true,
+                "allowArrayEnd": true
+            }
+        ],
         "linebreak-style": [
             "error",
             "unix"
@@ -108,10 +130,6 @@
         "indent": [
             "error",
             4
-        ],
-        "id-match": [
-            "warn",
-            "^(([a-z]+([A-Z][a-z]+)*)|(_[a-z]+))$"
         ],
         "func-call-spacing": "error",
         "eol-last": "error",
@@ -140,7 +158,7 @@
         ],
         "unicode-bom": "error",
         "space-infix-ops": "error",
-        "spaced-comment": "error",
+        "spaced-comment": "warn",
         "require-jsdoc": [
             "error",
             {
@@ -175,6 +193,67 @@
         "no-duplicate-imports": "error",
         "prefer-const": "error",
         "prefer-arrow-callback": "warn",
-        "object-shorthand": "error"
+        "object-shorthand": "error",
+        "react/jsx-max-props-per-line": [
+            "warn",
+            {
+                "maximum": 1,
+                "when": "multiline"
+            }
+        ],
+        "react/jsx-first-prop-new-line": [
+            "warn",
+            "multiline"
+        ],
+        "react/forbid-component-props": "off",
+        "react/forbid-elements": "off",
+        "react/forbid-prop-types": "off",
+        "react/jsx-boolean-value": ["error", "always"],
+        "react/jsx-closing-bracket-location": [
+            "error",
+            {
+                "nonEmpty": "after-props",
+                "selfClosing": "tag-aligned"
+            }
+        ],
+        "react/jsx-curly-spacing": [
+            "error",
+            "never"
+        ],
+        "react/jsx-equals-spacing": [
+            "error",
+            "never"
+        ],
+        "react/jsx-indent-props": [
+            "error",
+            4
+        ],
+        "react/jsx-indent": [
+            "error",
+            4
+        ],
+        "react/jsx-key": "warn",
+        "react/jsx-no-bind": "warn",
+        "react/jsx-no-comment-textnodes": "error",
+        "react/jsx-no-duplicate-props": "error",
+        "react/jsx-no-literals": "warn",
+        "react/jsx-no-undef": "error",
+        "react/jsx-wrap-multilines": [
+            "error",
+            {
+                "declaration": true,
+                "assignment": true,
+                "return": true,
+                "arrow": true
+            }
+        ],
+        "react/no-deprecated": "error",
+        "react/no-find-dom-node": "error",
+        "react/prefer-es6-class": [
+            "error",
+            "always"
+        ],
+        "react/react-in-jsx-scope": "error",
+        "react/require-default-props": "warn"
     }
 }

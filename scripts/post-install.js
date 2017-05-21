@@ -1,4 +1,6 @@
-const execSync = require("child_process").execSync;
+/* eslint-disable no-console */
+
+const { execSync } = require("child_process");
 
 try {
     if (process.env.NODE_ENV === "production") {

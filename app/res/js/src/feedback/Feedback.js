@@ -1,68 +1,149 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+/* global brv */
 
-import Header, { MinyHeader, HeaderActions } from 'feedback/Header';
-import Aspects from 'feedback/Aspects';
-import CommentDialog from 'feedback/dialogs/Comment';
-import EmailDialog from 'feedback/dialogs/Email';
-import InactivityDialog from 'feedback/dialogs/Inactivity';
+import React, { Component } from "react";
+import PropTypes from "prop-types";
+import setStatePromise from "utils/StatePromise";
+
+import Header, { MinyHeader, HeaderActions } from "feedback/Header";
+import Aspects from "feedback/Aspects";
+import CommentDialog from "feedback/dialogs/Comment";
+import EmailDialog from "feedback/dialogs/Email";
+import InactivityDialog from "feedback/dialogs/Inactivity";
+
+const DURATION = Object.freeze({
+    RESET: 10000,
+    INACTIVITY: 20000,
+    INACTIVITY_COMMENT: 25000,
+    INACTIVITY_WARNING: 8000
+});
+
+const DIALOG_TYPE = Object.freeze({
+    EMAIL: "EMAIL",
+    COMMENT: "COMMENT",
+    NONE: null
+});
+
+const EMAIL_DIALOG_ORDER = Object.freeze({
+    ALWAYS_BEFORE: 3,
+    ALWAYS_AFTER: 2,
+    AFTER_IF_POOR: 1,
+    NEVER: 0
+});
+
+/**
+ * Message to display after a feedback session has ended.
+ * @param   {object} props React props
+ * @param   {string} props.name The store name
+ * @param   {function} props.onReset Optional onReset event handler, triggered
+ * when user clicks the reset button.
+ * @returns {void}
+ */
+const FeedbackGiven = props => (
+    <div className={"ly flex-v defined-size feedback-container dialog-none state-done"}>
+        <MinyHeader name={props.name} />
+        <div className="thanks">
+            <span>{"Thank you for giving feedback!"}</span>
+            { props.onReset &&
+                <div
+                    className="btn btn-refresh"
+                    onClick={props.onReset}>
+                    <i className={"fa fa-refresh"}></i>
+                </div>
+             }
+        </div>
+    </div>
+);
+
+FeedbackGiven.propTypes = {
+    name: PropTypes.string.isRequired,
+    onReset: PropTypes.func
+};
+
+FeedbackGiven.defaultProps = {
+    onReset: null
+};
 
 /**
  * The feedback view.
  */
-export default class Feedback extends React.Component {
+export default class Feedback extends Component {
 
     static propTypes = {
-        storeId: PropTypes.number.isRequired
+        storeId: PropTypes.number.isRequired,
+        data: PropTypes.object
     };
 
+    static defaultProps = {
+        data: {}
+    };
+
+    static initialState = {
+
+        /* Indicates whether at least one aspect has been rated. */
+        feedbackGiven: false,
+
+        /* Indicates that a comment is ready for submission. */
+        pendingComment: false,
+
+        /* Indicates a comment has been submitted. */
+        commentGiven: false,
+
+        /* Indicates whether an email has been submitted. */
+        emailGiven: false,
+
+        /* Determines which dialog to show if any. */
+        showDialog: DIALOG_TYPE.NONE,
+
+        /* Indicates user's session is complete. */
+        done: false,
+
+        /* Used to force entire vdom reset. */
+        reset: 1,
+
+        /* Unique session token to group customer responses. */
+        session: "",
+
+        /* Indicates visibility of inactivity warning */
+        showInactivityWarning: false
+    };
+
+    /**
+     * @constructor
+     * @param   {object} props React props
+     */
     constructor(props) {
         super(props);
-
-        this.RESET_DURATION = 10000;
-        this.INACTIVITY_DURATION = 20000;
-        this.INACTIVITY_COMMENT_DURATION = 25000;
-        this.INACTIVITY_WARNING_DURATION = 8000;
-
-        this._initialState = {
-            /* Indicates whether at least one aspect has been rated. */
-            feedbackGiven: false,
-
-            /* Indicates that a comment is ready for submission. */
-            pendingComment: false,
-            /* Indicates a comment has been submitted. */
-            commentGiven: false,
-
-            /* Indicates whether an email has been submitted. */
-            emailGiven: false,
-
-            /* Determines which dialog to show if any. */
-            showDialog: false,
-
-            /* Indicates user's session is complete. */
-            done: false,
-
-            /* Used to force entire vdom reset. */
-            reset: 1,
-
-            /* Unique session token to group customer responses. */
-            session: '',
-
-            /* Indicates visibility of inactivity warning */
-            showInactivityWarning: false
-        };
-
-        /* Default to EMAIL screen if config set. */
-        if (props.data && props.data.template_location === 3) {
-            this._initialState.showDialog = 'EMAIL';
-        }
-
-        this.state = this._initialState;
 
         /* Contains reference to current/last dialog's form.
          * Not part of state, since it doesn't affect render and should
          * not trigger redraw. */
         this.dialogForm = null;
+
+        this._tmrReset = undefined;
+        this._tmrInactivity = undefined;
+
+        this.state = Object.assign(
+            {},
+            Feedback.initialState,
+
+            /* Default to EMAIL screen if config set. */
+            props.data && props.data.template_location === 3 ?
+            { showDialog: DIALOG_TYPE.EMAIL } :
+            {},
+
+            { session: (() => {
+                brv.feedback && brv.feedback.session.init();
+
+                return brv.feedback.session.getToken();
+            })() }
+        );
+    }
+
+    /**
+     * @override
+     */
+    componentWillMount() { // eslint-disable-line max-statements
+        /* Bind methods. */
 
         this.onAspectSubmitted = ::this.onAspectSubmitted;
         this.onHeaderAction = ::this.onHeaderAction;
@@ -79,59 +160,75 @@ export default class Feedback extends React.Component {
 
         this.getDialog = ::this.getDialog;
 
-        this._tmrReset = undefined;
-        this._tmrInactivity = undefined;
         this.onInactive = ::this.onInactive;
         this.resetInactivity = ::this.resetInactivity;
-
-        brv.feedback && brv.feedback.session.init();
-        this.state.session = brv.feedback.session.getToken();
     }
 
+    /**
+     * @override
+     */
     componentWillUnmount() {
         this._unmounted = true;
     }
 
     /**
      * Resets session.
+     * @returns {void}
      */
     reset() {
         clearTimeout(this._tmrReset);
         brv.feedback && brv.feedback.session.init();
+
         if (this._unmounted) return;
-        this.setState(s => (Object.assign({}, this._initialState, {
-            reset: (s.reset+1) % 100, /* Arbitrary cycle length. */
+
+        this.setState(s => Object.assign({}, this._initialState, {
+            reset: (s.reset + 1) % 100, /* Arbitrary cycle length. */
             session: brv.feedback.session.getToken()
-        })));
+        }));
 
         this.resetInactivity();
     }
 
     /**
      * Resets inactivity timer.
+     * @returns {void}
      */
     resetInactivity() {
         clearTimeout(this._tmrInactivity);
 
-        if (this._unmounted) return;
-        if (!(window.brv && window.brv.env && window.brv.env.IS_DEVICE)) return;
-
-        if (this.state.showInactivityWarning) {
-            this.setState({
-                showInactivityWarning: false
-            });
+        if (this._unmounted || !(window.brv && window.brv.env && window.brv.env.IS_DEVICE)) {
+            return;
         }
 
-        /* If on comment screen, wait longer. */
-        this._tmrInactivity = setTimeout(this.onInactive, (
-            this.state.showDialog === 'COMMENT' ?
-            this.INACTIVITY_COMMENT_DURATION :
-            this.INACTIVITY_DURATION
-        ));
+        setStatePromise.call(this, state => {
+            return state.showInactivityWarning ? {
+                showInactivityWarning: false
+            } : {};
+        }).then(state => {
+            /* If on comment screen, wait longer. */
+            this._tmrInactivity = setTimeout(this.onInactive,
+                state.showDialog === DIALOG_TYPE.COMMENT ?
+                DURATION.INACTIVITY_COMMENT :
+                DURATION.INACTIVITY
+            );
+        });
+    }
+
+    /**
+     * Tests whether currently in non-session state.
+     * We are in a non-session state if waiting for session to start or not active.
+     * @returns {boolean}
+     */
+    isNonSession() {
+        const nonSession = (!this.state.feedbackGiven && !(this.state.commentGiven ||
+            this.state.pendingComment) && !this.state.emailGiven) || this.state.done;
+
+        return nonSession;
     }
 
     /**
      * User is inactive.
+     * @returns {void}
      */
     onInactive() {
         if (this._unmounted) return;
@@ -139,41 +236,41 @@ export default class Feedback extends React.Component {
         if (this.state.showInactivityWarning) {
             /* Warning has already been shown. */
             this.reset();
-        } else {
-            /* Don't do anything if session hasn't "started". */
-            if ((!this.state.feedbackGiven && !(this.state.commentGiven ||
-                this.state.pendingComment) && !this.state.emailGiven) || this.state.done) {
-                return;
-            }
 
-            /* Set timeout for warning. */
-            this.setState({
-                showInactivityWarning: true
-            }, () => {
-                clearTimeout(this._tmrInactivity);
-                this._tmrInactivity = setTimeout(
-                    this.onInactive,
-                    this.INACTIVITY_WARNING_DURATION
-                );
-            });
+            return;
         }
+
+        /* Don't do anything if session hasn't "started". */
+        if (this.isNonSession()) return;
+
+        /* Set timeout for warning. */
+        setStatePromise.call(this, {
+            showInactivityWarning: true
+        }).then(() => {
+            clearTimeout(this._tmrInactivity);
+            this._tmrInactivity = setTimeout(
+                this.onInactive,
+                DURATION.INACTIVITY_WARNING
+            );
+        });
     }
 
     /**
      * Completes the current session.
+     * @returns {void}
      */
     completeSession() {
         clearTimeout(this._tmrReset);
 
         /* Complete session. */
-        this.setState({
+        setStatePromise.call(this, {
             done: true
-        }, () => {
+        }).then(() => {
             brv.feedback.session && brv.feedback.session.complete();
 
             /* If it's a device, reset screen after timeout. */
             if (window.brv && window.brv.env && window.brv.env.IS_DEVICE) {
-                this._tmrReset = setTimeout(this.reset, this.RESET_DURATION);
+                this._tmrReset = setTimeout(this.reset, DURATION.RESET);
             }
 
             this.resetInactivity();
@@ -183,14 +280,16 @@ export default class Feedback extends React.Component {
     /**
      * Handler for when feedback has been submitted for an aspect.
      * Occurs after actual submission to storage/network.
+     * @returns {void}
      */
     onAspectSubmitted() {
         this.resetInactivity();
 
         /* At least one aspect has been rated. */
-        this.setState({
+        setStatePromise.call(this, {
             feedbackGiven: true
-        }, () => {
+        }).then(() => {
+
             /* If a comment has been given and there are no more aspects, consider
              * this a finish event. */
             if (brv.feedback.session.getRemainingCount() === 0) {
@@ -201,77 +300,89 @@ export default class Feedback extends React.Component {
 
     /**
      * Closes all dialogs.
+     * @returns {void}
      */
     closeDialog() {
         this.setState({
-            showDialog: false
+            showDialog: DIALOG_TYPE.NONE
         });
     }
 
     /**
      * Shows the comment dialog.
+     * @returns {void}
      */
     showDialogComment() {
         this.setState({
-            showDialog: 'COMMENT'
+            showDialog: DIALOG_TYPE.COMMENT
         });
     }
 
     /**
      * Shows the email dialog.
+     * @returns {void}
      */
     showDialogEmail() {
         this.setState({
-            showDialog: 'EMAIL'
+            showDialog: DIALOG_TYPE.EMAIL
         });
     }
 
     /**
      * Handles header button click event.
+     * @param   {HeaderAction} action Header action
+     * @returns {void}
      */
     onHeaderAction(action) {
         this.resetInactivity();
 
-        switch (action) {
-            case HeaderActions.COMMENT:
+        const actionHandler = {
+            [HeaderActions.COMMENT]: () => {
                 this.showDialogComment();
-                break;
-            case HeaderActions.SUBMIT_EMAIL:
-            case HeaderActions.SUBMIT_COMMENT:
-                this.dialogForm && this.dialogForm.submit();
-                break;
-            case HeaderActions.FINISH:
-                this.onFinish();
-                break;
-            case HeaderActions.CLOSE_DIALOG:
-                if (this.state.showDialog === 'COMMENT' &&
-                    brv.feedback.session.getRemainingCount() === 0) {
-                    /* Closing comment but no aspects remaining.
-                     * Consider this finished. */
-                    this.onFinish();
-                    return;
-                }
+            },
 
-                if (this.state.showDialog === 'EMAIL') {
-                    /* Email is shown at "end". */
-                    if (this.props.data.template_location === 1 ||
-                        this.props.data.template_location === 2) {
-                        this.completeSession();
-                        return;
-                    }
+            [HeaderActions.SUBMIT_EMAIL]: () => {
+                actionHandler[HeaderActions.SUBMIT_COMMENT]();
+            },
+            [HeaderActions.SUBMIT_COMMENT]: () => {
+                this.dialogForm && this.dialogForm.submit();
+            },
+
+            [HeaderActions.FINISH]: () => {
+                this.onFinish();
+            },
+
+            [HeaderActions.CLOSE_DIALOG]: () => {
+
+                /* Email is shown at "end". */
+                const emailAtEnd = this.props.data.template_location === EMAIL_DIALOG_ORDER.AFTER_IF_POOR ||
+                        this.props.data.template_location === EMAIL_DIALOG_ORDER.ALWAYS_AFTER;
+
+                if (this.state.showDialog === DIALOG_TYPE.COMMENT &&
+                        brv.feedback.session.getRemainingCount() === 0) {
+
+                        /* Closing comment but no aspects remaining.
+                         * Consider this finished. */
+                    this.onFinish();
+                } else if (this.state.showDialog === DIALOG_TYPE.EMAIL && emailAtEnd) {
+                    this.completeSession();
                 }
 
                 this.closeDialog();
-                break;
-        }
+            }
+        };
+
+        actionHandler[action]();
     }
 
     /**
      * On finish event.
+     * @returns {void}
      */
     onFinish() {
-        if ((this.props.data.template_location === 1 && brv.feedback.session.hasPoor()) ||
-            this.props.data.template_location === 2) {
+        if ((this.props.data.template_location === EMAIL_DIALOG_ORDER.AFTER_IF_POOR &&
+            brv.feedback.session.hasPoor()) ||
+            this.props.data.template_location === EMAIL_DIALOG_ORDER.ALWAYS_AFTER) {
             this.showDialogEmail();
         } else {
             /* Do not show email dialog. Complete the session. */
@@ -281,12 +392,13 @@ export default class Feedback extends React.Component {
 
     /**
      * On email submitted event.
+     * @returns {void}
      */
     onEmailSubmit() {
-        this.setState({
+        setStatePromise.call(this, {
             emailGiven: true
-        }, () => {
-            if (this.props.data.template_location === 3) {
+        }).then(() => {
+            if (this.props.data.template_location === EMAIL_DIALOG_ORDER.ALWAYS_BEFORE) {
                 this.closeDialog();
             } else {
                 this.completeSession();
@@ -296,13 +408,15 @@ export default class Feedback extends React.Component {
 
     /**
      * On comment submitted event.
+     * @returns {void}
      */
     onCommentSubmit() {
-        this.setState({
+        setStatePromise.call(this, {
             commentGiven: true
-        }, () => {
+        }).then(() => {
             if (brv.feedback.session.getRemainingCount() === 0) {
                 this.onFinish();
+
                 return;
             }
 
@@ -313,53 +427,55 @@ export default class Feedback extends React.Component {
     /**
      * Gets the dialog according to the current environment (mainly
      * showDialog state).
+     * @returns {JSX}
      */
     getDialog() {
         if (!this.state.showDialog) return null;
 
-        switch(this.state.showDialog) {
-            case 'COMMENT':
-                return (
-                    <CommentDialog
-                        form={f => this.dialogForm = f}
-                        session={this.state.session}
-                        message={this.props.data.comment_message}
-                        onValid={()=>this.setState({ pendingComment: true })}
-                        onInvalid={()=>this.setState({ pendingComment: false })}
-                        onSubmit={this.onCommentSubmit}
-                    />
-                );
-            case 'EMAIL':
-                return (
-                    <EmailDialog
-                        form={f => this.dialogForm = f}
-                        session={this.state.session}
-                        onSubmit={this.onEmailSubmit}
-                    />
-                );
-        }
+        /* eslint-disable react/jsx-no-bind */
+        const dialogMap = {
+            [DIALOG_TYPE.COMMENT]: (
+                <CommentDialog
+                    form={f => {
+                        this.dialogForm = f;
+                    }}
+                    session={this.state.session}
+                    message={this.props.data.comment_message}
+                    onValid={() => this.setState({ pendingComment: true })}
+                    onInvalid={() => this.setState({ pendingComment: false })}
+                    onSubmit={this.onCommentSubmit}
+                />
+            ),
 
-        return null;
+            [DIALOG_TYPE.EMAIL]: (
+                <EmailDialog
+                    form={f => {
+                        this.dialogForm = f;
+                    }}
+                    session={this.state.session}
+                    onSubmit={this.onEmailSubmit}
+                />
+            )
+        };
+
+        /* eslint-enable react/jsx-no-bind */
+
+        return dialogMap[this.state.showDialog];
     }
 
-    render() {
-        const dialogClass = (this.state.showDialog || 'none').toLowerCase();
+    /**
+     * @override
+     */
+    render() { // eslint-disable-line complexity
+        const dialogClass = (this.state.showDialog || "none").toLowerCase();
+        const isDevice = window.brv && window.brv.env && window.brv.env.IS_DEVICE;
 
         if (this.state.done) {
             return (
-                <div className={`ly flex-v defined-size feedback-container dialog-none state-done`}>
-                    <MinyHeader name={this.props.data.name} />
-                    <div className='thanks'>
-                        <span>Thank you for giving feedback!</span>
-                        { (window.brv && window.brv.env && window.brv.env.IS_DEVICE) && (
-                            <div
-                                className='btn btn-refresh'
-                                onClick={this.reset}>
-                                <i className={`fa fa-refresh`}></i>
-                            </div>
-                        ) }
-                    </div>
-                </div>
+                <FeedbackGiven
+                    name={this.props.data.name}
+                    {...( (isDevice && { onReset: this.reset }) || {} )}
+                />
             );
         }
 
@@ -370,9 +486,9 @@ export default class Feedback extends React.Component {
                 onClick={this.resetInactivity}
                 onMouseMove={this.resetInactivity}>
 
-                { this.state.showInactivityWarning && (
+                { this.state.showInactivityWarning &&
                     <InactivityDialog onClick={this.resetInactivity} />
-                ) }
+                 }
 
                 <Header
                     name={this.props.data.name}
@@ -380,12 +496,12 @@ export default class Feedback extends React.Component {
                     showDialog={this.state.showDialog}
                     enableComments={this.props.data.allow_comments && !this.state.commentGiven}
                     enableSubmit={
-                        (this.state.showDialog == 'COMMENT' && this.state.pendingComment) ||
-                        this.state.showDialog == 'EMAIL' ||
+                        (this.state.showDialog == DIALOG_TYPE.COMMENT && this.state.pendingComment) ||
+                        this.state.showDialog == DIALOG_TYPE.EMAIL ||
                         (!this.state.showDialog && (this.state.feedbackGiven || this.state.commentGiven))
                     }
                 />
-                <div className='scrollable'>
+                <div className="scrollable">
                     { this.getDialog() }
                     <Aspects
                         aspects={this.props.data.aspects}

@@ -1,17 +1,26 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
+import React, { Component } from "react";
 
-export default class TimelineView extends React.Component {
+/**
+ * Timeline View
+ */
+export default class TimelineView extends Component {
 
+    /**
+     * @constructor
+     */
     constructor() {
         super();
 
         this.state = {};
     }
 
-    render() {
+    /**
+     * @override
+     *
+     */
+    render() { // eslint-disable-line class-methods-use-this
         return (
-            <div className='view'>{"Timeline view..."}</div>
+            <div className="view">{"Timeline view..."}</div>
         );
     }
 

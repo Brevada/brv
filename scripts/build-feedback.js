@@ -1,3 +1,5 @@
+/* eslint-disable no-console */
+
 const webpack = require("webpack");
 const LodashModuleReplacementPlugin = require("lodash-webpack-plugin");
 const path = require("path");
@@ -5,14 +7,16 @@ const moment = require("moment");
 const fs = require("fs-extra");
 const del = require("del");
 
+const jsSrc = path.join(__dirname, "..", "app", "res", "js", "src");
+
 const config = {
     entry: {
 
         /* We enforce ordering by numbering entries. */
         "0_vendor": ["moment"],
-        "1_device": path.join(__dirname, "..", "app", "res", "js", "src", "device", "device.js"),
-        "2_feedback_brv": path.join(__dirname, "..", "app", "res", "js", "src", "global", "feedback.js"),
-        "3_feedback_view": path.join(__dirname, "..", "app", "res", "js", "src", "views", "feedback.js")
+        "1_device": path.join(jsSrc, "device", "device.js"),
+        "2_feedback_brv": path.join(jsSrc, "global", "feedback.js"),
+        "3_feedback_view": path.join(jsSrc, "views", "feedback.js")
     },
     output: {
         path: path.join(__dirname, "..", "app", "resp", "feedback"),
@@ -31,7 +35,7 @@ const config = {
     cache: true,
     resolve: {
         modules: [
-            path.join(__dirname, "..", "app", "res", "js", "src"),
+            jsSrc,
             "node_modules"
         ],
         extensions: [".js"]

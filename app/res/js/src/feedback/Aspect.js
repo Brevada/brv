@@ -1,48 +1,20 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import classNames from 'classnames';
-import Form from 'forms/Form';
-import stateQueue from 'utils/StateQueue';
+/* global brv */
 
-/**
- * Individual rating within the rating bar.
- */
-const Rating = props => (
-    <div
-        className={`rating rating-${props.ordinal}`}
-        onClick={() => props.onClick(props.value, props.ordinal)}>
-    </div>
-);
+import React from "react";
+import PropTypes from "prop-types";
+import classNames from "classnames";
+import Form from "forms/Form";
+import stateQueue from "utils/StateQueue";
 
-/**
- * 5 star rating bar.
- */
-const RatingBar = props => (
-    <div className='rating-bar'>
-        <div className='ratings'>
-            {[...Array(5)].map((x, i) =>
-                <Rating
-                    key={i}
-                    value={(i+1)*20}
-                    ordinal={i}
-                    onClick={props.onSubmit}
-                />
-            )}
-        </div>
-        <div className='ly ly-float hint'>
-            <span className='left'>Worst</span>
-            <span className='right'>Best</span>
-        </div>
-    </div>
-);
+import RatingBar from "feedback/Rating";
 
 /**
  * A message to display when a user has given feedback for an aspect.
- * @param {object} props
+ * @returns {JSX}
  */
-const Submitted = props => (
-    <div className='submitted'>
-        Thank you for giving feedback.
+const Submitted = () => (
+    <div className="submitted">
+        {"Thank you for giving feedback."}
     </div>
 );
 
@@ -52,15 +24,24 @@ const Submitted = props => (
 export default class Aspect extends React.Component {
 
     static propTypes = {
-        id: PropTypes.number,
-        title: PropTypes.string,
-        onSubmit: PropTypes.func
+        id: PropTypes.number.isRequired,
+        title: PropTypes.string.isRequired,
+        onSubmit: PropTypes.func,
+        session: PropTypes.string.isRequired
     };
 
+    static defaultProps = {
+        onSubmit: () => { /* no op */ }
+    };
+
+    /**
+     * @constructor
+     */
     constructor() {
         super();
 
         this.state = {
+
             /* Indicates that feedback for this aspect has already been
              * submitted. */
             submitted: false,
@@ -72,8 +53,8 @@ export default class Aspect extends React.Component {
             removing: false,
 
             /* Rating data. */
-            value: '',
-            ordinal: ''
+            value: "",
+            ordinal: ""
         };
 
         this.form = null;
@@ -81,6 +62,9 @@ export default class Aspect extends React.Component {
         this.onSubmit = ::this.onSubmit;
     }
 
+    /**
+     * @override
+     */
     componentWillUnmount() {
         this._unmounted = true;
     }
@@ -88,6 +72,10 @@ export default class Aspect extends React.Component {
     /**
      * Man in the Middle. When a rating is given, an animation can play
      * before the item is removed from the list.
+     *
+     * @param   {number} value The rating's value.
+     * @param   {number} ordinal The rating's ranking or ordinal.
+     * @returns {void}
      */
     onSubmit(value, ordinal) {
         if (this.state.submitted || this.state.submitting) return;
@@ -96,6 +84,7 @@ export default class Aspect extends React.Component {
             value: parseFloat(value),
             ordinal: parseInt(ordinal)
         }, () => {
+
             /* Submit data. */
             this.form && this.form.submit();
 
@@ -120,7 +109,14 @@ export default class Aspect extends React.Component {
         });
     }
 
+    /**
+     * @override
+     */
     render() {
+        const saveFormRef = f => ( // eslint-disable-line require-jsdoc
+            this.form = f
+        );
+
         return (
             <Form
                 method="POST"
@@ -132,23 +128,20 @@ export default class Aspect extends React.Component {
                     value: this.state.value,
                     ordinal: this.state.ordinal
                 }}
-                form={f => this.form = f}>
+                form={saveFormRef}>
                 <div
-                    className={classNames('item', 'aspect', {
+                    className={classNames("item", "aspect", {
                         submitting: this.state.submitting && !this.state.submitted,
                         removing: this.state.removing
                     })}>
-                    <div className='header'>{this.props.title}</div>
-                    { (this.state.submitted && (
-                        <Submitted />
-                    )) || (
+                    <div className="header">{this.props.title}</div>
+                    {(this.state.submitted && (<Submitted />)) || (
                         <RatingBar
                             onSubmit={this.onSubmit}
                         />
-                    ) }
+                    )}
                 </div>
             </Form>
         );
     }
-
 }

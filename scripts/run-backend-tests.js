@@ -1,4 +1,6 @@
-const execSync = require("child_process").execSync;
+/* eslint-disable no-console */
+
+const { execSync } = require("child_process");
 const path = require("path");
 const fs = require("fs");
 const chalk = require("chalk");
@@ -11,6 +13,7 @@ const phpunitPath = path.join(".", "vendor", "bin", "phpunit");
 if (!fs.existsSync(phpunitPath)) {
     console.error("PHPUnit is not installed. Please run 'composer update'.");
 } else {
+    // eslint-disable-next-line no-magic-numbers
     const args = process.argv.slice(2).join(" ");
 
     try {

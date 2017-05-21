@@ -1,15 +1,17 @@
-import React, { Component } from 'react';
-import ReactDOM from 'react-dom';
-import PropTypes from 'prop-types';
+import React, { Component } from "react";
+import PropTypes from "prop-types";
 
-import setStatePromise from 'utils/StatePromise';
-import classNames from 'classnames';
-import getFormData from 'get-form-data';
-import axios from 'axios';
+import setStatePromise from "utils/StatePromise";
+import classNames from "classnames";
+import getFormData from "get-form-data";
+import ajax from "utils/Ajax";
 
-import Input from 'forms/Input';
-import Textarea from 'forms/inputs/Textarea';
-import Textbox from 'forms/inputs/Textbox';
+import Input from "forms/Input";
+import Textarea from "forms/inputs/Textarea";
+import Textbox from "forms/inputs/Textbox";
+import Label from "forms/Label";
+import Group from "forms/Group";
+import ErrorMessage from "forms/ErrorMessage";
 
 /**
  * API "upload" layer. Emulates a DOM form.
@@ -18,12 +20,20 @@ export default class Form extends Component {
 
     static defaultProps = {
         once: true,
-        method: 'post',
+        method: "post",
         center: false,
-        inline: false
+        inline: false,
+        data: {},
+        onSuccess: () => { /* no op */ },
+        onBegin: () => { /* no op */ },
+        onError: () => { /* no op */ },
+        form: () => { /* no op */ },
+        children: null,
+        className: ""
     };
 
     static propTypes = {
+
         /* Whether to restrict submissions to one at a time. */
         once: PropTypes.bool,
 
@@ -52,28 +62,45 @@ export default class Form extends Component {
 
         /* Callback called when form submission begins. Use onSuccess and
          * and onFailure to handle complete. */
-        onBegin: PropTypes.func
+        onBegin: PropTypes.func,
+
+        /* Form elements. */
+        children: PropTypes.node,
+
+        /* Optional form class name. */
+        className: PropTypes.string
     };
 
     static childContextTypes = {
         form: PropTypes.func
     };
 
+    /**
+     * @constructor
+     */
     constructor() {
         super();
 
         this.state = {
+
             /* Indicates "submitting" status (loading). */
             submitting: false
         };
 
         this.submit = ::this.submit;
+        this.saveFormRef = ::this.saveFormRef;
     }
 
+    /**
+     * @override
+     */
     componentWillUnmount() {
         this._unmounted = true;
     }
 
+    /**
+     * @override
+     */
     getChildContext() {
         return {
             form: () => this._form && this
@@ -81,155 +108,101 @@ export default class Form extends Component {
     }
 
     /**
+     * Returns form's method and wrapped data for use with ajax.
+     * @returns {object}
+     */
+    getFormState() {
+        /* Use DOM to retrieve form data. This allows retrieval from deeply
+         * nested elements. */
+        const formData = getFormData(this._form),
+            method = (this.props.method || "post").trim().toLowerCase();
+
+        const dataKey = ["put", "post", "patch"].includes(method) ?
+                        "data" :
+                        "params";
+
+        const data = { [dataKey]: (
+            Object.assign({}, formData || {}, this.props.data)
+        ) };
+
+        return {
+            method,
+            data
+        };
+    }
+
+    /**
      * Submit handler for forms. Packages form data and submits the data
      * to the server (or local interceptor).
      *
-     * @param  {Event} e
+     * @param   {Event} e Form event.
+     * @returns {void}
      */
     submit(e) {
-        if (e) e.preventDefault();
-        if (!this._form) return;
+        e && e.preventDefault();
 
-        /* Skip if already submitting and can only submit one at a time. */
-        if (this.props.once !== false && this.state.submitting) return;
+        /* Skip if form is not defined, or already submitting and can only
+         * submit one at a time. */
+        const ready = this._form && (!this.props.once || !this.state.submitting);
 
-        /* Use DOM to retrieve form data. This allows retrieval from deeply
-         * nested elements. */
-        let formData = getFormData(ReactDOM.findDOMNode(this._form));
+        if (!ready) return;
 
-        let method = (this.props.method || 'post').trim().toLowerCase();
+        const {
+            method,
+            data
+        } = this.getFormState();
 
-        let data = Object.assign({}, formData || {}, this.props.data),
-            dataKey = ['put', 'post', 'patch'].includes(method) ?
-                      'data' :
-                      'params';
+        this.props.onBegin && this.props.onBegin();
 
-        data = { [dataKey]: data };
-
-        /* If defined, use interceptor to allow offline functionality in offline modes. */
-        const ajax = (window.brv && window.brv.feedback) ?
-                     window.brv.feedback.interceptor || axios :
-                     axios;
-
-        if (this.props.onBegin) this.props.onBegin();
-        
         setStatePromise.call(this, {
             submitting: true
         })
-        .then(() => (
+        .then(() =>
             ajax(Object.assign({
-                method: method,
+                method,
                 url: this.props.action
             }, data))
-        ))
-        .then(response => {
-            if (this.props.onSuccess) this.props.onSuccess(response);
-        })
-        .catch(error => {
-            if (this.props.onError) this.props.onError(error.response || error);
-        })
+        )
+        .then(response => this.props.onSuccess && this.props.onSuccess(response))
+        .catch(error => this.props.onError && this.props.onError(error.response || error))
         .then(() => {
             if (!this._unmounted) this.setState({ submitting: false });
         });
     }
 
+    /**
+     * Saves form reference.
+     * @param   {DOMElement} frm The form's DOM object.
+     * @returns {void}
+     */
+    saveFormRef(frm) {
+        this._form = frm;
+        this.props.form && this.props.form(this);
+    }
+
+    /**
+     * @override
+     */
     render() {
+        const formClasses = classNames("form", {
+            submitting: this.state.submitting,
+            inline: Boolean(this.props.inline),
+            center: Boolean(this.props.center)
+        }, this.props.className || "");
+
         /* Pass instance of this form to all its children. */
         return (
-            <div className={classNames('form', {
-                submitting: this.state.submitting,
-                inline: !!this.props.inline,
-                center: !!this.props.center
-            }, this.props.className || '')}>
+            <div
+                className={formClasses}>
                 <form
                     onSubmit={this.submit}
-                    ref={frm => {
-                        this._form = frm;
-                        this.props.form && this.props.form(this);
-                    }}>
+                    ref={this.saveFormRef}>
                     {this.props.children}
                 </form>
             </div>
         );
     }
 }
-
-/**
- * Groups form elements within a form. Supports pairing an
- * element with a label.
- */
-class Group extends Component {
-
-    constructor(){
-        super();
-
-        this.labelClicked = ::this.labelClicked;
-        this.inputCallback = ::this.inputCallback;
-    }
-
-    /**
-     * If a label is clicked, and there is an input element, give focus
-     * to the input.
-     */
-    labelClicked() {
-        if (this._input) ReactDOM.findDOMNode(this._input).focus();
-    }
-
-    /**
-     * Save the reference to the input. Assumes single input.
-     */
-    inputCallback(input){
-        this._input = input;
-    }
-
-    render() {
-        /* Save the input reference and label if exists. */
-        return (
-            <div className={'form-group ' + (this.props.className || '')}>
-                {React.Children.map(this.props.children,
-                 (child) => {
-                     if (child) {
-                         if (child.type === Label) {
-                             return React.cloneElement(child, {
-                                 onClick: this.labelClicked
-                             });
-                         } else if (child.type.prototype instanceof Input) {
-                             return React.cloneElement(child, {
-                                 ref: this.inputCallback
-                             });
-                         }
-                     }
-
-                     return child;
-                 })}
-            </div>
-        );
-    }
-}
-
-/**
- * A form label.
- * @param {object} props
- * @param {string} props.text The display text.
- * @param {boolean} props.inline Set display style to inline.
- * @param {function} props.onClick On click event handler.
- */
-const Label = props => (
-    <label
-        className={classNames('label', {
-            inline: props.inline === true
-        })}
-        onClick={props.onClick || (()=>(false))}>
-        {props.text}
-    </label>
-);
-
-/**
- * Generic error message holder to be used by a Form.
- */
-const ErrorMessage = props => (
-    <div className='form-error'>{props.text}</div>
-);
 
 export {
     Input,

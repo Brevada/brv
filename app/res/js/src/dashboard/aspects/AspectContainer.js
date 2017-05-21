@@ -1,12 +1,27 @@
-import React from 'react';
-import _ from 'lodash';
+import React, { Component } from "react";
+import PropTypes from "prop-types";
+import _ from "lodash";
 
-import Aspect from 'dashboard/aspects/Aspect';
+import Aspect from "dashboard/aspects/Aspect";
 
 /**
  * Container for individual aspects.
  */
-export default class AspectContainer extends React.Component {
+export default class AspectContainer extends Component {
+
+    static propTypes = {
+        aspects: PropTypes.arrayOf(PropTypes.object),
+        filter: PropTypes.string.isRequired
+    };
+
+    static defaultProps = {
+        aspects: []
+    };
+
+    /**
+     * @constructor
+     * @param   {object} props React props
+     */
     constructor(props) {
         super(props);
 
@@ -21,6 +36,9 @@ export default class AspectContainer extends React.Component {
         this.onRemove = ::this.onRemove;
     }
 
+    /**
+     * @override
+     */
     componentWillReceiveProps(nextProps) {
         if (!nextProps.aspects || _.isEqual(nextProps.aspects, this.state.aspects)) {
             return;
@@ -35,7 +53,8 @@ export default class AspectContainer extends React.Component {
      * Handles remove event from an aspect. "Removing" the aspect from the
      * displayed list (via a blacklist).
      *
-     * @param {number} The id of the aspect that has been removed.
+     * @param   {number} id The id of the aspect that has been removed.
+     * @returns {void}
      */
     onRemove(id) {
         this.setState(s => ({
@@ -43,15 +62,18 @@ export default class AspectContainer extends React.Component {
         }));
     }
 
+    /**
+     * @override
+     */
     render() {
         /* Sort aspects by title, and remove blacklisted aspects
          * (removed list). */
         return (
-            <div className='ly flex-h aspect-container'>
+            <div className="ly flex-h aspect-container">
                 {this.state.aspects
                     .concat()
                     .filter(a => !this.state.removed.includes(a.id))
-                    .sort((a,b) => a.title.localeCompare(b.title))
+                    .sort((a, b) => a.title.localeCompare(b.title))
                     .map(aspect => (
                         <Aspect
                             key={aspect.id}
