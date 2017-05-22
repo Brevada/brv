@@ -1,15 +1,26 @@
+/* eslint-disable max-statements */
+
 /**
  * Tracks current session.
+ * @returns {object}
  */
 module.exports = function() {
-    var session = {};
+    const session = {};
 
-    let _token = undefined;
-    let _remainingCnt = 0;
-    let _hasPoor = false;
+    let _token = null,
+        _remainingCnt = 0,
+        _hasPoor = false;
 
-    let newToken = () => _token = require('crypto').randomBytes(16).toString('hex');
-    newToken();
+    /**
+     * Generates a new session token.
+     * @returns {void}
+     */
+    const newToken = () => {
+        _token = require("crypto").randomBytes(16)
+                                  .toString("hex");
+
+        return _token;
+    };
 
     session.init = () => {
         newToken();
@@ -19,7 +30,12 @@ module.exports = function() {
     session.complete = () => false;
 
     session.getRemainingCount = () => _remainingCnt;
-    session.setRemainingCount = n => _remainingCnt = n;
+    session.setRemainingCount = n => {
+        _remainingCnt = n;
+
+        return _remainingCnt;
+    };
+
     session.getToken = () => _token;
     session.hasPoor = () => _hasPoor;
 
@@ -28,6 +44,8 @@ module.exports = function() {
             _hasPoor = true;
         }
     };
+
+    newToken();
 
     return session;
 };

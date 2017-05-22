@@ -24,7 +24,10 @@ class Authentication extends Middleware
      */
     public static function set(Account $account = null)
     {
-        \App::setState(\STATES::AUTH_USER, $account, true);
+        $id = $account !== null ? $account->getId() : null;
+
+        \App::setState(\STATES::AUTH_USER_ID, $id, true);
+        \App::setState(\STATES::AUTH_USER, $account);
     }
 
     /**
@@ -34,7 +37,26 @@ class Authentication extends Middleware
      */
     public static function get()
     {
-        return \App::getState(\STATES::AUTH_USER);
+        /*
+         * Check if user is in temporary/transient storage (i.e. in scope of
+         * active request). If it's not there, check if Account ID is in storage,
+         * session storage can also be checked. If ID found, lookup and cache
+         * account. Returns found account. Otherwise, return null.
+         */
+        $account = \App::getState(\STATES::AUTH_USER);
+        if ($account === null) {
+            $id = \App::getState(\STATES::AUTH_USER_ID);
+            if ($id === null) return null;
+
+            $account = Account::queryId($id);
+            if ($account === null) {
+                \App::setState(\STATES::AUTH_USER_ID, $id, true);
+            }
+
+            \App::setState(\STATES::AUTH_USER, $account);
+        }
+
+        return $account;
     }
 
     /**
@@ -45,7 +67,7 @@ class Authentication extends Middleware
      */
     public function getView()
     {
-        if (\App::getState(\STATES::AUTH_USER) === null) {
+        if (self::get() === null) {
             // Have user login.
             \App::redirect('login/to' . $_SERVER['REQUEST_URI']);
         } else {

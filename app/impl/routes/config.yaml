@@ -5,7 +5,7 @@ middleware:
     device: DeviceAuthentication
     optional_device: [ DeviceAuthentication, Discard ]
 
-routes:
+routes:    
     login:
         GET: [ '^\/login(\/to\/(.+))?$', pass, Authentication+viewLogin ]
         POST: [ '^\/login\/?$', pass, Authentication+password ]

@@ -21,6 +21,9 @@ class STATES
     /** @var string References the currently logged in user. */
     const AUTH_USER = 'AUTH_USER';
 
+    /** @var string References the currently logged in user's account id. */
+    const AUTH_USER_ID = 'AUTH_USER_ID';
+
     /** @var string References the URL the active user attempted to access w/o auth. */
     const LOGIN_DEST = 'LOGIN_DEST';
 

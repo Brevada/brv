@@ -168,15 +168,6 @@ $inline_margin: calculateRem(5px);
                     border-color: #66afe9;
                     @include box-shadow(inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(102,175,233,.6));
                 }
-
-                &:invalid {
-                    border-color: #e96767;
-                    @include box-shadow(inset 0 1px 1px rgba(255, 0, 0, 0.25));
-                }
-
-                &:focus:invalid {
-                    @include box-shadow(inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(255, 0, 0, 0.25));
-                }
             }
 
             &:focus + .placeholder {
@@ -202,6 +193,26 @@ $inline_margin: calculateRem(5px);
 
         textarea + .placeholder {
             top: 6px;
+        }
+    }
+
+    // Either input was attempted and required, or we should always notify
+    // of validation status.
+    .input.attempted, .input.always {
+        textarea,
+        input[type=text],
+        input[type=email],
+        input[type=password] {
+            &:not(.seamless) {
+                &:invalid {
+                    border-color: #e96767;
+                    @include box-shadow(inset 0 1px 1px rgba(255, 0, 0, 0.25));
+                }
+
+                &:focus:invalid {
+                    @include box-shadow(inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(255, 0, 0, 0.25));
+                }
+            }
         }
     }
 }

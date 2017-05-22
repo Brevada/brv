@@ -1,7 +1,7 @@
 /* Core Theme */
 
 /* Normalize environment first. */
-@import 'libs/normalize';
+@import '~normalize.css/normalize';
 
 /* Colour guide. */
 @import 'colours';
@@ -16,7 +16,8 @@
 @import 'htmlDefaults';
 
 /* Font Awesome */
-@import 'libs/font-awesome/scss/font-awesome';
+@import '~font-awesome/scss/font-awesome';
+@import '_font-awesome_config';
 
 /* Assets */
 @import 'assets';
@@ -33,8 +34,6 @@
 /* Form */
 @import 'form/form';
 
-/* --- TODO: Move to appropriate files. --- */
-
 a.phone {
     text-decoration: none;
     color: $blue1;
@@ -42,7 +41,7 @@ a.phone {
     line-height: 1.5em;
 
     &:before {
-        content: "\260e";
+        @include fontawesome("\f095");
         margin-right: 0.25em;
         margin-left: 0.15em;
     }

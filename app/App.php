@@ -59,7 +59,7 @@ class App
     }
 
     /**
-     * Sets a state value with an associated key.
+     * Sets a state value with an associated key. Do not persist by default.
      *
      * @param string $key The key.
      * @param mixed $val The state value to store.
