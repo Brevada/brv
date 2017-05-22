@@ -211,9 +211,10 @@ class Account extends Entity
      */
     public function getCompany()
     {
-        if ($this->company !== null) {
-            return $this->company;
+        if ($this->company === null) {
+            $this->company = Company::queryAccount((int) $this->get('id'));
         }
-        return $this->company = Company::queryAccount((int) $this->get('id'));
+
+        return $this->company;
     }
 }

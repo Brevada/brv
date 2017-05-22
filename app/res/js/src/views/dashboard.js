@@ -68,7 +68,7 @@ class DashboardLoader extends Component {
      * @returns {void}
      */
     componentWillReceiveProps(props) {
-        if (props.data && props.data.stores) {
+        if (props.data && props.data.stores && props.data.stores.length) {
             const [defaultStore] = (props.data && props.data.stores) || [];
 
             this.setState({
@@ -133,7 +133,7 @@ class DashboardLoader extends Component {
         /* eslint-disable no-nested-ternary */
         const msg = this.props.error ?
                     "An unexpected error has occured. You may try refresh the page." :
-                    !this.props.data.stores ?
+                    !this.props.data.stores || !this.props.data.stores.length ?
                     "There are no active stores on your account." :
                     this.props.data.company_active !== true && this.props.data.company_active !== false ?
                     "Your Brevada plan has expired. To renew your plan, please give us a call." :

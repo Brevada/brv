@@ -34,13 +34,13 @@ class Router
             $result = false;
 
              try {
-                 if (self::isValidController($route->getController())) {
+                 /* Controller is valid. Traverse middleware. */
+                 $result = self::resolveMiddleware($route->getMiddleware());
+                 if ($result === false) {
+                     continue;
+                 }
 
-                     /* Controller is valid. Traverse middleware. */
-                     $result = self::resolveMiddleware($route->getMiddleware());
-                     if ($result === false) {
-                         continue;
-                     }
+                 if (self::isValidController($route->getController())) {
 
                      if ($result === true) {
                          /* All middleware passed; no new View constructed.
