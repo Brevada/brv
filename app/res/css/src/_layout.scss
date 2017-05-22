@@ -11,7 +11,6 @@
     &.flex-h, &.flex-v {
         @include flexbox;
         &:not(.defined-size) {
-            // TODO: Not supported in older browsers.
             @include flex-wrap(wrap);
         }
 

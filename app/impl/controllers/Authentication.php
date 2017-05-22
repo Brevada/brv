@@ -88,9 +88,9 @@ class Authentication extends Controller
         $email = self::from('email', $data);
         $password = self::from('password', $data);
 
-        v::email()->check($email);
         // TODO: Enforce password rules.
-        if (!v::stringType()->notEmpty()->length(1, null)->validate($password)) {
+        if (!v::email()->validate($email) ||
+            !v::stringType()->notEmpty()->length(1, null)->validate($password)) {
             self::fail("Invalid email and/or password.", \HTTP::BAD_PARAMS);
         }
 

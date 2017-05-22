@@ -13,36 +13,68 @@
  * .exec()
  * // step is 6.
  *
- * @param {object} self
- * @param {function} predicate
+ * @param   {object} self The context in which to call StateQueue.
+ * @param   {function} predicate A predicate to test before every step, if the
+ *                               predicate fails, abort.
+ * @returns {StateQueue}
  */
 function StateQueue(self, predicate) {
+
     /* Force factory pattern. Guaranteeing new "this". */
     return new function _stateQueue(){
+        /* eslint-disable no-invalid-this */
+
         /* Stores queue of tasks. */
-        let _queue = [];
+        const _queue = [];
 
         /* Stores index of next task to execute. */
         let _pointer = 0;
 
         /* Stores return value of previously executed task. */
-        let _result = undefined;
+        let _result = null;
 
         /* Callback to invoke upon completion of queue. */
-        let _complete = () => false;
+        let _complete = () => false; // eslint-disable-line require-jsdoc
+
+        /**
+         * Executes a task from the queue.
+         *
+         * @param   {string} type The type of task to execute.
+         * @param   {object|function} data The data to perform the task on.
+         * @returns {void}
+         */
+        const _executeTask = ({type, data}) => {
+            /* Resume upon completion of timeout. */
+            if (type === "wait") setTimeout(::this.exec, data);
+
+            if (type === "do") {
+                (({
+                    function: () => {
+                        /* Execute function, store result for next 'do' task. */
+                        _result = data(_result);
+                        this.exec();
+                    },
+                    object: () => {
+                        _result = null;
+                        self.setState && self.setState(data, ::this.exec);
+                    }
+                })[typeof data])();
+            }
+        };
 
         /**
          * Loads a wait onto the queue. Waits for a specified number of
          * seconds.
          *
-         * @param  {number} seconds The number of seconds to wait.
-         * @return {self}
+         * @param   {number} seconds The number of seconds to wait.
+         * @returns {self}
          */
         this.wait = seconds => {
             _queue.push({
-                type: 'wait',
+                type: "wait",
                 data: seconds
             });
+
             return this;
         };
 
@@ -52,14 +84,15 @@ function StateQueue(self, predicate) {
          * If a function is supplied, the function will be invoked with the
          * previously executed task's return value.
          *
-         * @param  {function|object} obj
-         * @return {self}
+         * @param   {function|object} obj Parameter to pass to setState.
+         * @returns {self}
          */
         this.do = obj => {
             _queue.push({
-                type: 'do',
+                type: "do",
                 data: obj
             });
+
             return this;
         };
 
@@ -70,60 +103,38 @@ function StateQueue(self, predicate) {
          * of queue execution, due to the use of async timeouts and
          * React.setState callbacks.
          *
-         * @return {self}
+         * @param   {function} complete Completion callback.
+         * @returns {void}
          */
         this.exec = (complete) => {
             /* Save complete if supplied. */
             _complete = _complete || complete;
 
-            if (_queue.length === 0) return;
+            const predTest = _queue.length && predicate();
 
-            if (_pointer >= _queue.length) {
+            if (predTest && _pointer >= _queue.length && _complete) {
                 /* If complete, invoke complete callback. */
                 this.reset();
-                if (predicate() && _complete) {
-                    _complete.call(self, _result);
-                }
-                return;
-            }
-
-            /* If queue should not advance. */
-            if (!predicate()) return;
-
-            /* Load the task to execute, while advancing the pointer. */
-            let task = _queue[_pointer++];
-            if (task.type !== 'wait' && task.type !== 'do') {
-                throw new Error('Invalid task type.');
-            }
-
-            if (task.type === 'wait') {
-                /* Resume upon completion of timeout. */
-                setTimeout(::this.exec, task.data);
-            }
-
-            if (task.type === 'do') {
-                if (typeof task.data === 'function') {
-                    /* Execute function, store result for next 'do' task. */
-                    _result = task.data(_result);
-                    this.exec();
-                } else if (typeof task.data === 'object') {
-                    _result = undefined;
-                    self.setState && self.setState(task.data, ::this.exec);
-                } else {
-                    throw new Error('Invalid task do parameter.');
-                }
+                _complete.call(self, _result);
+            } else if (predTest) {
+                /* Load the task to execute, while advancing the pointer. */
+                _executeTask(_queue[_pointer++]);
             }
         };
 
         /**
          * Resets pointer and result.
+         * @returns {void}
          */
         this.reset = () => {
-            _pointer = 0;
-            _result = undefined;
+            _pointer = 0; // eslint-disable-line no-magic-numbers
+            _result = null;
+
             return this;
         };
-    };
+
+        /* eslint-enable no-invalid-this */
+    }();
 }
 
 export default StateQueue;

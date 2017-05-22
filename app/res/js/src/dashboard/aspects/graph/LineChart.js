@@ -1,62 +1,50 @@
-import React from 'react';
-import classNames from 'classnames';
+import React from "react";
+import PropTypes from "prop-types";
 
-import moment from 'moment';
 import { ResponsiveContainer,
          LineChart as RechartsLineChart,
-         Tooltip, Line, XAxis, YAxis } from 'recharts';
+         Tooltip, Line, XAxis, YAxis } from "recharts";
 
-/**
- * Custom recharts compat. tooltip for individual aspect graph.
- *
- * @param {object} props
- * @param {boolean} props.active Data point triggering tooltip is active.
- * @param {object[]} props.payload Recharts data payload.
- * @param {integer[]} props.timestamps Array of timestamps.
- */
-const AspectGraphTooltip = props => {
-    if (props.active) {
-        const tsIndex = parseInt(props.payload[0].payload.label);
-        return (
-            <div className={classNames('graph-tooltip', {
-                'empty': props.payload[0].payload.empty
-            })}>
-                <span className='value'>
-                    {props.payload[0].payload.empty ? (
-                        <span className='empty'>No Responses</span>
-                    ) : props.payload[0].value + props.payload[0].unit}
-                </span>
-                <span className='specific'>
-                    {moment.unix(props.timestamps[tsIndex]).format('D/MM/YYYY')}
-                </span>
-            </div>
-        );
-    }
-
-    return null;
-};
+import AspectGraphTooltip from "dashboard/aspects/graph/AspectGraphTooltip";
 
 /**
  * Custom recharts compat. x-axis for individual aspect graph.
  *
- * @param {object} props
- * @param {float} props.x
- * @param {float} props.y
- * @param {string[]} props.dates X-axis date labels.
+ * @param   {object} props React props
+ * @param   {float} props.x x coordinate of tick
+ * @param   {float} props.y y coordinate of tick
+ * @param   {string[]} props.dates X-axis date labels.
+ * @param   {object} props.payload Recharts data point.
+ * @returns {JSX}
  */
 const AspectXAxisTick = props => (
     <g transform={`translate(${props.x}, ${props.y})`}>
-        <text x={0} y={0} dy={+15} textAnchor='middle' className='x-axis-text'>
+        <text x={0} y={0} dy={+15} textAnchor="middle" className="x-axis-text">
             {props.dates[parseInt(props.payload.value)]}
         </text>
     </g>
 );
 
+AspectXAxisTick.propTypes = {
+    dates: PropTypes.arrayOf(PropTypes.string),
+    payload: PropTypes.object,
+    x: PropTypes.number,
+    y: PropTypes.number
+};
+
+AspectXAxisTick.defaultProps = {
+    dates: [],
+    payload: {},
+    x: null,
+    y: null
+};
+
 /**
  * A single data point on the graph.
- * @param {object} props Mainly inherited from recharts graph.
+ * @param   {object} props Mainly inherited from recharts graph.
+ * @returns {JSX}
  */
-const Dot = props => {
+const Dot = props => { // eslint-disable-line complexity
     const {cx, cy, payload} = props;
 
     const style = {
@@ -64,17 +52,35 @@ const Dot = props => {
         stroke: payload.empty ? "#9cddfe" : "#1bb0ff",
         strokeWidth: payload.empty ? 2 : 1,
         fill: payload.empty ? "#fff" : "#1bb0ff",
-        cx: cx,
-        cy: cy
+        cx,
+        cy
     };
 
     return (<circle {...style} />);
 };
 
+Dot.propTypes = {
+    active: PropTypes.bool,
+    payload: PropTypes.object,
+    cx: PropTypes.number,
+    cy: PropTypes.number
+};
+
+Dot.defaultProps = {
+    active: false,
+    payload: {},
+    cx: null,
+    cy: null
+};
+
 /**
  * Aspect graph line chart view.
  *
- * @param {object} props
+ * @param   {object} props React props
+ * @param   {object[]} props.data Data points
+ * @param   {string[]} props.dates X-axis date labels
+ * @param   {number[]} props.timestamps Timestamps
+ * @returns {JSX}
  */
 const LineChart = props => {
     return (
@@ -84,7 +90,7 @@ const LineChart = props => {
                 margin={{ top: 5, right: 30, left: 30, botom: 5 }}>
                 <Line
                     type="monotone"
-                    dataKey={'value'}
+                    dataKey={"value"}
                     stroke="#1bb0ff"
                     unit="%"
                     dot={<Dot />}
@@ -93,25 +99,41 @@ const LineChart = props => {
                     animationDuration={350}
                 />
                 <YAxis
-                    dataKey={'value'}
-                    domain={['auto', 'auto']}
+                    dataKey={"value"}
+                    domain={["auto", "auto"]}
                     padding={{ bottom: 15, top: 15 }}
                     hide={true}
                 />
                 <XAxis
-                    dataKey={'label'}
+                    dataKey={"label"}
                     axisLine={true}
                     tickLine={false}
                     padding={{ top: 10 }}
-                    tick={<AspectXAxisTick dates={props.dates} timestamps={props.timestamps} />}
+                    tick={(
+                        <AspectXAxisTick
+                            dates={props.dates}
+                            timestamps={props.timestamps}
+                        />
+                    )}
                 />
                 <Tooltip
-                    content={<AspectGraphTooltip dates={props.dates} timestamps={props.timestamps} />}
+                    content={(
+                        <AspectGraphTooltip
+                            dates={props.dates}
+                            timestamps={props.timestamps}
+                        />
+                    )}
                     cursor={false}
                 />
             </RechartsLineChart>
         </ResponsiveContainer>
     );
+};
+
+LineChart.propTypes = {
+    dates: PropTypes.arrayOf(PropTypes.string).isRequired,
+    timestamps: PropTypes.arrayOf(PropTypes.number).isRequired,
+    data: PropTypes.arrayOf(PropTypes.object).isRequired
 };
 
 export { LineChart };

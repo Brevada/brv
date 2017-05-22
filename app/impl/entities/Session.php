@@ -106,9 +106,18 @@ class Session extends Entity
             $stmt->execute();
             if ($stmt->rowCount() === 1) {
                 $this->set('id', (int) DB::get()->lastInsertId());
+            } else {
+                /* Get id from session code. */
+                $stmt = DB::get()->prepare("
+                    SELECT id FROM session_data WHERE SessionCode = :session
+                    ORDER BY SubmissionTime DESC LIMIT 1
+                ");
+                $stmt->bindValue(':session', $this->getSessionCode(), \PDO::PARAM_STR);
+                $stmt->execute();
+                $this->set('id', (int) $stmt->fetchColumn());
             }
 
-            /* At this point there should be an id. */
+            /* At this point there should be an id, assuming newly created. */
             if ($this->get('id') === null) {
                 DB::get()->rollBack();
                 \App::log()->error("Session id is NULL in commit.");

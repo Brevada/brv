@@ -1,12 +1,14 @@
+/* global brv */
+
 /**
  * Device-specific logic.
  *
  * Private.
  */
 
-brv.env.onReady(function(undefined){
+brv.env.onReady(() => {
     "use strict";
 
     /* Cron-like routines. */
-    require('device/routines')();
+    require("device/routines")();
 });

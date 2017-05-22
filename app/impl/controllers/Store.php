@@ -58,6 +58,10 @@ class Store extends Controller
                 self::fail("Unexpected error.", \HTTP::SERVER);
             }
 
+            if (!$store->isActive()) {
+                self::fail("Specified store is not active.", \HTTP::BAD_PARAMS);
+            }
+
             return new View($this->extract($store, $company));
         }
 
@@ -87,9 +91,9 @@ class Store extends Controller
             self::fail("An unexpected error has occured retrieving your account information.", \HTTP::SERVER);
         }
 
-        /* Require READ permissions on the store. */
+        /* Require READ permissions on the active stores. */
         $stores = array_values(array_filter($stores, function ($store) use ($account) {
-            return $account->getPermissions($store)->canRead();
+            return $store->isActive() && $account->getPermissions($store)->canRead();
         }));
 
         return new View([

@@ -1,7 +1,7 @@
 /* Mixins */
 
 /* Cross-Browser Flex support */
-@import 'libs/sass-flex-mixin-1.0.3/flex';
+@import '~sass-flex-mixin/_flex';
 
 /* Vendor Prefixes */
 $prefixes: ('-webkit-', '-moz-', '-ms-', '');
@@ -87,6 +87,11 @@ $prefixes: ('-webkit-', '-moz-', '-ms-', '');
     @keyframes #{$animation} { @content; }
 }
 
+@mixin fontawesome($code) {
+    content: $code;
+    font-family: 'FontAwesome';
+}
+
 /* Extendable. */
 
 %clearfix {
@@ -107,4 +112,22 @@ $prefixes: ('-webkit-', '-moz-', '-ms-', '');
 	overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
+}
+
+/* State for "removing" an element/item. */
+@mixin state-removing($class: '.state-removing') {
+    $opts: 0.5s ease-out;
+    @include transition(
+        -webkit-blur #{$opts},
+        -moz-blur #{$opts},
+        -ms-blur #{$opts},
+        filter #{$opts},
+        blur #{$opts},
+        opacity #{$opts}
+    );
+    &#{unquote(#{$class})} {
+        @include opacity(0.4);
+        @include blur(2.5px);
+        cursor: default;
+    }
 }
