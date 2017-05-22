@@ -181,7 +181,7 @@ export default class Feedback extends Component {
 
         if (this._unmounted) return;
 
-        this.setState(s => Object.assign({}, this._initialState, {
+        this.setState(s => Object.assign({}, Feedback.initialState, {
             reset: (s.reset + 1) % 100, /* Arbitrary cycle length. */
             session: brv.feedback.session.getToken()
         }));
