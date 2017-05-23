@@ -1,0 +1,36 @@
+{% set description = "The feedback platform that makes getting customer feedback simple and effective." %}
+
+<meta charset="utf-8">
+
+{# Security Policies; These are all repeated in HTTP headers. #}
+{# TODO #}
+
+{% if public|default(false) %}
+{# Public facing pages. #}
+
+{# Standard #}
+<meta name="robots" content="noodp, noimageindex">
+<meta name="description" content="{{ description }}" />
+<meta name="keywords" content="feedback, brevada, get feedback, online survey, survey software, bravada, feedback survey, customer response, business metrics, get customer opinions, how is my business doing">
+<meta name="canonical" href="{{ meta.canonical }}">
+
+{# Facebook / Open Graph #}
+<meta property="og:url" content="{{ meta.canonical }}">
+<meta property="og:image" content="{{ meta.root ~ image('brand/og-large.jpg') }}">
+<meta property="og:description" content="{{ description }}">
+<meta property="og:title" content="{{ page_title is defined ? page_title ~ ' - Brevada' : 'Brevada' }}">
+<meta property="og:site_name" content="Brevada">
+<meta property="og:see_also" content="{{ meta.root }}">
+
+{# Google+ #}
+<meta itemprop="name" content="{{ page_title is defined ? page_title ~ ' - Brevada' : 'Brevada' }}">
+<meta itemprop="description" content="{{ description }}">
+
+{# Twitter #}
+<meta name="twitter:card" content="summary">
+<meta name="twitter:url" content="{{ meta.canonical }}">
+<meta name="twitter:title" content="{{ page_title is defined ? page_title ~ ' - Brevada' : 'Brevada' }}">
+<meta name="twitter:description" content="{{ description }}">
+<meta name="twitter:image" content="{{ meta.root ~ image('brand/twitter-card.jpg') }}">
+
+{% endif %}
