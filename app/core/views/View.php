@@ -86,7 +86,10 @@ class View
             $twig_opts['cache'] = NAMESPACE_IMPL_DIR . 'views_cache';
         }
 
-        return self::$twig = new \Twig_Environment($loader, $twig_opts);
+        self::$twig = new \Twig_Environment($loader, $twig_opts);
+        self::$twig->addExtension(new twig\Asset());
+
+        return self::$twig;
     }
 
     /**
