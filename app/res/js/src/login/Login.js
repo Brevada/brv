@@ -51,7 +51,7 @@ export default class Login extends Component {
                 {errMsg}
                 <Form
                     action="/login"
-                    onSuccess={this.constructor.onSuccess}
+                    onSuccess={Login.onSuccess}
                     onError={this.onError}>
                     <Group>
                         <Label text="Email" />

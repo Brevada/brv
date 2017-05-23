@@ -78,6 +78,7 @@ class Router
              }
 
              if ($result !== false) {
+                 \App::setState(\STATES::CURRENT_ROUTE, $route);
                  \App::setState(\STATES::VIEW, $result);
                  $result->render();
                  return;

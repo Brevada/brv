@@ -90,6 +90,7 @@ class View
 
         self::$twig = new \Twig_Environment($loader, $twig_opts);
         self::$twig->addExtension(new twig\Asset());
+        self::$twig->addExtension(new twig\RouteInformation());
         self::$twig->addExtension(new \nochso\HtmlCompressTwig\Extension());
 
         return self::$twig;
@@ -102,13 +103,7 @@ class View
     {
         switch ($this->opts['type']) {
             case 'twig':
-                $params = array_merge([
-                    'meta' => [
-                        'root' => brv_url(),
-                        'canonical' => brv_url() . $this->opts['matches'][0]
-                    ]
-                ], $this->opts['params']);
-                echo self::getTwig()->render($this->data . '.twig', $params);
+                echo self::getTwig()->render($this->data . '.twig', $this->opts['params']);
                 break;
             case 'json':
                 echo json_encode($this->data);

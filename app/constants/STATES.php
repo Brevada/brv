@@ -18,6 +18,9 @@ class STATES
     /** @var string References the currently loaded view. */
     const VIEW = 'VIEW';
 
+    /** @var string References the currently loaded route. */
+    const CURRENT_ROUTE = 'CURRENT_ROUTE';
+
     /** @var string References the currently logged in user. */
     const AUTH_USER = 'AUTH_USER';
 

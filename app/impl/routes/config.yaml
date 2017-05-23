@@ -11,7 +11,7 @@ routes:
     marketing: [ 'GET ^\/marketing\/presspack(?:\.pdf)?', pass, Marketing+download ]
 
     login:
-        GET: [ '^\/login(\/to\/(.+))?$', no_auth, Authentication+viewLogin ]
+        GET: [ '^\/login\/?$', no_auth, Authentication+viewLogin ]
         POST: [ '^\/login\/?$', pass, Authentication+password ]
 
     logout: [ 'GET ^\/logout$', pass, Authentication+logout ]
