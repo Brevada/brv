@@ -11,7 +11,10 @@ $container-width: 1000px;
         display: block;
         width: 100%;
         position: relative;
-        padding: 0 5.25em;
+        padding: 0 0.85em;
+        @include respond-to('small') {
+            padding: 0 5.25em;
+        }
 
         .content {
             @extend %clearfix;
@@ -21,6 +24,13 @@ $container-width: 1000px;
 
             .brand {
                 float: left;
+
+                @include transform(scale(0.8));
+                @include respond-to('small') {
+                    @include transform(scale(1));
+                }
+
+                @include transition(all 0.1s ease-in-out);
             }
 
             nav {
@@ -279,6 +289,14 @@ $container-width: 1000px;
         background: #fff;
 
         @include box-shadow(3px 3px 5px 0px rgba(50, 50, 50, 0.75));
+
+        &::-moz-selection { background-color: $blue2; }
+        &::-webkit-selection { background-color: $blue2; }
+        &::selection { background-color: $blue2; }
+
+        *::-moz-selection { background-color: $blue2; }
+        *::-webkit-selection { background-color: $blue2; }
+        *::selection { background-color: $blue2; }
     }
 
     .tagline {
@@ -287,6 +305,10 @@ $container-width: 1000px;
         font-weight: 300;
         font-size: 1.3em;
         line-height: 125%;
+
+        &::-moz-selection { background-color: $blue2; }
+        &::-webkit-selection { background-color: $blue2; }
+        &::selection { background-color: $blue2; }
     }
 
     .actions {
@@ -541,7 +563,6 @@ $container-width: 1000px;
         }
     }
 }
-
 
 .homepage section.results {
     .screen {

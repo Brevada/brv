@@ -1,0 +1,18 @@
+<script type='text/javascript'>
+(function (){
+    /* Small window width menu functionality. */
+
+    var btn = document.getElementById('mobile-menu'),
+        menu = document.getElementById('menu');
+
+    btn.addEventListener('click', function() {
+        btn.classList && btn.classList.toggle('selected');
+    }, true);
+
+    menu.addEventListener('mouseout', function(event) {
+        var e = event.toElement || event.relatedTarget;
+        if (!e || e.parentNode == this || e == this) return;
+        btn.classList && btn.classList.remove('selected');
+    }, true);
+})();
+</script>

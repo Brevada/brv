@@ -1,3 +1,3 @@
 <?php
-Brevada::Redirect('/hub/payment/payment.php');
+Brevada::Redirect(BETA_URL . '#packages');
 ?>

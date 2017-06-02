@@ -8,6 +8,7 @@ middleware:
 
 routes:
     index: [ 'GET ^\/?$', no_auth, 'twig+homepage' ]
+    policy: [ 'GET ^\/policy\/?$', pass, 'twig+static/policy' ]
     marketing: [ 'GET ^\/marketing\/presspack(?:\.pdf)?', pass, Marketing+download ]
 
     login:

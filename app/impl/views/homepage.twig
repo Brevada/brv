@@ -8,18 +8,7 @@
 
 {% block body %}
 <div class='ly homepage'>
-    <header class='constrain-w'>
-        <div class='content'>
-            <div class='brand text-lq'></div>
-            <div id='mobile-menu' class='btn mobile menu' tabindex='0'>
-                <i class='fa fa-bars'></i>
-            </div>
-            <nav id='menu'>
-                <a href='#packages' class='btn btn-start'>Get Started</a>
-                <a href='/login' class='btn btn-login'>Login</a>
-            </nav>
-        </div>
-    </header>
+    {% include 'homepage/_nav.twig' %}
     <section class='jumbotron'>
         <div class='content'>
             <div>
@@ -163,32 +152,8 @@
             </div>
         </div>
     </section>
-    <footer class='wbr contrast'>
-        <span class='links'>
-            <!--<a href='#'>Privacy Policy</a> | <a href='#'>Terms of Use</a> | <a href='#'>Contact</a>-->
-        </span>
-        <span class='copyright'>
-            &copy; 2017 brevada.com. All rights reserved.
-        </span>
-    </footer>
+    {% include 'homepage/_footer.twig' %}
 </div>
 
-<script type='text/javascript'>
-(function (){
-    /* Small window width menu functionality. */
-
-    var btn = document.getElementById('mobile-menu'),
-        menu = document.getElementById('menu');
-
-    btn.addEventListener('click', function() {
-        btn.classList && btn.classList.toggle('selected');
-    }, true);
-
-    menu.addEventListener('mouseout', function(event) {
-        var e = event.toElement || event.relatedTarget;
-        if (!e || e.parentNode == this || e == this) return;
-        btn.classList && btn.classList.remove('selected');
-    }, true);
-})();
-</script>
+{% include 'homepage/_nav_logic.twig' %}
 {% endblock %}

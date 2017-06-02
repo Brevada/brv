@@ -1,3 +1,3 @@
 <?php
-Brevada::Redirect('/home/signup');
+Brevada::Redirect(BETA_URL . '#packages');
 ?>
