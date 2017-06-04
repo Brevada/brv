@@ -18,6 +18,9 @@ const NAMESPACE_DIR = __DIR__ . '/';
 const NAMESPACE_CORE_DIR = __DIR__ . '/core/';
 const NAMESPACE_IMPL_DIR = __DIR__ . '/impl/';
 
+const STATIC_ASSETS_DIR = __DIR__ . '/res/';
+const PRIVATE_ASSETS_DIR = __DIR__ . '/resp/';
+
 const ROUTER_CONFIG_PATH = NAMESPACE_IMPL_DIR . 'routes/config.yaml';
 
 require __DIR__ . '/constants/STATES.php';

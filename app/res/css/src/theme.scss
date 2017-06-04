@@ -34,15 +34,8 @@
 /* Form */
 @import 'form/form';
 
-a.phone {
-    text-decoration: none;
-    color: $blue1;
-    white-space: nowrap;
-    line-height: 1.5em;
+/* Homepage */
+@import 'homepage/homepage';
 
-    &:before {
-        @include fontawesome("\f095");
-        margin-right: 0.25em;
-        margin-left: 0.15em;
-    }
-}
+/* Stylized Links */
+@import '_links';

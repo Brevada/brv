@@ -79,14 +79,21 @@ class View
 
         $loader = new \Twig_Loader_Filesystem(NAMESPACE_IMPL_DIR . 'views');
 
-        $twig_opts = [];
+        $twig_opts = [
+            'debug' => DEBUG
+        ];
 
         if (!DEBUG) {
             /* Do not cache when in DEBUG environment. */
             $twig_opts['cache'] = NAMESPACE_IMPL_DIR . 'views_cache';
         }
 
-        return self::$twig = new \Twig_Environment($loader, $twig_opts);
+        self::$twig = new \Twig_Environment($loader, $twig_opts);
+        self::$twig->addExtension(new twig\Asset());
+        self::$twig->addExtension(new twig\RouteInformation());
+        self::$twig->addExtension(new \nochso\HtmlCompressTwig\Extension());
+
+        return self::$twig;
     }
 
     /**

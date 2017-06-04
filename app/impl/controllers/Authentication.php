@@ -35,7 +35,8 @@ class Authentication extends Controller
     public function viewLogin(array $params)
     {
         /* Save the URL the user was attempting to reach. */
-        \App::setState(\STATES::LOGIN_DEST, isset($params[2]) ? $params[2] : false);
+        $dest = self::from('to', $_GET, false);
+        \App::setState(\STATES::LOGIN_DEST, $dest);
         return new View('authentication/login');
     }
 

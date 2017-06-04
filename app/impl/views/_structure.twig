@@ -1,10 +1,15 @@
 {% import "macros/_resources.twig" as resources %}
-
+{% htmlcompress %}
 <!DOCTYPE html>
-<html>
+<html lang="en">
     <head>
+    <title>{% if page_title is defined %}{{ page_title }} - {% endif %}Brevada</title>
 
     <!-- Metadata -->
+    {% if ignore_metadata|default(false) == false %}
+    {% include "_metadata.twig" %}
+    {% endif %}
+
     {% block metadata %}{% endblock %}
 
     <!-- Scripts -->
@@ -23,3 +28,4 @@
         {% block body %}{% endblock %}
     </body>
 </html>
+{% endhtmlcompress %}

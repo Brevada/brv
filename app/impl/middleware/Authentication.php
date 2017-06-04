@@ -69,7 +69,7 @@ class Authentication extends Middleware
     {
         if (self::get() === null) {
             // Have user login.
-            \App::redirect('login/to' . $_SERVER['REQUEST_URI']);
+            \App::redirect('login?to=' . urlencode($_SERVER['REQUEST_URI']));
         } else {
             // Redirect admins.
             if (\App::getState(\STATES::AUTH_USER)->getLegacyPermissions() == 255) {
