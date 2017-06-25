@@ -87,7 +87,7 @@ class Router
 
          /* No routes matched. */
          http_response_code(\HTTP::NOT_FOUND);
-         echo "404";
+         (new View('static/404'))->render();
      }
 
      /**

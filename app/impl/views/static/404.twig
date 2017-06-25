@@ -1,0 +1,22 @@
+{% extends '_structure.twig' %}
+{% set public = false %}
+{% set page_title = 'Page Not Found' %}
+
+{% block styles %}
+    {{ resources.style('//fonts.googleapis.com/css?family=Lato:300,400|Roboto+Condensed') }}
+{% endblock %}
+
+{% block body %}
+    <div class='ly homepage'>
+        {% include 'homepage/_nav.twig' %}
+        <section class=''>
+            <div class='content'>
+                <h1>404: Page Not Found</h1>
+                <h2>The page you were looking for does not exist.</h2>
+                <i class='fa fa-search s-404 search'></i>
+            </div>
+        </section>
+    </div>
+
+    {% include 'homepage/_nav_logic.twig' %}
+{% endblock %}

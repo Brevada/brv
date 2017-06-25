@@ -2,6 +2,7 @@ $container-width: 1000px;
 
 .homepage {
     font-family: 'Lato', sans-serif;
+    min-height: 100%;
 
     h1, h2, h3, h4, h5, h6 {
         font-family: 'Roboto Condensed', sans-serif;
@@ -681,4 +682,19 @@ $container-width: 1000px;
             font-weight: bold;
         }
     }
+}
+
+i.s-404.search {
+    display: block;
+    text-align: center;
+    margin: 0.1em auto 0.2em auto;
+    font-size: 10.5em;
+    color: $blue3;
+
+    &:hover {
+        color: $blue1;
+        font-size: 12em;
+    }
+
+    @include transition(color 0.2s ease-in-out, font-size 0.2s ease-in-out);
 }
