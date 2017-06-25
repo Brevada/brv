@@ -1,5 +1,159 @@
-{% extends "_structure.twig" %}
+{% extends '_structure.twig' %}
+{% set public = true %}
+{% set page_title = 'Welcome' %}
+
+{% block styles %}
+{{ resources.style('//fonts.googleapis.com/css?family=Lato:300,400|Roboto+Condensed') }}
+{% endblock %}
 
 {% block body %}
-Homepage
+<div class='ly homepage'>
+    {% include 'homepage/_nav.twig' %}
+    <section class='jumbotron'>
+        <div class='content'>
+            <div>
+                <span class='title attention'>Transform your restaurant with <span class='em'>valuable feedback</span></span>
+                <span class='tagline'>Providing businesses with actionable data and their customers with an integrated and seamless feedback giving experience.</span>
+                <div class='actions'>
+                    <a href='#packages' class='btn btn-start'>Get Started</a>
+                    <a href='/marketing/presspack' class='btn btn-download'>Download Press Pack</a>
+                </div>
+            </div>
+            <div></div>
+        </div>
+    </section>
+    <section class='how-it-works'>
+        <div class='content'>
+            <h1>How It Works</h1>
+            <h2>4 simple steps to bring your business to the next level.</h2>
+            <div class='points'>
+                <div class='point'>
+                    <div class='step'>1</div>
+                    <h3>Pick Your Plan</h3>
+                    <p>Choose the plan that's right for your business.</p>
+                </div>
+                <div class='point'>
+                    <div class='step'>2</div>
+                    <h3>Customize</h3>
+                    <p>Specify the <span class='em'>products, services, or other aspects</span> of your business that you want to get feedback on.</p>
+                </div>
+                <div class='point'>
+                    <div class='step'>3</div>
+                    <h3>Gather Results</h3>
+                    <p>Gather feedback on those aspects from your customers by sharing your <span class='em em-1'>Brevada Page</span> URL and with <span class='em em-1'>tablets</span> (included in every Brevada subscription!)</p>
+                </div>
+                <div class='point'>
+                    <div class='step'>4</div>
+                    <h3>Analyze and Compare</h3>
+                    <p>Our revolutionary data reporting dashboard tells you what you need to know to take your business to the next level.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class='receive-feedback dark'>
+        <div class='content'>
+            <h1>Receive Feedback</h1>
+            <h2>We believe in <span class='em'>one-click feedback</span>.</h2>
+            <div class='feedback'>
+                <div class='attributes'>
+                    <div class='attribute'>
+                        <div class='content'>
+                            <h3 class='name'>Brevada Page</h3>
+                            <p>Forget surveys! We make giving feedback quick and easy.</p>
+                        </div>
+                        <div class='icon'><i class='fa fa-star'></i></div>
+                    </div>
+                    <div class='attribute'>
+                        <div class='content'>
+                            <h3 class='name'>Tablets</h3>
+                            <p>Brevada feedback tablets are included with every plan.</p>
+                        </div>
+                        <div class='icon'><i class='fa fa-tablet'></i></div>
+                    </div>
+                    <div class='attribute'>
+                        <div class='content'>
+                            <h3 class='name'>Custom URL</h3>
+                            <p>Recieve feedback through brevada.com/<span class='em'>yourcompany</span></p>
+                        </div>
+                        <div class='icon'><i class='fa fa-globe'></i></div>
+                    </div>
+                </div>
+                <div class='screen'>
+                    <img src='{{ image('homepage/tablet-feedback.png') }}' />
+                </div>
+                <div class='attributes'>
+                    <div class='attribute'>
+                        <div class='icon'><i class='fa fa-qrcode'></i></div>
+                        <div class='content'>
+                            <h3 class='name'>Custom QR Code</h3>
+                            <p>Making it extremely easy to share your URL.</p>
+                        </div>
+                    </div>
+                    <div class='attribute'>
+                        <div class='icon'><i class='fa fa-newspaper-o'></i></div>
+                        <div class='content'>
+                            <h3 class='name'>Marketing Material</h3>
+                            <p>We auto create custom printables for you to share.</p>
+                        </div>
+                    </div>
+                    <div class='attribute'>
+                        <div class='icon'><i class='fa fa-plus'></i></div>
+                        <div class='content attention'>
+                            <h3 class='name'>And much more!</h3>
+                            <p>New features released monthly.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class='results contrast'>
+        <div class='content'>
+            <h1>Get Results</h1>
+            <h2>We believe in <span class='em'>actionable data</span>.</h2>
+
+            <div class='screen'>
+                <img src='{{ image('homepage/macbook.png') }}' />
+            </div>
+
+            <div class='attributes'>
+                <div class='attribute'>
+                    <div class='icon'><i class='fa fa-map-marker'></i></div>
+                    <div class='content attention'>
+                        <h3 class='name'>Industry Comparisons</h3>
+                        <p>View comparisons to industry averages.</p>
+                    </div>
+                </div>
+                <div class='attribute'>
+                    <div class='icon'><i class='fa fa-compress'></i></div>
+                    <div class='content attention'>
+                        <h3 class='name'>Intra-Company Analysis</h3>
+                        <p>View comparisons between the different aspects internally.</p>
+                    </div>
+                </div>
+                <div class='attribute'>
+                    <div class='icon'><i class='fa fa-clock-o'></i></div>
+                    <div class='content attention'>
+                        <h3 class='name'>Track Progress</h3>
+                        <p>Monitor improvement over time.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class='packages' id='packages'>
+        <div class='content'>
+            <h1>Personalized Solutions</h1>
+            <h2>A Brevada package tailored to your needs.</h2>
+            <div class='personal'>
+                <p>We understand that businesses are personal, and that there isn't a one solution fits all. Whether you manage one restaurant or a hundred, a retail chain or a hotel, our <span class='em'>Brevada Sales Rep.</span> will help tailor a plan to fit your needs.</p>
+                <p>Once your package has been finalized, you will be assigned a <span class='em'>Brevada Customer Satisfaction Agent</span> to ease your business onto the Brevada platform and start collecting feedback right away.</p>
+                <p class='speak-now'>To get started or find out more: <a href='mailto:success@brevada.com?subject=Sales%20Inquiry' rel='nofollow' class='email'>success@brevada.com</a></p>
+            </div>
+        </div>
+    </section>
+    {% include 'homepage/_footer.twig' %}
+</div>
+
+{% include 'homepage/_nav_logic.twig' %}
 {% endblock %}

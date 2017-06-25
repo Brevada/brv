@@ -34,13 +34,13 @@ class Router
             $result = false;
 
              try {
-                 if (self::isValidController($route->getController())) {
+                 /* Controller is valid. Traverse middleware. */
+                 $result = self::resolveMiddleware($route->getMiddleware());
+                 if ($result === false) {
+                     continue;
+                 }
 
-                     /* Controller is valid. Traverse middleware. */
-                     $result = self::resolveMiddleware($route->getMiddleware());
-                     if ($result === false) {
-                         continue;
-                     }
+                 if (self::isValidController($route->getController())) {
 
                      if ($result === true) {
                          /* All middleware passed; no new View constructed.
@@ -78,6 +78,7 @@ class Router
              }
 
              if ($result !== false) {
+                 \App::setState(\STATES::CURRENT_ROUTE, $route);
                  \App::setState(\STATES::VIEW, $result);
                  $result->render();
                  return;
@@ -86,7 +87,7 @@ class Router
 
          /* No routes matched. */
          http_response_code(\HTTP::NOT_FOUND);
-         echo "404";
+         (new View('static/404'))->render();
      }
 
      /**

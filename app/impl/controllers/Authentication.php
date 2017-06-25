@@ -35,7 +35,8 @@ class Authentication extends Controller
     public function viewLogin(array $params)
     {
         /* Save the URL the user was attempting to reach. */
-        \App::setState(\STATES::LOGIN_DEST, isset($params[2]) ? $params[2] : false);
+        $dest = self::from('to', $_GET, false);
+        \App::setState(\STATES::LOGIN_DEST, $dest);
         return new View('authentication/login');
     }
 
@@ -88,9 +89,9 @@ class Authentication extends Controller
         $email = self::from('email', $data);
         $password = self::from('password', $data);
 
-        v::email()->check($email);
         // TODO: Enforce password rules.
-        if (!v::stringType()->notEmpty()->length(1, null)->validate($password)) {
+        if (!v::email()->validate($email) ||
+            !v::stringType()->notEmpty()->length(1, null)->validate($password)) {
             self::fail("Invalid email and/or password.", \HTTP::BAD_PARAMS);
         }
 

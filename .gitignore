@@ -13,8 +13,8 @@ app/resp/feedback/*
 app/resp/device_cache/*
 
 # Package Managers
-node_modules/
-vendor/
+node_modules
+vendor
 
 # Compiled + Cache
 *.pyc

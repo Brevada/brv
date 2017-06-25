@@ -1,0 +1,24 @@
+a.phone, a.email {
+    text-decoration: none;
+    color: $blue1;
+    white-space: nowrap;
+    line-height: 1.5em;
+
+    &:hover {
+        color: $blue3;
+    }
+
+    @include transition(color 0.15s ease-in-out);
+}
+
+a.phone:before {
+    @include fontawesome("\f095");
+    margin-right: 0.25em;
+    margin-left: 0.15em;
+}
+
+a.email:before {
+    @include fontawesome("\f003");
+    margin-right: 0.25em;
+    margin-left: 0.15em;
+}

@@ -1,5 +1,9 @@
 {% extends "_structure.twig" %}
 {% set ignore_theme = true %}
+{% set page_title = name %}
+
+{# Uses public metadata for now. TODO: Use customer's logo and content. #}
+{% set public = true %}
 
 {% block metadata %}
 <meta name='viewport' content='width=device-width, user-scalable=no'>

@@ -153,7 +153,11 @@
                         right: 0;
                     }
                 }
+
+                @include state-removing();
             }
         }
     }
+
+    @include state-removing();
 }

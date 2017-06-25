@@ -1,13 +1,18 @@
 # Routes Configuration
 
 middleware:
+    no_auth: NoAuthentication
     auth: Authentication
     device: DeviceAuthentication
     optional_device: [ DeviceAuthentication, Discard ]
 
 routes:
+    index: [ 'GET ^\/?$', no_auth, 'twig+homepage' ]
+    policy: [ 'GET ^\/policy\/?$', pass, 'twig+static/policy' ]
+    marketing: [ 'GET ^\/marketing\/presspack(?:\.pdf)?', pass, Marketing+download ]
+
     login:
-        GET: [ '^\/login(\/to\/(.+))?$', pass, Authentication+viewLogin ]
+        GET: [ '^\/login\/?$', no_auth, Authentication+viewLogin ]
         POST: [ '^\/login\/?$', pass, Authentication+password ]
 
     logout: [ 'GET ^\/logout$', pass, Authentication+logout ]
@@ -51,7 +56,6 @@ routes:
         GET: [ '^\/api\/events$', auth, Event+getAll ]
 
     # Temp. mappings per issue 193.
-    map_index: [ 'GET ^\/?$', pass, 'external+//{HOST}' ]
     map_settings: [ 'GET ^\/settings\/?$', pass, 'external+//{HOST}/settings' ]
     map_admin: [ 'GET ^\/admin\/?$', pass, 'external+//{HOST}/admin' ]
 
