@@ -12,7 +12,7 @@ define('URL', 'http://brevada.com/');
 if (DEBUG) {
     define('BETA_URL', 'http://beta.' . $_SERVER['HTTP_HOST'] . '/');
 } else {
-    define('BETA_URL', 'http://beta.' . 'brevada.com' . '/');
+    define('BETA_URL', 'https://beta.' . 'brevada.com' . '/');
 }
 
 session_name('brevada_session');
