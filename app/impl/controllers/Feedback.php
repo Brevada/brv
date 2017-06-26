@@ -255,12 +255,15 @@ class Feedback extends Controller
 
         $email = self::from('email', $body);
         if ($email === null) {
-            self::fail("No email given.", \HTTP::BAD_PARAMS);
+            $email = '';
+            //// We will accept invalid emails for now, until UX improves.
+            // self::fail("No email given.", \HTTP::BAD_PARAMS);
         }
 
         if (!v::email()->validate($email)) {
             \App::log("Bad email submitted for store #" . $store->getId());
-            self::fail("Invalid email.", \HTTP::BAD_PARAMS);
+            //// We will accept invalid emails for now, until UX improves.
+            // self::fail("Invalid email.", \HTTP::BAD_PARAMS);
         }
 
         /* "Favour" no consent. */
@@ -274,12 +277,14 @@ class Feedback extends Controller
         $session = new Session();
         $session->setSessionCode($sessionCode);
         $session->setSubmissionTime($this->getSubmissionTime($body));
-        $session->setField('email', $email);
-        $session->setField('contact_consent', (int) $contactConsent);
-        $session->setField('subscribe', (int) $subscribe);
+        if (!empty($email)) {
+            $session->setField('email', $email);
+            $session->setField('contact_consent', (int) $contactConsent);
+            $session->setField('subscribe', (int) $subscribe);
 
-        if ($session->commit() === null) {
-            self::fail("Unable to accept email.", \HTTP::SERVER);
+            if ($session->commit() === null) {
+                self::fail("Unable to accept email.", \HTTP::SERVER);
+            }
         }
 
         return new View([
@@ -396,7 +401,9 @@ class Feedback extends Controller
     {
         $deviceId = \App::getState(\STATES::DEVICE_UUID);
 
-        $cache = self::from('cache', $_GET, true);
+        /* Until we implement better rate limiting, we need to give the user
+         * the benefit of the doubt. We will disable caching by default. */
+        $cache = self::from('cache', $_GET, false);
         if ($cache === 'false') {
             $cache = false;
         } else if ($cache === 'true') {

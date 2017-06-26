@@ -173,7 +173,7 @@ export default class IntelliEmailInput extends Input {
                 />
                 <input
                     type="hidden"
-                    value={this.state.value || ""}
+                    value={(this.state.value || "").indexOf("@") === 0 ? "" : (this.state.value || "")}
                     name="email"
                 />
                 <span className="at">{"@"}</span>

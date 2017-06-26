@@ -206,6 +206,7 @@ export default class Feedback extends Component {
             } : {};
         }).then(state => {
             /* If on comment screen, wait longer. */
+            clearTimeout(this._tmrInactivity);
             this._tmrInactivity = setTimeout(this.onInactive,
                 state.showDialog === DIALOG_TYPE.COMMENT ?
                 DURATION.INACTIVITY_COMMENT :
@@ -230,8 +231,19 @@ export default class Feedback extends Component {
      * User is inactive.
      * @returns {void}
      */
-    onInactive() {
+    onInactive() { // eslint-disable-line complexity
         if (this._unmounted) return;
+
+        /* Inactivity timer is inaccurate. */
+        if (brv._idleSeconds !== undefined && (brv._idleSeconds * 1000) < DURATION.INACTIVITY) {
+            clearTimeout(this._tmrInactivity);
+            this._tmrInactivity = setTimeout(
+                this.onInactive,
+                Math.max(1000, DURATION.INACTIVITY - Math.floor(brv._idleSeconds * 1000))
+            );
+
+            return;
+        }
 
         if (this.state.showInactivityWarning) {
             /* Warning has already been shown. */
@@ -270,6 +282,7 @@ export default class Feedback extends Component {
 
             /* If it's a device, reset screen after timeout. */
             if (window.brv && window.brv.env && window.brv.env.IS_DEVICE) {
+                clearTimeout(this._tmrReset);
                 this._tmrReset = setTimeout(this.reset, DURATION.RESET);
             }
 
@@ -297,6 +310,7 @@ export default class Feedback extends Component {
                 if (!this.state.commentGiven && this.props.data.allow_comments) {
                     /* Prompt for comment. */
                     this.showDialogComment();
+
                     return;
                 }
 
