@@ -9,7 +9,7 @@
 namespace Brv\impl\middleware;
 
 use Brv\core\routing\Middleware;
-use Brv\impl\Entities\Account;
+use Brv\impl\entities\Account;
 
 /**
  * Authentication middleware which enforces that the user be authenticated,

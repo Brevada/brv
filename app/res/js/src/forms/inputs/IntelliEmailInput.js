@@ -142,7 +142,7 @@ export default class IntelliEmailInput extends Input {
     /**
      * @override
      */
-    render() {
+    render() { // eslint-disable-line complexity
         const divClass = classNames("intelli-email-input", {
             "other": this.state.domain === -1
         });
@@ -173,7 +173,7 @@ export default class IntelliEmailInput extends Input {
                 />
                 <input
                     type="hidden"
-                    value={this.state.value || ""}
+                    value={(this.state.value || "").indexOf("@") === 0 ? "" : (this.state.value || "")}
                     name="email"
                 />
                 <span className="at">{"@"}</span>
