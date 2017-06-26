@@ -142,7 +142,7 @@ export default class IntelliEmailInput extends Input {
     /**
      * @override
      */
-    render() {
+    render() { // eslint-disable-line complexity
         const divClass = classNames("intelli-email-input", {
             "other": this.state.domain === -1
         });
