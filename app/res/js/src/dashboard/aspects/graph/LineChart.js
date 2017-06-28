@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 
 import { ResponsiveContainer,
          LineChart as RechartsLineChart,
-         Tooltip, Line, XAxis, YAxis } from "recharts";
+         Tooltip, Line, XAxis, YAxis, Text } from "recharts";
 
 import AspectGraphTooltip from "dashboard/aspects/graph/AspectGraphTooltip";
 
@@ -19,9 +19,9 @@ import AspectGraphTooltip from "dashboard/aspects/graph/AspectGraphTooltip";
  */
 const AspectXAxisTick = props => (
     <g transform={`translate(${props.x}, ${props.y})`}>
-        <text x={0} y={0} dy={+15} textAnchor="middle" className="x-axis-text">
+        <Text x={0} y={0} dy={+15} textAnchor="middle" className="x-axis-text">
             {props.dates[parseInt(props.payload.value)]}
-        </text>
+        </Text>
     </g>
 );
 
@@ -102,6 +102,9 @@ const LineChart = props => {
                     dataKey={"value"}
                     domain={["auto", "auto"]}
                     padding={{ bottom: 15, top: 15 }}
+                    tick={false}
+                    tickLine={false}
+                    axisLine={false}
                     hide={true}
                 />
                 <XAxis

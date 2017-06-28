@@ -43,8 +43,9 @@ DeleteAspect.propTypes = {
  * @returns {JSX}
  */
 const AspectDetails = props => { // eslint-disable-line complexity
-    const sign = (props.change > 0 && "+") || (props.change < 0 && "-") || "";
-    const change = sign + Math.abs(+props.change.toFixed(2)) + "%";
+    const nChange = Math.round(+props.change);
+    const sign = (nChange > 0 && "+") || (nChange < 0 && "-") || "";
+    const change = sign + Math.abs(nChange) + "%";
 
     const noResponses = (
         <span className="text" title={"no activity for this aspect"}>
@@ -54,16 +55,28 @@ const AspectDetails = props => { // eslint-disable-line complexity
 
     const plural = props.responses > 1 ? "s" : "";
 
+    /* Make positive values appear better than negative. */
+    const moodChange = nChange > 0 ? mood(nChange, -50) : mood(nChange, -100);
+
     return (
         <div className={classNames("detail", props.className)}>
             {(props.responses > 0 && (
-                <span
-                    title={change + ` after ${props.responses} response${plural}`}>
-                    <span className={"change " + mood(props.change, -100)}>{change}</span>
-                    <span className="text">
-                        {` after ${props.responses} response${plural}`}
+                (nChange === 0 && (
+                    <span
+                        title={`no change after ${props.responses} response${plural}`}>
+                        <span className="text">
+                            {`no change after ${props.responses} response${plural}`}
+                        </span>
                     </span>
-                </span>
+                )) || (
+                    <span
+                        title={change + ` after ${props.responses} response${plural}`}>
+                        <span className={"change " + moodChange}>{change}</span>
+                        <span className="text">
+                            {` after ${props.responses} response${plural}`}
+                        </span>
+                    </span>
+                )
             )) || noResponses}
         </div>
     );
