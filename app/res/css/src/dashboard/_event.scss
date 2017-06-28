@@ -114,7 +114,7 @@
                     @include respond-to('medium') { min-width: 30%; }
                     @include respond-to('large') { min-width: 24%; }
                     @include respond-to('xlarge') { min-width: 20%; }
-                    transition: min-width 0.1s;
+                    @include transition(min-width 0.1s);
                 }
 
                 .detail {
@@ -130,14 +130,13 @@
                     @include respond-to('medium') { width: calc(70% - #{$right_width}); }
                     @include respond-to('large') { width: calc(74% - #{$right_width}); }
                     @include respond-to('xlarge') { width: calc(80% - #{$right_width}); }
-                    transition: width 0.1s;
+                    @include transition(width 0.1s);
 
                     @extend %ellipsis;
                 }
 
                 .change {
-                    //@include moods(color);
-                    color: $green1;
+                    @include moods(color);
                 }
 
                 .text {

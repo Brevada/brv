@@ -85,14 +85,6 @@ The latest version of `npm` and `composer` are required.
 > npm install
 ```
 
-Alternatively, if you have [yarn](yarnpkg.com) installed, you may run:
-
-```
-> yarn install
-```
-
-to install dependencies from the yarn lock file. Utilizing the yarn file is _encouraged_.
-
 ### Build
 
 To build all assets (css/javascript) in a development environment:

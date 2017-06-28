@@ -65,7 +65,7 @@ const DateCluster = {
         formats = Object.assign({
             year: "[']YY",
             month: "MMM",
-            day: "MMM Do",
+            day: "MMM D",
             hour: "h a",
             minute: "h:mm a"
         }, formats || {});
