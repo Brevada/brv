@@ -66,12 +66,12 @@
             width: 96%;
             margin: 0 auto;
 
-            .recharts-x-axis .recharts-cartesian-axis-line {
+            .recharts-xAxis .recharts-cartesian-axis-line {
                 stroke: $grey2;
             }
 
-            .x-axis-text {
-                font-size: 0.78rem;
+            .recharts-cartesian-axis-ticks .x-axis-text {
+                font-size: 0.705rem;
                 fill: $grey3;
             }
 
