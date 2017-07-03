@@ -1,0 +1,37 @@
+.aspect .multi-option-bar {
+
+    .options {
+        @include flexbox;
+        @include flex-direction(row);
+        // TODO: space-* not supported in older browsers.
+        @include justify-content(space-around);
+
+        .value-type {
+            @include flexbox;
+            @include flex-direction(column);
+            @include justify-content(center);
+            @include align-content(center);
+
+            min-height: 68px;
+            background: $grey3;
+            color: #fff;
+            padding: 0.25em 1.5em;
+            margin: 0.1em 0.15em;
+            font-size: 1.22em;
+
+            @extend %clickable;
+
+            &:active {
+                @include opacity(0.5);
+            }
+
+            @at-root body:not(.touch-device) #{&}:hover {
+                @include opacity(0.5);
+            }
+
+            &:active {
+                @include box-shadow(inset 0 0 6px 1px $grey5);
+            }
+        }
+    }
+}

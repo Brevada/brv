@@ -22,7 +22,8 @@ use Brv\core\data\Data;
 class Aspect extends Entity
 {
     use common\StoreId,
-        common\Active;
+        common\Active,
+        common\ValueTypes;
 
     /**
      * Instantiates an aspect entity from a data row.
@@ -48,7 +49,8 @@ class Aspect extends Entity
             $stmt = DB::get()->prepare("
                 SELECT
                     aspects.*, aspect_type.Title,
-                    NOT(ISNULL(aspect_type.CompanyID)) as custom
+                    NOT(ISNULL(aspect_type.CompanyID)) as custom,
+                    aspect_type.ValueTypes
                 FROM aspects
                 JOIN aspect_type ON aspect_type.id = aspects.AspectTypeID
                 WHERE aspects.id = :id
@@ -81,7 +83,8 @@ class Aspect extends Entity
             $stmt = DB::get()->prepare("
                 SELECT
                     aspects.*, aspect_type.Title,
-                    NOT(ISNULL(aspect_type.CompanyID)) as custom
+                    NOT(ISNULL(aspect_type.CompanyID)) as custom,
+                    aspect_type.ValueTypes
                 FROM aspects
                 JOIN aspect_type ON aspect_type.id = aspects.AspectTypeID
                 WHERE aspects.id IN ({$idsList})
@@ -113,7 +116,8 @@ class Aspect extends Entity
             $stmt = DB::get()->prepare("
                 SELECT
                     aspects.*, aspect_type.Title,
-                    NOT(ISNULL(aspect_type.CompanyID)) as custom
+                    NOT(ISNULL(aspect_type.CompanyID)) as custom,
+                    aspect_type.ValueTypes
                 FROM aspects
                 JOIN aspect_type ON aspect_type.id = aspects.AspectTypeID
                 WHERE aspects.AspectTypeID = :type_id AND aspects.StoreID = :store_id
@@ -145,7 +149,8 @@ class Aspect extends Entity
             $stmt = DB::get()->prepare("
                 SELECT
                     aspects.*, aspect_type.Title,
-                    NOT(ISNULL(aspect_type.CompanyID)) as custom
+                    NOT(ISNULL(aspect_type.CompanyID)) as custom,
+                    aspect_type.ValueTypes
                 FROM aspects
                 JOIN aspect_type ON aspect_type.id = aspects.AspectTypeID
                 WHERE aspects.StoreID = :id

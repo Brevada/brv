@@ -1,0 +1,49 @@
+.aspect .rating-bar {
+
+    .ratings {
+        @include flexbox;
+        @include flex-direction(row);
+        // TODO: space-* not supported in older browsers.
+        @include justify-content(space-between);
+
+        .rating {
+            width: 19.5%;
+            height: 68px;
+            display: inline-block;
+            background-image: url(inline-image("feedback/star.png"));
+            background-repeat: no-repeat;
+            background-position: center center;
+
+            @extend %clickable;
+
+            @include rating(background-color);
+            &.rating-0 { background-size: 10%; }
+            &.rating-1 { background-size: 15%; }
+            &.rating-2 { background-size: 20%; }
+            &.rating-3 { background-size: 25%; }
+            &.rating-4 { background-size: 30%; }
+
+            &:active {
+                @include opacity(0.5);
+            }
+
+            @at-root body:not(.touch-device) #{&}:hover {
+                @include opacity(0.5);
+            }
+
+            &:active {
+                @include box-shadow(inset 0 0 6px 1px $grey5);
+            }
+        }
+    }
+
+    .hint {
+        display: inline-block;
+        width: 100%;
+        color: $grey3;
+        font-size: 0.925em;
+        margin-top: 3px;
+
+        @extend %clearfix;
+    }
+}

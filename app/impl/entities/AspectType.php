@@ -16,6 +16,8 @@ use Brv\core\libs\database\Database as DB;
  */
 class AspectType extends Entity
 {
+    use common\ValueTypes;
+
     /**
      * Instantiates an aspect type entity from a data row.
      *
@@ -69,9 +71,13 @@ class AspectType extends Entity
         }
 
         try {
-            $stmt = DB::get()->prepare("INSERT INTO aspect_type SET Title = :title, CompanyID = :companyId");
+            $stmt = DB::get()->prepare("
+                INSERT INTO aspect_type
+                SET Title = :title, CompanyID = :companyId, ValueTypes = :valueTypes
+            ");
             $stmt->bindValue(':title', $this->getTitle(), \PDO::PARAM_STR);
             $stmt->bindValue(':companyId', $this->get('CompanyID'), \PDO::PARAM_INT);
+            $stmt->bindValue(':valueTypes', $this->get('ValueTypes'), \PDO::PARAM_STR);
             $stmt->execute();
             $this->set('id', (int) DB::get()->lastInsertId());
             return $this->getId();
@@ -100,5 +106,37 @@ class AspectType extends Entity
     public function isCustom()
     {
         return ((int) $this->get('custom')) === 1;
+    }
+
+    /**
+     * Adds a value type to the aspect type.
+     *
+     * @param string $key   The value key.
+     * @param string $value The value label.
+     */
+    public function addValueType($key, $value)
+    {
+        $values = $this->getValueTypes();
+        if ($values === null) $values = [];
+
+        $values[$key] = $value;
+        $this->set('ValueTypes', json_encode($values, true));
+    }
+
+    /**
+     * Removes a value type from the aspect type.
+     *
+     * @param string $key   The value key.
+     */
+    public function removeValueType($key)
+    {
+        $values = $this->getValueTypes();
+        if ($values === null) $values = [];
+        if (isset($values[$key])) unset($values[$key]);
+        if (empty($values)) {
+            $this->set('ValueTypes', null);
+        } else {
+            $this->set('ValueTypes', json_encode($values, true));
+        }
     }
 }

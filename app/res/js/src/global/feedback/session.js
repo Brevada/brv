@@ -16,8 +16,9 @@ module.exports = function() {
      * @returns {void}
      */
     const newToken = () => {
-        _token = require("crypto").randomBytes(16)
-                                  .toString("hex");
+        _token = require("crypto")
+            .randomBytes(16)
+            .toString("hex");
 
         return _token;
     };
@@ -39,8 +40,8 @@ module.exports = function() {
     session.getToken = () => _token;
     session.hasPoor = () => _hasPoor;
 
-    session.onSubmit = (value, ordinal) => {
-        if (ordinal <= 1) {
+    session.onSubmit = ({ ordinal }) => {
+        if (ordinal != null && ordinal <= 1) {
             _hasPoor = true;
         }
     };

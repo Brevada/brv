@@ -43,9 +43,9 @@ export default class Aspects extends React.Component {
      * @param  {object} nextProps React props
      */
     componentWillReceiveProps(nextProps) {
-        if (!nextProps.aspects ||
-                _.isEqual(_.sortBy(nextProps.aspects, ["id"]),
-                          _.sortBy(this.state.aspects, ["id"])) ) {
+        if (!nextProps.aspects || _.isEqual(
+            _.sortBy(nextProps.aspects, ["id"]),
+            _.sortBy(this.state.aspects, ["id"]))) {
             return;
         }
 
@@ -73,10 +73,10 @@ export default class Aspects extends React.Component {
     render() {
         /* Don't show blacklisted aspects (removed list). */
         const aspects = this.state.aspects
-                                  .concat()
-                                  .filter(a => (
-                                      !this.state.submitted.includes(a.id)
-                                  ));
+            .concat()
+            .filter(a => (
+                !this.state.submitted.includes(a.id)
+            ));
 
         if (brv.feedback) {
             brv.feedback.session.setRemainingCount(aspects.length);
@@ -89,6 +89,7 @@ export default class Aspects extends React.Component {
                         key={aspect.id}
                         id={aspect.id}
                         title={aspect.title}
+                        valueTypes={aspect.value_types}
                         onSubmit={this.onSubmit}
                         session={this.props.session}
                     />
