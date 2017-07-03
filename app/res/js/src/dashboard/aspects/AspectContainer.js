@@ -80,6 +80,7 @@ export default class AspectContainer extends Component {
                             id={aspect.id}
                             title={aspect.title}
                             summary={aspect.summary}
+                            nonStandard={aspect.value_types != null}
                             filter={this.props.filter}
                             onRemove={this.onRemove}
                         />

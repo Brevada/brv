@@ -284,7 +284,8 @@ class Aspect extends Controller
             'title' => $aspect->getTitle(),
             'description' => $aspect->getDescription(),
             'active' => $aspect->isActive() == 1,
-            'custom' => $aspect->isCustom() == 1
+            'custom' => $aspect->isCustom() == 1,
+            'value_types' => $aspect->getValueTypes()
         ];
 
         if ($dataSpan !== false) {
