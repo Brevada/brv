@@ -199,6 +199,8 @@ class Feedback extends Controller
             self::fail("Invalid aspect.", \HTTP::BAD_REQUEST);
         }
 
+        $sessionCode = self::from('session', $body);
+
         $response = null;
 
         if ($value !== null) {
@@ -210,10 +212,32 @@ class Feedback extends Controller
             $response->setValue($value);
             $response->setDate($this->getSubmissionTime($body));
         } else if ($valueType !== null) {
-            $response = new Session();
+            /* non_standard_values is a key-value map of aspectId -> valueTypeKey.
+             *
+             * Here, we ensure we don't overwrite any previously assigned
+             * non-standard values.
+             */
+
+            /* Bit of an arbitrary length distinction, but should catch
+             * some faulty inputs/tampering. More of a sanity check. */
+            if (v::stringType()->length(10, null)->validate($sessionCode)) {
+                $response = Session::queryCode($sessionCode);
+            }
+
+            if ($response === null) $response = new Session();
+
             $response->setSessionCode($sessionCode);
             $response->setSubmissionTime($this->getSubmissionTime($body));
-            $session->setField('value_type', $valueType);
+
+            $nonStandardValues = [];
+            try {
+                $nonStandardValues = $response->getField('non_standard_values');
+                if (empty($nonStandardValues)) $nonStandardValues = [];
+            } catch (\Exception $ex) {}
+
+            $nonStandardValues[$aspectId] = $valueType;
+            $response->setField('non_standard_values', json_encode($nonStandardValues, true));
+
             // TODO: Schema change: Record IP, UserAgent, Data
         }
 
