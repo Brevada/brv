@@ -56,8 +56,8 @@ routes:
         GET: [ '^\/api\/events$', auth, Event+getAll ]
 
     # Temp. mappings per issue 193.
-    map_settings: [ 'GET ^\/settings\/?$', pass, 'external+//{HOST}/settings' ]
-    map_admin: [ 'GET ^\/admin\/?$', pass, 'external+//{HOST}/admin' ]
+    map_settings: [ 'GET ^\/settings\/?$', pass, 'external+http://{HOST}/settings' ]
+    map_admin: [ 'GET ^\/admin\/?$', pass, 'external+http://{HOST}/admin' ]
 
     feedback_config: [ 'GET ^\/api\/feedback\/config$', optional_device, Feedback+getConfig ]
     feedback_response: [ 'POST ^\/api\/feedback\/response$', optional_device, Feedback+postResponse ]
