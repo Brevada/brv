@@ -1,5 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
+import classNames from "classnames";
 
 /**
  * Individual option within the multi option input.
@@ -42,7 +43,11 @@ Option.defaultProps = {
  */
 const MultiOption = props => (
     <div className="multi-option-bar">
-        <div className="options">
+        <div
+            className={classNames("options", {
+                binary: Object.keys(props.valueTypes).length === 2,
+                unary: Object.keys(props.valueTypes).length === 1
+            })}>
             {Object.keys(props.valueTypes).map((typeKey) => (
                 <Option
                     key={typeKey}

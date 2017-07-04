@@ -4,31 +4,25 @@
     .options {
         @include flexbox;
         @include flex-direction(row);
-        // TODO: space-* not supported in older browsers.
-        @include justify-content(space-around);
         @include flex-wrap(wrap);
+        @include justify-content(flex-start);
+
+        margin: 0 -0.4em;
 
         .value-type {
             @include flexbox;
             @include flex-direction(column);
             @include justify-content(center);
             @include align-content(center);
-            @include flex-grow(1);
 
-            min-height: 68px;
+            min-height: 50px;
             background: $grey3;
             color: #fff;
-            padding: 0.25em 1.75em;
-            font-size: 1.22em;
+            padding: 0.25em 2em;
+            font-size: 1.1em;
             text-align: center;
 
-            margin: 0.1em 0.25em;
-            &:first-child {
-                margin-left: 0;
-            }
-            &:last-child {
-                margin-right: 0;
-            }
+            margin: 0.1em 0.4em 0.4em 0.4em;
 
             @extend %clickable;
 
@@ -43,6 +37,10 @@
             &:active {
                 @include box-shadow(inset 0 0 6px 1px $grey5);
             }
+        }
+
+        &.binary .value-type, &.unary .value-type {
+            @include flex-grow(1);
         }
     }
 }
