@@ -14,9 +14,9 @@ namespace Brv\core\data;
 interface IResponse
 {
     /**
-     * Gets the response rating value.
+     * Gets the response value.
      *
-     * @return double
+     * @return double|object
      */
     public function getValue();
 
