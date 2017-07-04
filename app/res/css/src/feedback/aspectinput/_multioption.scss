@@ -1,23 +1,34 @@
 .aspect .multi-option-bar {
+    margin-bottom: 0.3em;
 
     .options {
         @include flexbox;
         @include flex-direction(row);
         // TODO: space-* not supported in older browsers.
         @include justify-content(space-around);
+        @include flex-wrap(wrap);
 
         .value-type {
             @include flexbox;
             @include flex-direction(column);
             @include justify-content(center);
             @include align-content(center);
+            @include flex-grow(1);
 
             min-height: 68px;
             background: $grey3;
             color: #fff;
-            padding: 0.25em 1.5em;
-            margin: 0.1em 0.15em;
+            padding: 0.25em 1.75em;
             font-size: 1.22em;
+            text-align: center;
+
+            margin: 0.1em 0.25em;
+            &:first-child {
+                margin-left: 0;
+            }
+            &:last-child {
+                margin-right: 0;
+            }
 
             @extend %clickable;
 
