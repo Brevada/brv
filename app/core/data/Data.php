@@ -40,6 +40,9 @@ class Data
     /** @var integer The "to" unix time for which this Data collection represents. */
     protected $to = null;
 
+    /** @var boolean Is the data type numeric in nature? */
+    protected $isNumeric = true;
+
     /**
      * Instantiate a Data instance from an array of responses.
      *
@@ -50,12 +53,9 @@ class Data
     {
         $this->responses = $responses;
 
-        if (isset($opts['from'])) {
-            $this->from = $opts['from'];
-        }
-        if (isset($opts['to'])) {
-            $this->to = $opts['to'];
-        }
+        if (isset($opts['from'])) $this->from = $opts['from'];
+        if (isset($opts['to'])) $this->to = $opts['to'];
+        if (isset($opts['numeric'])) $this->isNumeric = (bool) $opts['numeric'];
     }
 
     /**
@@ -71,10 +71,13 @@ class Data
     /**
      * Gets the sum of all values.
      *
+     * @throws \Exception if data type is not numeric.
      * @return double
      */
     public function getSum()
     {
+        if (!$this->isNumeric) throw new \Exception('Data type is not numeric.');
+
         return array_reduce($this->responses, function ($carry, $item) {
             return $carry + $item->getValue();
         }, 0);
@@ -93,13 +96,14 @@ class Data
     /**
      * Gets the average of all values.
      *
+     * @throws \Exception if data type is not numeric.
      * @return double
      */
     public function getAverage()
     {
-        if ($this->isEmpty()) {
-            return null;
-        }
+        if (!$this->isNumeric) throw new \Exception('Data type is not numeric.');
+
+        if ($this->isEmpty()) return null;
         return $this->getSum() / $this->getCount();
     }
 
@@ -306,11 +310,14 @@ class Data
      * Returns the difference between the averages of two datasets if both
      * averages are defined, otherwise returns null.
      *
+     * @throws \Exception if data type is not numeric.
      * @param self $other
      * @return integer|double
      */
     public function getAverageDiff($other)
     {
+        if (!$this->isNumeric) throw new \Exception('Data type is not numeric.');
+
         $a = $this->getAverage();
         $b = $other->getAverage();
 

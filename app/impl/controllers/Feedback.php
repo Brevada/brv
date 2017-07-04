@@ -99,7 +99,8 @@ class Feedback extends Controller
             'aspects' => array_map(function ($aspect) {
                 return [
                     'id' => $aspect->getId(),
-                    'title' => $aspect->getTitle()
+                    'title' => $aspect->getTitle(),
+                    'value_types' => $aspect->getValueTypes()
                 ];
             }, $aspects),
             'template_location' => (int) $store->getCollectionLocation(),
@@ -184,10 +185,13 @@ class Feedback extends Controller
         $aspectId = self::from('aspect_id', $body);
         v::intVal()->min(0)->check($aspectId);
 
-        $value = self::from('value', $body);
-        v::intVal()->min(20)->max(100)->check($value);
+        $valueType = self::from('value_type', $body);
+        if (!v::stringType()->validate($valueType)) $valueType = null;
 
-        //$ordinal = self::from('ordinal', $body);
+        $value = self::from('value', $body);
+        if ($valueType === null && !v::intVal()->min(20)->max(100)->validate($value)) {
+            self::fail("A valid value or possibly value_type is required.", \HTTP::BAD_PARAMS);
+        }
 
         /* check if valid aspect... */
         $aspect = Aspect::queryId((int) $aspectId);
@@ -195,17 +199,49 @@ class Feedback extends Controller
             self::fail("Invalid aspect.", \HTTP::BAD_REQUEST);
         }
 
-        $response = new Response();
-        $response->setSessionCode($sessionCode);
-        $response->setAspectId($aspectId);
-        $response->setValue($value);
-        $response->setIPAddress();
-        $response->setUserAgent(isset($_SERVER['HTTP_USER_AGENT']) ? $_SERVER['HTTP_USER_AGENT'] : null);
+        $sessionCode = self::from('session', $body);
 
-        $date = $this->getSubmissionTime($body);
-        $response->setDate($date);
+        $response = null;
 
-        if ($response->commit() === null) {
+        if ($value !== null) {
+            $response = new Response();
+            $response->setSessionCode($sessionCode);
+            $response->setAspectId($aspectId);
+            $response->setIPAddress();
+            $response->setUserAgent(isset($_SERVER['HTTP_USER_AGENT']) ? $_SERVER['HTTP_USER_AGENT'] : null);
+            $response->setValue($value);
+            $response->setDate($this->getSubmissionTime($body));
+        } else if ($valueType !== null) {
+            /* non_standard_values is a key-value map of aspectId -> valueTypeKey.
+             *
+             * Here, we ensure we don't overwrite any previously assigned
+             * non-standard values.
+             */
+
+            /* Bit of an arbitrary length distinction, but should catch
+             * some faulty inputs/tampering. More of a sanity check. */
+            if (v::stringType()->length(10, null)->validate($sessionCode)) {
+                $response = Session::queryCode($sessionCode);
+            }
+
+            if ($response === null) $response = new Session();
+
+            $response->setSessionCode($sessionCode);
+            $response->setSubmissionTime($this->getSubmissionTime($body));
+
+            $nonStandardValues = [];
+            try {
+                $nonStandardValues = $response->getField('non_standard_values');
+                if (empty($nonStandardValues)) $nonStandardValues = [];
+            } catch (\Exception $ex) {}
+
+            $nonStandardValues[$aspectId] = $valueType;
+            $response->setField('non_standard_values', json_encode($nonStandardValues, true));
+
+            // TODO: Schema change: Record IP, UserAgent, Data
+        }
+
+        if ($response === null || $response->commit() === null) {
             self::fail("Unable to accept response.", \HTTP::SERVER);
         }
 

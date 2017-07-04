@@ -203,6 +203,7 @@ CREATE TABLE IF NOT EXISTS `aspect_type` (
   `Title` VARCHAR(50) NULL DEFAULT '',
   `Description` VARCHAR(200) NULL,
   `CompanyID` INT(11) NULL,
+  `ValueTypes` TEXT NULL, /* stored as JSON */
   PRIMARY KEY (`id`),
    FOREIGN KEY (`CompanyID`) REFERENCES companies(`id`)
      ON DELETE SET NULL

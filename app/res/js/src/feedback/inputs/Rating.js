@@ -6,12 +6,12 @@ import PropTypes from "prop-types";
  * @param   {object} props React props
  * @param   {number} props.ordinal The rating's ordinal value, rather than percent.
  * @param   {number} props.value Rating's percent value.
- * @param   {function(number, number)} props.onClick Handles submission of rating.
+ * @param   {function({value, ordinal})} props.onClick Handles submission of rating.
  * @returns {JSX}
  */
 const Rating = props => {
     const onClick = () => ( // eslint-disable-line require-jsdoc
-        props.onClick(props.value, props.ordinal)
+        props.onClick({ value: props.value, ordinal: props.ordinal })
     );
 
     return (
@@ -35,7 +35,7 @@ Rating.defaultProps = {
 /**
  * 5 star rating bar.
  * @param   {object} props React props
- * @param   {function(number, number)} props.onClick Handles submission of rating.
+ * @param   {function({value, ordinal})} props.onClick Handles submission of rating.
  * @returns {JSX}
  */
 const RatingBar = props => (

@@ -6,7 +6,8 @@ import classNames from "classnames";
 import Form from "forms/Form";
 import stateQueue from "utils/StateQueue";
 
-import RatingBar from "feedback/Rating";
+import RatingBarInput from "feedback/inputs/Rating";
+import MultiOptionInput from "feedback/inputs/MultiOption";
 
 /**
  * A message to display when a user has given feedback for an aspect.
@@ -26,12 +27,14 @@ export default class Aspect extends React.Component {
     static propTypes = {
         id: PropTypes.number.isRequired,
         title: PropTypes.string.isRequired,
+        valueTypes: PropTypes.object,
         onSubmit: PropTypes.func,
         session: PropTypes.string.isRequired
     };
 
     static defaultProps = {
-        onSubmit: () => { /* no op */ }
+        onSubmit: () => { /* no op */ },
+        valueTypes: null
     };
 
     /**
@@ -53,8 +56,9 @@ export default class Aspect extends React.Component {
             removing: false,
 
             /* Rating data. */
-            value: "",
-            ordinal: ""
+            value: null,
+            ordinal: null,
+            value_type: null
         };
 
         this.form = null;
@@ -75,14 +79,16 @@ export default class Aspect extends React.Component {
      *
      * @param   {number} value The rating's value.
      * @param   {number} ordinal The rating's ranking or ordinal.
+     * @param   {string} value_type The value type, in the case of multi-option.
      * @returns {void}
      */
-    onSubmit(value, ordinal) {
+    onSubmit({ value, ordinal, value_type }) { // eslint-disable-line complexity
         if (this.state.submitted || this.state.submitting) return;
 
         this.setState({
-            value: parseFloat(value),
-            ordinal: parseInt(ordinal)
+            value: value == null ? null : parseFloat(value),
+            ordinal: ordinal == null ? null : parseInt(ordinal),
+            value_type
         }, () => {
 
             /* Submit data. */
@@ -102,7 +108,7 @@ export default class Aspect extends React.Component {
                 })
                 .wait(300)
                 .do(() => {
-                    brv.feedback.session.onSubmit(value, ordinal);
+                    brv.feedback.session.onSubmit({ value, ordinal, value_type });
                     this.props.onSubmit(this.props.id);
                 })
                 .exec();
@@ -117,6 +123,10 @@ export default class Aspect extends React.Component {
             this.form = f
         );
 
+        const ResponseInput = this.props.valueTypes === null ?
+            RatingBarInput :
+            MultiOptionInput;
+
         return (
             <Form
                 method="POST"
@@ -126,7 +136,8 @@ export default class Aspect extends React.Component {
                     session: this.props.session,
                     aspect_id: this.props.id,
                     value: this.state.value,
-                    ordinal: this.state.ordinal
+                    ordinal: this.state.ordinal,
+                    value_type: this.state.value_type
                 }}
                 form={saveFormRef}>
                 <div
@@ -136,8 +147,9 @@ export default class Aspect extends React.Component {
                     })}>
                     <div className="header">{this.props.title}</div>
                     {(this.state.submitted && (<Submitted />)) || (
-                        <RatingBar
+                        <ResponseInput
                             onSubmit={this.onSubmit}
+                            valueTypes={this.props.valueTypes}
                         />
                     )}
                 </div>

@@ -86,6 +86,17 @@ const AspectBody = props => {
         return (<BlankState />);
     }
 
+    if (props.nonStandard) {
+        return (
+            <div className="body">
+                <div className="blank-state">
+                    <i className={"fa fa-question-circle"}></i>
+                    <span>{"Unsupported Aspect Type"}</span>
+                </div>
+            </div>
+        );
+    }
+
     return (
         <div className="body">
             <Badges
@@ -108,7 +119,12 @@ const AspectBody = props => {
 
 AspectBody.propTypes = {
     summary: PropTypes.object.isRequired,
-    filter: PropTypes.string.isRequired
+    filter: PropTypes.string.isRequired,
+    nonStandard: PropTypes.bool
+};
+
+AspectBody.defaultProps = {
+    nonStandard: false
 };
 
 /**
@@ -121,11 +137,13 @@ export default class Aspect extends Component {
         id: PropTypes.number.isRequired,
         summary: PropTypes.object.isRequired,
         filter: PropTypes.string.isRequired,
-        onRemove: PropTypes.func
+        onRemove: PropTypes.func,
+        nonStandard: PropTypes.bool
     };
 
     static defaultProps = {
-        onRemove: () => { /* no op */ }
+        onRemove: () => { /* no op */ },
+        nonStandard: false
     };
 
     /**
@@ -221,6 +239,7 @@ export default class Aspect extends Component {
                         <AspectBody
                             filter={this.props.filter}
                             summary={this.props.summary}
+                            nonStandard={this.props.nonStandard}
                         />
                     ) }
                 </div>
