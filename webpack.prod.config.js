@@ -1,15 +1,15 @@
-var webpack = require('webpack');
-var LodashModuleReplacementPlugin = require('lodash-webpack-plugin');
-var devConfig = require('./webpack.config');
+const webpack = require("webpack");
+const LodashModuleReplacementPlugin = require("lodash-webpack-plugin");
+const devConfig = require("./webpack.config");
 
 module.exports = Object.assign(devConfig, {
-    'plugins': [
+    "plugins": [
         new webpack.optimize.CommonsChunkPlugin({
             /* Don't add content to vendor and globals. */
-            names: ['vendor'],
+            names: ["vendor"],
             minChunks: Infinity
         }),
-        new webpack.optimize.CommonsChunkPlugin('chunks'),
+        new webpack.optimize.CommonsChunkPlugin("chunks"),
         new webpack.optimize.UglifyJsPlugin(),
         new webpack.optimize.AggressiveMergingPlugin(),
         new webpack.optimize.OccurrenceOrderPlugin(),
@@ -18,5 +18,9 @@ module.exports = Object.assign(devConfig, {
             shorthands: true,
             paths: true
         })
-    ]
+    ],
+    devtool: false,
+    performance: {
+        hints: false
+    }
 });

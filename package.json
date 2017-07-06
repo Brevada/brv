@@ -73,7 +73,9 @@
     "react-dom": "^15.6.1",
     "react-fastclick": "^3.0.2",
     "react-touch": "^0.4.2",
+    "react-transition-group": "^1.2.0",
     "recharts": "^1.0.0-alpha.1",
-    "sass-flex-mixin": "^1.0.3"
+    "sass-flex-mixin": "^1.0.3",
+    "velocity-animate": "^1.5.0"
   }
 }

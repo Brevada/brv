@@ -13,7 +13,6 @@
         width: 100%;
         margin: 10px 0;
         opacity: 1;
-        max-height: 220px;
         @include user-select(none);
         @extend %clearfix;
 
@@ -38,14 +37,11 @@
         }
 
         &.submitting {
-            opacity: 0.1;
+            /* during */
         }
 
-        @include transition(opacity 0.22s, max-height 0.3s);
-
         &.removing {
-            overflow: hidden;
-            max-height: 0;
+            /* end event */
         }
     }
 }

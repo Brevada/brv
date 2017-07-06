@@ -40,10 +40,10 @@
             "requireReturnDescription": false
         }],
         "block-scoped-var": "error",
-        "class-methods-use-this": "error",
+        "class-methods-use-this": "off",
         "complexity": [
-            "error",
-            4
+            "warn",
+            10
         ],
         "consistent-return": "error",
         "no-alert": "error",

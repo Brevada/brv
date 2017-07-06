@@ -3,6 +3,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import _ from "lodash";
+import TransitionGroup from "react-transition-group/TransitionGroup";
 
 import Aspect from "feedback/Aspect";
 
@@ -84,16 +85,18 @@ export default class Aspects extends React.Component {
 
         return (
             <div className="ly keep-spacing flex-v center-c-h aspect-container">
-                {aspects.map(aspect => (
-                    <Aspect
-                        key={aspect.id}
-                        id={aspect.id}
-                        title={aspect.title}
-                        valueTypes={aspect.value_types}
-                        onSubmit={this.onSubmit}
-                        session={this.props.session}
-                    />
-                ))}
+                <TransitionGroup>
+                    {aspects.map(aspect => (
+                        <Aspect
+                            key={aspect.id}
+                            id={aspect.id}
+                            title={aspect.title}
+                            valueTypes={aspect.value_types}
+                            onSubmit={this.onSubmit}
+                            session={this.props.session}
+                        />
+                    ))}
+                </TransitionGroup>
             </div>
         );
     }

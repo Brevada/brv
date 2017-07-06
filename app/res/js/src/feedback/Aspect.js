@@ -6,6 +6,9 @@ import classNames from "classnames";
 import Form from "forms/Form";
 import stateQueue from "utils/StateQueue";
 
+import velocity from "velocity-animate";
+
+import ResponseInput from "feedback/inputs/ResponseInput";
 import RatingBarInput from "feedback/inputs/Rating";
 import MultiOptionInput from "feedback/inputs/MultiOption";
 
@@ -45,15 +48,8 @@ export default class Aspect extends React.Component {
 
         this.state = {
 
-            /* Indicates that feedback for this aspect has already been
-             * submitted. */
+            /* Indicates that feedback for this aspect has already been submitted. */
             submitted: false,
-
-            /* Indicates that feedback is being submitted. */
-            submitting: false,
-
-            /* Indicates that the aspect is in the process of being removed. */
-            removing: false,
 
             /* Rating data. */
             value: null,
@@ -64,6 +60,7 @@ export default class Aspect extends React.Component {
         this.form = null;
 
         this.onSubmit = ::this.onSubmit;
+        this.setContainer = ::this.setContainer;
     }
 
     /**
@@ -71,6 +68,24 @@ export default class Aspect extends React.Component {
      */
     componentWillUnmount() {
         this._unmounted = true;
+    }
+
+    /**
+     * Handles transition event when element is being removed from DOM.
+     * @param  {Function} cb callback to invoke when animation complete
+     * @returns {void}
+     */
+    componentWillLeave(cb) {
+        velocity(this.container, "slideUp", { duration: 300 }).then(cb);
+    }
+
+    /**
+     * Binds the input's outer div to this instance.
+     * @param {object} c The div reference.
+     * @returns {void}
+     */
+    setContainer(c) {
+        this.container = c;
     }
 
     /**
@@ -94,19 +109,10 @@ export default class Aspect extends React.Component {
             /* Submit data. */
             this.form && this.form.submit();
 
-            /* Play out animation. */
             stateQueue(this, () => !this._unmounted)
-                .do({ submitting: true })
-                .wait(250)
-                .do({
-                    submitted: true,
-                    submitting: false
-                })
+                .do({ submitted: true })
                 .wait(700)
-                .do({
-                    removing: true
-                })
-                .wait(300)
+                .do({ removed: true })
                 .do(() => {
                     brv.feedback.session.onSubmit({ value, ordinal, value_type });
                     this.props.onSubmit(this.props.id);
@@ -123,9 +129,7 @@ export default class Aspect extends React.Component {
             this.form = f
         );
 
-        const ResponseInput = this.props.valueTypes === null ?
-            RatingBarInput :
-            MultiOptionInput;
+        const InputType = this.props.valueTypes === null ? RatingBarInput : MultiOptionInput;
 
         return (
             <Form
@@ -141,16 +145,17 @@ export default class Aspect extends React.Component {
                 }}
                 form={saveFormRef}>
                 <div
-                    className={classNames("item", "aspect", {
-                        submitting: this.state.submitting && !this.state.submitted,
-                        removing: this.state.removing
-                    })}>
+                    className={classNames("item", "aspect")}
+                    ref={this.setContainer}>
                     <div className="header">{this.props.title}</div>
-                    {(this.state.submitted && (<Submitted />)) || (
+                    {(!this.state.submitted && (
                         <ResponseInput
+                            input={InputType}
                             onSubmit={this.onSubmit}
                             valueTypes={this.props.valueTypes}
                         />
+                    )) || (
+                        <Submitted />
                     )}
                 </div>
             </Form>
